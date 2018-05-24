@@ -15,8 +15,5 @@
   "include": [
     "**/*.spec.ts",
     "**/*.d.ts"
-  ],
-  "exclude": [
-    "../api/node_modules"
   ]
 }
