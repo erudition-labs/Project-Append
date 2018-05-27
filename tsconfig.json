@@ -2,13 +2,17 @@
   "compileOnSave": false,
   "compilerOptions": {
     "outDir": "./dist/out-tsc",
-    "baseUrl": "src",
+    "baseUrl": ".",
     "sourceMap": true,
     "declaration": false,
+    "module": "commonjs",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
+    "skipLibCheck": true,
+   "stripInternal": true,
+   "noImplicitAny": false,
     "typeRoots": [
       "node_modules/@types"
     ],
@@ -17,6 +21,15 @@
       "dom"
     ]
   },
+  "include": [
+   "src/**/*.ts",
+   "api/**/*.ts"
+ ],
+ "exclude": [
+   "node_modules",
+   "api/node_modules",
+   "api"
+],
   "angularCompilerOptions": {
     "preserveWhitespaces": false
   }
