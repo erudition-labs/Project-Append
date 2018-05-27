@@ -152,6 +152,7 @@
                 $(this).css('display', '');
             });
 
+            $sidebar_content.find('li.active').parents('li').addClass('open');
             $listItem.addClass('open').removeClass('nav-collapsed-open');
         }
     }).on('mouseleave', function(event) {

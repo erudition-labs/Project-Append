@@ -155,7 +155,9 @@ module.exports = {
       "./src/polyfills.ts"
     ],
     "styles": [
-      "./src/styles.scss"
+        "./src/styles.scss",
+        "./src/assets/css/demo.css",
+      "./src/assets/sass/app.scss"
     ]
   },
   "output": {
@@ -188,7 +190,9 @@ module.exports = {
       },
       {
         "exclude": [
-          path.join(process.cwd(), "src/styles.scss")
+          path.join(process.cwd(), "src/styles.scss"),
+          path.join(process.cwd(), "./src/assets/css/demo.css"),
+          path.join(process.cwd(), "./src/assets/sass/app.scss")
         ],
         "test": /\.css$/,
         "use": [
@@ -207,7 +211,9 @@ module.exports = {
       },
       {
         "exclude": [
-          path.join(process.cwd(), "src/styles.scss")
+            path.join(process.cwd(), "src/styles.scss"),
+            path.join(process.cwd(), "./src/assets/css/demo.css"),
+            path.join(process.cwd(), "./src/assets/sass/app.scss")
         ],
         "test": /\.scss$|\.sass$/,
         "use": [
@@ -234,7 +240,9 @@ module.exports = {
       },
       {
         "exclude": [
-          path.join(process.cwd(), "src/styles.scss")
+            path.join(process.cwd(), "src/styles.scss"),
+            path.join(process.cwd(), "./src/assets/css/demo.css"),
+            path.join(process.cwd(), "./src/assets/sass/app.scss")
         ],
         "test": /\.less$/,
         "use": [
@@ -259,7 +267,9 @@ module.exports = {
       },
       {
         "exclude": [
-          path.join(process.cwd(), "src/styles.scss")
+            path.join(process.cwd(), "src/styles.scss"),
+            path.join(process.cwd(), "./src/assets/css/demo.css"),
+            path.join(process.cwd(), "./src/assets/sass/app.scss")
         ],
         "test": /\.styl$/,
         "use": [
@@ -285,7 +295,9 @@ module.exports = {
       },
       {
         "include": [
-          path.join(process.cwd(), "src/styles.scss")
+            path.join(process.cwd(), "src/styles.scss"),
+            path.join(process.cwd(), "./src/assets/css/demo.css"),
+            path.join(process.cwd(), "./src/assets/sass/app.scss")
         ],
         "test": /\.css$/,
         "use": [
@@ -305,7 +317,9 @@ module.exports = {
       },
       {
         "include": [
-          path.join(process.cwd(), "src/styles.scss")
+            path.join(process.cwd(), "src/styles.scss"),
+            path.join(process.cwd(), "./src/assets/css/demo.css"),
+            path.join(process.cwd(), "./src/assets/sass/app.scss")
         ],
         "test": /\.scss$|\.sass$/,
         "use": [
@@ -333,7 +347,9 @@ module.exports = {
       },
       {
         "include": [
-          path.join(process.cwd(), "src/styles.scss")
+            path.join(process.cwd(), "src/styles.scss"),
+            path.join(process.cwd(), "./src/assets/css/demo.css"),
+            path.join(process.cwd(), "./src/assets/sass/app.scss")
         ],
         "test": /\.less$/,
         "use": [
@@ -359,7 +375,9 @@ module.exports = {
       },
       {
         "include": [
-          path.join(process.cwd(), "src/styles.scss")
+            path.join(process.cwd(), "src/styles.scss"),
+            path.join(process.cwd(), "./src/assets/css/demo.css"),
+            path.join(process.cwd(), "./src/assets/sass/app.scss")
         ],
         "test": /\.styl$/,
         "use": [
