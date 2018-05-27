@@ -19,9 +19,22 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
+        "assets/css/prism.min.css",
+        "../node_modules/sweetalert2/dist/sweetalert2.min.css",
+        "assets/css/wizard.css",
+        "assets/css/quill.snow.css",
+        "assets/css/quill.bubble.css",
+        "assets/css/hopscotch.css",
+        "../node_modules/ng2-toastr/bundles/ng2-toastr.min.css",
+        "../node_modules/nouislider/distribute/nouislider.min.css",
+        "../node_modules/angular-calendar/scss/angular-calendar.scss",
+        "../node_modules/dragula/dist/dragula.css",
+        "../node_modules/videogular2/fonts/videogular.css",
+        "../node_modules/@swimlane/ngx-datatable/release/index.css",
+        "../node_modules/@swimlane/ngx-datatable/release/assets/icons.css",     
         "assets/css/demo.css",
         "assets/sass/app.scss",
-        "styles.scss"
+        "styles.css"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.min.js",
