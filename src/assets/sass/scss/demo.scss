@@ -1,3 +1,4 @@
+// Remove this SCSS from production
 .main-content {
     .color-palette {
         .color-group {
@@ -69,4 +70,9 @@
             }
         }
     }
+}
+
+#kbModal-body{
+    height: 500px;
+    overflow-y: scroll;
 }
