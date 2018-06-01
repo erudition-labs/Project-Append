@@ -1,0 +1,34 @@
+{
+  "name": "Erudition",
+  "version": "1.0.0",
+  "description": "JROTC system.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app"
+  },
+  "dependencies": {
+    "bcryptjs": "*",
+    "body-parser": "*",
+    "cors": "*",
+    "express": "*",
+    "jsonwebtoken": "*",
+    "mongoose": "*",
+    "passport": "*",
+    "passport-jwt": "*",
+    "express-validator": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/erudition/jrotc-website.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/erudition/jrotc-website/issues"
+  },
+  "homepage": "https://gitlab.com/erudition/jrotc-website#README",
+  "devDependencies": {
+    "@angular/cli": "6.0.1"
+  }
+}
