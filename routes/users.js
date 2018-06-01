@@ -11,11 +11,11 @@ const router      = express.Router();
 //Register
 router.post('/register', (request, response, next) => {
     let newUser = new User({
-        name    : request.body.name,
-        email   : request.body.email,
-        access  : request.body.access,
-        username: request.body.username,
-        password: request.body.password
+        name          : request.body.name,
+        email           : request.body.email,
+        access         : request.body.access,
+        username  : request.body.username,
+        password   : request.body.password
     });
 
     User.addUser(newUser, (error, user) => {
@@ -67,7 +67,7 @@ router.post('/authenticate', (request, response, next) => {
 });
 
 
-router.get('/usersList', (request, response, next) => {
+router.get('/users', (request, response, next) => {
     User.getAllUsers((error, users) => {
         if(error) {
             response.status(500).json({success: false, msg: error});
