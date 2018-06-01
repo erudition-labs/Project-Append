@@ -1,4 +1,4 @@
-/Main server entry point file
+//Main server entry point file
 
 //Modules required from core and package.json
 const express        = require('express');
@@ -12,7 +12,7 @@ const users             = require('./routes/users'); //contains backend routes t
 
 require('./database/config/passport')(passport);
 
-var promise = mongoose.connect(config.database, { useMongoClient: true }); //connect to mongoose database
+var promise = mongoose.connect(config.database); //connect to mongoose database
 mongoose.connection.on('connected', () => {     //tell us if we are connected
   console.log('Connected to database '+ config.database)
 });
@@ -32,7 +32,7 @@ app.use(passport.initialize()); //passport middleware, authentication and token 
 app.use(passport.session());   //will use passport-jwt strategy
 
 //Endpoints
-app.use('/users', users);      //users routes
+app.use('/api/users', users);      //users routes
 	// Any request in the form of localhost:port/users/whatever must be
 // defined here in order to be used.
 
