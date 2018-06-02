@@ -2,11 +2,11 @@ const mongoose    = require('mongoose');
 const bcrypt            = require('bcryptjs');
 
 const UserSchema = mongoose.Schema({
-    name    : { type: String, required: true },
-    email   : { type: String, required: true },
-    access  : { type: String, required: true },
-    username: { type: String, required: true },
-    password: { type: String, required: true }
+    firstName    : { type: String, required: true },
+    lastName     : {type: String, required: true },
+    email            : { type: String, required: true },
+    rank             : { type: String, required: true },
+    password    : { type: String, required: true }
 });
 
 const User = module.exports = mongoose.model('User', UserSchema); //name of model and Schema
@@ -15,8 +15,8 @@ module.exports.getUserById = function(id, callback) {
     User.findById(id, callback);
 }
 
-module.exports.getUserByUsername = function(username, callback) {
-    const query = {username:username}
+module.exports.getUserByEmail = function(email, callback) {
+    const query = {Email:email}
     User.findOne(query, callback);
 }
 
@@ -39,10 +39,6 @@ module.exports.comparePassword = function(candidatePass, hash, callback) {
 
 module.exports.getAllUsers = function(callback) {
     User.find({}, callback);
-}
-
-module.exports.findAndUpdateIssue = function(id, data, options, callback) {
-    User.findByIdAndUpdate(id, data, options, callback);
 }
 
 module.exports.findAndDeleteUserById = function(id, callback) {
