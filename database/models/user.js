@@ -12,11 +12,11 @@ const UserSchema = mongoose.Schema({
 
 const User = module.exports = mongoose.model('User', UserSchema); //name of model and Schema
 
-module.exports.getUserById = function(id, callback) {
+module.exports.findUserById = function(id, callback) {
     User.findById(id, callback);
 }
 
-module.exports.getUserByEmail = function(email, callback) {
+module.exports.findUserByEmail = function(email, callback) {
     const query = {Email:email}
     User.findOne(query, callback);
 }
@@ -38,7 +38,7 @@ module.exports.comparePassword = function(candidatePass, hash, callback) {
     });
 }
 
-module.exports.getAllUsers = function(callback) {
+module.exports.findAllUsers = function(callback) {
     User.find({}, callback);
 }
 

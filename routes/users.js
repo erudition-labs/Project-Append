@@ -3,7 +3,7 @@ const express   = require('express');
 const User         = require('../database/models/user');
 const passport  = require('passport');
 const jwt            = require('jsonwebtoken');
-const { body } = require('express-validator/check');
+const { body, check, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 const config      = require('../database/config/database');
 const router      = express.Router();
@@ -12,11 +12,16 @@ const router      = express.Router();
 
 //Register
 router.post('/register', [
-    body('email').isEmail().normalizeEmail(),
-    body('firstName').not().isEmpty().trim().escape(),
-    body('lastName').not().isEmpty().trim().escape(),
-    body('rank').not().isEmpty().trim().escape() //for now just sanitize rank, eventually we can check if it is a valid rank
+    body('email').isEmail().withMessage('Valid Email Required').normalizeEmail(),
+    body('firstName').not().isEmpty().withMessage('First Name Required').trim().escape(),
+    body('lastName').not().isEmpty().withMessage('Last Name Required').trim().escape(),
+    body('rank').not().isEmpty().withMessage('Rank Required').trim().escape() //for now just sanitize rank, eventually we can check if it is a valid rank
 ], (request, response, next) => {
+    const errors = validationResult(request);
+    if (!errors.isEmpty()) {
+    return response.status(422).json({ errors: errors.array() });
+  }
+
     let newUser = new User({
         firstName    : request.body.firstName,
         lastName    : request.body.lastName,
@@ -34,13 +39,12 @@ router.post('/register', [
     });
 });
 
-
 //Authenticate
 router.post('/authenticate', (request, response, next) => {
     const username = request.body.username;
     const password = request.body.password;
 
-    User.getUserByUsername(username, (error, user) => {
+    User.findUserByEmail(username, (error, user) => {
         if(error) throw error;
         if(!user) {
             return response.json({success: false, msg: 'User not found :('});
@@ -75,7 +79,7 @@ router.post('/authenticate', (request, response, next) => {
 
 
 router.get('/users', (request, response, next) => {
-    User.getAllUsers((error, users) => {
+    User.findAllUsers((error, users) => {
         if(error) {
             response.status(500).json({success: false, msg: error});
         } else {
