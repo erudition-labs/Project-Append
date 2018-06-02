@@ -12,11 +12,12 @@
     "body-parser": "*",
     "cors": "*",
     "express": "*",
+    "express-validator": "*",
     "jsonwebtoken": "*",
     "mongoose": "*",
+    "mongoose-unique-validator": "^2.0.1",
     "passport": "*",
-    "passport-jwt": "*",
-    "express-validator": "*"
+    "passport-jwt": "*"
   },
   "repository": {
     "type": "git",
