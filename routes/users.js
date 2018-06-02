@@ -109,8 +109,8 @@ router.get('/users', (request, response, next) => {
 });
 
 //delete user by id
-router.delete('/users/:id', (request, response, next) => {
-    User.finAndDeleteUserById(request.params.id, (error, user) => {
+router.delete('/user/:id', (request, response, next) => {
+    User.findAndDeleteUserById(request.params.id, (error, user) => {
         if(error) {
             response.status(500).json({success: false, msg: error});
         } else {
@@ -120,7 +120,7 @@ router.delete('/users/:id', (request, response, next) => {
 });
 
 //Profile
-router.get('/profile', passport.authenticate('jwt', {session: false}), (request, response, next) => {
+router.get('/user', passport.authenticate('jwt', {session: false}), (request, response, next) => {
     response.json({user:request.user});
 });
 
