@@ -3,18 +3,27 @@ const express   = require('express');
 const User         = require('../database/models/user');
 const passport  = require('passport');
 const jwt            = require('jsonwebtoken');
+const { body } = require('express-validator/check');
+const { sanitizeBody } = require('express-validator/filter');
 const config      = require('../database/config/database');
 const router      = express.Router();
 
 /////////////////////add passport.authenticate('jwt', {session: false}) as a parameter to protect a route.
 
 //Register
-router.post('/register', (request, response, next) => {
+router.post('/register', [
+    body('email').isEmail().normalizeEmail(),
+    body('firstName').not().isEmpty().trim().escape(),
+    body('lastName').not().isEmpty().trim().escape(),
+    body('rank').not().isEmpty().trim().escape() //for now just sanitize rank, eventually we can check if it is a valid rank
+],
+
+ (request, response, next) => {
     let newUser = new User({
-        name          : request.body.name,
+        firstName    : request.body.firstName,
+        lastName    : request.body.lastName,
         email           : request.body.email,
-        access         : request.body.access,
-        username  : request.body.username,
+        rank            : request.body.rank,
         password   : request.body.password
     });
 
