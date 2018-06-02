@@ -16,9 +16,7 @@ router.post('/register', [
     body('firstName').not().isEmpty().trim().escape(),
     body('lastName').not().isEmpty().trim().escape(),
     body('rank').not().isEmpty().trim().escape() //for now just sanitize rank, eventually we can check if it is a valid rank
-],
-
- (request, response, next) => {
+], (request, response, next) => {
     let newUser = new User({
         firstName    : request.body.firstName,
         lastName    : request.body.lastName,
