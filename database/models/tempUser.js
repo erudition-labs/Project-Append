@@ -65,30 +65,3 @@ nev.configure({
 });
 
 module.exports.NEV = nev;
-/*
-module.exports.addTempUser = function(newUser) {
-    nev.createTempUser(newUser, function(error, existingPersistentUser, newTempUser) {
-    // some sort of error
-    if (error) {
-        console.log(error);
-    }
-
-    // user already exists in persistent collection...
-    if (existingPersistentUser)
-        // handle user's existence... violently.
-
-    // a new user
-    if (newTempUser) {
-        var URL = newTempUser[nev.options.URLFieldName];
-        nev.sendVerificationEmail(email, URL, function(err, info) {
-            if (err)
-                console.log(error);
-
-            // flash message of success
-        });
-    } else { // user already exists in temporary collection...
-        console.log("user already exists");
-        // flash message of failure...
-    }
-});
-}*/
