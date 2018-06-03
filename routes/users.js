@@ -23,8 +23,8 @@ router.post('/register', [
     // check for any errors from above
     const errors = validationResult(request);
     if (!errors.isEmpty()) { // If there are any, respond with them
-    return response.status(422).json({ errors: errors.array() });
-  }
+        return response.status(422).json({ errors: errors.array() });
+    }
     // otherwise create a user object based off of our schema
     let newUser = new User({
         firstName    : request.body.firstName,
@@ -35,47 +35,62 @@ router.post('/register', [
     });
 
     TempUser.NEV.createTempUser(newUser, function(error, existingPersistentUser, newTempUser) {
-    // some sort of error
-    if (error) {
-        response.json({ success: false, msg:'Something went wrong'});
-    }
-
-    // user already exists in persistent collection...
-    if (existingPersistentUser) {
-        // handle user's existence... violently.
-        response.json({ success: false, msg:'User already exists'});
-    }
-
-    // a new user
-    if (newTempUser) {
-        let URL = newTempUser[TempUser.NEV.options.URLFieldName];
-
-        TempUser.NEV.sendVerificationEmail(newUser.email, URL, function(err, info) {
-            if (err) {
-                console.log(err);
-                return response.status(404).send('ERROR: sending verification email FAILED');
-            }
-            response.json({
-                                    msg: 'An email has been sent to you. Please check it to verify your account.',
-                                    info: info
-                                });
-            // flash message of success
-        });
-    } else { // user already exists in temporary collection...
-        console.log("user already exists");
-        response.json({ success: false, msg:'Please Verify Your Email'});.
-    }
-    });
-
-    // add user to database
-    /*TempUser.NEVaddTempUser(newUser);, (error, user) => {
-        if(error) {
-            response.json({ success: false, msg:'Failed To Register User'});
-        } else {
-            response.json({ success: true, msg:'User Registered'});
+        // some sort of error
+        if (error) {
+            response.json({ success: false, msg:'Something went wrong'});
         }
-    });*/
+
+        // user already exists in persistent collection...
+        if (existingPersistentUser) {
+            // handle user's existence... violently.
+            response.json({ success: false, msg:'User already exists'});
+        }
+
+        // a new user
+        if (newTempUser) {
+            let URL = newTempUser[TempUser.NEV.options.URLFieldName];
+
+            TempUser.NEV.sendVerificationEmail(newUser.email, URL, function(err, info) {
+                if (err) {
+                    console.log(err);
+                    return response.status(404).send('ERROR: sending verification email FAILED');
+                }
+                response.json({
+                    msg: 'An email has been sent to you. Please check it to verify your account.',
+                    info: info
+                });
+
+            });
+        } else { // user already exists in temporary collection...
+            console.log("user already exists");
+            response.json({ success: false, msg:'Please Verify Your Email'});
+        }
+    });
 });
+
+// resend email verification
+router.post('/verify-resend', [
+    body('email').isEmail().withMessage('Valid Email Required').normalizeEmail()
+], (request, response, next) => {
+    const errors = validationResult(request);
+    if (!errors.isEmpty()) {
+        return response.status(422).json({ errors: errors.array() });
+    }
+
+        TempUser.NEV.resendVerificationEmail(request.body.email, function(error, userFound) {
+            if (error) {
+                return response.status(404).send('ERROR: resending verification email FAILED');
+            }
+
+            if (userFound) { // the temp user was found
+                response.json({ success: true, msg: 'An email has been sent to you. Please check it to verify your account.'});
+            } else {
+                // the temp user was not found, meaning the token expired
+                response.json({ success: false, msg: 'Your verification code has expired. Please sign up again.'});
+            }
+        });
+});
+
 
 // Authenticate user and return a token if valid
 router.post('/authenticate', [
@@ -85,10 +100,10 @@ router.post('/authenticate', [
     // Check for validation/sanitization errors
     const errors = validationResult(request);
     if (!errors.isEmpty()) { // If there are any, respond with them
-    return response.status(422).json({ errors: errors.array() });
-  }
+        return response.status(422).json({ errors: errors.array() });
+    }
 
-  //otherwise continue
+    //otherwise continue
     const email = request.body.email;
     const password = request.body.password;
 
