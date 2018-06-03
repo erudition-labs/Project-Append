@@ -11,14 +11,25 @@ const router                                               = express.Router();
 
 /////////////////////add passport.authenticate('jwt', {session: false}) as a parameter to protect a route.
 
+router.get('/email-verification/:URL', (request, response, next) => {
+    TempUser.NEV.confirmTempUser(url, function(error, user) {
+        if(user) {
+            response.json({ success: true, msg: "Account Confirmed" });
+        } else {
+            response.json({ success:false, msg: "Confirmation Failed" });
+        }
+    });
+});
+
+
 //Register
 router.post('/register', [
     // validate and sanitize any fields from the client
     // Note that this does in place field mutation
-    body('email').isEmail().withMessage('Valid Email Required').normalizeEmail(),
-    body('firstName').not().isEmpty().withMessage('First Name Required').trim().escape(),
-    body('lastName').not().isEmpty().withMessage('Last Name Required').trim().escape(),
-    body('rank').not().isEmpty().withMessage('Rank Required').trim().escape() //for now just sanitize rank, eventually we can check if it is a valid rank
+    body('email').exists().isEmail().withMessage('Valid Email Required').normalizeEmail(),
+    body('firstName').exists().withMessage('First Name Required').trim().escape(),
+    body('lastName').exists().withMessage('Last Name Required').trim().escape(),
+    body('rank').exists().withMessage('Rank Required').trim().escape() //for now just sanitize rank, eventually we can check if it is a valid rank
 ], (request, response, next) => {
     // check for any errors from above
     const errors = validationResult(request);
