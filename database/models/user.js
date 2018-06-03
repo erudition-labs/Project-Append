@@ -21,6 +21,7 @@ module.exports.findUserByEmail = function(email, callback) {
     User.findOne(query, callback);
 }
 
+/*
 module.exports.addUser = function(newUser, callback) {
     bcrypt.genSalt(10, (error, salt) => {
         bcrypt.hash(newUser.password, salt, (error, hash) => { //newUser.password
@@ -30,7 +31,7 @@ module.exports.addUser = function(newUser, callback) {
         });
     });
 }
-
+*/
 module.exports.comparePassword = function(candidatePass, hash, callback) {
     bcrypt.compare(candidatePass, hash, (error, isMatch) => {
         if(error) throw error;
