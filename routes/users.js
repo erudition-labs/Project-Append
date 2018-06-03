@@ -1,6 +1,7 @@
 //Add all routes that users can access here
 const express                                           = require('express');
 const User                                                = require('../database/models/user');
+const TempUser                                      = require('../database/models/tempUser');
 const passport                                         = require('passport');
 const jwt                                                    = require('jsonwebtoken');
 const { body, check, validationResult } = require('express-validator/check');
