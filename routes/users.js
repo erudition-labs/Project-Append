@@ -37,13 +37,13 @@ router.post('/register', [
     TempUser.NEV.createTempUser(newUser, function(error, existingPersistentUser, newTempUser) {
     // some sort of error
     if (error) {
-        console.log("cerate tmp user error" + error);
+        response.json({ success: false, msg:'Something went wrong'});
     }
 
     // user already exists in persistent collection...
     if (existingPersistentUser) {
         // handle user's existence... violently.
-        response.json({ success: false, msg:'User already exists'});.
+        response.json({ success: false, msg:'User already exists'});
     }
 
     // a new user
