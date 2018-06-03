@@ -6,6 +6,7 @@ const path              = require('path'); //core module
 const bodyParser  = require('body-parser'); //parses incoming request bodies. Grabs the data from forms, etc..
 const cors               = require('cors'); //https://github.com/expressjs/cors
 const passport       = require('passport');
+//const nodemailer  = require('nodemailer');
 const mongoose    = require('mongoose');
 const config            = require('./database/config/database');
 const users             = require('./routes/users'); //contains backend routes that users can access. we define users in the models
@@ -23,6 +24,16 @@ mongoose.connection.on('error', (error) => {     //tell the error if it occurs
 
 const app   = express();
 const port  = 3000; //port number
+
+
+/*const transporter = nodemailer.createTransport({
+ service: 'gmail',
+ auth: {
+        user: 'erudition.testing@gmail.com',
+        pass: 'jb313327'
+    }
+});*/
+
 
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(cors());              //cors middleware
