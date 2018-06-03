@@ -34,14 +34,47 @@ router.post('/register', [
         password   : request.body.password
     });
 
+    TempUser.NEV.createTempUser(newUser, function(error, existingPersistentUser, newTempUser) {
+    // some sort of error
+    if (error) {
+        console.log("cerate tmp user error" + error);
+    }
+
+    // user already exists in persistent collection...
+    if (existingPersistentUser) {
+        // handle user's existence... violently.
+        response.json({ success: false, msg:'User already exists'});.
+    }
+
+    // a new user
+    if (newTempUser) {
+        let URL = newTempUser[TempUser.NEV.options.URLFieldName];
+
+        TempUser.NEV.sendVerificationEmail(newUser.email, URL, function(err, info) {
+            if (err) {
+                console.log(err);
+                return response.status(404).send('ERROR: sending verification email FAILED');
+            }
+            response.json({
+                                    msg: 'An email has been sent to you. Please check it to verify your account.',
+                                    info: info
+                                });
+            // flash message of success
+        });
+    } else { // user already exists in temporary collection...
+        console.log("user already exists");
+        response.json({ success: false, msg:'Please Verify Your Email'});.
+    }
+    });
+
     // add user to database
-    User.addUser(newUser, (error, user) => {
+    /*TempUser.NEVaddTempUser(newUser);, (error, user) => {
         if(error) {
             response.json({ success: false, msg:'Failed To Register User'});
         } else {
             response.json({ success: true, msg:'User Registered'});
         }
-    });
+    });*/
 });
 
 // Authenticate user and return a token if valid
