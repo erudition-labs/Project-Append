@@ -25,7 +25,7 @@ var hashFunction = function(password, tempUserData, insertTempUser, callback) {
 };
 
 nev.configure({
-    verificationURL: 'http://myawesomewebsite.com/email-verification/${URL}',
+    verificationURL: 'http://myawesomewebsite.com/email-verification/${URL}', // set this when we make the front end for it
     persistentUserModel: User,
     tempUserCollection: 'TempUsers',
     URLFieldName: 'GENERATED_VERIFYING_URL',
@@ -60,7 +60,7 @@ nev.configure({
         console.log(err);
         return;
     }
-
+    
     console.log('generated temp user model: ' + (typeof tempUserModel === 'function'));
 });
 
