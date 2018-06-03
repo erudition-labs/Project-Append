@@ -11,6 +11,7 @@
     "bcryptjs": "*",
     "body-parser": "*",
     "cors": "*",
+    "email-verification": "^0.4.6",
     "express": "*",
     "express-validator": "*",
     "jsonwebtoken": "*",
