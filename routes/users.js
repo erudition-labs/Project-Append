@@ -38,13 +38,13 @@ router.post('/register', [
     TempUser.NEV.createTempUser(newUser, function(error, existingPersistentUser, newTempUser) {
         // some sort of error
         if (error) {
-            response.json({ success: false, msg:'Something went wrong'});
+            response.status(500).json({ success: false, msg:'Something went wrong'});
         }
 
         // user already exists in persistent collection...
         if (existingPersistentUser) {
             // handle user's existence... violently.
-            response.json({ success: false, msg:'User already exists'});
+            response.status(418).json({ success: false, msg:'User already exists'}); //418 is i am a teapot
         }
 
         // a new user
@@ -56,7 +56,7 @@ router.post('/register', [
                     console.log(err);
                     return response.status(404).send('ERROR: sending verification email FAILED');
                 }
-                response.json({
+                response.status(202).json({
                     msg: 'An email has been sent to you. Please check it to verify your account.',
                     info: info
                 });
@@ -64,7 +64,7 @@ router.post('/register', [
             });
         } else { // user already exists in temporary collection...
             console.log("user already exists");
-            response.json({ success: false, msg:'Please Verify Your Email'});
+            response.status(401).json({ success: false, msg:'Please Verify Your Email'});
         }
     });
 });
@@ -85,10 +85,10 @@ router.post('/verify-resend', [
             }
 
             if (userFound) { // the temp user was found
-                response.json({ success: true, msg: 'An email has been sent to you. Please check it to verify your account.'});
+                response.status(200).json({ success: true, msg: 'An email has been sent to you. Please check it to verify your account.'});
             } else {
                 // the temp user was not found, meaning the token expired
-                response.json({ success: false, msg: 'Your verification code has expired. Please sign up again.'});
+                response.status(404).json({ success: false, msg: 'Your verification code has expired. Please sign up again.'});
             }
         });
 });
@@ -97,9 +97,9 @@ router.post('/verify-resend', [
 router.get('/email-verification/:URL', (request, response, next) => {
     TempUser.NEV.confirmTempUser(url, function(error, user) { // Nev takes care of url being empty
         if(user) {
-            response.json({ success: true, msg: "Account Confirmed" });
+            response.status(201).json({ success: true, msg: "Account Confirmed" });
         } else {
-            response.json({ success:false, msg: "Confirmation Failed" });
+            response.status(404).json({ success:false, msg: "Confirmation Failed" });
         }
     });
 });
@@ -124,7 +124,7 @@ router.post('/authenticate', [
     User.findUserByEmail(email, (error, user) => {
         if(error) throw error;
         if(!user) {
-            return response.json({success: false, msg: 'User not found :('});
+            return response.status(404).json({success: false, msg: 'User not found :('});
         } // when user is not in db
 
         // otherwise assume it is, check the rest of the stuff
@@ -166,7 +166,10 @@ router.get('/users', (request, response, next) => {
             users.forEach(function(user) {
                 userArray.push(user);
             });
-            response.status(200).send(userArray);
+            if(!array.length) { // array is empty meaning there are no users in the db
+                response.status(404).json({success: false, msg: 'No Users'})
+            }
+            response.status(200).send(userArray); //otherwise there are users
         }
     });
 });
