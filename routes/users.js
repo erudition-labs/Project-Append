@@ -169,7 +169,7 @@ router.get('/users', (request, response, next) => {
 });
 
 //delete user by id
-router.delete('/user/:id', (request, response, next) => {
+router.delete('/:id', (request, response, next) => {
     User.findAndDeleteUserById(request.params.id, (error, user) => {
         if(error) {
             response.status(500).json({success: false, msg: error});
