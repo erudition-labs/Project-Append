@@ -11,17 +11,6 @@ const router                                               = express.Router();
 
 /////////////////////add passport.authenticate('jwt', {session: false}) as a parameter to protect a route.
 
-router.get('/email-verification/:URL', (request, response, next) => {
-    TempUser.NEV.confirmTempUser(url, function(error, user) {
-        if(user) {
-            response.json({ success: true, msg: "Account Confirmed" });
-        } else {
-            response.json({ success:false, msg: "Confirmation Failed" });
-        }
-    });
-});
-
-
 //Register
 router.post('/register', [
     // validate and sanitize any fields from the client
@@ -103,6 +92,17 @@ router.post('/verify-resend', [
 });
 
 
+router.get('/email-verification/:URL', (request, response, next) => {
+    TempUser.NEV.confirmTempUser(url, function(error, user) {
+        if(user) {
+            response.json({ success: true, msg: "Account Confirmed" });
+        } else {
+            response.json({ success:false, msg: "Confirmation Failed" });
+        }
+    });
+});
+
+
 // Authenticate user and return a token if valid
 router.post('/authenticate', [
     //validate and sanitize
@@ -179,8 +179,9 @@ router.delete('/user/:id', (request, response, next) => {
     });
 });
 
-//Profile
-router.get('/user', passport.authenticate('jwt', {session: false}), (request, response, next) => {
+//profile
+// Note that passport will set a user object with  passport.authenticate() if the token is calid
+router.get('/profile', passport.authenticate('jwt', {session: false}), (request, response, next) => {
     response.json({user:request.user});
 });
 
