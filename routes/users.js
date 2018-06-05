@@ -29,10 +29,10 @@ router.post('/register', [
     // otherwise create a user object based off of our schema
     let newUser = new User({
         firstName    : request.body.firstName,
-        lastName    : request.body.lastName,
-        email           : request.body.email,
-        rank            : request.body.rank,
-        password   : request.body.password
+        lastName     : request.body.lastName,
+        email            : request.body.email,
+        rank              : request.body.rank,
+        password    : request.body.password
     });
 
     TempUser.NEV.createTempUser(newUser, function(error, existingPersistentUser, newTempUser) {
@@ -71,7 +71,8 @@ router.post('/register', [
 
 // resend email verification
 router.post('/verify-resend', [
-    body('email').isEmail().withMessage('Valid Email Required').normalizeEmail()
+    body('email').exists().withMessage('Email Required')
+        .isEmail().withMessage('Valid Email Required').normalizeEmail()
 ], (request, response, next) => {
     const errors = validationResult(request);
     if (!errors.isEmpty()) {
@@ -94,7 +95,7 @@ router.post('/verify-resend', [
 
 
 router.get('/email-verification/:URL', (request, response, next) => {
-    TempUser.NEV.confirmTempUser(url, function(error, user) {
+    TempUser.NEV.confirmTempUser(url, function(error, user) { // Nev takes care of url being empty
         if(user) {
             response.json({ success: true, msg: "Account Confirmed" });
         } else {
@@ -140,8 +141,8 @@ router.post('/authenticate', [
                     success : true,
                     token   : 'JWT '+token,
                     user    : {               //send back data for a profile or something
-                        id      : user._id,
-                        name    : user.username,
+                        id          : user._id,
+                        name   : user.username,
                         email   : user.email,
                         access  : user.access
                     }
