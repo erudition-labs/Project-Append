@@ -156,14 +156,14 @@ router.post('/authenticate', [
 router.get('/users', (request, response, next) => {
     User.findAllUsers((error, users) => {
         if(error) {
-            response.status(500).json({success: false, msg: error});
+            response.status(500).json({success: false, msg: 'Failed to get users'});
         } else {
-            var userMap = [];
+            var userArray = [];
 
             users.forEach(function(user) {
-                userMap[user._id] = user;
+                userArray.push(user);
             });
-            response.status(200).send(userMap);
+            response.status(200).send(userArray);
         }
     });
 });
