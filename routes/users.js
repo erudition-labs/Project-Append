@@ -18,7 +18,8 @@ router.post('/register', [
     body('email').exists().isEmail().withMessage('Valid Email Required').normalizeEmail(),
     body('firstName').exists().withMessage('First Name Required').trim().escape(),
     body('lastName').exists().withMessage('Last Name Required').trim().escape(),
-    body('rank').exists().withMessage('Rank Required').trim().escape() //for now just sanitize rank, eventually we can check if it is a valid rank
+    body('rank').exists().withMessage('Rank Required').trim().escape(), //for now just sanitize rank, eventually we can check if it is a valid rank
+    body('password').exists().withMessage('Password Required').trim().escape()
 ], (request, response, next) => {
     // check for any errors from above
     const errors = validationResult(request);
@@ -106,7 +107,8 @@ router.get('/email-verification/:URL', (request, response, next) => {
 // Authenticate user and return a token if valid
 router.post('/authenticate', [
     //validate and sanitize
-    body('email').isEmail().withMessage('Valid Email Required').normalizeEmail()
+    body('email').isEmail().withMessage('Valid Email Required').normalizeEmail(),
+    body('password').exists().withMessage('Password Required').trim().escape()
 ], (request, response, next) => {
     // Check for validation/sanitization errors
     const errors = validationResult(request);
