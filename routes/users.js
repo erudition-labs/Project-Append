@@ -95,7 +95,7 @@ router.post('/verify-resend', [
 
 
 router.get('/email-verification/:URL', (request, response, next) => {
-    TempUser.NEV.confirmTempUser(url, function(error, user) { // Nev takes care of url being empty
+    TempUser.NEV.confirmTempUser(request.params.URL, function(error, user) { // Nev takes care of url being empty
         if(user) {
             response.status(201).json({ success: true, msg: "Account Confirmed" });
         } else {
@@ -166,7 +166,7 @@ router.get('/users', (request, response, next) => {
             users.forEach(function(user) {
                 userArray.push(user);
             });
-            if(!array.length) { // array is empty meaning there are no users in the db
+            if(!userArray.length) { // array is empty meaning there are no users in the db
                 response.status(404).json({success: false, msg: 'No Users'})
             }
             response.status(200).send(userArray); //otherwise there are users
