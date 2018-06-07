@@ -19,6 +19,8 @@ router.post('/register', [
     body('firstName').exists().withMessage('First Name Required').trim().escape(),
     body('lastName').exists().withMessage('Last Name Required').trim().escape(),
     body('rank').exists().withMessage('Rank Required').trim().escape(), //for now just sanitize rank, eventually we can check if it is a valid rank
+    body('flight').exists().withMessage('Flight Required').trim().escape(),
+    body('team').exists().withMessage('Team Required').trim().escape(),
     body('password').exists().withMessage('Password Required').trim().escape()
 ], (request, response, next) => {
     // check for any errors from above

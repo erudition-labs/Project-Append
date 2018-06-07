@@ -1,15 +1,17 @@
 const mongoose             = require('mongoose');
-const nev                          = require('email-verification')(mongoose);
-const bcrypt                     = require('bcryptjs');
-const uniqueValidator    = require('mongoose-unique-validator'); //for unique validation
-const User                         = require('./user');
+const nev                  = require('email-verification')(mongoose);
+const bcrypt               = require('bcryptjs');
+const uniqueValidator      = require('mongoose-unique-validator'); //for unique validation
+const User                 = require('./user');
 
 const TempUserSchema = mongoose.Schema({
-    firstName    : { type: String, required: true },
-    lastName     : {type: String, required: true },
+    firstName        : { type: String, required: true },
+    lastName         : {type: String, required: true },
     email            : { type: String, index: true, unique: true, required: true },
     rank             : { type: String, required: true },
-    password    : { type: String, required: true },
+    flight           : { type: String, required: true},
+    team             : { type: String, required: true},
+    password         : { type: String, required: true },
     GENERATED_VERIFYING_URL : {type: String}
 }).plugin(uniqueValidator);
 
