@@ -6,7 +6,7 @@ const User                 = require('./user');
 
 const TempUserSchema = mongoose.Schema({
     firstName        : { type: String, required: true },
-    lastName         : {type: String, required: true },
+    lastName         : { type: String, required: true },
     email            : { type: String, index: true, unique: true, required: true },
     rank             : { type: String, required: true },
     flight           : { type: String, required: true},
