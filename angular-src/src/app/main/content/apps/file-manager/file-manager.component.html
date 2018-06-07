@@ -1,0 +1,79 @@
+<div id="file-manager" class="page-layout simple right-sidenav" fusePerfectScrollbar>
+
+    <mat-sidenav-container>
+
+        <!-- SIDENAV -->
+        <mat-sidenav class="sidenav left-sidenav" position="start" opened="false" mode="over"
+                     fuseMatSidenavHelper="file-manager-left-sidenav">
+            <fuse-file-manager-main-sidenav></fuse-file-manager-main-sidenav>
+        </mat-sidenav>
+        <!-- / SIDENAV -->
+
+        <!-- CENTER -->
+        <div class="center" fxFlex>
+
+            <!-- HEADER -->
+            <div class="header mat-accent-bg p-24" fxLayout="column" fxLayoutAlign="space-between start">
+
+                <!-- TOOLBAR -->
+                <div class="toolbar w-100-p" fxFlex fxLayout="row" fxLayoutAlign="space-between start">
+
+                    <div class="left-side" fxLayout="row">
+                        <button mat-icon-button class="sidenav-toggle"
+                                fuseMatSidenavToggler="file-manager-left-sidenav">
+                            <mat-icon>menu</mat-icon>
+                        </button>
+                    </div>
+
+                    <div class="right-side" fxLayout="row">
+                        <button mat-icon-button aria-label="Search" matTooltip="Search">
+                            <mat-icon>search</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                <!-- / TOOLBAR -->
+
+                <!-- BREADCRUMB -->
+                <div class="breadcrumb text-truncate h1 pl-72" fxLayout="row" fxLayoutAlign="start center"
+                     *fuseIfOnDom [@animate]="{value:'*',params:{x:'50px'}}">
+                    <div *ngFor="let path of pathArr; last  as isLast" fxLayout="row" fxLayoutAlign="start center">
+                        <span>{{path}}</span>
+                        <mat-icon *ngIf="!isLast" class="separator">chevron_right</mat-icon>
+                    </div>
+                </div>
+                <!-- / BREADCRUMB -->
+
+                <!-- ADD FILE BUTTON -->
+                <div class="file-uploader">
+                    <input hidden type="file" #fileInput/>
+                    <button mat-fab
+                            class="add-file-button mat-warn"
+                            (click)="fileInput.click()"
+                            aria-label="Add file"
+                            *fuseIfOnDom [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </div>
+                <!-- / ADD FILE BUTTON -->
+
+            </div>
+            <!-- / HEADER -->
+
+            <!-- CONTENT -->
+            <div class="content mat-white-bg" fusePerfectScrollbar>
+                <fuse-file-list></fuse-file-list>
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CENTER -->
+
+        <!-- SIDENAV -->
+        <mat-sidenav class="sidenav right-sidenav " position="end" opened="true" mode="side"
+                     fuseMatSidenavHelper="file-manager-right-sidenav" mat-is-locked-open="gt-md">
+            <fuse-file-manager-details-sidenav></fuse-file-manager-details-sidenav>
+        </mat-sidenav>
+        <!-- / SIDENAV -->
+
+    </mat-sidenav-container>
+</div>

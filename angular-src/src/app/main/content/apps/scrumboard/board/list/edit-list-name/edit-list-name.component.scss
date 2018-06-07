@@ -1,0 +1,9 @@
+:host {
+    .list-header-name {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+    }
+}

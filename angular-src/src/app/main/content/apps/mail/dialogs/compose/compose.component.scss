@@ -1,0 +1,56 @@
+@import "src/@fuse/scss/fuse";
+
+.mail-compose-dialog {
+
+    @include media-breakpoint('xs') {
+        width: 100%;
+    }
+
+    @include media-breakpoint-up('sm') {
+        width: 640px;
+    }
+
+    .mat-dialog-container {
+        padding: 0;
+
+        .compose-form {
+
+            .mat-form-field {
+                width: 100%;
+            }
+
+            .show-hide-extra-fields {
+                text-align: right;
+                cursor: pointer;
+                font-size: 12px;
+            }
+
+            .attachment-list {
+                font-size: 13px;
+                padding-top: 16px;
+
+                .attachment {
+                    background-color: rgba(0, 0, 0, 0.08);
+                    border: 1px solid rgba(0, 0, 0, 0.16);
+                    padding-left: 16px;
+                    margin-top: 8px;
+                    border-radius: 2px;
+
+                    .filename {
+                        font-weight: 500;
+                    }
+
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
+    }
+
+    .dialog-content-wrapper {
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+    }
+}

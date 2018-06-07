@@ -1,0 +1,72 @@
+<div id="highlight" class="page-layout simple fullwidth" fusePerfectScrollbar>
+
+    <!-- HEADER -->
+    <div class="header mat-accent-bg p-24 h-160" fxLayout="row" fxLayoutAlign="start center">
+        <div fxLayout="column" fxLayoutAlign="center start">
+            <div class="black-fg" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="secondary-text s-16">home</mat-icon>
+                <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
+                <span class="secondary-text">Components</span>
+            </div>
+            <div class="h2 mt-16">Highlight</div>
+        </div>
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content p-24">
+
+        <p>
+            <code>fuse-highlight</code> is a custom built Fuse component allows to show syntax highlighted codes.
+        </p>
+
+        <div class="my-48">
+            <h2>Sample</h2>
+            <p fxLayout="row" fxLayoutAlign="start start">
+
+                <fuse-highlight lang="html">
+                    <textarea #source>
+
+                        <div class="title">
+                            <span>Example Title</span>
+                        </div>
+
+                    </textarea>
+                </fuse-highlight>
+
+            </p>
+        </div>
+
+        <div class="my-48">
+            <h2>Usage</h2>
+            <p class="mat-grey-200-bg py-8">
+                <fuse-highlight lang="html">
+                    <textarea #source>
+
+&lt;fuse-highlight lang="html"&gt;
+    &lt;textarea #source&gt;
+        &lt;div class="title"&gt;
+            &lt;span&gt;Example Title&lt;/span&gt;
+        &lt;/div&gt;
+    &lt;/textarea&gt;
+&lt;/fuse-highlight&gt;
+
+                    </textarea>
+                </fuse-highlight>
+            </p>
+        </div>
+
+        <div class="my-48">
+            <h2>Inputs</h2>
+            <p class="py-8" fxLayout="row" fxLayoutAlign="start center">
+                <code class="mr-16">lang</code>
+                <span>
+                    Language of the code to be highlighted.
+                </span>
+            </p>
+        </div>
+
+    </div>
+
+</div>
+

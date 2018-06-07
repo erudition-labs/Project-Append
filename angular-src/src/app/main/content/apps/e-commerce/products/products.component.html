@@ -1,0 +1,150 @@
+<div id="products" class="page-layout carded fullwidth" fusePerfectScrollbar>
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg mat-accent-bg"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header white-fg"
+             fxLayout="column" fxLayoutAlign="center center"
+             fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo my-12 m-sm-0"
+                 fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" *fuseIfOnDom
+                          [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Products
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-input-wrapper mx-24 m-md-0"
+                 fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+                <label for="search" class="mr-8">
+                    <mat-icon class="secondary-text">search</mat-icon>
+                </label>
+                <mat-form-field floatLabel="never" fxFlex="1 0 auto">
+                    <input id="search" matInput #filter placeholder="Search">
+                </mat-form-field>
+            </div>
+            <!-- / SEARCH -->
+
+            <button mat-raised-button
+                    [routerLink]="'/apps/e-commerce/products/new'"
+                    class="add-product-button mat-white-bg my-12 mt-sm-0">
+                <span>ADD NEW PRODUCT</span>
+            </button>
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card mat-white-bg">
+
+            <mat-table class="products-table"
+                       #table [dataSource]="dataSource"
+                       matSort
+                       [@animateStagger]="{value:'50'}"
+                       fusePerfectScrollbar>
+
+                <!-- ID Column -->
+                <ng-container cdkColumnDef="id">
+                    <mat-header-cell *cdkHeaderCellDef mat-sort-header>ID</mat-header-cell>
+                    <mat-cell *cdkCellDef="let product">
+                        <p class="text-truncate">{{product.id}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Image Column -->
+                <ng-container cdkColumnDef="image">
+                    <mat-header-cell *cdkHeaderCellDef></mat-header-cell>
+                    <mat-cell *cdkCellDef="let product">
+                        <img class="product-image"
+                             *ngIf="product.images[0]" [alt]="product.name"
+                             [src]="product.images[0].url"/>
+                        <img *ngIf="!product.images[0]" [src]="'assets/images/ecommerce/product-image-placeholder.png'">
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container cdkColumnDef="name">
+                    <mat-header-cell *cdkHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                    <mat-cell *cdkCellDef="let product">
+                        <p class="text-truncate">{{product.name}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Category Column -->
+                <ng-container cdkColumnDef="category">
+                    <mat-header-cell *cdkHeaderCellDef fxHide mat-sort-header fxShow.gt-md>Category</mat-header-cell>
+                    <mat-cell *cdkCellDef="let product" fxHide fxShow.gt-md>
+                        <p class="category text-truncate">
+                            {{product.categories[0]}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Price Column -->
+                <ng-container cdkColumnDef="price">
+                    <mat-header-cell *cdkHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Price</mat-header-cell>
+                    <mat-cell *cdkCellDef="let product" fxHide fxShow.gt-xs>
+                        <p class="price text-truncate">
+                            {{product.priceTaxIncl | currency:'USD':'symbol'}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Quantity Column -->
+                <ng-container cdkColumnDef="quantity">
+                    <mat-header-cell *cdkHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Quantity</mat-header-cell>
+                    <mat-cell *cdkCellDef="let product" fxHide fxShow.gt-sm>
+
+                        <span class="quantity-indicator text-truncate"
+                              [ngClass]="{'mat-red-500-bg':product.quantity <= 5, 'mat-amber-500-bg':product.quantity > 5 && product.quantity <= 25,'mat-green-600-bg':product.quantity > 25}">
+                        </span>
+                        <span>
+                            {{product.quantity}}
+                        </span>
+
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Active Column -->
+                <ng-container cdkColumnDef="active">
+                    <mat-header-cell *cdkHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Active</mat-header-cell>
+                    <mat-cell *cdkCellDef="let product" fxHide fxShow.gt-xs>
+                        <mat-icon *ngIf="product.active" class="active-icon mat-green-600-bg s-16">check</mat-icon>
+                        <mat-icon *ngIf="!product.active" class="active-icon mat-red-500-bg s-16">close</mat-icon>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+
+                <mat-row *cdkRowDef="let product; columns: displayedColumns;"
+                         class="product"
+                         matRipple
+                         [routerLink]="'/apps/e-commerce/products/'+product.id+'/'+product.handle">
+                </mat-row>
+
+            </mat-table>
+
+            <mat-paginator #paginator
+                           [length]="dataSource.filteredData.length"
+                           [pageIndex]="0"
+                           [pageSize]="10"
+                           [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

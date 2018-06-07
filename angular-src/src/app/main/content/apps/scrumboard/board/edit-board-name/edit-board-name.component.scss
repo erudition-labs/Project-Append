@@ -1,0 +1,10 @@
+:host {
+    display: block !important;
+
+    .board-name {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        font-size: 15px;
+        font-weight: 500;
+    }
+}

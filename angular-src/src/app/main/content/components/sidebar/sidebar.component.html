@@ -1,0 +1,61 @@
+<div id="sidebar" class="page-layout simple fullwidth" fusePerfectScrollbar>
+
+    <!-- HEADER -->
+    <div class="header mat-accent-bg p-24 h-160" fxLayout="row" fxLayoutAlign="start center">
+        <div fxLayout="column" fxLayoutAlign="center start">
+            <div class="black-fg" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="secondary-text s-16">home</mat-icon>
+                <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
+                <span class="secondary-text">Components</span>
+            </div>
+            <div class="h2 mt-16">Sidebar</div>
+        </div>
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content p-24">
+
+        <p>
+            <code>fuse-sidebar</code> is a custom built Fuse component allows you to create a sidebar. Currently it's
+            only used as the main navigation sidebar but in the future it will allow multiple usages.
+        </p>
+
+        <div class="my-48">
+            <h2>Usage</h2>
+            <p class="py-8">
+                <fuse-highlight lang="html">
+                    <textarea #source>
+                        <fuse-sidebar [name]="'navbar'" [folded]="someSettings.isFolded" [lockedOpen]="'gt-md'"></fuse-sidebar>
+                    </textarea>
+                </fuse-highlight>
+            </p>
+        </div>
+
+        <div class="my-48">
+            <h2>[name]</h2>
+            <p class="py-8">
+                <b>name</b> attribute allows you to set a unique name to the sidebar. It's required for sidebar to
+                work correctly, as every sidebar being registered to the sidebar service.
+            </p>
+        </div>
+
+        <div class="my-48">
+            <h2>[folded]</h2>
+            <p class="py-8">
+                Controls the folded status of the sidebar.
+            </p>
+        </div>
+
+        <div class="my-48">
+            <h2>[lockedOpen]</h2>
+            <p class="py-8">
+                Accepts Angular Material breakpoint aliases ('gt-md', 'lg' etc.) and locks open the sidebar if the
+                alias matches the current breakpoint, similar to how Angular Material 1.x sidenav works.
+            </p>
+        </div>
+
+    </div>
+
+</div>
+

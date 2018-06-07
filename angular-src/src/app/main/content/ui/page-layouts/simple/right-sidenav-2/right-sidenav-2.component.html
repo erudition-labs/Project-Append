@@ -1,0 +1,46 @@
+<div class="page-layout simple right-sidenav single-scroll" fusePerfectScrollbar>
+
+    <mat-sidenav-container>
+
+        <!-- CENTER -->
+        <div class="center" fusePerfectScrollbar>
+
+            <!-- HEADER -->
+            <div class="header mat-accent-bg p-24" fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="sidenav-toggle"
+                        fuseMatSidenavToggler="simple-right-sidenav-2"
+                        fxHide.gt-md>
+                    <mat-icon>menu</mat-icon>
+                </button>
+
+                <div>
+                    <h2>Right sidenav with page scroll</h2>
+                </div>
+
+            </div>
+            <!-- / HEADER -->
+
+            <!-- CONTENT -->
+            <div class="content p-24 mat-white-bg">
+
+                <fuse-demo-content></fuse-demo-content>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CENTER -->
+
+        <!-- SIDENAV -->
+        <mat-sidenav class="sidenav  p-24" position="end" opened="true" mode="side"
+                     fuseMatSidenavHelper="simple-right-sidenav-2" mat-is-locked-open="gt-md">
+
+            <fuse-demo-sidenav></fuse-demo-sidenav>
+
+        </mat-sidenav>
+        <!-- / SIDENAV -->
+
+    </mat-sidenav-container>
+
+</div>

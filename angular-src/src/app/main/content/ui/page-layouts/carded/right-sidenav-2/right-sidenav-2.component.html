@@ -1,0 +1,70 @@
+<div class="page-layout carded right-sidenav single-scroll" fusePerfectScrollbar>
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg mat-accent-bg"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <mat-sidenav-container>
+
+        <!-- CENTER -->
+        <div class="center">
+
+            <!-- CONTENT HEADER -->
+            <div class="header white-fg p-24">
+                <h2>Right sidenav with page scroll</h2>
+            </div>
+            <!-- / CONTENT HEADER -->
+
+            <!-- CONTENT CARD -->
+            <div class="content-card mat-white-bg">
+
+                <!-- CONTENT TOOLBAR -->
+                <div class="toolbar px-24 py-8">
+                    <button mat-icon-button class="sidenav-toggle"
+                            fuseMatSidenavToggler="carded-right-sidenav"
+                            fxHide.gt-md>
+                        <mat-icon>menu</mat-icon>
+                    </button>
+
+                    <span>Content toolbar</span>
+                </div>
+                <!-- / CONTENT TOOLBAR -->
+
+                <!-- CONTENT -->
+                <div class="content p-24" fusePerfectScrollbar>
+
+                    <fuse-demo-content></fuse-demo-content>
+
+                </div>
+                <!-- / CONTENT -->
+
+            </div>
+            <!-- / CONTENT CARD -->
+
+        </div>
+        <!-- / CENTER -->
+
+        <!-- SIDENAV -->
+        <mat-sidenav class="sidenav" position="end" opened="true" mode="side"
+                     fuseMatSidenavHelper="carded-right-sidenav" mat-is-locked-open="gt-md">
+
+            <!-- SIDENAV HEADER -->
+            <div class="header p-24" ngClass="mat-accent-bg" ngClass.gt-md="white-fg">
+                <h2>Sidenav header</h2>
+            </div>
+            <!-- / SIDENAV HEADER -->
+
+            <!-- SIDENAV CONTENT -->
+            <div class="content p-24" fusePerfectScrollbar>
+
+                <fuse-demo-sidenav></fuse-demo-sidenav>
+
+            </div>
+            <!-- / SIDENAV CONTENT -->
+
+        </mat-sidenav>
+        <!-- / SIDENAV -->
+
+    </mat-sidenav-container>
+
+</div>

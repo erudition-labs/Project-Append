@@ -1,0 +1,72 @@
+<div id="register" fxLayout="column" fusePerfectScrollbar>
+
+    <div id="register-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
+
+        <div id="register-form" *fuseIfOnDom [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
+
+            <div class="logo">
+                <img src="assets/images/logos/fuse.svg">
+            </div>
+
+            <div class="title">CREATE AN ACCOUNT</div>
+
+            <form name="registerForm" [formGroup]="registerForm" novalidate>
+
+                <mat-form-field>
+                    <input matInput placeholder="Name" formControlName="name">
+                    <mat-error *ngIf="registerFormErrors.name.required">
+                        Name is required
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput placeholder="Email" formControlName="email">
+                    <mat-error *ngIf="registerFormErrors.email.required">
+                        Email is required
+                    </mat-error>
+                    <mat-error *ngIf="!registerFormErrors.email.required && registerFormErrors.email.email">
+                        Please enter a valid email address
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput type="password" placeholder="Password" formControlName="password">
+                    <mat-error *ngIf="registerFormErrors.password.required">
+                        Password is required
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput type="password" placeholder="Password (Confirm)" formControlName="passwordConfirm">
+                    <mat-error *ngIf="registerFormErrors.passwordConfirm.required">
+                        Password confirmation is required
+                    </mat-error>
+                    <mat-error *ngIf="registerFormErrors.passwordConfirm.passwordsNotMatch">
+                        Passwords must match
+                    </mat-error>
+                </mat-form-field>
+
+                <div class="terms" fxLayout="row" fxLayoutAlign="center center">
+                    <mat-checkbox name="terms" aria-label="I read and accept" required>
+                        <span>I read and accept</span>
+                    </mat-checkbox>
+                    <a href="#">terms and conditions</a>
+                </div>
+
+                <button mat-raised-button color="accent" class="submit-button" aria-label="CREATE AN ACCOUNT"
+                        [disabled]="registerForm.invalid">
+                    CREATE AN ACCOUNT
+                </button>
+
+            </form>
+
+            <div class="register" fxLayout="column" fxLayoutAlign="center center">
+                <span class="text">Already have an account?</span>
+                <a class="link" [routerLink]="'/pages/auth/login'">Login</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

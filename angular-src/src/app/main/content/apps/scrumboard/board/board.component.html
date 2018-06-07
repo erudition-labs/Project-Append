@@ -1,0 +1,88 @@
+<mat-sidenav-container>
+
+    <div id="board">
+
+        <!-- HEADER -->
+        <div class="header mat-accent-bg p-16 p-mat-24" [ngClass]="'mat-'+board.settings.color+'-bg'" fxLayout="column">
+
+            <div class="header-content" fxLayout="row wrap" fxLayoutAlign="space-between" fxFlex="1 0 auto">
+
+                <!-- BOARD SELECTION BUTTON -->
+                <div fxLayout="row" fxLayoutAlign="center center" fxFlexOrder="2" fxFlexOrder.gt-xs="1">
+                    <button mat-raised-button class="mat-accent header-boards-button"
+                            [ngClass]="'mat-'+board.settings.color+'-700-bg'"
+                            routerLink="/apps/scrumboard/boards"
+                            aria-label="boards button">
+                        <mat-icon class="mr-8">assessment</mat-icon>
+                        <span>BOARDS</span>
+                    </button>
+                </div>
+                <!-- / BOARD SELECTION BUTTON -->
+
+                <!-- BOARD NAME -->
+                <div class="header-board-name mb-8 mb-mat-0"
+                     fxLayout="row" fxLayoutAlign="center center"
+                     fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="center center"
+                     fxFlex="1 0 100%" fxFlex.gt-xs="1 0 auto"
+                     fxFlexOrder="1" fxFlexOrder.gt-xs="2">
+                    <mat-icon *ngIf="board.settings.subscribed" class="board-subscribe s-16">remove_red_eye</mat-icon>
+                    <fuse-scrumboard-edit-board-name
+                        [board]="board"
+                        (onNameChanged)="onBoardNameChanged($event)">
+                    </fuse-scrumboard-edit-board-name>
+                </div>
+                <!-- / BOARD NAME -->
+
+                <!-- TOOLBAR -->
+                <div class="toolbar" fxLayout="row" fxLayoutAlign="space-between center" fxFlexOrder="3">
+
+                    <!-- BOARD SETTINGS BUTTON -->
+                    <button mat-icon-button (click)="settingsSidenav.toggle()"
+                            aria-label="Settings" matTooltip="Settings">
+                        <mat-icon>settings</mat-icon>
+                    </button>
+                    <!-- / BOARD SETTINGS BUTTON -->
+                </div>
+                <!-- / TOOLBAR -->
+
+            </div>
+
+        </div>
+        <!-- / HEADER -->
+
+        <div fxFlex class="board-content-wrapper p-16 p-mat-24" [ngClass]="board.settings.color+'-100-bg'">
+
+            <!-- BOARD -->
+            <div class="board-content ngx-dnd-container p-16 p-mat-24" fxLayout="row"
+                 ngxDroppable="list" [model]="board.lists" (out)="onDrop($event)"
+                 *fuseIfOnDom [@animateStagger]="{value:'50'}">
+
+                <!-- LIST -->
+                <fuse-scrumboard-board-list
+                    class="scrumboard-board-list list-wrapper ngx-dnd-item"
+                    ngxDraggable
+                    *ngFor="let list of board.lists"
+                    [model]="list"
+                    [list]="list"
+                    [@animate]="{value:'*',params:{duration:'350ms',x:'100%'}}">
+                </fuse-scrumboard-board-list>
+                <!-- / LIST -->
+
+                <!-- NEW LIST BUTTON-->
+                <fuse-scrumboard-board-add-list class="new-list-wrapper" (onlistAdd)="onListAdd($event)"
+                                                ngxDraggable [moves]="false"
+                                                [@animate]="{value:'*',params:{duration:'350ms',x:'100%'}}">
+                </fuse-scrumboard-board-add-list>
+                <!-- / NEW LIST BUTTON-->
+
+            </div>
+            <!-- / BOARD -->
+        </div>
+        <!-- primary content -->
+    </div>
+
+    <mat-sidenav #settingsSidenav position="end">
+        <fuse-scrumboard-board-settings></fuse-scrumboard-board-settings>
+    </mat-sidenav>
+
+</mat-sidenav-container>

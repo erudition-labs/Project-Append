@@ -1,0 +1,60 @@
+<mat-table #table [dataSource]="dataSource" *fuseIfOnDom [@animateStagger]="{value:'50'}">
+
+    <!-- Type Column -->
+    <ng-container cdkColumnDef="icon">
+        <mat-header-cell *cdkHeaderCellDef fxFlex="64px"></mat-header-cell>
+        <mat-cell *cdkCellDef="let row" fxFlex="64px">
+            <mat-icon class="type-icon" [ngClass]="row.type"></mat-icon>
+        </mat-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container cdkColumnDef="name">
+        <mat-header-cell *cdkHeaderCellDef>Name</mat-header-cell>
+        <mat-cell *cdkCellDef="let row"> {{row.name}}</mat-cell>
+    </ng-container>
+
+    <!-- Type Column -->
+    <ng-container cdkColumnDef="type">
+        <mat-header-cell *cdkHeaderCellDef fxHide fxShow.gt-md>Type</mat-header-cell>
+        <mat-cell *cdkCellDef="let row" fxHide fxShow.gt-md> {{row.type}}</mat-cell>
+    </ng-container>
+
+    <!-- Owner Column -->
+    <ng-container cdkColumnDef="owner">
+        <mat-header-cell *cdkHeaderCellDef fxHide.xs>Owner</mat-header-cell>
+        <mat-cell *cdkCellDef="let row" fxHide.xs> {{row.owner}}</mat-cell>
+    </ng-container>
+
+    <!-- Size Column -->
+    <ng-container cdkColumnDef="size">
+        <mat-header-cell *cdkHeaderCellDef fxHide.xs>Size</mat-header-cell>
+        <mat-cell *cdkCellDef="let row" fxHide.xs>{{row.size === '' ? '-': row.size}}</mat-cell>
+    </ng-container>
+
+    <!-- Modified Column -->
+    <ng-container cdkColumnDef="modified">
+        <mat-header-cell *cdkHeaderCellDef fxHide fxShow.gt-md>Modified</mat-header-cell>
+        <mat-cell *cdkCellDef="let row" fxHide fxShow.gt-md>{{row.modified}}</mat-cell>
+    </ng-container>
+
+    <!-- Detail Button Column -->
+    <ng-container cdkColumnDef="detail-button">
+        <mat-header-cell *cdkHeaderCellDef fxFlex="48px" fxHide.gt-md></mat-header-cell>
+        <mat-cell *cdkCellDef="let row" fxFlex="48px" fxHide.gt-md>
+            <button mat-icon-button class="sidenav-toggle"
+                    fuseMatSidenavToggler="file-manager-right-sidenav">
+                <mat-icon class="secondary-text">info</mat-icon>
+            </button>
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *cdkRowDef="let row; columns: displayedColumns;"
+             (click)="onSelect(row)"
+             [ngClass]="{'mat-light-blue-50-bg':row == selected}"
+             matRipple
+             [@animate]="{value:'*',params:{y:'100%'}}"
+    >
+    </mat-row>
+</mat-table>

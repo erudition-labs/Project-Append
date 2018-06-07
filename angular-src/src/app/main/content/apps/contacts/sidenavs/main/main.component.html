@@ -1,0 +1,42 @@
+<div class="sidenav-content">
+
+    <div class="card mat-white-bg">
+        <!-- SIDENAV HEADER -->
+        <div class="header p-24" fxLayout="row" fxLayoutAlign="start center">
+
+            <!-- USER -->
+            <img [src]="user.avatar" class="avatar mr-16" [alt]="user.name"/>
+            <span class="h5">{{user.name}}</span>
+            <!-- / USER -->
+
+        </div>
+        <!-- / SIDENAV HEADER -->
+
+        <!-- SIDENAV CONTENT -->
+        <div class="content py-16" fusePerfectScrollbar>
+
+            <div class="nav">
+
+                <div class="nav-item" aria-label="inbox">
+                    <a class="nav-link" matRipple (click)="changeFilter('all')" [ngClass]="{'active':filterBy ==='all'}">
+                        <span class="title">All Contacts</span>
+                    </a>
+                </div>
+
+                <div class="nav-item" aria-label="frequently contacted" (click)="changeFilter('frequent')">
+                    <a class="nav-link" matRipple [ngClass]="{'active':filterBy ==='frequent'}">
+                        <div class="title">Freequently contacted</div>
+                    </a>
+                </div>
+
+                <div class="nav-item" aria-label="starred" (click)="changeFilter('starred')">
+                    <a class="nav-link" matRipple [ngClass]="{'active':filterBy ==='starred'}">
+                        <div class="title">Starred Contacts</div>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- / SIDENAV CONTENT -->

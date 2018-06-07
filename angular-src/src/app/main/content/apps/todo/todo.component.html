@@ -1,0 +1,102 @@
+<div id="todo" class="page-layout carded left-sidenav" fusePerfectScrollbar>
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg mat-accent-bg"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <mat-sidenav-container>
+
+        <!-- SIDENAV -->
+        <mat-sidenav class="sidenav" position="start" opened="true" mode="side"
+                     fuseMatSidenavHelper="carded-left-sidenav" mat-is-locked-open="gt-md">
+            <fuse-todo-main-sidenav></fuse-todo-main-sidenav>
+        </mat-sidenav>
+        <!-- / SIDENAV -->
+
+        <!-- CENTER -->
+        <div class="center">
+
+            <!-- CONTENT HEADER -->
+            <div class="header" fxLayout="row" fxLayoutAlign="start center">
+
+                <div class="search-wrapper mat-white-bg" fxFlex fxLayout="row" fxLayoutAlign="start center">
+
+                    <button mat-icon-button class="sidenav-toggle"
+                            fuseMatSidenavToggler="carded-left-sidenav"
+                            fxHide.gt-md aria-label="Toggle Sidenav">
+                        <mat-icon>menu</mat-icon>
+                    </button>
+
+                    <div class="search" flex fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>search</mat-icon>
+                        <input [formControl]="searchInput" placeholder="Search for a task" fxFlex>
+                    </div>
+                </div>
+
+            </div>
+            <!-- / CONTENT HEADER -->
+
+            <!-- CONTENT CARD -->
+            <div class="content-card mat-white-bg" [ngClass]="{'current-todo-selected':currentTodo}">
+
+                <!-- CONTENT TOOLBAR -->
+                <div class="toolbar px-24 py-8">
+
+                    <div class="todo-selection" fxFlex="row" fxLayoutAlign="start center">
+                        <mat-checkbox (click)="toggleSelectAll()" [checked]="hasSelectedTodos"
+                                      [indeterminate]="isIndeterminate"></mat-checkbox>
+
+                        <button mat-icon-button [matMenuTriggerFor]="selectMenu">
+                            <mat-icon>arrow_drop_down</mat-icon>
+                        </button>
+                        <mat-menu #selectMenu="matMenu">
+                            <button mat-menu-item (click)="selectTodos()">All</button>
+                            <button mat-menu-item (click)="deselectTodos()">None</button>
+                            <button mat-menu-item (click)="selectTodos('read', true)">Read</button>
+                            <button mat-menu-item (click)="selectTodos('read', false)">Unread</button>
+                            <button mat-menu-item (click)="selectTodos('starred', true)">Starred</button>
+                            <button mat-menu-item (click)="selectTodos('starred', false)">Unstarred</button>
+                            <button mat-menu-item (click)="selectTodos('important', true)">Important</button>
+                            <button mat-menu-item (click)="selectTodos('important', false)">Unimportant</button>
+                        </mat-menu>
+
+                        <div class="toolbar-separator" *ngIf="hasSelectedTodos"></div>
+
+                        <button mat-icon-button [matMenuTriggerFor]="labelMenu" *ngIf="hasSelectedTodos">
+                            <mat-icon>label</mat-icon>
+                        </button>
+                        <mat-menu #labelMenu="matMenu">
+                            <button mat-menu-item *ngFor="let tag of tags" (click)="toggleTagOnSelectedTodos(tag.id)">
+                                {{tag.title}}
+                            </button>
+                        </mat-menu>
+                    </div>
+
+                    <div *ngIf="currentTodo" fxHide.gt-lg>
+                        <button mat-icon-button (click)="deSelectCurrentTodo()">
+                            <mat-icon>arrow_back</mat-icon>
+                        </button>
+                    </div>
+
+                </div>
+                <!-- / CONTENT TOOLBAR -->
+
+                <!-- CONTENT -->
+                <div class="content" fxFlexAlign="row">
+
+                    <fuse-todo-list fusePerfectScrollbar fxFlex></fuse-todo-list>
+
+                    <fuse-todo-details fusePerfectScrollbar fxFlex></fuse-todo-details>
+
+                </div>
+                <!-- / CONTENT -->
+
+            </div>
+            <!-- / CONTENT CARD -->
+
+        </div>
+        <!-- / CENTER -->
+
+    </mat-sidenav-container>
+
+</div>

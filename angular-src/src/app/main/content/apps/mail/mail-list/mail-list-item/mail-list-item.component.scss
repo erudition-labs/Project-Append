@@ -1,0 +1,129 @@
+@import 'src/@fuse/scss/fuse';
+
+:host {
+    flex-shrink: 0;
+    position: relative;
+    padding: 16px 24px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+
+    &.unread {
+        background: #FFFFFF;
+
+        .info {
+
+            .name {
+                font-weight: 700;
+            }
+
+            .row-2 {
+
+                .subject {
+                    font-weight: 700;
+                }
+
+                .labels {
+                    background: #FFFFFF;
+                }
+            }
+        }
+    }
+
+    &.selected {
+        background: #FFF8E1;
+
+        .info {
+
+            .row-2 {
+
+                .labels {
+                    background: #FFF8E1;
+                }
+            }
+        }
+    }
+
+    &.current-mail {
+        background: #E3F2FD;
+
+        .info {
+
+            .row-2 {
+
+                .labels {
+                    background: #E3F2FD;
+                }
+            }
+        }
+    }
+
+    .info {
+        overflow: hidden;
+        width: 0;
+        margin-left: 16px;
+        position: relative;
+
+        .row-1 {
+            margin-bottom: 8px;
+
+            .name {
+                font-size: 15px;
+                font-weight: 500;
+
+                .avatar {
+                    min-width: 32px;
+                    width: 32px;
+                    height: 32px;
+                    line-height: 32px;
+                    background-color: mat-color($accent);
+                }
+            }
+
+            .actions {
+                margin-left: 4px;
+
+                .mat-icon-button {
+                    width: 32px;
+                    height: 32px;
+                    line-height: 1;
+                }
+            }
+        }
+
+        .row-2 {
+
+            .subject,
+            .message {
+                width: 100%;
+            }
+
+            .message {
+                position: relative;
+                color: rgba(0, 0, 0, 0.54);
+            }
+
+            .labels {
+                position: absolute;
+                background: #FFFFFF;
+                bottom: 0;
+                right: 0;
+                padding-left: 6px;
+
+                .label {
+                    font-size: 11px;
+                    border-radius: 2px;
+                    margin: 0 4px 0 0;
+                    padding: 3px 8px;
+                    background-color: rgba(0, 0, 0, 0.08);
+
+                    .label-color {
+                        width: 8px;
+                        height: 8px;
+                        margin-right: 8px;
+                        border-radius: 50%;
+                    }
+                }
+            }
+        }
+    }
+}

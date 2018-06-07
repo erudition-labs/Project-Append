@@ -1,0 +1,32 @@
+<div id="search" class="page-layout simple tabbed" fusePerfectScrollbar>
+
+    <!-- HEADER -->
+    <div class="header mat-accent-bg p-24" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+         fxLayoutAlign.gt-sm="space-between end">
+
+        <mat-form-field class="w-100-p">
+            <input matInput name="search" placeholder="Search...">
+        </mat-form-field>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <mat-tab-group dynamicHeight="true">
+
+            <mat-tab label="Classic">
+                <fuse-search-classic></fuse-search-classic>
+            </mat-tab>
+
+            <mat-tab label="Table">
+                <fuse-search-table></fuse-search-table>
+            </mat-tab>
+
+        </mat-tab-group>
+
+    </div>
+    <!-- / CONTENT -->
+
+</div>

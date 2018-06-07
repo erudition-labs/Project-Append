@@ -1,0 +1,50 @@
+<div id="typography" class="page-layout simple tabbed" fxLayout="column" fusePerfectScrollbar>
+
+    <!-- HEADER -->
+    <div class="header mat-accent-bg p-24 h-160" fxLayout="row" fxLayoutAlign="start center">
+        <div fxLayout="column" fxLayoutAlign="center start">
+            <div class="black-fg" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="secondary-text s-16">home</mat-icon>
+                <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
+                <span class="secondary-text">User Interface</span>
+            </div>
+            <div class="h1 mt-16">Typography</div>
+        </div>
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <mat-tab-group dynamicHeight="true">
+
+            <mat-tab label="Headings">
+
+                <fuse-typography-headings></fuse-typography-headings>
+
+            </mat-tab>
+
+            <mat-tab label="Inline Text Elements">
+
+                <fuse-typography-inline-text-elements></fuse-typography-inline-text-elements>
+
+            </mat-tab>
+
+            <mat-tab label="Blockquotes & Lists">
+
+                <fuse-typography-blockquotes-lists></fuse-typography-blockquotes-lists>
+
+            </mat-tab>
+
+            <mat-tab label="Helpers">
+
+                <fuse-typography-helpers></fuse-typography-helpers>
+
+            </mat-tab>
+
+        </mat-tab-group>
+
+    </div>
+    <!-- / CONTENT -->
+
+</div>

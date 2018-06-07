@@ -1,0 +1,283 @@
+<div id="navigation" class="page-layout simple fullwidth" fusePerfectScrollbar>
+
+    <!-- HEADER -->
+    <div class="header mat-accent-bg p-24 h-160" fxLayout="row" fxLayoutAlign="start center">
+        <div fxLayout="column" fxLayoutAlign="center start">
+            <div class="black-fg" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="secondary-text s-16">home</mat-icon>
+                <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
+                <span class="secondary-text">Components</span>
+            </div>
+            <div class="h2 mt-16">Navigation</div>
+        </div>
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content p-24">
+
+        <p>
+            <code>fuse-navigation</code> is a custom built Fuse component allows you to create a multi-level collapsable
+            navigation. It has built-in support for translations using <b>ngx-translate</b> module.
+        </p>
+
+        <div class="my-48">
+            <h2>Usage</h2>
+            <p class="py-8">
+                <fuse-highlight lang="html">
+                    <textarea #source>
+                        <fuse-navigation [navigation]="navigation" [layout]="'vertical'"></fuse-navigation>
+                    </textarea>
+                </fuse-highlight>
+            </p>
+        </div>
+
+        <div class="my-48">
+            <h2>[navigation]</h2>
+            <p class="py-8">
+                <code>&lt;fuse-navigation&gt;&lt;/fuse-navigation&gt;</code> uses a json file to populate
+                the entire navigation. It supports three different navigation items; <b>Group</b>,
+                <b>Collapsable</b> and <b>Item</b>. These items can be mixed and matched to create unique and complex
+                navigation layouts.
+            </p>
+            <p class="py-8">
+                Navigation data can be found in <code>src/app/navigation</code> folder along with its translation
+                files. Navigation data and its translation files are set in <b>app.component.ts</b> file. Check that
+                file for more detailed usage example.
+            </p>
+        </div>
+
+        <div class="my-48">
+            <h2>[layout]</h2>
+            <p class="py-8">
+                There are two different layout options for the component; <code>vertical</code> and
+                <code>horizontal</code>. You can set the layout using the <code>[layout]</code> input.
+            </p>
+        </div>
+
+        <div class="my-48">
+            <h2>Updating the navigation</h2>
+            <p class="py-8">
+                Direct modifications on the navigation data will be reflected to the component. So you can modify the
+                json data, or even create it from scratch using your backend and the changes will reflected to the
+                component immediately.
+            </p>
+        </div>
+
+        <div class="my-48">
+            <h3>Grouping</h3>
+            <p class="py-8">
+                <fuse-highlight lang="json">
+                    <textarea #source>
+                        {
+                            'title' : 'COMPONENTS',
+                            'translate': 'NAV.COMPONENTS',
+                            'type' : 'group',
+                            'children' : [
+                                {
+                                    'title': 'ngx-datatable',
+                                    'type' : 'item',
+                                    'url' : '/components/datatables/ngx-datatable'
+                                }
+                            ]
+                        },
+                    </textarea>
+                </fuse-highlight>
+            </p>
+        </div>
+
+        <div class="my-48">
+            <h3>Collapsable</h3>
+            <p class="py-8">
+                <fuse-highlight lang="json">
+                    <textarea #source>
+                        {
+                            'title' : 'Datatables',
+                            'translate': 'NAV.DATATABLES',
+                            'type' : 'collapse',
+                            'icon' : 'border_all',
+                            'children' : [
+                                {
+                                    'title': 'ngx-datatable',
+                                    'type' : 'nav-item',
+                                    'url' : '/components/datatables/ngx-datatable'
+                                }
+                            ]
+                        },
+                    </textarea>
+                </fuse-highlight>
+            </p>
+        </div>
+
+        <div class="my-48">
+            <h3>Item</h3>
+            <p class="py-8">
+                <fuse-highlight lang="json">
+                    <textarea #source>
+                        {
+                            'title' : 'Countdown',
+                            'translate': 'NAV.COUNTDOWN',
+                            'type' : 'item',
+                            'icon' : 'settings_input_component',
+                            'url' : '/components/countdown'
+                        },
+                    </textarea>
+                </fuse-highlight>
+            </p>
+        </div>
+
+        <div class="my-48">
+
+            <h2>Vertical Navigation Default Folded Status</h2>
+
+            <p>
+                It's possible to change the default folded status of the navigation.
+            </p>
+            <p>
+                Edit the <code>main.component.html</code> file and look for the <code>[folded]</code> attribute on
+                <code>fuse-sidebar</code> components.
+            </p>
+            <p>
+                Assigning <code>true</code> to that attribute will make the vertical navigation folded by default.
+            </p>
+
+        </div>
+
+        <div class="my-48">
+
+            <h2>Examples</h2>
+
+            <h4>Show / Hide certain navigation items</h4>
+
+            <p class="py-8">
+                <fuse-highlight lang="typescript">
+                    <textarea #source>
+                        hidden = false;
+
+                        showHideCalendarMenuItem()
+                        {
+                            // Get the calendar item from the navigation
+                            const calendarNavItem = this.navigation[0].children[1];
+
+                            // Toggle the visibility
+                            this.hidden = !this.hidden;
+                            calendarNavItem.hidden = this.hidden;
+                        }
+                    </textarea>
+                </fuse-highlight>
+            </p>
+
+            <div class="mt-24 mb-64">
+
+                <button mat-button mat-raised-button color="accent" (click)="showHideCalendarMenuItem()">
+                    Show / Hide calendar menu item
+                </button>
+
+            </div>
+
+            <h4>Update navigation item on-the-fly</h4>
+
+            <p class="py-8">
+                <fuse-highlight lang="typescript">
+                    <textarea #source>
+                        updateMailBadge()
+                        {
+                            // Get the mail nav item
+                            const mailNavItem = this.navigation[0].children[4];
+
+                            // Update the badge title
+                            mailNavItem.badge.title = 35;
+                        }
+                    </textarea>
+                </fuse-highlight>
+            </p>
+
+            <div class="mt-24 mb-64">
+
+                <button mat-button mat-raised-button color="accent" (click)="updateMailBadge()">
+                    Update Mail app badge
+                </button>
+
+            </div>
+
+            <h4>Add a subitem to the Calendar nav item</h4>
+
+            <p class="py-8">
+                <fuse-highlight lang="typescript">
+                    <textarea #source>
+                        addSubitemToCalendar()
+                        {
+                            // Prepare the new nav item
+                            const newNavItem = {
+                                id : 'sub-item',
+                                title: 'Sub Item',
+                                type : 'item',
+                                url : '/apps/calendar'
+                            };
+
+                            // Get the calendar item from the navigation
+                            const calendarNavItem = this.navigation[0].children[1];
+
+                            // Make the calendar navigation item collapsable
+                            calendarNavItem.type = 'collapse';
+
+                            // Create an empty children array
+                            calendarNavItem.children = [];
+
+                            // Push the new children
+                            calendarNavItem.children.push(newNavItem);
+                        }
+                    </textarea>
+                </fuse-highlight>
+            </p>
+
+            <div class="mt-24 mb-64">
+
+                <button mat-button mat-raised-button color="accent" (click)="addSubitemToCalendar()">
+                    Add a subitem to the Calendar nav item
+                </button>
+
+            </div>
+
+            <h4>Add a nav item with custom function</h4>
+
+            <p class="py-8">
+                <fuse-highlight lang="typescript">
+                    <textarea #source>
+                        addNavItemWithCustomFunction()
+                        {
+                            // Prepare the new nav item
+                            const newNavItem = {
+                                id : 'custom-item',
+                                title : 'Custom Item',
+                                type : 'item',
+                                function: () => {
+                                    alert('Custom function!');
+                                }
+                            };
+
+                            // Get the applications nav item
+                            const applicationsNavItem = this.navigation[0];
+
+                            // Add the new nav item at the beginning of the applications
+                            applicationsNavItem.children.unshift(newNavItem);
+                        }
+                    </textarea>
+                </fuse-highlight>
+            </p>
+
+            <div class="mt-24">
+
+                <button mat-button mat-raised-button color="accent" (click)="addNavItemWithCustomFunction()">
+                    Add a nav item with custom function
+                </button>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+

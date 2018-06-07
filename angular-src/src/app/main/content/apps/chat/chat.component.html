@@ -1,0 +1,43 @@
+<div id="chat" class="page-layout carded fullwidth">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg mat-accent-bg"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-sidenav-container>
+
+                <!-- LEFT SIDENAV -->
+                <mat-sidenav class="sidenav" position="start" opened="true" mode="side"
+                             fuseMatSidenavHelper="chat-left-sidenav" mat-is-locked-open="gt-md">
+                    <fuse-chat-left-sidenav></fuse-chat-left-sidenav>
+                </mat-sidenav>
+                <!-- / LEFT SIDENAV -->
+
+                <!-- CONTENT -->
+                <fuse-chat-start *ngIf="!selectedChat"></fuse-chat-start>
+
+                <fuse-chat-view *ngIf="selectedChat"></fuse-chat-view>
+                <!-- / CONTENT -->
+
+                <!-- RIGHT SIDENAV -->
+                <mat-sidenav class="sidenav" position="end" opened="false" mode="over"
+                             fuseMatSidenavHelper="chat-right-sidenav">
+                    <fuse-chat-right-sidenav></fuse-chat-right-sidenav>
+                </mat-sidenav>
+                <!-- / RIGHT SIDENAV -->
+
+            </mat-sidenav-container>
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

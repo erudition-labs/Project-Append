@@ -1,0 +1,147 @@
+@import "src/@fuse/scss/fuse";
+
+.scrumboard-board-card {
+    position: relative;
+    display: block;
+    width: 100%;
+    margin: 16px 0 !important;
+    background-color: white !important;
+    color: #000;
+    border-radius: 2px;
+    transition: box-shadow 150ms ease;
+    cursor: pointer;
+
+    .list-card-sort-handle {
+        display: none;
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 4px;
+        background: rgba(255, 255, 255, 0.8);
+    }
+
+    .list-card-cover {
+    }
+
+    .list-card-details {
+        padding: 16px 16px 0 16px;
+
+        .list-card-labels {
+            margin-bottom: 6px;
+
+            .list-card-label {
+                width: 32px;
+                height: 6px;
+                border-radius: 6px;
+                margin: 0 6px 6px 0;
+            }
+        }
+
+        .list-card-name {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .list-card-badges {
+            margin-bottom: 12px;
+
+            .badge {
+                margin-right: 8px;
+                padding: 4px 8px;
+                border-radius: 2px;
+                background-color: rgba(0, 0, 0, 0.4);
+                color: #FFFFFF;
+
+                mat-icon {
+                    margin-right: 4px;
+                }
+
+                &.due-date {
+                    background-color: mat-color(mat-palette($mat-green));;
+
+                    &.overdue {
+                        background-color: mat-color(mat-palette($mat-red));
+                    }
+                }
+
+                &.check-items {
+
+                    &.completed {
+                        background-color: mat-color(mat-palette($mat-green));
+                    }
+                }
+            }
+        }
+
+        .list-card-members {
+            margin-bottom: 12px;
+
+            .list-card-member {
+                margin-right: 8px;
+
+                .list-card-member-avatar {
+                    border-radius: 50%;
+                    width: 32px;
+                    height: 32px;
+                }
+            }
+        }
+    }
+
+    .list-card-footer {
+        border-top: 1px solid rgba(0, 0, 0, 0.12);
+        padding: 0 16px;
+
+        .list-card-footer-item {
+            height: 48px;
+            margin-right: 12px;
+            color: rgba(0, 0, 0, 0.66);
+
+            .value {
+                padding-left: 8px;
+            }
+
+            &:last-of-type {
+                margin-right: 0;
+            }
+        }
+    }
+
+    &:not(.has-handle):not(.move-disabled),
+    &.has-handle [ngxdraghandle],
+    &.has-handle [ngxDragHandle] {
+        //cursor: move;
+    }
+
+    .ngx-dnd-content {
+        user-select: none;
+    }
+
+    &.gu-mirror {
+        position: fixed !important;
+        margin: 0 !important;
+        z-index: 9999 !important;
+        opacity: 0.8;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+        filter: alpha(opacity=80);
+        @include mat-elevation(7);
+    }
+
+    &.gu-hide {
+        display: none !important;
+    }
+
+    &.gu-unselectable {
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        user-select: none !important;
+    }
+
+    &.gu-transit {
+        opacity: 0.2;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+        filter: alpha(opacity=20);
+    }
+}

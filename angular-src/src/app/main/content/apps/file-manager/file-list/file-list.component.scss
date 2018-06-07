@@ -1,0 +1,25 @@
+@import "src/@fuse/scss/fuse";
+
+:host {
+    width: 100%;
+
+    .mat-table {
+        background: transparent;
+        box-shadow: none;
+
+        .mat-row {
+            position: relative;
+            cursor: pointer;
+            min-height: 64px;
+
+            .mat-cell {
+
+                &.mat-column-icon {
+                }
+
+                &.mat-column-detail-button {
+                }
+            }
+        }
+    }
+}

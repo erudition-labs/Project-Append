@@ -1,0 +1,28 @@
+:host {
+
+    .content {
+
+        .color-tabs {
+
+            .mat-tab-body {
+
+            }
+
+        }
+
+        .color-tabs-content {
+
+            .color {
+
+                .fg-box {
+                    background-color: white;
+                }
+            }
+
+            .colored-bg {
+                transition: background-color 400ms ease;
+            }
+        }
+    }
+}
+
