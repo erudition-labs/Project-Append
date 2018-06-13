@@ -1,6 +1,6 @@
 {
   "name": "JROTC",
-  "version": "1.0",
+  "version": "1.0.0",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -73,7 +73,7 @@
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
-    "@angular/cli": "6.0.0",
+    "@angular/cli": "6.0.8",
     "@angular/compiler-cli": "6.0.0",
     "@angular/language-service": "6.0.0",
     "@compodoc/compodoc": "1.0.1",
