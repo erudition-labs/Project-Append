@@ -15,26 +15,26 @@ const router									= express.Router();
 router.post('/register', [
     // validate and sanitize any fields from the client
     // Note that this does in place field mutation
-    body('email').exists().isEmail().withMessage('Valid Email Required').normalizeEmail(),
-    body('firstName').exists().withMessage('First Name Required').trim().escape(),
-    body('lastName').exists().withMessage('Last Name Required').trim().escape(),
-    body('rank').exists().withMessage('Rank Required').trim().escape(), //for now just sanitize rank, eventually we can check if it is a valid rank
-    body('flight').exists().withMessage('Flight Required').trim().escape(),
-    body('team').exists().withMessage('Team Required').trim().escape(),
-    body('password').exists().withMessage('Password Required').trim().escape()
+	body('email').exists().isEmail().withMessage('Valid Email Required').normalizeEmail(),
+	body('firstName').exists().withMessage('First Name Required').trim().escape(),
+	body('lastName').exists().withMessage('Last Name Required').trim().escape(),
+	body('rank').exists().withMessage('Rank Required').trim().escape(), //for now just sanitize rank, eventually we can check if it is a valid rank
+	body('flight').exists().withMessage('Flight Required').trim().escape(),
+	body('team').exists().withMessage('Team Required').trim().escape(),
+	body('password').exists().withMessage('Password Required').trim().escape()
 ], (request, response, next) => {
     // check for any errors from above
-    const errors = validationResult(request);
-    if (!errors.isEmpty()) { // If there are any, respond with them
-        return response.status(422).json({ errors: errors.array() });
-    }
+	const errors = validationResult(request);
+	if (!errors.isEmpty()) { // If there are any, respond with them
+		return response.status(422).json({ errors: errors.array() });
+	}
     // otherwise create a user object based off of our schema
-    let newUser = new User({
-        firstName    : request.body.firstName,
-        lastName     : request.body.lastName,
-        email            : request.body.email,
-        rank              : request.body.rank,
-        password    : request.body.password
+	let newUser = new User({
+		firstName	: request.body.firstName,
+		lastName	: request.body.lastName,
+		email		: request.body.email,
+		rank		: request.body.rank,
+		password	: request.body.password
     });
 
     TempUser.NEV.createTempUser(newUser, function(error, existingPersistentUser, newTempUser) {
