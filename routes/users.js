@@ -35,162 +35,163 @@ router.post('/register', [
 		email		: request.body.email,
 		rank		: request.body.rank,
 		password	: request.body.password
-    });
+	});
 
-    TempUser.NEV.createTempUser(newUser, function(error, existingPersistentUser, newTempUser) {
+	TempUser.NEV.createTempUser(newUser, function(error, existingPersistentUser, newTempUser) {
         // some sort of error
-        if (error) {
-            response.status(500).json({ success: false, msg:'Something went wrong'});
-        }
+		if (error) {
+			response.status(500).json({ success: false, msg:'Something went wrong'});
+		}
 
         // user already exists in persistent collection...
-        if (existingPersistentUser) {
+		if (existingPersistentUser) {
             // handle user's existence... violently.
-            response.status(418).json({ success: false, msg:'User already exists'}); //418 is i am a teapot
-        }
+			response.status(418).json({ success: false, msg:'User already exists'}); //418 is i am a teapot
+		}
 
         // a new user
-        if (newTempUser) {
-            let URL = newTempUser[TempUser.NEV.options.URLFieldName];
+		if (newTempUser) {
+			let URL = newTempUser[TempUser.NEV.options.URLFieldName];
 
-            TempUser.NEV.sendVerificationEmail(newUser.email, URL, function(err, info) {
-                if (err) {
-                    console.log(err);
-                    return response.status(404).send('ERROR: sending verification email FAILED');
-                }
-                response.status(202).json({
-                    msg: 'An email has been sent to you. Please check it to verify your account.',
-                    info: info
-                });
-
-            });
-        } else { // user already exists in temporary collection...
-            console.log("user already exists");
-            response.status(401).json({ success: false, msg:'Please Verify Your Email'});
-        }
-    });
+			TempUser.NEV.sendVerificationEmail(newUser.email, URL, function(err, info) {
+				if (err) {
+					console.log(err);
+					return response.status(404).send('ERROR: sending verification email FAILED');
+				}
+				response.status(202).json({
+					msg: 'An email has been sent to you. Please check it to verify your account.',
+					info: info
+				});
+			});
+		} else { // user already exists in temporary collection...
+			console.log("user already exists");
+			response.status(401).json({ success: false, msg:'Please Verify Your Email'});
+		}
+	});
 });
 
 // resend email verification
 router.post('/verify-resend', [
-    body('email').exists().withMessage('Email Required')
-    .isEmail().withMessage('Valid Email Required').normalizeEmail()
+	body('email').exists().withMessage('Email Required')
+		.isEmail().withMessage('Valid Email Required').normalizeEmail()
 ], (request, response, next) => {
-    const errors = validationResult(request);
-    if (!errors.isEmpty()) {
-        return response.status(422).json({ errors: errors.array() });
-    }
+	const errors = validationResult(request);
+	if (!errors.isEmpty()) {
+		return response.status(422).json({ errors: errors.array() });
+	}
 
-    TempUser.NEV.resendVerificationEmail(request.body.email, function(error, userFound) {
-        if (error) {
-            return response.status(404).send('ERROR: resending verification email FAILED');
-        }
+	TempUser.NEV.resendVerificationEmail(request.body.email, function(error, userFound) {
+		if (error) {
+			return response.status(404).send('ERROR: resending verification email FAILED');
+		}
 
-        if (userFound) { // the temp user was found
-            response.status(200).json({ success: true, msg: 'An email has been sent to you. Please check it to verify your account.'});
-        } else {
+		if (userFound) { // the temp user was found
+			response.status(200).json({ success: true, msg: 'An email has been sent to you. Please check it to verify your account.'});
+		} else {
             // the temp user was not found, meaning the token expired
-            response.status(404).json({ success: false, msg: 'Your verification code has expired. Please sign up again.'});
-        }
-    });
+			response.status(404).json({ success: false, msg: 'Your verification code has expired. Please sign up again.'});
+		}
+	});
 });
 
 
 router.get('/email-verification/:URL', (request, response, next) => {
-    TempUser.NEV.confirmTempUser(request.params.URL, function(error, user) { // Nev takes care of url being empty
-        if(user) {
-            response.status(201).json({ success: true, msg: "Account Confirmed" });
-        } else {
-            response.status(404).json({ success:false, msg: "Confirmation Failed" });
-        }
-    });
+	TempUser.NEV.confirmTempUser(request.params.URL, function(error, user) { // Nev takes care of url being empty
+		if(user) {
+			response.status(201).json({ success: true, msg: "Account Confirmed" });
+		} else {
+			response.status(404).json({ success:false, msg: "Confirmation Failed" });
+		}
+	});
 });
 
 
 // Authenticate user and return a token if valid
 router.post('/authenticate', [
     //validate and sanitize
-    body('email').isEmail().withMessage('Valid Email Required').normalizeEmail(),
-    body('password').exists().withMessage('Password Required').trim().escape()
+	body('email').isEmail().withMessage('Valid Email Required').normalizeEmail(),
+	body('password').exists().withMessage('Password Required').trim().escape()
 ], (request, response, next) => {
     // Check for validation/sanitization errors
-    const errors = validationResult(request);
-    if (!errors.isEmpty()) { // If there are any, respond with them
-        return response.status(422).json({ errors: errors.array() });
-    }
+	const errors = validationResult(request);
+	if (!errors.isEmpty()) { // If there are any, respond with them
+		return response.status(422).json({ errors: errors.array() });
+	
 
     //otherwise continue
-    const email = request.body.email;
-    const password = request.body.password;
+	const email = request.body.email;
+	const password = request.body.password;
 
-    User.findUserByEmail(email, (error, user) => {
-        if(error) throw error;
-        if(!user) {
-            return response.status(404).json({success: false, msg: 'User not found :('});
-        } // when user is not in db
+	User.findUserByEmail(email, (error, user) => {
+		if(error) throw error;
+		if(!user) {
+			return response.status(404).json({success: false, msg: 'User not found :('});
+		} // when user is not in db
 
         // otherwise assume it is, check the rest of the stuff
         // Note that we are comparing hashed passwords
-        User.comparePassword(password, user.password, (error, isMatch) => {
-            if(error) throw error;
-            if(isMatch) {
+		User.comparePassword(password, user.password, (error, isMatch) => {
+			if(error) throw error;
+				
+			if(isMatch) {
                 //create the token
-                const token = jwt.sign({data:user}, config.secret, {
-                    expiresIn: 3600 //1 day
-                });
+				const token = jwt.sign({data:user}, config.secret, {
+					expiresIn: 3600 //1 day
+				});
 
-                response.json({
-                    success : true,
-                    token   : 'JWT '+token,
-                    user    : {               //send back data for a profile or something
-                        id          : user._id,
-                        name   : user.username,
-                        email   : user.email,
-                        access  : user.access
-                    }
-                });
-            } else {
+			response.json({
+				success	: true,
+				token	: 'JWT '+token,
+				user	: {               //send back data for a profile or something
+					id		: user._id,
+					name	: user.username,
+					email	: user.email,
+					access	: user.access
+				}
+			});
+			} else {
                 //no match
-                return response.json({success:false, msg: 'Incorrect Password'});
-            }
-        });
-    });
+				return response.json({success:false, msg: 'Incorrect Password'});
+			}
+		});
+	});
 });
 
 // return array of all users in users collection
 router.get('/users', (request, response, next) => {
-    User.findAllUsers((error, users) => {
-        if(error) {
-            response.status(500).json({success: false, msg: 'Failed to get users'});
-        } else {
-            var userArray = [];
+	User.findAllUsers((error, users) => {
+		if(error) {
+			response.status(500).json({success: false, msg: 'Failed to get users'});
+		} else {
+			let userArray = [];
 
-            users.forEach(function(user) {
-                userArray.push(user);
-            });
-            if(!userArray.length) { // array is empty meaning there are no users in the db
-                response.status(404).json({success: false, msg: 'No Users'})
-            }
-            response.status(200).send(userArray); //otherwise there are users
-        }
-    });
+			users.forEach(function(user) {
+				userArray.push(user);
+			});
+            
+			if(!userArray.length) { // array is empty meaning there are no users in the db
+				response.status(404).json({success: false, msg: 'No Users'})
+			}
+			response.status(200).send(userArray); //otherwise there are users
+		}
+	});
 });
 
 //delete user by id
 router.delete('/:id', (request, response, next) => {
-    User.findAndDeleteUserById(request.params.id, (error, user) => {
-        if(error) {
-            response.status(500).json({success: false, msg: error});
-        } else {
-            response.status(200).json({success: true, msg: 'Removed User'});
-        }
-    });
+	User.findAndDeleteUserById(request.params.id, (error, user) => {
+		if(error) {
+			response.status(500).json({success: false, msg: error});
+		} else {
+			response.status(200).json({success: true, msg: 'Removed User'});
+		}
+	});
 });
 
 //profile
 // Note that passport will set a user object with  passport.authenticate() if the token is calid
 router.get('/profile', passport.authenticate('jwt', {session: false}), (request, response, next) => {
-    response.json({user:request.user});
+	response.json({user:request.user});
 });
 
 module.exports = router;
