@@ -1,13 +1,13 @@
 //Add all routes that users can access here
-const express				= require('express');
-const User				= require('../database/models/user');
-const TempUser				= require('../database/models/tempUser');
-const passport				= require('passport');
-const jwt				= require('jsonwebtoken');
+const express							= require('express');
+const User								= require('../database/models/user');
+const TempUser							= require('../database/models/tempUser');
+const passport							= require('passport');
+const jwt								= require('jsonwebtoken');
 const { body, check, validationResult }	= require('express-validator/check');
-const { sanitizeBody }			= require('express-validator/filter');
-const config				= require('../database/config/database');
-const router				= express.Router();
+const { sanitizeBody }					= require('express-validator/filter');
+const config							= require('../database/config/database');
+const router							= express.Router();
 
 /////////////////////add passport.authenticate('jwt', {session: false}) as a parameter to protect a route.
 
