@@ -1,13 +1,13 @@
 //Add all routes that users can access here
-const express                                           = require('express');
-const User                                                = require('../database/models/user');
-const TempUser                                      = require('../database/models/tempUser');
-const passport                                         = require('passport');
-const jwt                                                    = require('jsonwebtoken');
+const express                           = require('express');
+const User                              = require('../database/models/user');
+const TempUser                          = require('../database/models/tempUser');
+const passport                          = require('passport');
+const jwt                               = require('jsonwebtoken');
 const { body, check, validationResult } = require('express-validator/check');
-const { sanitizeBody }                              = require('express-validator/filter');
-const config                                               = require('../database/config/database');
-const router                                               = express.Router();
+const { sanitizeBody }                  = require('express-validator/filter');
+const config                            = require('../database/config/database');
+const router                            = express.Router();
 
 /////////////////////add passport.authenticate('jwt', {session: false}) as a parameter to protect a route.
 
@@ -74,25 +74,25 @@ router.post('/register', [
 // resend email verification
 router.post('/verify-resend', [
     body('email').exists().withMessage('Email Required')
-        .isEmail().withMessage('Valid Email Required').normalizeEmail()
+    .isEmail().withMessage('Valid Email Required').normalizeEmail()
 ], (request, response, next) => {
     const errors = validationResult(request);
     if (!errors.isEmpty()) {
         return response.status(422).json({ errors: errors.array() });
     }
 
-        TempUser.NEV.resendVerificationEmail(request.body.email, function(error, userFound) {
-            if (error) {
-                return response.status(404).send('ERROR: resending verification email FAILED');
-            }
+    TempUser.NEV.resendVerificationEmail(request.body.email, function(error, userFound) {
+        if (error) {
+            return response.status(404).send('ERROR: resending verification email FAILED');
+        }
 
-            if (userFound) { // the temp user was found
-                response.status(200).json({ success: true, msg: 'An email has been sent to you. Please check it to verify your account.'});
-            } else {
-                // the temp user was not found, meaning the token expired
-                response.status(404).json({ success: false, msg: 'Your verification code has expired. Please sign up again.'});
-            }
-        });
+        if (userFound) { // the temp user was found
+            response.status(200).json({ success: true, msg: 'An email has been sent to you. Please check it to verify your account.'});
+        } else {
+            // the temp user was not found, meaning the token expired
+            response.status(404).json({ success: false, msg: 'Your verification code has expired. Please sign up again.'});
+        }
+    });
 });
 
 
