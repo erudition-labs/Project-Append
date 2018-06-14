@@ -38,7 +38,6 @@ router.post('/register', [
 		team		: request.body.team,
 		password	: request.body.password
 	});
-		console.log(newUser);
 
 	TempUser.NEV.createTempUser(newUser, function(error, existingPersistentUser, newTempUser) {
         // some sort of error
