@@ -38,17 +38,18 @@ router.post('/register', [
 		team		: request.body.team,
 		password	: request.body.password
 	});
+		console.log(newUser);
 
 	TempUser.NEV.createTempUser(newUser, function(error, existingPersistentUser, newTempUser) {
         // some sort of error
 		if (error) {
-			response.status(500).json({ success: false, msg:'Something went wrong'});
+			return response.status(500).json({ success: false, msg:'Something went wrong'});
 		}
 
         // user already exists in persistent collection...
 		if (existingPersistentUser) {
             // handle user's existence... violently.
-			response.status(418).json({ success: false, msg:'User already exists'}); //418 is i am a teapot
+			return response.status(418).json({ success: false, msg:'User already exists'}); //418 is i am a teapot
 		}
 
         // a new user
@@ -60,14 +61,14 @@ router.post('/register', [
 					console.log(err);
 					return response.status(404).send('ERROR: sending verification email FAILED');
 				}
-				response.status(202).json({
+				return response.status(202).json({
 					msg: 'An email has been sent to you. Please check it to verify your account.',
 					info: info
 				});
 			});
 		} else { // user already exists in temporary collection...
 			console.log("user already exists");
-			response.status(401).json({ success: false, msg:'Please Verify Your Email'});
+			return response.status(401).json({ success: false, msg:'Please Verify Your Email'});
 		}
 	});
 });
@@ -88,10 +89,10 @@ router.post('/verify-resend', [
 		}
 
 		if (userFound) { // the temp user was found
-			response.status(200).json({ success: true, msg: 'An email has been sent to you. Please check it to verify your account.'});
+			return response.status(200).json({ success: true, msg: 'An email has been sent to you. Please check it to verify your account.'});
 		} else {
             // the temp user was not found, meaning the token expired
-			response.status(404).json({ success: false, msg: 'Your verification code has expired. Please sign up again.'});
+			return response.status(404).json({ success: false, msg: 'Your verification code has expired. Please sign up again.'});
 		}
 	});
 });
@@ -100,9 +101,9 @@ router.post('/verify-resend', [
 router.get('/email-verification/:URL', (request, response, next) => {
 	TempUser.NEV.confirmTempUser(request.params.URL, function(error, user) { // Nev takes care of url being empty
 		if(user) {
-			response.status(201).json({ success: true, msg: "Account Confirmed" });
+			return response.status(201).json({ success: true, msg: "Account Confirmed" });
 		} else {
-			response.status(404).json({ success:false, msg: "Confirmation Failed" });
+			return response.status(404).json({ success:false, msg: "Confirmation Failed" });
 		}
 	});
 });
@@ -142,7 +143,7 @@ router.post('/authenticate', [
 					expiresIn: 3600 //1 day
 				});
 
-			response.json({
+			return response.json({
 				success	: true,
 				token	: 'JWT '+token,
 				user	: {               //send back data for a profile or something
@@ -164,7 +165,7 @@ router.post('/authenticate', [
 router.get('/users', (request, response, next) => {
 	User.findAllUsers((error, users) => {
 		if(error) {
-			response.status(500).json({success: false, msg: 'Failed to get users'});
+			return response.status(500).json({success: false, msg: 'Failed to get users'});
 		} else {
 			let userArray = [];
 
@@ -173,9 +174,9 @@ router.get('/users', (request, response, next) => {
 			});
             
 			if(!userArray.length) { // array is empty meaning there are no users in the db
-				response.status(404).json({success: false, msg: 'No Users'})
+				return response.status(404).json({success: true, msg: 'No Users'})
 			}
-			response.status(200).send(userArray); //otherwise there are users
+			return response.status(200).send(userArray); //otherwise there are users
 		}
 	});
 });
@@ -184,9 +185,9 @@ router.get('/users', (request, response, next) => {
 router.delete('/:id', (request, response, next) => {
 	User.findAndDeleteUserById(request.params.id, (error, user) => {
 		if(error) {
-			response.status(500).json({success: false, msg: error});
+			return response.status(500).json({success: false, msg: error});
 		} else {
-			response.status(200).json({success: true, msg: 'Removed User'});
+			return response.status(200).json({success: true, msg: 'Removed User'});
 		}
 	});
 });
@@ -194,7 +195,7 @@ router.delete('/:id', (request, response, next) => {
 //profile
 // Note that passport will set a user object with  passport.authenticate() if the token is calid
 router.get('/profile', passport.authenticate('jwt', {session: false}), (request, response, next) => {
-	response.json({user:request.user});
+	return response.status(200).json({user:request.user});
 });
 
 module.exports = router;
