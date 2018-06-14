@@ -36,6 +36,7 @@ router.post('/register', [
 		rank		: request.body.rank,
 		password	: request.body.password
 	});
+		console.log(newUser);
 
 	TempUser.NEV.createTempUser(newUser, function(error, existingPersistentUser, newTempUser) {
         // some sort of error
@@ -116,6 +117,7 @@ router.post('/authenticate', [
 	const errors = validationResult(request);
 	if (!errors.isEmpty()) { // If there are any, respond with them
 		return response.status(422).json({ errors: errors.array() });
+	}
 	
 
     //otherwise continue
