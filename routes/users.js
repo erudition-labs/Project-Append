@@ -38,13 +38,11 @@ router.post('/register', [
 		team		: request.body.team,
 		password	: request.body.password
 	});
-		console.log(newUser);
 
 	TempUser.NEV.createTempUser(newUser, function(error, existingPersistentUser, newTempUser) {
         // some sort of error
 		if (error) {
 			response.status(500).json({ success: false, msg:'Something went wrong'});
-			console.log(error);
 		}
 
         // user already exists in persistent collection...
