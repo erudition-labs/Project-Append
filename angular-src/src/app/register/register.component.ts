@@ -25,6 +25,18 @@ constructor(private authService : AuthService) {
 	};
 	
 	this.authService.create(user).subscribe(data => console.log(data));
+	let user1 : User = {
+		email : "sammie.johnie@lvory0ak.com",
+		password : "FuckYOU"
+	}
+
+	this.authService.authenticate(user1).subscribe(data => {
+		if(data.success) {
+			this.authService.storeUserData(data.token, data.user);
+		}
+	});
+
+	this.authService.getProfile().subscribe(data => console.log(data));
   }
 
   ngOnInit() {}
