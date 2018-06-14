@@ -31,12 +31,11 @@ export class AuthService {
 
 	constructor(private http: HttpClient) { }
 
-	create(user : User) : Observable<User> {
-			console.log(user);
+	create(user : User) : Observable<User> {  //might have to change this since im not actually returning a user object from my post...but still works
 		return this.http.post<User>(this.url + "/register", user, httpOptions).pipe(
-			tap((user: User) => log('added user with id ${user._id}')),
+			tap((user: User) => console.log('added user with id: ' + user._id)),
 			catchError(this.handleError<User>('create user'))
-		);
+			);
 	}
 
 
@@ -47,7 +46,7 @@ export class AuthService {
 			console.error(error); // log to console instead
 
       // transform error for user consumption
-			log(`${operation} failed: ${error.message}`);
+			console.log(`${operation} failed: ${error.message}`);
 
       // Let the app keep running by returning an empty result.
 			return of(result as T);
