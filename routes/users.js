@@ -34,6 +34,8 @@ router.post('/register', [
 		lastName	: request.body.lastName,
 		email		: request.body.email,
 		rank		: request.body.rank,
+		flight		: request.body.flight,
+		team		: request.body.team,
 		password	: request.body.password
 	});
 		console.log(newUser);
@@ -42,6 +44,7 @@ router.post('/register', [
         // some sort of error
 		if (error) {
 			response.status(500).json({ success: false, msg:'Something went wrong'});
+			console.log(error);
 		}
 
         // user already exists in persistent collection...
