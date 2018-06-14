@@ -24,8 +24,8 @@ export interface User {
 export class AuthService {
 	authToken : string;
 	user      : User;
+	
 	readonly url :  string = "http://localhost:3000/api/users";
-
 	readonly httpOptions = {
 		headers: new HttpHeaders({ 'Content-Type':  'application/json' })
 	};
@@ -47,7 +47,6 @@ export class AuthService {
 
 	getProfile() : Observable<any> {
 		this.loadToken();
-		console.log('toke'+this.authToken);
 		let authHttpOptions = {
 			headers: new HttpHeaders({
 				'Content-Type':  'application/json',
