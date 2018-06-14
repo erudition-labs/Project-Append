@@ -10,7 +10,7 @@ module.exports = function(passport) {
     //When a protected page is attempted to be accessed,  it goes here
     //a GET with the correct token will find the id
 	passport.use(new JwtStrategy(options, (jwtPayload, done) => {
-		User.getUserById(jwtPayload.data._id, (error, user) => {
+		User.findUserById(jwtPayload.data._id, (error, user) => {
 			if(error) { return done(error, false); }
 			if(user) {
 				return done(null, user);
