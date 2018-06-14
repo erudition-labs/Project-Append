@@ -7,12 +7,12 @@ import { log } from 'util';
 
 export interface User {
 	_id				?: string;
-	firstName		:  string;
-	lastName		:  string;
+	firstName		?:  string;
+	lastName		?:  string;
 	email			:  string;
-	rank			:  string;
-	flight			:  string;
-	team			:  string;
+	rank			?:  string;
+	flight			?:  string;
+	team			?:  string;
 	password		:  string;
 }
 
@@ -27,11 +27,8 @@ export class AuthService {
 	readonly url :  string = "http://localhost:3000/api/users";
 
 	readonly httpOptions = {
-		headers: new HttpHeaders({
-			'Content-Type':  'application/json',
-			'Authorization': this.authToken
-	})
-};
+		headers: new HttpHeaders({ 'Content-Type':  'application/json' })
+	};
 	constructor(private http : HttpClient) { }
 
 	create(user : User) : Observable<User> {  //might have to change this since im not actually returning a user object from my post...but still works
@@ -41,16 +38,24 @@ export class AuthService {
 			);
 	}
 
-	authenticate(user: User) : Observable<User> {
-		return this.http.post<User>(this.url + "/authenticate", user, this.httpOptions).pipe(
-			tap((user: User) => console.log('authenticated user')),
-			catchError(this.handleError<User>('authenticate user'))
+	authenticate(user: User) : Observable<any> {
+		return this.http.post<any>(this.url + "/authenticate", user, this.httpOptions).pipe(
+			tap((data : any) => console.log('authenticated user')),
+			catchError(this.handleError<any>('authenticate user'))
 		);
 	}
 
 	getProfile() : Observable<any> {
 		this.loadToken();
-		return this.http.get<any>(this.url + "/profile",  this.httpOptions).pipe(
+		console.log('toke'+this.authToken);
+		let authHttpOptions = {
+			headers: new HttpHeaders({
+				'Content-Type':  'application/json',
+				'Authorization': this.authToken
+			})
+		};
+
+		return this.http.get<any>(this.url + "/profile", authHttpOptions).pipe(
 			tap((data : any) => console.log('profile')),
 			catchError(this.handleError<any>('fetch profile'))
 		);
