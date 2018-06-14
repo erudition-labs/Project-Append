@@ -3,12 +3,8 @@ import { AuthService, User } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register',
-  template: `
-    <p>
-      register works!
-    </p>
-  `,
-  styles: []
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
 
