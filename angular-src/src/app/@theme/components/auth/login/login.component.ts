@@ -109,7 +109,7 @@ import { NbAuthService,
     </nb-auth-block>
   `,
 })
-export class NbLoginComponent {
+export class NgxLoginComponent {
 
   redirectDelay: number = 0;
   showMessages: any = {};

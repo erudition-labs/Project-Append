@@ -64,7 +64,7 @@ import { NbAuthService,
     </nb-auth-block>
   `,
 })
-export class NbRequestPasswordComponent {
+export class NgxRequestPasswordComponent {
 
   redirectDelay: number = 0;
   showMessages: any = {};
