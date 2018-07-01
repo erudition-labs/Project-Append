@@ -28,6 +28,24 @@ import { NbPasswordAuthStrategy, NbAuthModule } from '@nebular/auth';
     NgbModule.forRoot(),
     ThemeModule.forRoot(),
     CoreModule.forRoot(),
+	NbAuthModule.forRoot({
+		strategies: [
+			NbPasswordAuthStrategy.setup({
+				name: 'email',
+				baseEndpoint: 'http://localhost:3000/api/v1',
+				login: {
+					endpoint: '/auth/authenticate',
+					method: 'post',
+				},
+
+				register: {
+					endpoint: '/auth/register',
+					method: 'post',
+				},
+			}),
+		],
+		forms: {},
+	}), 
   ],
   bootstrap: [AppComponent],
   providers: [
