@@ -1,43 +1,44 @@
 import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import {
-  NbAuthComponent,
-  NbLoginComponent,
-  NbLogoutComponent,
-  NbRegisterComponent,
-  NbRequestPasswordComponent,
-  NbResetPasswordComponent,
-} from '@nebular/auth';
+
+import { NgxAuthComponent,
+	NgxAuthBlockComponent,
+	NgxLoginComponent,
+	NgxRegisterComponent,
+	NgxLogoutComponent,
+	NgxRequestPasswordComponent, 
+	NgxResetPasswordComponent } from './@theme/components/auth';
+
 
 const routes: Routes = [
   { path: 'pages', loadChildren: 'app/pages/pages.module#PagesModule' },
   {
     path: 'auth',
-    component: NbAuthComponent,
+    component: NgxAuthComponent,
     children: [
       {
         path: '',
-        component: NbLoginComponent,
+        component: NgxLoginComponent,
       },
       {
         path: 'login',
-        component: NbLoginComponent,
+        component: NgxLoginComponent,
       },
       {
         path: 'register',
-        component: NbRegisterComponent,
+        component: NgxRegisterComponent,
       },
       {
         path: 'logout',
-        component: NbLogoutComponent,
+        component: NgxLogoutComponent,
       },
       {
         path: 'request-password',
-        component: NbRequestPasswordComponent,
+        component: NgxRequestPasswordComponent,
       },
       {
         path: 'reset-password',
-        component: NbResetPasswordComponent,
+        component: NgxResetPasswordComponent,
       },
     ],
   },
