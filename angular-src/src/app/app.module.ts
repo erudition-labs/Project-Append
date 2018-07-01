@@ -15,7 +15,7 @@ import { AppRoutingModule 		} from './app-routing.module';
 import { ThemeModule 			} from './@theme/theme.module';
 import { NgbModule 				} from '@ng-bootstrap/ng-bootstrap';
 import { NbPasswordAuthStrategy, NbAuthModule } from '@nebular/auth';
-
+import { NbAuthJWTToken } from '@nebular/auth';
 
 const formSettings : any = {
 	redirectDelay: 500,  // delay before redirect after a successful login, while success message is shown 
@@ -42,6 +42,7 @@ const formSettings : any = {
 		strategies: [
 			NbPasswordAuthStrategy.setup({
 				name: 'email',
+				token: { class: NbAuthJWTToken, },
 				baseEndpoint: 'http://localhost:3000/api/v1',
 				login: {
 					endpoint: '/auth/authenticate',
