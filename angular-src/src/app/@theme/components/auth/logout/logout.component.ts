@@ -5,11 +5,11 @@
  */
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { getDeepFromObject  } from '@nebular/auth/helpers';
 
-import { NB_AUTH_OPTIONS } from '../../auth.options';
-import { getDeepFromObject } from '../../helpers';
-import { NbAuthService } from '../../services/auth.service';
-import { NbAuthResult } from '../../services/auth-result';
+import { NbAuthService,
+	NbAuthResult,
+	NB_AUTH_OPTIONS } from '@nebular/auth';
 
 @Component({
   selector: 'nb-logout',
@@ -17,7 +17,7 @@ import { NbAuthResult } from '../../services/auth-result';
     <div>Logging out, please wait...</div>
   `,
 })
-export class NbLogoutComponent implements OnInit {
+export class NgxLogoutComponent implements OnInit {
 
   redirectDelay: number = 0;
   strategy: string = '';

@@ -4,8 +4,8 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 import { Component, OnDestroy } from '@angular/core';
-import { NbAuthService } from '../services/auth.service';
-import { takeWhile } from 'rxjs/operators';
+import { NbAuthService 	} from '@nebular/auth';
+import { takeWhile 		} from 'rxjs/operators';
 
 @Component({
   selector: 'nb-auth',
@@ -24,7 +24,7 @@ import { takeWhile } from 'rxjs/operators';
     </nb-layout>
   `,
 })
-export class NbAuthComponent implements OnDestroy {
+export class NgxAuthComponent implements OnDestroy {
 
   private alive = true;
 

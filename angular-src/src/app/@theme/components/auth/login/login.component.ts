@@ -3,13 +3,15 @@
  * Copyright Akveo. All Rights Reserved.
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
-import { Component, Inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { NB_AUTH_OPTIONS, NbAuthSocialLink } from '../../auth.options';
-import { getDeepFromObject } from '../../helpers';
+import { Component, Inject 	} from '@angular/core';
+import { Router 			} from '@angular/router';
+import { getDeepFromObject  } from '@nebular/auth/helpers';
 
-import { NbAuthService } from '../../services/auth.service';
-import { NbAuthResult } from '../../services/auth-result';
+import { NbAuthService,
+	NbAuthResult,
+	NB_AUTH_OPTIONS,
+	NbAuthSocialLink } from '@nebular/auth';
+
 
 @Component({
   selector: 'nb-login',

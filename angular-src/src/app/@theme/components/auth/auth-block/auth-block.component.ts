@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
     <ng-content></ng-content>
   `,
 })
-export class NbAuthBlockComponent {
+export class NgxAuthBlockComponent {
 }
