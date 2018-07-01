@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-
-import { NbMenuService, NbSidebarService } from '@nebular/theme';
-import { UserService } from '../../../@core/data/users.service';
-import { AnalyticsService } from '../../../@core/utils/analytics.service';
+import { Component, Input, OnInit 			} from '@angular/core';
+import { NbAuthJWTToken, NbAuthService 		} from '@nebular/auth';
+import { NbMenuService, NbSidebarService 	} from '@nebular/theme';
+import { UserService 						} from '../../../@core/data/users.service';
+import { AnalyticsService 					} from '../../../@core/utils/analytics.service';
 
 @Component({
   selector: 'ngx-header',
@@ -18,11 +18,19 @@ export class HeaderComponent implements OnInit {
 
   userMenu = [{ title: 'Profile' }, { title: 'Log out' }];
 
-  constructor(private sidebarService: NbSidebarService,
+	constructor(private sidebarService: NbSidebarService,
               private menuService: NbMenuService,
               private userService: UserService,
-              private analyticsService: AnalyticsService) {
-  }
+			  private authService: NbAuthService,
+			  private analyticsService: AnalyticsService) {
+
+		this.authService.onTokenChange()
+			.subscribe((token: NbAuthJWTToken) => {
+				if (token.isValid()) {
+					this.user = token.getPayload();
+				}
+			 });
+	}
 
   ngOnInit() {
     this.userService.getUsers()
