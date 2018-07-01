@@ -27,14 +27,14 @@ export class HeaderComponent implements OnInit {
 		this.authService.onTokenChange()
 			.subscribe((token: NbAuthJWTToken) => {
 				if (token.isValid()) {
-					this.user = token.getPayload();
+					this.user = token.getPayload().data;
 				}
 			 });
 	}
 
   ngOnInit() {
-    this.userService.getUsers()
-      .subscribe((users: any) => this.user = users.nick);
+  //this.userService.getUsers()
+  //  .subscribe((users: any) => this.user = users.nick);
   }
 
   toggleSidebar(): boolean {
