@@ -9,7 +9,7 @@ import { MatCardModule 			} from '@angular/material/card';
 import { MatButtonModule 		} from '@angular/material/button';
 
 const routes : Routes = [
-	{ path: '', component: LoginComponent}
+	{ path: '', component: LoginComponent }
 ];
 
 @NgModule({
