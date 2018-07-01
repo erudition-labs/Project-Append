@@ -2,6 +2,8 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxRegisterComponent } from './components/auth/register/register.component';
+
 
 import {
   NbActionsModule,
@@ -101,10 +103,12 @@ const NB_THEME_PROVIDERS = [
 ];
 
 @NgModule({
-  imports: [...BASE_MODULES, ...NB_MODULES],
-  exports: [...BASE_MODULES, ...NB_MODULES, ...COMPONENTS, ...PIPES],
-  declarations: [...COMPONENTS, ...PIPES],
-  entryComponents: [...ENTRY_COMPONENTS],
+	imports: [...BASE_MODULES, ...NB_MODULES],
+	exports: [...BASE_MODULES, ...NB_MODULES, ...COMPONENTS, ...PIPES],
+	declarations: [...COMPONENTS, ...PIPES,
+		NgxRegisterComponent,	
+	],
+	entryComponents: [...ENTRY_COMPONENTS],
 })
 export class ThemeModule {
   static forRoot(): ModuleWithProviders {
