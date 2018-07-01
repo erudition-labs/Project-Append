@@ -42,7 +42,10 @@ const formSettings : any = {
 		strategies: [
 			NbPasswordAuthStrategy.setup({
 				name: 'email',
-				token: { class: NbAuthJWTToken, },
+				token: { 
+					class: NbAuthJWTToken, 
+					key: 'token' 
+				},
 				baseEndpoint: 'http://localhost:3000/api/v1',
 				login: {
 					endpoint: '/auth/authenticate',
