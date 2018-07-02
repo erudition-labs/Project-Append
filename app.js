@@ -32,7 +32,7 @@ app.use(passport.initialize()); //passport middleware, authentication and token 
 app.use(passport.session());   //will use passport-jwt strategy
 
 //Endpoints
-app.use('/api/users', users);      //users routes
+app.use('/api/v1/auth', users);      //users routes
 	// Any request in the form of localhost:port/users/whatever must be
 // defined here in order to be used.
 
