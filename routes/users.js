@@ -144,7 +144,7 @@ router.post('/authenticate', [
 
 			return response.json({
 				success	: true,
-				token	: 'JWT '+token,
+				token	: token,
 				user	: {               //send back data for a profile or something
 					id		: user._id,
 					name	: user.username,
