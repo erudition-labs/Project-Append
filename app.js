@@ -8,7 +8,8 @@ const cors 			= require('cors'); //https://github.com/expressjs/cors
 const passport 		= require('passport');
 const mongoose 		= require('mongoose');
 const config 		= require('./database/config/database');
-const users 		= require('./routes/users'); //contains backend routes that users can access. we define users in the models
+const users 		= require('./routes/users'); 
+const auth			= require('./routes/auth'); 
 
 require('./database/config/passport')(passport);
 
@@ -32,7 +33,8 @@ app.use(passport.initialize()); //passport middleware, authentication and token 
 app.use(passport.session());   //will use passport-jwt strategy
 
 //Endpoints
-app.use('/api/v1/auth', users);      //users routes
+app.use('/api/v1/users', users);      //users routes
+app.use('/api/v1/auth', auth);      //authentication routes
 	// Any request in the form of localhost:port/users/whatever must be
 // defined here in order to be used.
 
