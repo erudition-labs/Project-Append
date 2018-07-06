@@ -31,26 +31,115 @@ import { NbAuthService,
           <div *ngFor="let message of messages">{{ message }}</div>
         </div>
         <div class="form-group">
-          <label for="input-name" class="sr-only">Full name</label>
-          <input name="fullName" [(ngModel)]="user.fullName" id="input-name" #fullName="ngModel"
-                 class="form-control" placeholder="Full name"
-                 [class.form-control-danger]="fullName.invalid && fullName.touched"
-                 [required]="getConfigValue('forms.validation.fullName.required')"
-                 [minlength]="getConfigValue('forms.validation.fullName.minLength')"
-                 [maxlength]="getConfigValue('forms.validation.fullName.maxLength')"
+          <label for="input-name" class="sr-only">First name</label>
+          <input name="firstName" [(ngModel)]="user.firstName" id="input-name" #firstName="ngModel"
+                 class="form-control" placeholder="First name"
+                 [class.form-control-danger]="firstName.invalid && firstName.touched"
+                 [required]="true"
+                 [minlength]="true"
+                 [maxlength]="true"
                  autofocus>
-          <small class="form-text error" *ngIf="fullName.invalid && fullName.touched && fullName.errors?.required">
-            Full name is required!
+          <small class="form-text error" *ngIf="firstName.invalid && firstName.touched && firstName.errors?.required">
+            First name is required!
           </small>
           <small
             class="form-text error"
-            *ngIf="fullName.invalid && fullName.touched && (fullName.errors?.minlength || fullName.errors?.maxlength)">
-            Full name should contains
-            from {{getConfigValue('forms.validation.fullName.minLength')}}
-            to {{getConfigValue('forms.validation.fullName.maxLength')}}
+            *ngIf="firstName.invalid && firstName.touched && (firstName.errors?.minlength || firstName.errors?.maxlength)">
+            First name should contains
+            from {{getConfigValue('forms.validation.firstName.minLength')}}
+            to {{getConfigValue('forms.validation.firstName.maxLength')}}
             characters
           </small>
         </div>
+
+        <div class="form-group">
+          <label for="input-name-last" class="sr-only">Last name</label>
+          <input name="lastName" [(ngModel)]="user.lastName" id="input-name-last" #lastName="ngModel"
+                 class="form-control" placeholder="Last name"
+                 [class.form-control-danger]="lastName.invalid && lastName.touched"
+                 [required]="true"
+                 [minlength]="true"
+                 [maxlength]="true"
+                 autofocus>
+          <small class="form-text error" *ngIf="lastName.invalid && lastName.touched && lastName.errors?.required">
+            Last name is required!
+          </small>
+          <small
+            class="form-text error"
+            *ngIf="lastName.invalid && lastName.touched && (lastName.errors?.minlength || lastName.errors?.maxlength)">
+            Last name should contains
+            from {{getConfigValue('forms.validation.lastName.minLength')}}
+            to {{getConfigValue('forms.validation.lastName.maxLength')}}
+            characters
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="input-rank" class="sr-only">Rank</label>
+          <input name="rank" [(ngModel)]="user.rank" id="input-rank" #rank="ngModel"
+                 class="form-control" placeholder="Rank"
+                 [class.form-control-danger]="rank.invalid && rank.touched"
+                 [required]="true"
+                 [minlength]="true"
+                 [maxlength]="true"
+                 autofocus>
+          <small class="form-text error" *ngIf="rank.invalid && rank.touched && rank.errors?.required">
+            Rank is required!
+          </small>
+          <small
+            class="form-text error"
+            *ngIf="rank.invalid && rank.touched && (rank.errors?.minlength || rank.errors?.maxlength)">
+            Rank should contains
+            from {{getConfigValue('forms.validation.firstName.minLength')}}
+            to {{getConfigValue('forms.validation.firstName.maxLength')}}
+            characters
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="input-flight" class="sr-only">Flight</label>
+          <input name="flight" [(ngModel)]="user.flight" id="input-flight" #flight="ngModel"
+                 class="form-control" placeholder="Flight"
+                 [class.form-control-danger]="flight.invalid && flight.touched"
+                 [required]="true"
+                 [minlength]="true"
+                 [maxlength]="true"
+                 autofocus>
+          <small class="form-text error" *ngIf="flight.invalid && flight.touched && flight.errors?.required">
+            Flight is required!
+          </small>
+          <small
+            class="form-text error"
+            *ngIf="flight.invalid && flight.touched && (flight.errors?.minlength || flight.errors?.maxlength)">
+            Flight name should contains
+            from {{getConfigValue('forms.validation.flight.minLength')}}
+            to {{getConfigValue('forms.validation.flight.maxLength')}}
+            characters
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="input-team" class="sr-only">Team</label>
+          <input name="team" [(ngModel)]="user.team" id="input-team" #team="ngModel"
+                 class="form-control" placeholder="Team"
+                 [class.form-control-danger]="team.invalid && team.touched"
+                 [required]="true"
+                 [minlength]="true"
+                 [maxlength]="true"
+                 autofocus>
+          <small class="form-text error" *ngIf="team.invalid && team.touched && team.errors?.required">
+            Team name is required!
+          </small>
+          <small
+            class="form-text error"
+            *ngIf="team.invalid && team.touched && (team.errors?.minlength || team.errors?.maxlength)">
+            Team name should contains
+            from {{getConfigValue('forms.validation.team.minLength')}}
+            to {{getConfigValue('forms.validation.team.maxLength')}}
+            characters
+          </small>
+        </div>
+
         <div class="form-group">
           <label for="input-email" class="sr-only">Email address</label>
           <input name="email" [(ngModel)]="user.email" id="input-email" #email="ngModel"
