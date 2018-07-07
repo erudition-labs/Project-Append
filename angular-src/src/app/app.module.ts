@@ -42,6 +42,8 @@ const formSettings : any = {
 					key: 'token' 
 				},
 
+				baseEndpoint:'',
+
 				logout: {
 					endpoint: '',
 					redirect: {
