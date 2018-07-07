@@ -41,21 +41,35 @@ const formSettings : any = {
 					class: NbAuthJWTToken, 
 					key: 'token' 
 				},
-				baseEndpoint: 'http://localhost:3000/api/v1',
+
+				logout: {
+					endpoint: '',
+					redirect: {
+						success: '/',
+						failure: '/',
+					},
+				},
+
 				login: {
-					endpoint: '/auth/authenticate',
+				endpoint: 'http://localhost:3000/api/v1/auth/authenticate',
 					method: 'post',
 				},
 
 				register: {
-					endpoint: '/auth/register',
+				endpoint: 'http://localhost:3000/api/v1/auth/register',
 					method: 'post',
+					redirect: {
+						success: '/',
+					},
 				},
+
 			}),
 		],
 		forms: {
 			login 		: formSettings,
 			register	: formSettings,	
+			logout		: formSettings,	
+
 		},
 	}), 
   ],
