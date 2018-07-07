@@ -33,7 +33,6 @@ export class NgxLogoutComponent implements OnInit {
 
       const redirect = result.getRedirect();
       if (redirect) {
-	  	localStorage.removeItem('auth_app_token');
         setTimeout(() => {
           return this.router.navigateByUrl(redirect);
         }, this.redirectDelay);
