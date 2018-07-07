@@ -1,4 +1,5 @@
 import { Component, Input, OnInit 			} from '@angular/core';
+import { filter 							} from 'rxjs/operators/filter';
 import { NbAuthJWTToken, NbAuthService 		} from '@nebular/auth';
 import { NbMenuService, NbSidebarService 	} from '@nebular/theme';
 import { AnalyticsService 					} from '../../../@core/utils/analytics.service';

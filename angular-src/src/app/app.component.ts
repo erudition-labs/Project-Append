@@ -6,7 +6,6 @@
 import { Component, OnInit 		} from '@angular/core';
 import { AnalyticsService 		} from './@core/utils/analytics.service';
 import { NbMenuService 			} from '@nebular/theme';
-import { NbAuthService			} from '@nebular/auth';
 import { Router 				} from '@angular/router';
 
 @Component({
@@ -15,9 +14,9 @@ import { Router 				} from '@angular/router';
 })
 export class AppComponent implements OnInit {
 
-constructor(private analytics: AnalyticsService,
-			private menuService: NbMenuService,
-			private router: Router) {
+constructor(private analytics	: AnalyticsService,
+			private menuService	: NbMenuService,
+			private router		: Router) {
 
 	this.menuService.onItemClick()
 		.subscribe((event) => {
