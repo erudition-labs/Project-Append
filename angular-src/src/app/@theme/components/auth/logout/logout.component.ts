@@ -1,8 +1,3 @@
-/**
- * @license
- * Copyright Akveo. All Rights Reserved.
- * Licensed under the MIT License. See License.txt in the project root for license information.
- */
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { getDeepFromObject  } from '@nebular/auth/helpers';
@@ -38,6 +33,7 @@ export class NgxLogoutComponent implements OnInit {
 
       const redirect = result.getRedirect();
       if (redirect) {
+	  	localStorage.removeItem('auth_app_token');
         setTimeout(() => {
           return this.router.navigateByUrl(redirect);
         }, this.redirectDelay);
