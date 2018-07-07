@@ -6,6 +6,8 @@
 import { Component, OnInit 		} from '@angular/core';
 import { AnalyticsService 		} from './@core/utils/analytics.service';
 import { NbMenuService 			} from '@nebular/theme';
+import { NbAuthService			} from '@nebular/auth';
+import { Router 				} from '@angular/router';
 
 @Component({
   selector: 'ngx-app',
@@ -14,7 +16,8 @@ import { NbMenuService 			} from '@nebular/theme';
 export class AppComponent implements OnInit {
 
 constructor(private analytics: AnalyticsService,
-			private menuService: NbMenuService) {
+			private menuService: NbMenuService,
+			private router: Router) {
 
 	this.menuService.onItemClick()
 		.subscribe((event) => {
@@ -28,7 +31,7 @@ constructor(private analytics: AnalyticsService,
 
 	onContecxtItemSelection(title) {
 		if(title === 'Log out') {
-			
+			return this.router.navigateByUrl('/auth/logout');
 		}
 	}
 }
