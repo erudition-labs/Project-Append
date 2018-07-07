@@ -11,6 +11,7 @@ import { NbAuthService,
 	NbAuthResult, 
 	NB_AUTH_OPTIONS,
 	NbAuthSocialLink } from '@nebular/auth';
+import { AuthService } from '../../../../@core/data/auth.service'
 
 
 @Component({
@@ -228,30 +229,31 @@ import { NbAuthService,
 })
 export class NgxRegisterComponent {
 
-  redirectDelay: number = 0;
-  showMessages: any = {};
-  strategy: string = '';
+	redirectDelay	: number = 10000;
+	showMessages	: any = {};
 
-  submitted = false;
-  errors: string[] = [];
-  messages: string[] = [];
-  user: any = {};
-  socialLinks: NbAuthSocialLink[] = [];
+
+	submitted = false;
+	errors		: string[] = [];
+	messages	: string[] = [];
+	user		: any = {};
 
   constructor(protected service: NbAuthService,
               @Inject(NB_AUTH_OPTIONS) protected options = {},
-              protected router: Router) {
+			  protected router: Router,
+			  private authService : AuthService) {
 
     this.redirectDelay = this.getConfigValue('forms.register.redirectDelay');
     this.showMessages = this.getConfigValue('forms.register.showMessages');
-    this.strategy = this.getConfigValue('forms.register.strategy');
-    this.socialLinks = this.getConfigValue('forms.login.socialLinks');
   }
 
-  register(): void {
-    this.errors = this.messages = [];
-    this.submitted = true;
+	register(): void {
+		this.errors = [];
+		this.messages = [];
+		this.submitted = true;
 
+		//nebular template code
+	/*
     this.service.register(this.strategy, this.user).subscribe((result: NbAuthResult) => {
       this.submitted = false;
       if (result.isSuccess()) {
@@ -266,10 +268,23 @@ export class NgxRegisterComponent {
           return this.router.navigateByUrl(redirect);
         }, this.redirectDelay);
       }
-    });
-  }
+	});*/
 
-  getConfigValue(key: string): any {
-    return getDeepFromObject(this.options, key, null);
+	this.authService.create(this.user).subscribe((result) => {
+		this.submitted = false;
+		console.log(result);
+		if(result.success) {
+			this.messages.push(result.msg);
+			setTimeout(() => {
+			return this.router.navigateByUrl("/#/auth/login");
+			}, 10000);
+		} else {
+			this.errors.push(result.msg);
+		}
+	});
   }
+  
+	getConfigValue(key: string): any {
+		return getDeepFromObject(this.options, key, null);
+	}
 }
