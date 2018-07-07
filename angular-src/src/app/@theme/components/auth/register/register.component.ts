@@ -276,7 +276,7 @@ export class NgxRegisterComponent {
 		if(result.success) {
 			this.messages.push(result.msg);
 			setTimeout(() => {
-			return this.router.navigateByUrl("/auth/login");
+				return this.router.navigateByUrl("/auth/login");
 			}, 10000);
 		} else {
 			this.errors.push(result.msg);
