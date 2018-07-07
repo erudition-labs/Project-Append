@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../../@core/data/auth.service';
 
 
 @Component({
@@ -9,7 +10,8 @@ import { Router } from '@angular/router';
 })
 export class EmailVerificationComponent implements OnInit {
 
-	constructor(private router: Router) { }
+	constructor(private router		: Router,
+				private authService : AuthService) { }
 
 	ngOnInit() {
   		let code : string = this.router.url;
