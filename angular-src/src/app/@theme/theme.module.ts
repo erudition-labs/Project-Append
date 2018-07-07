@@ -11,6 +11,7 @@ import { NgxRegisterComponent 			} from './components/auth/register/register.com
 import { NgxLogoutComponent 			} from './components/auth/logout/logout.component';
 import { NgxRequestPasswordComponent 	} from './components/auth/request-password/request-password.component';
 import { NgxResetPasswordComponent 		} from './components/auth/reset-password/reset-password.component';
+import { EmailVerificationComponent 	} from './components/auth/email-verification/email-verification.component';
 
 
 
@@ -94,6 +95,7 @@ const COMPONENTS = [
   NgxRequestPasswordComponent,
   NgxResetPasswordComponent,
   NgxLogoutComponent,
+  EmailVerificationComponent,
 ];
 
 const ENTRY_COMPONENTS = [
@@ -121,7 +123,7 @@ const NB_THEME_PROVIDERS = [
 @NgModule({
 	imports: [...BASE_MODULES, ...NB_MODULES],
 	exports: [...BASE_MODULES, ...NB_MODULES, ...COMPONENTS, ...PIPES],
-	declarations: [...COMPONENTS, ...PIPES],
+	declarations: [...COMPONENTS, ...PIPES,],
 	entryComponents: [...ENTRY_COMPONENTS],
 })
 export class ThemeModule {
