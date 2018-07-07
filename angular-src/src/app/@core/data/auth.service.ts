@@ -30,11 +30,11 @@ export class EmailPassAuthProvider extends NbEmailPassAuthProvider {
 
 
 
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
-import { log } from 'util';
+import { Injectable 				} from '@angular/core';
+import { HttpClient, HttpHeaders 	} from '@angular/common/http';
+import { Observable, of 			} from 'rxjs';
+import { catchError, map, tap 		} from 'rxjs/operators';
+import { log 						} from 'util';
 
 export interface User {
 	_id				?: string; //perhaps move this to a models folder?
@@ -64,12 +64,18 @@ export class AuthService {
 	constructor(private http: HttpClient) { }
 
 	create(user : User)  {  
-		return this.http.post(this.url + "/register", user, httpOptions).pipe(
-			tap((user) => console.log('added user')),
+		return this.http.post(this.url + "/register", user, httpOptions)
+			.pipe(tap((user) => console.log('added user')),
 			catchError(this.handleError<any>('create user'))
 			);
 	}
 
+	verify(code : string) {
+		return this.http.post<string>(this.url + "/email-verification/" + code, httpOptions)
+			.pipe(tap((code:string) => console.log('verified')),
+			catchError(this.handleError<string>('verify code'))
+			);
+	}
 
 	private handleError<T> (operation = 'operation', result?: T) {
 		return (error: any): Observable<T> => {
