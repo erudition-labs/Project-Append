@@ -58,9 +58,10 @@ router.post('/register', [
 			TempUser.NEV.sendVerificationEmail(newUser.email, URL, function(err, info) {
 				if (err) {
 					console.log(err);
-					return response.status(404).send('ERROR: sending verification email FAILED');
+					return response.status(404).json({success: false, msg: 'ERROR: sending verification email FAILED'});
 				}
 				return response.status(202).json({
+					success: true,
 					msg: 'An email has been sent to you. Please check it to verify your account.',
 					info: info
 				});
