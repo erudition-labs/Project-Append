@@ -10,20 +10,27 @@ import { AuthService } from '../../../../@core/data/auth.service';
 })
 export class EmailVerificationComponent implements OnInit {
 
+	messages		: string[] = [];
+	errors			: string[] = [];
+
 	constructor(private router				: Router,
 				private route 				: ActivatedRoute,
 				private authService 		: AuthService) { }
 
 	ngOnInit() {
-	//let href : string = this.router.url;
-	//	console.log(href.split("/", 2));
-	this.route.params.subscribe( (params) => {
-	//console.log(params) 
-		this.authService.verify(params.code).subscribe((result) => {
-			return this.router.navigateByUrl("/");
+		this.route.params.subscribe((params) => {
+			this.authService.verify(params.code).subscribe((result) => {
+				if(result !== undefined && result.success) {
+					this.messages.push(result.msg);
+					this.messages.push("You will be automatically redirected");
+					setTimeout(() => {
+						return this.router.navigateByUrl("/");
+					}, 5000);
+				} else {
+					this.errors.push("Confirmation Failed");
+				}
+			});
 		});
-
-	});
 
 	}
 

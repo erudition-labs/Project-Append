@@ -1,3 +1,17 @@
-<p>
-  email-verification works!
-</p>
+<nb-auth-block>
+	<h2 class="title">Email Confirmation</h2>
+	
+	<div *ngIf="errors && errors.length > 0"
+		class="alert alert-danger" role="alert">
+	
+		<div><strong>You Have Errors</strong></div>
+		<div *ngFor="let error of errors">{{ error }}</div>
+	</div>
+
+	<div *ngIf="messages && messages.length > 0"
+			class="alert alert-success" role="alert">
+		<div><strong>Success!</strong></div>
+		<div *ngFor="let message of messages">{{ message }}</div>
+		
+	</div>
+</nb-auth-block>
