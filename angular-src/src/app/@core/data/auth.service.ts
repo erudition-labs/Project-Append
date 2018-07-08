@@ -47,7 +47,6 @@ export interface User {
 	password		:  string;
 }
 
-
 const  httpOptions = {
 	headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
@@ -71,11 +70,22 @@ export class AuthService {
 	}
 
 	verify(code : string) {
-		return this.http.post<string>(this.url + "/email-verification/" + code, httpOptions)
+		return this.http.post(this.url + "/email-verification/" + code, httpOptions)
 			.pipe(tap((code:string) => console.log('verified')),
-			catchError(this.handleError<string>('verify code'))
+			catchError(this.handleError<any>('error' + code))
 			);
 	}
+
+
+	/*
+	verify(code : string) {
+		return this.http.post<apiResponse>(this.url + "/email-verification/" + code, httpOptions)
+			.pipe(tap((code:apiResponse) => console.log('verified')),
+			catchError(this.handleError<apiResponse>('verify code'))
+			);
+	}
+*/
+
 
 	private handleError<T> (operation = 'operation', result?: T) {
 		return (error: any): Observable<T> => {
@@ -87,7 +97,7 @@ export class AuthService {
 			console.log(`${operation} failed: ${error.message}`);
 
       // Let the app keep running by returning an empty result.
-			return of(result as T);
+	  		return of(result as T);
 		};
 	}
 }
