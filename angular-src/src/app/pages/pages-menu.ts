@@ -151,6 +151,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
     ],
   },
+	{
+		title: 'Events',
+		icon: 'event',
+		link: '/pages/events',
+	},
   {
     title: 'Auth',
     icon: 'nb-locked',
