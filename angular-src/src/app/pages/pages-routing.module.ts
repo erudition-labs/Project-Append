@@ -36,6 +36,13 @@ const routes: Routes = [{
     path: 'miscellaneous',
     loadChildren: './miscellaneous/miscellaneous.module#MiscellaneousModule',
   }, {
+		path: 'events',
+		loadChildren: './events/events.module#EventsModule',
+  }, {
+    path: 'profile',
+    loadChildren: './profile/profile.module#ProfileModule',
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full',

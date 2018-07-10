@@ -5,7 +5,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import { ThemeModule } from '../@theme/theme.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
-import { ProfileComponent } from './profile/profile.component';
+//import { EventsComponent } from './events/events.component';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
@@ -20,7 +20,7 @@ const PAGES_COMPONENTS = [
   ],
   declarations: [
     ...PAGES_COMPONENTS,
-    ProfileComponent,
+	//  EventsComponent,
   ],
 })
 export class PagesModule {

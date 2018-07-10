@@ -151,6 +151,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
     ],
   },
+	{
+		title: 'Events',
+		icon: 'ion-calendar',
+		link: '/pages/events',
+	},
   {
     title: 'Auth',
     icon: 'nb-locked',
