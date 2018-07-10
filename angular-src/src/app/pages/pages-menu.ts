@@ -153,7 +153,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   },
 	{
 		title: 'Events',
-		icon: 'event',
+		icon: 'ion-calendar',
 		link: '/pages/events',
 	},
   {
