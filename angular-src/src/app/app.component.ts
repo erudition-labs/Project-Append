@@ -31,6 +31,8 @@ constructor(private analytics	: AnalyticsService,
 	onContecxtItemSelection(title) {
 		if(title === 'Log out') {
 			return this.router.navigateByUrl('/auth/logout');
-		}
+		} else if (title === 'Profile') {
+      return this.router.navigateByUrl('/pages/profile');
+    }
 	}
 }
