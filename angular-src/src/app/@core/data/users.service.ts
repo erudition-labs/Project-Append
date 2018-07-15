@@ -2,7 +2,7 @@ import { of as observableOf,  Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { catchError, map, tap 		} from 'rxjs/operators';
 import { HttpClient, HttpHeaders 	} from '@angular/common/http';
-import { NbAuthService, NbAuthJWTToken } from '@nebular/auth';
+import { NbAuthService, NbAuthJWTToken, NbTokenService} from '@nebular/auth';
 import { switchMap } from 'rxjs/operators';
 
 
@@ -27,10 +27,10 @@ export class UserService {
   private userArray: any[];
 
 
-readonly url :  string = "http://localhost:3000/api/v1/profile";
+readonly url :  string = "http://localhost:3000/api/v1/users";
   constructor(
   		private http: HttpClient,
-		private authService : NbAuthService) {
+		private authService : NbAuthService,) {
     // this.userArray = Object.values(this.users);
   }
 
@@ -49,17 +49,32 @@ readonly url :  string = "http://localhost:3000/api/v1/profile";
 
 
 	getProfile() {
-		this.authService.getToken()
-			.pipe(switchMap((token: NbAuthJWTToken) => {
-				if (token.isValid()) {
-					httpOptions.headers.append('Authorization', token.getValue());
-					return this.http.get(this.url + "profile", httpOptions)
-						.pipe(tap((data) => console.log('got profile data')),
-						catchError(this.handleError<any>('error data retrievel'))
-					);	
-				}
-			}))
+	/*this.authService.getToken().subscribe((token : NbAuthJWTToken) => {
+		if(token.isValid()) {
+			httpOptions.headers.append('Authorization', token.getValue());
+			
+			
+					
+		});*/
+		this.loadToken().then( (token) => {
+			return this.http.get(this.url + "/profile", httpOptions)
+				.pipe(tap((data) => console.log('got profile data')),
+				catchError(this.handleError<any>('error data retrievel'))
+				);
+		});
 	}
+
+	private loadToken() {
+		return new Promise(resolve => 
+			this.authService.getToken().subscribe((token : NbAuthJWTToken) => {
+				if(token.isValid()) {
+					httpOptions.headers.append('Authorization', token.getValue());
+				}
+				resolve(token);
+			})
+		)
+	}
+
 
 	private handleError<T> (operation = 'operation', result?: T) {
 		return (error: any): Observable<T> => {

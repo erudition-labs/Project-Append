@@ -44,8 +44,14 @@ router.delete('/:id', (request, response, next) => {
 
 //profile
 // Note that passport will set a user object with  passport.authenticate() if the token is calid
-router.get('/profile', passport.authenticate('jwt', {session: false}), (request, response, next) => {
+/*router.get('/profile', passport.authenticate('jwt', {session: false}), (request, response, next) => {
+	return response.status(200).json({user:request.user});
+});*/
+
+
+router.get('/profile', (request, response, next) => {
 	return response.status(200).json({user:request.user});
 });
+
 
 module.exports = router;
