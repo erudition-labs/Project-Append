@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../@core/data/users.service';
 
 @Component({
-  selector: 'profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+	selector: 'profile',
+	templateUrl: './profile.component.html',
+	styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
 
@@ -12,7 +12,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
   	this.userService.getProfile().subscribe((result) => {
-		console.log(result);
+		console.log(result.data);
 	});
   }
 

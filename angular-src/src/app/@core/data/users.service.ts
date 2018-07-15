@@ -56,12 +56,10 @@ readonly url :  string = "http://localhost:3000/api/v1/users";
 			
 					
 		});*/
-		this.loadToken().then( (token) => {
 			return this.http.get(this.url + "/profile", httpOptions)
-				.pipe(tap((data) => console.log('got profile data')),
+				.pipe(tap((data) => console.log('got profile data::' + data)),
 				catchError(this.handleError<any>('error data retrievel'))
 				);
-		});
 	}
 
 	private loadToken() {

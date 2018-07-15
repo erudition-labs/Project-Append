@@ -50,7 +50,14 @@ router.delete('/:id', (request, response, next) => {
 
 
 router.get('/profile', (request, response, next) => {
-	return response.status(200).json({user:request.user});
+//	return response.status(200).json({user:request.user});
+	User.findOne({}, {}, {sort: {'created_at':-1}}, function(error, post) {
+		if(error) {
+			return response.status(500).json({success: dalse, msg: 'nobody in ur database idiot'});	
+		} else {
+			return response.status(200).json({success: true, data: post});
+		}
+	});
 });
 
 
