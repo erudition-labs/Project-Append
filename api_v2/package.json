@@ -1,0 +1,31 @@
+{
+  "name": "jrotc-api",
+  "version": "0.0.0",
+  "description": "EuriditionLabs API for JROTC Angular Applications",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "author": "Euridition Labs",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "bcryptjs": "*",
+    "body-parser": "*",
+    "cookie-parser": "*",
+    "cors": "*",
+    "csurf": "*",
+    "dotenv": "*",
+    "express": "*",
+    "express-jwt": "*",
+    "express-rate-limit": "*",
+    "express-session": "*",
+    "helmet": "*",
+    "jsonwebtoken": "*",
+    "jwt-decode": "*",
+    "mongoose": "*"
+  },
+  "devDependencies": {
+    "nodemon": "*"
+  }
+}
