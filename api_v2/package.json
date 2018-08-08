@@ -23,6 +23,9 @@
     "helmet": "*",
     "jsonwebtoken": "*",
     "jwt-decode": "*",
+    "mongoose-unique-validator": "*",
+    "express-validator": "*",
+    "email-verification": "^0.4.6",
     "mongoose": "*"
   },
   "devDependencies": {
