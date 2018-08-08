@@ -82,8 +82,8 @@ const makeCsrfToken = (request, response, next) => {
  *
  * */
 
-app.use('/api/user', 			require('./api/users'));
-app.use('/api/authenticate', 	require('./api/authenticate'));
+app.use('/api/v1/user', 			require('./api/users'));
+app.use('/api/v1/authenticate', 	require('./api/authenticate'));
 
 /*
  *
