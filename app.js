@@ -13,7 +13,7 @@ const auth			= require('./routes/auth');
 
 require('./database/config/passport')(passport);
 
-var promise = mongoose.connect(config.database); //connect to mongoose database
+var promise = mongoose.connect(config.database, { useNewUrlParser: true }); //connect to mongoose database
 mongoose.connection.on('connected', () => {     //tell us if we are connected
 	console.log('Connected to database '+ config.database)
 });
