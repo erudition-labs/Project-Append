@@ -1,4 +1,5 @@
-//require('dotenv').config(); 
+//require('dotenv').config(); so we can use env variables like this...
+//process.env.JWT_SECRET
 const express 		= require('express');
 const mongoose 		= require('mongoose');
 const bodyParser 	= require('body-parser');
@@ -9,6 +10,7 @@ const jwt 			= require('jsonwebtoken');
 const cookieParser	= require('cookie-parser');
 const helmet 		= require('helmet');
 const rateLimit 	= require('express-rate-limit');
+const config		= require('./database');
 
 const app = express();
 
@@ -50,7 +52,7 @@ const checkJwt = (request, response, next) => {
 	}
 	
 	try {
-		const decoded = jwt.verify(token, tokenSecret, { ///////////////////////change token secret to wahtevs
+		const decoded = jwt.verify(token, config.secret, { ///////////////////////change token secret to wahtevs
 			audience	: 'api.euriditionlabs.com',
 			issuer		: 'api.euriditionlabs.com'
 		});
@@ -99,7 +101,7 @@ app.use(checkJwt);
 async function connect() {
 	try {
 		mongoose.Promise = global.Promise;
-		await mongoose.connect(URL); ///////////////////////////////////////////change to url
+		await mongoose.connect(config.database); ///////////////////////////////////////////change to url
 	} catch(error) {
 		console.log('Mongoose error', error);
 	}
