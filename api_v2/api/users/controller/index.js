@@ -52,7 +52,7 @@ const getUserByEmail = async (request, response) => {
 		}
 		return response.json({ success: true, emailTaken: false });
 	} catch(error) {
-		return response.status(400).json(success: false, msg: 'There was a problem checking the email');
+		return response.status(400).json({ success: false, msg: 'There was a problem checking the email' });
 	}
 };
 
