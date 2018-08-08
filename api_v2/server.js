@@ -101,7 +101,7 @@ app.use(checkJwt);
 async function connect() {
 	try {
 		mongoose.Promise = global.Promise;
-		await mongoose.connect(config.database); ///////////////////////////////////////////change to url
+		await mongoose.connect(config.database, { useNewUrlParser: true }); //////////////change to url
 	} catch(error) {
 		console.log('Mongoose error', error);
 	}

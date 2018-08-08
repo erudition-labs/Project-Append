@@ -3,7 +3,7 @@ const { verifyPassword 		} = require('./../../users/util');
 const { createToken 		} = require('./../util');
 const jwtDecode = require('jwt-decode');
 
-const postAuthenticate = asyn (request, response) => {
+const postAuthenticate = async (request, response) => {
 	try {
 		const email 	= request.body.email;
 		const password 	= request.body.password;
@@ -37,4 +37,4 @@ const postAuthenticate = asyn (request, response) => {
 	}
 };
 
-modules.exports = { postAuthenticate };
+module.exports = { postAuthenticate };
