@@ -1,4 +1,5 @@
-const jwt = require('jsonwebtoken');
+const jwt 		= require('jsonwebtoken');
+const config 	= require('./../../../database'); 
 
 const createToken = user => {
 	if(!user.role) {
@@ -11,7 +12,7 @@ const createToken = user => {
 		iss			: 'api.euriditionlabs.com',
 		aud			: 'api.euriditionlabs.com'
 	},
-	JWT_SECRET, //////////////////////////////////////change this
+	config.secret, //////////////////////////////////////change this
 	{ algorithm: 'HS256', expiresIn: '1h' }
 	);
 };
