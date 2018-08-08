@@ -1,46 +1,61 @@
-const queries 			= require('./../query');
-const util 				= require('./../util');
-const { createToken } 	= require('./../../authenticate/util');
-const jwtDecode 		= require('jwt-decode');
+const queries 				= require('./../query');
+const util 					= require('./../util');
+const models				= require('./../model');
+const { createToken } 		= require('./../../authenticate/util');
+const jwtDecode 			= require('jwt-decode');
+const { validationResult }	= require('express-validator/check');
+const User					= models.user;
 
 const postUser = async (request, response) => {
-	try {
-		const hashedPassword = await util.hashPassword(request.body.password);
-	
-		const userData = {
-			email: request.body.toLowerCase(),
-			password: hashedPassword
-		};
+	const errors = validationResult(request);
+	if (!errors.isEmpty()) { // If there are any, respond with them
+		return response.status(422).json({ errors: errors.array() });
+	}
 
-		const existingEamil = await queries.getUserByEmail(userData.email);
-		if(existingEmail) {
-			return response.status(400).json({ success: false, msg: 'Email already exists' });
+	let userData = new User({
+		firstName	: request.body.firstName,
+		lastName	: request.body.lastName,
+		email		: request.body.email.toLowerCase(),
+		rank		: request.body.rank,
+		flight		: request.body.flight,
+		team		: request.body.team,
+		password	: request.body.password
+	});
+
+	util.NEV.createTempUser(newUser, function(error, existingPersistentUser, newTempUser) {
+		//some sort of error
+		if(error) {
+			return response.status(500).json({ success: false, msg:'Something went wrong'});
 		}
 
-		const user = await queries.createUser(userData);
-		if(user) {
-			const token 		= createToken(user);
-			const decodedToken 	= jwtDecode(token);
-			const expiresAt 	= decodedToken.exp;
+		//user already exists in persistent collection...
+		if (existingPersistentUser) {
+			//handle user's existence... violently.
+			return response.status(418).json({ success: false, msg:'User already exists'}); //418 is i am a teapot
+		}
 
-			const UserInfo = {
-				email: user.email,
-				role:  user.role
-			};
-
-			response.cookie('token', token, { maxAge: 360000, httpOnly: true });
-			return response.json({ success: true, msg: 'User Created!', 
-				token,
-				userinfo,
-				expiresAt
+		//a new user
+		if (newTempUser) {
+			let URL = newTempUser[util.NEV.options.URLFieldName];
+			util.NEV.sendVerificationEmail(newUser.email, URL, function(err, info) {
+				if(error) {
+					console.log(err);
+					return response.status(404).json({success: false, msg: 'ERROR: sending verification email FAILED'});
+				}
+				return response.status(202).json({
+					success: true,
+					msg: 'An email has been sent to you. Please check it to verify your account.',
+					info: info
+				});
 			});
 		} else {
-			response.status(400).json({ success: false, msg: 'There was a problem creating your account' });
+				//user already exists in temporary collection...
+			console.log("user already exists");
+			return response.status(401).json({ success: false, msg:'Please Verify Your Email'});
 		}
-	} catch(error) {
-		return response.status(400).json({ success: false, msg: 'There was a problem creating your account' });
-	}
+	});
 };
+
 
 const getUserByEmail = async (request, response) => {
 	try {
