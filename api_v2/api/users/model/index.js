@@ -12,3 +12,18 @@ const userModel = new Schema({
 	password	: { type: String, required: true }
 }).plugin(uniqueValidator);
 
+const tempUserModel = new Schema({
+	firstName	: { type: String, required: true },
+	lastName	: { type: String, required: true },
+	email		: { type: String, index: true, unique: true, required: true },
+	rank		: { type: String, required: true },
+	flight 		: { type: String, required: true },
+	team 		: { type: String, required: true },
+	password	: { type: String, required: true },
+	GENERATED_VERIFYING_URL : { type: String }
+}).plugin(uniqueValidator);
+
+
+module.exports.user 	= mongoose.model('user', userModel);
+module.exports.tmpUser 	= mongoose.model('tempUser', tempUserModel);
+
