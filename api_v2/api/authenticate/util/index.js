@@ -3,7 +3,7 @@ const config 	= require('./../../../database/config');
 
 const createToken = user => {
 	if(!user.role) {
-		throw new Error('No user tole specified');
+		throw new Error('No user role specified');
 	}
 	return jwt.sign({
 		sub			: user._id,
@@ -12,9 +12,9 @@ const createToken = user => {
 		iss			: 'api.euriditionlabs.com',
 		aud			: 'api.euriditionlabs.com'
 	},
-	config.secret, //////////////////////////////////////change this
-	{ algorithm: 'HS256', expiresIn: '1h' }
+		config.secret, //////////////////////////////////////change this
+		{ algorithm: 'HS256', expiresIn: '1h' }
 	);
 };
 
-modules.exports = { createToken };
+module.exports = { createToken };
