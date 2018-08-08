@@ -60,3 +60,51 @@ const checkJwt = (request, response, next) => {
 		return response.status(403).json({success: false, msg: 'Access denied'});
 	}
 };
+
+
+/*
+ * To avoid help Cross-Site Request Forgery, we use the csurf middleware
+ * It generates a random string of letters and numbers that
+ * must be present in the headers of any requests meant to mutate data
+ *
+ * */
+
+const makeCsrfToken = (request, response, next) => {
+	response.cookie('csrf-token', request.csrfToken());
+	next();
+};
+
+/*
+ *
+ ********* Routes that DO NOT Require Auth		
+ *
+ * */
+
+app.use('/api/user', 			require('./api/users'));
+app.use('/api/authenticate', 	require('./api/authenticate'));
+
+/*
+ *
+ ******** Routes REQUIRING Auth
+ *
+ * */
+
+app.use(csrf({cookie: true}));
+app.use(makeCsrfToken);
+app.use(attatchUser);
+app.use(checkJwt);
+
+//app.use('/api/something', require('./api.something'));
+
+async function connect() {
+	try {
+		mongoose.Promise = global.Promise;
+		await mongoose.connect(URL); ///////////////////////////////////////////change to url
+	} catch(error) {
+		console.log('Mongoose error', error);
+	}
+	app.listen(3000);
+	console.log('API listening on localhost:3000');
+}
+
+connect();
