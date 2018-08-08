@@ -8,8 +8,8 @@ const postUser = async (request, response) => {
 		const hashedPassword = await util.hashPassword(request.body.password);
 	
 		const userData = {
-			email: request.body.toLowerCase();
-			password: hashedPassword,
+			email: request.body.toLowerCase(),
+			password: hashedPassword
 		};
 
 		const existingEamil = await queries.getUserByEmail(userData.email);
