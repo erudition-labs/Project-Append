@@ -56,6 +56,37 @@ const postUser = async (request, response) => {
 	});
 };
 
+const postVerifyResend = async (request, response) => {
+	const errors = validationResult(request);
+	if (!errors.isEmpty()) {
+		return response.status(422).json({ errors: errors.array() });
+	}
+
+	util.NEV.resendVerificationEmail(request.body.email, function(error, userFound) {
+		if(error) {
+			return response.status(404).send('ERROR: resending verification email FAILED');
+		}
+
+		// the temp user was found
+		if(userFound) {
+			return response.status(200).json({ success: true, msg: 'An email has been sent to you. Please check it to verify your account.'});
+		} else {
+			// the temp user was not found, meaning the token expired
+			return response.status(404).json({ success: false, msg: 'Your verification code has expired. Please sign up again.'});
+		}
+	});
+};
+
+const postEmailVerification = async (request, response) => {
+	util.NEV.confirmTempUser(request.params.URL, function(error, user) { // Nev takes care of url being empty
+		if(user) {
+			return response.status(201).json({ success: true, msg: "Account Confirmed" });
+		} else {
+			return response.status(404).json({ success:false, msg: "Confirmation Failed" });
+		}
+	});
+};
+
 
 const getUserByEmail = async (request, response) => {
 	try {
@@ -71,4 +102,9 @@ const getUserByEmail = async (request, response) => {
 	}
 };
 
-module.exports = {postUser, getUserByEmail };
+module.exports = { 
+	postUser, 
+	postVerifyResend,
+	postEmailVerification,
+	getUserByEmail
+};

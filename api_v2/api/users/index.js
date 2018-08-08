@@ -15,7 +15,13 @@ router.route('/').post([
 	body('password').exists().withMessage('Password Required').trim().escape()
 ], controller.postUser);
 
+router.route('/verify-resend').post([
+	body('email').exists().withMessage('Email Required')
+		.isEmail().withMessage('Valid Email Required').normalizeEmail()
+], controller.postVerifyResend);
 
+
+router.route('/email-verification/:URL').get(controller.postEmailVerification);
 router.route('/check-email').get(controller.getUserByEmail);
 
 module.exports = router;
