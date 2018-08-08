@@ -5,6 +5,11 @@ const jwtDecode = require('jwt-decode');
 
 const postAuthenticate = async (request, response) => {
 	try {
+		const errors = validationResult(request);
+		if (!errors.isEmpty()) {
+			return response.status(422).json({ errors: errors.array() });
+		}
+
 		const email 	= request.body.email;
 		const password 	= request.body.password;
 		
@@ -17,8 +22,9 @@ const postAuthenticate = async (request, response) => {
 			const expiresAt 	= decodedToken.exp;
 
 			const userInfo = {
-				email: user.email,
-				role:  user.role
+				email		: user.email,
+				firstName	: user.firstName,
+				role		: user.role
 			};
 
 			response.cookie('token', token, { maxAge: 360000, httpOnly: true });
