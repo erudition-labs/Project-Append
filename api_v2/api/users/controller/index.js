@@ -1,6 +1,6 @@
 const queries 			= require('./../query');
 const util 				= require('./../util');
-const { createToken } 	= require('./../../authentiate/util');
+const { createToken } 	= require('./../../authenticate/util');
 const jwtDecode 		= require('jwt-decode');
 
 const postUser = async (request, response) => {
