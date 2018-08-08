@@ -5,4 +5,4 @@ const controller 	= require('./controller');
 router.route('/').post(Controller.postUser);
 router.route('/check-email').get(controller.getUserByEmail);
 
-module.exports router;
+module.exports = router;
