@@ -10,7 +10,7 @@ const jwt 			= require('jsonwebtoken');
 const cookieParser	= require('cookie-parser');
 const helmet 		= require('helmet');
 const rateLimit 	= require('express-rate-limit');
-const config		= require('./database');
+const config		= require('./database/config');
 
 const app = express();
 

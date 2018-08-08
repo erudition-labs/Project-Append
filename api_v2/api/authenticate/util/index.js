@@ -1,5 +1,5 @@
 const jwt 		= require('jsonwebtoken');
-const config 	= require('./../../../database'); 
+const config 	= require('./../../../database/config'); 
 
 const createToken = user => {
 	if(!user.role) {
