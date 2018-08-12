@@ -1,84 +1,46 @@
-import { APP_BASE_HREF 				} from '@angular/common';
-import { BrowserModule 				} from '@angular/platform-browser';
-import { BrowserAnimationsModule 	} from '@angular/platform-browser/animations';
-import { NgModule 					} from '@angular/core';
-import { HttpClientModule 			} from '@angular/common/http';
-import { CoreModule 				} from './@core/core.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
+import { RouterModule } from '@angular/router';
 
-import { AppComponent 			} from './app.component';
-import { AppRoutingModule 		} from './app-routing.module';
-import { ThemeModule 			} from './@theme/theme.module';
-import { NgbModule 				} from '@ng-bootstrap/ng-bootstrap';
-import { NbPasswordAuthStrategy, NbAuthModule } from '@nebular/auth';
-import { NbAuthJWTToken } from '@nebular/auth';
 
-const formSettings : any = {
-	redirectDelay: 500,  // delay before redirect after a successful login, while success message is shown 
-	strategy: 'email',  // strategy id key
-	rememberMe: false, // whether to show or not the `rememberMe` checkbox
-	showMessages: { // show/not show success/error messages
-		success: true,
-		error: true,
-	},
-};
+import { AppRoutingModule } from './app.routing';
+import { ComponentsModule } from './components/components.module';
+
+import { AppComponent } from './app.component';
+
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+//import { TableListComponent } from './table-list/table-list.component';
+//import { TypographyComponent } from './typography/typography.component';
+//import { IconsComponent } from './icons/icons.component';
+//import { MapsComponent } from './maps/maps.component';
+//import { NotificationsComponent } from './notifications/notifications.component';
+//import { UpgradeComponent } from './upgrade/upgrade.component';
+import {
+  AgmCoreModule
+} from '@agm/core';
+import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 
 @NgModule({
-  declarations: [AppComponent],
   imports: [
-    BrowserModule,
     BrowserAnimationsModule,
-    HttpClientModule,
+    FormsModule,
+    HttpModule,
+    ComponentsModule,
+    RouterModule,
     AppRoutingModule,
-
-    NgbModule.forRoot(),
-    ThemeModule.forRoot(),
-    CoreModule.forRoot(),
-	NbAuthModule.forRoot({
-		strategies: [
-			NbPasswordAuthStrategy.setup({
-				name: 'email',
-				token: { 
-					class: NbAuthJWTToken, 
-					key: 'token' 
-				},
-
-				baseEndpoint:'',
-
-				logout: {
-					endpoint: '',
-					redirect: {
-						success: '/',
-						failure: '/',
-					},
-				},
-
-				login: {
-				endpoint: 'http://localhost:3000/api/v1/auth/authenticate',
-					method: 'post',
-				},
-
-				register: {
-				endpoint: 'http://localhost:3000/api/v1/auth/register',
-					method: 'post',
-					redirect: {
-						success: '/',
-					},
-				},
-
-			}),
-		],
-		forms: {
-			login 		: formSettings,
-			register	: formSettings,	
-			logout		: formSettings,	
-
-		},
-	}), 
+    AgmCoreModule.forRoot({
+      apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
+    })
   ],
-  bootstrap: [AppComponent],
-  providers: [
-    { provide: APP_BASE_HREF, useValue: '/' },
+  declarations: [
+    AppComponent,
+    AdminLayoutComponent,
+
   ],
+  providers: [],
+  bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule { }

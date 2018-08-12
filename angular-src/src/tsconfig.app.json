@@ -3,25 +3,11 @@
   "compilerOptions": {
     "outDir": "../out-tsc/app",
     "module": "es2015",
-    "baseUrl": "./",
-    "types": [],
-    "paths": {
-      "@angular/*": [
-        "../node_modules/@angular/*"
-      ],
-      "@nebular/*": [
-        "../node_modules/@nebular/*"
-      ]
-    }
+    "baseUrl": "",
+    "types": []
   },
   "exclude": [
     "test.ts",
-    "**/*.spec.ts",
-    "../node_modules/@nebular/**/*.spec.ts"
-  ],
-  "include": [
-    "../src/*.ts",
-    "../src/**/*.ts",
-    "../node_modules/@nebular/**/*.ts"
+    "**/*.spec.ts"
   ]
 }

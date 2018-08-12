@@ -1,38 +1,11 @@
-/**
- * @license
- * Copyright Akveo. All Rights Reserved.
- * Licensed under the MIT License. See License.txt in the project root for license information.
- */
-import { Component, OnInit 		} from '@angular/core';
-import { AnalyticsService 		} from './@core/utils/analytics.service';
-import { NbMenuService 			} from '@nebular/theme';
-import { Router 				} from '@angular/router';
+import { Component} from '@angular/core';
+
 
 @Component({
-  selector: 'ngx-app',
-  template: '<router-outlet></router-outlet>',
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
-constructor(private analytics	: AnalyticsService,
-			private menuService	: NbMenuService,
-			private router		: Router) {
-
-	this.menuService.onItemClick()
-		.subscribe((event) => {
-			this.onContecxtItemSelection(event.item.title);
- 		});
-	}
-
-	ngOnInit(): void {
-		this.analytics.trackPageViews();
-	}
-
-	onContecxtItemSelection(title) {
-		if(title === 'Log out') {
-			return this.router.navigateByUrl('/auth/logout');
-		} else if (title === 'Profile') {
-      return this.router.navigateByUrl('/pages/profile');
-    }
-	}
 }
