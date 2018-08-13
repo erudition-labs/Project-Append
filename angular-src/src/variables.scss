@@ -1,0 +1,12 @@
+$white: #fff;
+$off-white: #f9f9f9;
+$blue: hsl(204, 86%, 53%);
+$red: hsla(0, 100%, 64%, 1);
+@mixin light-shadow {
+  box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.11),
+    0 5px 15px 0 rgba(0, 0, 0, 0.08);
+}
+
+@mixin sm-light-shadow {
+  box-shadow: 0 7px 15px 0 rgba(0, 0, 0, 0.11), 0 3px 7px 0 rgba(0, 0, 0, 0.08);
+}
