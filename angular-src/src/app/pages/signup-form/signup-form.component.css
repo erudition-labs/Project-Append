@@ -1,0 +1,13 @@
+input {
+	border: none;
+	background-color: none;
+	outline: 0;
+	box-shadow: none;
+	border-bottom: 1px solid #dbdbdb;
+	border-radius: 0;
+}
+
+input:focus {
+	box-shadow: none;
+	-webkit-box-shadow: none;
+}
