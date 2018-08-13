@@ -23,6 +23,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { BigInputComponent } from './big-input/big-input.component';
 import { BigInputActionComponent } from './big-input/big-input-action.component';
+import { FormMessageComponent } from './form-message/form-message.component';
 
 @NgModule({
   imports: [
@@ -48,7 +49,7 @@ import { BigInputActionComponent } from './big-input/big-input-action.component'
     MatSnackBarModule,
     MatSlideToggleModule
   ],
-  declarations: [BigInputComponent, BigInputActionComponent],
+  declarations: [BigInputComponent, BigInputActionComponent, FormMessageComponent],
   exports: [
     CommonModule,
     FormsModule,

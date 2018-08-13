@@ -1,0 +1,11 @@
+<article class="message" [ngClass]="{
+		 'is-success': messageType === 'success', 
+		 'is-danger' : messageType === 'error'}">
+
+	<div class="message-body">
+		<i class="fa" [ngClass]="{
+			'has-text-success fa-check-circle': messageType === 'success',
+			'fa-times-circle is-danger' : messageType === 'error'}"></i>
+		<span class="has-icon-left"> {{ message }} </span>
+	</div>
+</article>
