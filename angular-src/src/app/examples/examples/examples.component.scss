@@ -1,0 +1,17 @@
+@import '../../../styles-variables';
+
+nav {
+  margin-bottom: 20px;
+  position: relative;
+
+  .mat-tab-link {
+    min-width: 130px;
+  }
+
+  @media (max-width: map-get($grid-breakpoints, sm)) {
+    .mat-tab-link {
+      min-width: 0;
+      padding: 0 15px;
+    }
+  }
+}
