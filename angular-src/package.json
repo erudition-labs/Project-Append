@@ -23,11 +23,6 @@
     "contributors:generate": "all-contributors generate && node .all-contributors-html.js",
     "contributors:check": "all-contributors check"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run prettier && ng lint"
-    }
-  },
   "private": true,
   "dependencies": {
     "@angular/animations": "^6.1.2",

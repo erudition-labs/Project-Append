@@ -1,16 +1,16 @@
-import { NgModule, Injectable } from '@angular/core';
-import { SharedModule } from '@app/shared';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { TranslateModule } from '@ngx-translate/core';
+import { NgModule, Injectable } from "@angular/core";
+import { SharedModule } from "@app/shared";
+import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+import { TranslateModule } from "@ngx-translate/core";
 import {
   Store,
   StateObservable,
   ActionsSubject,
   ReducerManager,
   StoreModule
-} from '@ngrx/store';
-import { BehaviorSubject } from 'rxjs';
-import { RouterTestingModule } from '@angular/router/testing';
+} from "@ngrx/store";
+import { BehaviorSubject } from "rxjs";
+import { RouterTestingModule } from "@angular/router/testing";
 
 @Injectable()
 export class MockStore<T> extends Store<T> {

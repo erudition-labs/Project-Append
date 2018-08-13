@@ -1,13 +1,13 @@
-import { TestBed, async } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { TestBed, async } from "@angular/core/testing";
+import { RouterTestingModule } from "@angular/router/testing";
+import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 
-import { SharedModule } from '@app/shared';
-import { CoreModule } from '@app/core';
+import { SharedModule } from "@app/shared";
+import { CoreModule } from "@app/core";
 
-import { AppComponent } from './app.component';
+import { AppComponent } from "./app.component";
 
-describe('AppComponent', () => {
+describe("AppComponent", () => {
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
@@ -23,7 +23,7 @@ describe('AppComponent', () => {
   );
 
   it(
-    'should create the app',
+    "should create the app",
     async(() => {
       const fixture = TestBed.createComponent(AppComponent);
       const app = fixture.debugElement.componentInstance;
