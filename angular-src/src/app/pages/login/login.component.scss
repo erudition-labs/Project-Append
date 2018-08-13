@@ -1,0 +1,6 @@
+@import '../../../variables';
+
+.card {
+	border-radius: 4px;
+	@include light-shadow;
+}
