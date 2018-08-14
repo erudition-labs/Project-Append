@@ -1,85 +1,84 @@
-import { BrowserModule                      } from '@angular/platform-browser';
-import { NgModule                           } from '@angular/core';
-import { FormsModule, ReactiveFormsModule   } from '@angular/forms';
-import { HttpClientModule                   } from '@angular/common/http';
-import { RouterModule, Routes               } from '@angular/router';
-import { AppRoutingModule, routes           } from './app.routing';
-import { ComponentsModule                   } from './components/components.module';
-import { FlashMessagesModule                } from 'angular2-flash-messages';
-import { HttpModule                         } from '@angular/http';
+import { APP_BASE_HREF 				} from '@angular/common';
+import { BrowserModule 				} from '@angular/platform-browser';
+import { BrowserAnimationsModule 	} from '@angular/platform-browser/animations';
+import { NgModule 					} from '@angular/core';
+import { HttpClientModule 			} from '@angular/common/http';
+import { CoreModule 				} from './@core/core.module';
 
+import { AppComponent 			} from './app.component';
+import { AppRoutingModule 		} from './app-routing.module';
+import { ThemeModule 			} from './@theme/theme.module';
+import { NgbModule 				} from '@ng-bootstrap/ng-bootstrap';
+import { NbPasswordAuthStrategy, NbAuthModule } from '@nebular/auth';
+import { NbAuthJWTToken } from '@nebular/auth';
 
-//services
-import { AuthService            } from './services/auth.service';
-import { AuthGuard              } from './guards/auth.guard';
-
-
-//tabs are below
-import { AppComponent                                               } from './app.component';
-import { EventsComponent                                            } from './components/events/events.component';
-
-import { MatAutocompleteModule, MatInputModule   } from '@angular/material';
-import { BrowserAnimationsModule                 } from '@angular/platform-browser/animations';
-import { MatSelectModule                         } from '@angular/material/select';
-import { MatCardModule                           } from '@angular/material/card';
-import { MatExpansionModule                      } from '@angular/material/expansion';
-import { MatChipsModule                          } from '@angular/material/chips';
-import { MatListModule                           } from '@angular/material/list';
-import { MatDialogModule                         } from '@angular/material/dialog';
-import { MatButtonModule                         } from '@angular/material/button';
-import { MatFormFieldModule                      } from '@angular/material/form-field';
-import { MatStepperModule                        } from '@angular/material/stepper';
-import { MatGridListModule                       } from '@angular/material/grid-list';
-import { MatDividerModule                        } from '@angular/material/divider';
-
-
-
-
-
-import { DragulaModule } from 'ng2-dragula';
-import { PopoverModule } from 'ngx-popover';
+const formSettings : any = {
+	redirectDelay: 500,  // delay before redirect after a successful login, while success message is shown 
+	strategy: 'email',  // strategy id key
+	rememberMe: false, // whether to show or not the `rememberMe` checkbox
+	showMessages: { // show/not show success/error messages
+		success: true,
+		error: true,
+	},
+};
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        EventsComponent,
-    ],
+  declarations: [AppComponent],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    AppRoutingModule,
 
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        FormsModule,
-        HttpClientModule,
-        ReactiveFormsModule,
-        ComponentsModule,
-        RouterModule,
-        AppRoutingModule,
-        MatAutocompleteModule,
-        MatInputModule,
-        MatSelectModule,
-        MatExpansionModule,
-        MatCardModule,
-        MatChipsModule,
-        MatListModule,
-        MatDialogModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatStepperModule,
-        MatGridListModule,
-        MatDividerModule,
-        DragulaModule,
-        PopoverModule,
-        FlashMessagesModule.forRoot(),
-        HttpModule,
-        RouterModule.forRoot(routes)
-    ],
-    providers: [
-        AuthService,
-        AuthGuard,
-    ],
+    NgbModule.forRoot(),
+    ThemeModule.forRoot(),
+    CoreModule.forRoot(),
+	NbAuthModule.forRoot({
+		strategies: [
+			NbPasswordAuthStrategy.setup({
+				name: 'email',
+				token: { 
+					class: NbAuthJWTToken, 
+					key: 'token' 
+				},
 
-    entryComponents: [
-    ],
-    bootstrap: [AppComponent]
+				baseEndpoint:'',
+
+				logout: {
+					endpoint: '',
+					redirect: {
+						success: '/',
+						failure: '/',
+					},
+				},
+
+				login: {
+				endpoint: 'http://localhost:3000/api/v1/auth/authenticate',
+					method: 'post',
+				},
+
+				register: {
+				endpoint: 'http://localhost:3000/api/v1/auth/register',
+					method: 'post',
+					redirect: {
+						success: '/',
+					},
+				},
+
+			}),
+		],
+		forms: {
+			login 		: formSettings,
+			register	: formSettings,	
+			logout		: formSettings,	
+
+		},
+	}), 
+  ],
+  bootstrap: [AppComponent],
+  providers: [
+    { provide: APP_BASE_HREF, useValue: '/' },
+  ],
 })
-export class AppModule {}
+export class AppModule {
+}

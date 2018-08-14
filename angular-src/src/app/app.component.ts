@@ -1,52 +1,38 @@
-import { Component, OnInit, OnDestroy                       } from '@angular/core';
-import { Location, LocationStrategy, PathLocationStrategy   } from '@angular/common';
-import { Subscription                                       } from 'rxjs/Subscription';
-import { FlashMessagesService                               } from 'angular2-flash-messages';
-import { MessageService                                     } from './services/message.service';
-import { AuthService                                        } from './services/auth.service';
-
-
-declare const $: any;
+/**
+ * @license
+ * Copyright Akveo. All Rights Reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
+ */
+import { Component, OnInit 		} from '@angular/core';
+import { AnalyticsService 		} from './@core/utils/analytics.service';
+import { NbMenuService 			} from '@nebular/theme';
+import { Router 				} from '@angular/router';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css']
+  selector: 'ngx-app',
+  template: '<router-outlet></router-outlet>',
 })
-export class AppComponent implements OnInit, OnDestroy {
-    message         : any;
-    subscription    : Subscription;
+export class AppComponent implements OnInit {
 
-    constructor(public location     : Location,
-        private messageService      : MessageService,
-        private flashMessageService : FlashMessagesService,
-        private authService         : AuthService
-    ) {
-        this.subscription = this.messageService.getMessage().subscribe(message => {
-            this.message = message;
-            this.flashMessageService.show(message.text, {cssClass: 'alert-success', timeout:5000});
-        });
+constructor(private analytics	: AnalyticsService,
+			private menuService	: NbMenuService,
+			private router		: Router) {
+
+	this.menuService.onItemClick()
+		.subscribe((event) => {
+			this.onContecxtItemSelection(event.item.title);
+ 		});
+	}
+
+	ngOnInit(): void {
+		this.analytics.trackPageViews();
+	}
+
+	onContecxtItemSelection(title) {
+		if(title === 'Log out') {
+			return this.router.navigateByUrl('/auth/logout');
+		} else if (title === 'Profile') {
+      return this.router.navigateByUrl('/pages/profile');
     }
-
-    ngOnInit() {
-        $.material.options.autofill = true;
-        $.material.init();
-    }
-
-
-    isMaps(path){
-        var titlee = this.location.prepareExternalUrl(this.location.path());
-        titlee = titlee.slice( 1 );
-        if(path == titlee){
-            return false;
-        }
-        else {
-            return true;
-        }
-    }
-
-    ngOnDestroy() {
-        // unsubscribe to ensure no memory leaks
-        this.subscription.unsubscribe();
-    }
+	}
 }
