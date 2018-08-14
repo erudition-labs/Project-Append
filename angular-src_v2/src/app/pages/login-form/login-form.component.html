@@ -1,3 +1,4 @@
+<div class="container">
 <form [formGroup]="loginForm" method="post" (ngSubmit)="onSubmit()">
 	<div class="columns" *ngIf="loginResult">
 		<div class="column">
@@ -9,9 +10,10 @@
 
 	<div class="columns is-multiline">
 		<div class="column is-full">
-			<div class="field">
+			<!---<div class="field"> -->
+				<mat-form-field>
 				<p class="control has-icons-left">
-					<input class="input"
+					<input matInput 
 						   type="email"
 						   placeholder="Email"
 						   formControlName="email">
@@ -20,17 +22,18 @@
 					</span>
 				</p>
 
-				<small class="has-text-danger"
-					   *ngIf="loginForm.get('email').hasError('required') &&
+				
+					   <mat-error *ngIf="loginForm.get('email').hasError('required') &&
 					   loginForm.get('email').dirty">
-					Email is required </small>
-			</div>
+						   <strong>Email is required </strong></mat-error>
+				</mat-form-field>
+				<!--- </div> -->
 		</div>
 
 		<div class="column is-full">
-			<div class="field">
+			<mat-form-field>
 				<p class="control has-icons-left">
-					<input class="input"
+					<input matInput
 						   type="password"
 						   placeholder="password"
 						   formControlName="password">
@@ -39,11 +42,11 @@
 					</span>
 				</p>
 
-				<small class="has-text-danger"
+				<mat-error
 					   *ngIf="loginForm.get('password').hasError('required') &&
 					   loginForm.get('password').dirty">
-					Password is required </small>
-			</div>
+					<strong>Password is required</strong> </mat-error>
+				</mat-form-field>
 		</div>
 	</div>
 
@@ -52,3 +55,4 @@
 		Log In
 	</button>
 </form>
+</div>
