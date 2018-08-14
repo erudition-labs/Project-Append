@@ -14,7 +14,7 @@ export class AuthService {
 				private router	: Router) {}
 
 	public isAuthenticated(): boolean {
-		const expirestAt = localStorage.getItem('ExpiresAt');
+		const expiresAt = localStorage.getItem('ExpiresAt');
 
 		if(!expiresAt) {
 			return false;
@@ -23,7 +23,7 @@ export class AuthService {
 		return new Date().getTime() < parseInt(expiresAt);
 	}
 
-	public login(Credentials: Credentials) : Observable<any> {
+	public login(credentials: Credentials) : Observable<any> {
 		//use spread to get individual properties off the supplied user object
 		//to a new object
 		return this.http.post(`/api/authenticate`, { ...credentials });	
@@ -52,7 +52,7 @@ export class AuthService {
 
 	public setUser(token: string, userInfo: string, expiresAt: number) : void {
 		this.setUserInfo(userInfo);
-		this.setExpiresAt(exiresAt);
+		this.setExpiresAt(expiresAt);
 	}
 
 	public signup(user: NewUser) : Observable<any> {
@@ -67,11 +67,11 @@ export class AuthService {
 	}
 
 	public isAdmin() : boolean {
-		const userInfo = this.getUserInto();
+		const userInfo = this.getUserInfo();
 		if(!userInfo) {
 			return false;
 		}
-		return userInto.role === 'admin';
+		return userInfo.role === 'admin';
 	}
 
 	public userHasRole(expectedRole: string) : boolean {

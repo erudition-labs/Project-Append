@@ -6,19 +6,19 @@ import {
 	Validators
 } from '@angular/forms';
 
-import { AuthService } from '';
-import { UserService } from '';
-import { NewUser } from '';
+import { AuthService } from '../../core/auth/auth.service';
+import { UserService } from '../../core/user/user.service';
+import { NewUser } from '../../core/user/user.model';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'anms-signup-form',
+  selector: 'app-signup-form',
   templateUrl: './signup-form.component.html',
   styleUrls: ['./signup-form.component.css']
 })
 export class SignupFormComponent implements OnInit {
-	private signupForm : FromGroup;
+	private signupForm : FormGroup;
 	private signupLoading = false;
 	private emailValidating = false;
 	private signupResult : any;
@@ -34,7 +34,7 @@ export class SignupFormComponent implements OnInit {
 		this.createForm();
 	}
 
-	private createForm() void {
+	private createForm() : void {
 		this.signupForm = this.formBuilder.group({
 			email: new FormControl('', {
 				validators: [Validators.required, Validators.email], 
@@ -46,11 +46,11 @@ export class SignupFormComponent implements OnInit {
 			lastName	: new FormControl('', { validators: [Validators.required] }),
 			rank		: new FormControl('', { validators: [Validators.required] }),
 			flight		: new FormControl('', { validators: [Validators.required] }),
-			team		: new FormControl('', { validators: [Validators.required] }),
+			team		: new FormControl('', { validators: [Validators.required] })
 		});
 	}
 
-	private checkEmail(control FormControl) : any {
+	private checkEmail(control: FormControl) : any {
 		this.emailValidating = true;
 		const email = control.value.toLowerCase();
 

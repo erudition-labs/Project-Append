@@ -19,6 +19,10 @@ const routes: Routes = [
     loadChildren: "app/examples/examples.module#ExamplesModule"
   },
   {
+  	path: "pages",
+	loadChildren: "app/pages/pages.module#PagesModule"
+  },
+  {
     path: "**",
     redirectTo: "about"
   }

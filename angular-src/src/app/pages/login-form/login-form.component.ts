@@ -6,9 +6,11 @@ import {
 	FormControl,
 	Validators
 } from '@angular/forms'
+import { AuthService } from '../../core/auth/auth.service';
+import { Credentials } from '../../core/user/credentials.model';
 
 @Component({
-  selector: 'anms-login-form',
+  selector: 'app-login-form',
   templateUrl: './login-form.component.html',
   styleUrls: ['./login-form.component.css']
 })
@@ -18,6 +20,7 @@ export class LoginFormComponent implements OnInit {
 	private loginResult: any;
 
 	constructor(
+		private authService	: AuthService,
 		private formBuilder : FormBuilder,
 		private router		: Router) { }
 
@@ -44,7 +47,7 @@ export class LoginFormComponent implements OnInit {
 
 		if(this.loginForm.valid) {
 			this.loginLoading = true;
-			this.login(credentials).subscribe(
+			this.authService.login(credentials).subscribe(
 				result => {
 					this.loginLoading = false;
 					this.authService.setUser(

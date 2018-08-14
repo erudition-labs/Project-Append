@@ -7,7 +7,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 })
 
 export class UserService {
-	constructor(private http: HttpPlient) {}
+	constructor(private http: HttpClient) {}
 
 	public checkEmail(email: string) : Observable<any> {
 		const params = new HttpParams({

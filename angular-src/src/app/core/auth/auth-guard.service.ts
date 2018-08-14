@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
 import { Store, select } from '@ngrx/store';
+import { Router } from '@angular/router';
 
 import { selectorAuth } from './auth.reducer';
 
@@ -8,7 +9,7 @@ import { selectorAuth } from './auth.reducer';
 export class AuthGuardService implements CanActivate {
 	isAuthenticated = false;
 
-	constructor(private store: Store<any>) {
+	constructor(private store: Store<any>, private router: Router) {
 		this.store
 			.pipe(select(selectorAuth))
 			.subscribe(auth => (this.isAuthenticated = auth.isAuthenticated));
