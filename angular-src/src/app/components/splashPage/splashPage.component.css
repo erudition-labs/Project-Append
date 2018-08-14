@@ -1,0 +1,72 @@
+.bg {
+   background-color: white;
+   background-size: cover;
+   background-position: center;
+   font-family: Oswald;
+   height: 100vh;
+}
+
+label {
+   color: black;
+}
+
+html {
+   height: 100%;
+}
+
+#content {
+   text-align: center;
+   padding-top: 15%;
+   /*text-shadow: 0px 4px 3px rgba(0, 0, 0, 0.4),
+                0px 8px 13px rgba(0, 0, 0, 0.1),
+                0px 18px 23px rgba(0, 0, 0, 0.1);*/
+}
+
+.form-group {
+    display: block;
+    width: 50%;
+    margin: auto;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 25px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+h1 {
+   font-weight: 700;
+   font-size: 5em;
+}
+
+hr {
+   width: 400px;
+   border-top: 1px solid #f8f8f8;
+   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.required-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-form {
+    background-color: white;
+    font-size: 36px;
+}
+.mat-error {
+    font-size: 12px;
+}
+
+.required-container > * {
+    width: 100%;
+}
+

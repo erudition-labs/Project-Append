@@ -1,0 +1,90 @@
+<div class="main-content">
+    <button mat-raised-button color="warn" (click)="createZone(); stepper.selectedIndex =0;" id="customButton">Create Zone</button>
+
+<mat-card *ngIf=isCreating>
+    <mat-horizontal-stepper [linear]="true" #stepper="matHorizontalStepper">
+        <mat-step [stepControl]="firstFormGroup">
+            <form [formGroup]="firstFormGroup">
+              <ng-template matStepLabel>Name the Zone</ng-template>
+                  <mat-form-field>
+                    <input matInput placeholder="Zone Name" formControlName="firstCtrl" required>
+                  </mat-form-field>
+              <div>
+                <button mat-button matStepperNext>Next</button>
+              </div>
+            </form>
+
+        </mat-step>
+          <mat-step [stepControl]="secondFormGroup">
+            <form [formGroup]="secondFormGroup">
+                <ng-template matStepLabel>Zone Description</ng-template>
+                  <mat-form-field>
+                    <input matInput placeholder="Description" formControlName="secondCtrl" required>
+                  </mat-form-field>
+                      <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-button matStepperNext>Next</button>
+                      </div>
+            </form>
+        </mat-step>
+
+      <mat-step [stepControl]="thirdFormGroup">
+        <form [formGroup]="thirdFormGroup">
+            <ng-template matStepLabel>Zone Description</ng-template>
+
+            <mat-grid-list cols="2" rowHeight="2:1">
+            <mat-grid-tile class="bagContainer">
+                <mat-list class='container' [dragula]='"first-bag"' [dragulaModel]='unassignedStations'>
+                    <mat-list-item *ngFor='let station of unassignedStations' ng-draggable="true">
+                          {{ station.stationId }}
+                    </mat-list-item>
+                </mat-list>
+            </mat-grid-tile>
+
+            <mat-grid-tile class="bagContainer">
+                <mat-list class='container' [dragula]='"first-bag"' [dragulaModel]='zoneStationsArray'>
+                    <mat-list-item  *ngFor='let station of zoneStationsArray'ng-draggable="true">
+                        {{ station.stationId }}
+                    </mat-list-item>
+                </mat-list>
+            </mat-grid-tile>
+            </mat-grid-list>
+            <input matInput formControlName="thirdCtrl" [disabled]> <!-- This is  a cheap hack cuz of the form im using -->
+                  <div>
+                    <button mat-button matStepperPrevious>Back</button>
+                    <button mat-button matStepperNext>Next</button>
+                  </div>
+        </form>
+    </mat-step>
+
+        <mat-step>
+            <ng-template matStepLabel>Confirm</ng-template>
+                Is Everything good?
+            <div>
+              <button mat-button matStepperPrevious>Back</button>
+              <button mat-button (click)="submitZone(); stepper.reset()">Save</button>
+            </div>
+      </mat-step>
+  </mat-horizontal-stepper>
+</mat-card>
+
+
+
+
+<mat-card>
+    <mat-card-header>
+        <mat-card-title> Zones </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-accordion>
+            <mat-list>
+            <mat-list-item *ngFor="let zone of irrigationZones | async">
+                <button mat-raised-button color="primary" (click)="openDialog(zone)">{{zone.name}}</button>
+            </mat-list-item>
+        </mat-list>
+        </mat-accordion>
+    </mat-card-content>
+</mat-card>
+
+
+</div>

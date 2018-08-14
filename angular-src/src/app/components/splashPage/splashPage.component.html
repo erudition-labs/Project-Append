@@ -1,0 +1,98 @@
+<div class="bg">
+   <nav class="navbar navbar-default">
+            <div class="container">
+               <!-- Brand and toggle get grouped for better mobile display -->
+               <div class="navbar-header">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                     <span class="sr-only">Toggle navigation</span>
+                     <span class="icon-bar"></span>
+                     <span class="icon-bar"></span>
+                     <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="#"><i class="fa fa-umbrella"></i> Umbrella Irrigation</a>
+               </div>
+
+               <!-- Collect the nav links, forms, and other content for toggling -->
+               <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                  <ul class="nav navbar-nav">
+                     <li><a href="#">Contact</a></li>
+                  </ul>
+               </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+         </nav>
+
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-12">
+                  <div id="content">
+                     <h1>Umbrella Irrigation</h1>
+                     <h3>Serving All Your Irrigation Needs</h3>
+                     <hr>
+
+                         
+                    <div class=required-container>
+                        <p mat-line>
+                        <mat-form-field>
+                            <input matInput placeholder="username"
+                            class="input-form"
+                            [formControl]="userForm" [(ngModel)]="username">
+                            <mat-error
+                                *ngIf="userForm.invalid">{{getErrorMessage()}}
+                            </mat-error>
+                        </mat-form-field>
+                        </p>
+                    </div>
+
+                    <div class=required-container>
+                        <p mat-line>
+                        <mat-form-field>
+                            <input matInput  placeholder="password"
+                            class="input-form"
+                            type="password"
+                            [formControl]="passwordForm" [(ngModel)]="password">
+                            <mat-error
+                                *ngIf="userForm.invalid">{{getErrorMessage()}}
+                            </mat-error>
+                        </mat-form-field>
+                        </p>
+                    </div>
+
+                     <!--
+                     <form>
+                    <div class="required-container">
+                        <div class="form-group">
+                           <label for="username">Username</label>
+                           <input matInput 
+                                [formControl]="userForm"
+                              type="text"
+                              class="form-control"
+                              id="username"
+                              placeholder="Username"
+                              [(ngModel)]="username"
+                              name="username">
+                           <mat-error *ngIf="userForm.Invalid"> {{getErrorMessage()}}</mat-error>
+                        </div>
+                    </div>
+
+                    <div class="required-container">
+                        <div class="form-group">
+                           <label for="exampleInputPassword1">Password</label>
+                           <input matInput
+                                [formControl]="passwordForm"
+                              type="password"
+                              class="form-control" id="exampleInputPassword1" placeholder="Password"
+                              [(ngModel)]="password"
+                              name="password">
+                        </div>
+                    </div> -->
+                        <button
+                           (click)="onClick()"
+                           type="submit"
+                           class="btn btn-default btn-lg"
+                           value="Login"><i class="fa fa-tint"></i>  Login</button>
+                     <!-- <button class="btn btn-default btn-lg"><i class="fas fa-tint"></i> Sign In</button> -->
+                  </div>
+               </div>
+            </div>
+         </div>
+</div>

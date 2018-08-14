@@ -1,0 +1,258 @@
+/*Autocomplete */
+.example-form {
+    background-color: white;
+    min-width: 150px;
+    max-width: 390px;
+    margin-bottom: 15px;
+    width: 100%;
+  }
+  /*Autocomplete */
+  .example-full-width {
+    font-size: 18px;
+    width: 100%;
+    margin-top: 2px;
+    margin-bottom: -15px;
+  }
+
+  .row{
+    margin-left: 10px;
+  }
+  label{
+    color: #3C4858;
+    font-weight: 300;
+    font-family:  "Roboto", "Helvetica", "Arial", sans-serif;
+  }
+ 
+  #amRadio{
+    margin-left: 5px;
+  }
+
+  .availableButton{
+    -webkit-user-drag: element;
+    -khtml-user-drag: element;
+    width: block;
+  }
+
+  #availableButton:hover{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-style: bold;
+    text-decoration-color: none;
+    border-color: rgb(157, 193, 255);
+    border-width: 3px;
+  }
+
+  #droppedButton{
+    width: 100%;
+    display: block;
+    font-size: 12pt;
+    font-style: bold;
+  }
+  #droppedButton:hover{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-style: bold;
+    text-decoration-color: none;
+    border-style: solid;
+    border-width: 3px;
+    border-color: rgb(157, 193, 255);
+  }
+
+  #displayZoneButtons{
+    border: none;
+  }
+
+  #hourInput{
+    width: 50px;
+  }
+
+  #minuteInput{
+    width: 75px;
+  }
+
+  #nameLabel{
+    float: left;
+    margin-left: 15px;
+  }
+
+  #offSetInput{
+    width: 25%;
+    margin-left: 4em;
+  }
+  
+  #runTime{
+    width: 25%;
+    float: right;
+  }
+
+  #runTimeLabel{
+    float: right;
+    margin-right: 15px;
+  }
+  
+  #zone-summary{
+    /*background-color: rgb(196, 196, 196);*/
+    height: auto;
+    width: 390px;
+    text-align: center;
+  }
+
+  #stationList{
+    background-color: rgb(255, 255, 255);
+    width: 250px;
+    text-align: center;
+  }
+  
+  #scheduleList{
+    background-color: rgb(255, 255, 255);
+    border-bottom: medium;
+    border-bottom-color: rgb(238,238,238);
+    width: 400px;
+    text-align: center;
+  }
+
+  #scheduleListTitle{
+    border-style: none;
+  }
+
+  #stationDescription{
+    border: visible;
+    border-top-style: solid;
+    border-top-width: 5px;
+    border-top-color: rgb(238,238,238);
+    font-size: 14pt;
+    text-align: center;
+  }
+
+  #saveButton{
+    text-align: center;
+    block-size: auto;
+  }
+
+  #saveScheduleButton{
+    align-self: auto; 
+  }
+
+  #savedSchedule{
+    background-color: rgb(255, 255, 255);
+    height: auto;
+    width: 455px;
+    text-align: center;
+  }
+  
+  .scheduleLabels{
+    text-indent: 1em;
+    border-top-width: 2px;
+    border-top-style: solid;
+    border-top-color: rgb(238,238,238);
+    text-align: left;
+    display: block;
+  }
+
+  .scheduleListLabels{
+    text-indent: 10em;
+  }
+
+  :host ::ng-deep .cycleDay{
+    text-decoration: none;
+    padding: 5px;
+    color: #3C4858;
+    font-weight: 300;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  }
+
+  .cycleLabels{
+    padding-top: 5px;
+    padding-right: 1em;
+  }
+  #startTimeForm {
+    text-align: center;
+    padding-left: 25px;
+  }
+  
+  .currentScheduleLabels {
+    padding-right: 100px;
+    padding-left: 1em;
+    text-align: left;
+    float: left;
+  }
+
+  #currentScheduleBlock {
+    border-top-width: 2px;
+    border-top-style: solid;
+    border-top-color: rgb(238,238,238);
+    margin-bottom: -2px;
+  }
+
+  #viewScheduleButtons:hover{
+      border-width: 3px;
+      border-color: rgb(157, 193, 255);
+      padding-top: 15px;
+      padding-right: 0px;
+      padding-left: 0px;
+      padding-bottom: 15px;
+  }
+
+  .viewButtonLabels{
+    float: left;
+    padding-right: 100px;
+  }
+
+  #viewButtonLabelTimer{
+    padding-left: 0px;
+    float: right;
+    padding-right: 0px;
+  }
+
+  #viewScheduleButtons{
+    text-decoration: none;
+  }
+
+  /*crd zone-summary text */
+  .mdc-card__supporting-text{
+    text-align: center;
+    /*padding-bottom: 10px;*/
+  }
+
+  .mdc-card{
+    text-align: center;
+    border: hidden;
+    height: auto;
+    background: white;
+  }
+
+  .mdc-card__primary{
+    border-bottom: solid;
+    border-bottom-color: rgb(212, 211, 211);
+    margin-top: -15px;
+    height: auto;
+  }
+
+  .mdc-card__actions{
+    padding-bottom: 10px;
+  }
+
+  img {
+    height: 300px;
+    width: 100%;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-right:5px;
+  }
+
+  .list-group {
+     max-height: 300px;
+     overflow-y: auto;
+ }
+
+ #cycleSection{
+   text-align: left;
+   margin-left: 10px;
+   font-size: 10pt;
+   padding-bottom: 10px;
+ }
+
+ #timeSection{
+   font-size: 12pt;
+   font-weight: 700;
+ }

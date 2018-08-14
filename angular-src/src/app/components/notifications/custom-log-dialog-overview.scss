@@ -1,0 +1,9 @@
+.required-container {
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+}
+
+.required-container > * {
+  width: 100%;
+}

@@ -1,0 +1,41 @@
+<h1 mat-dialog-title>
+    <mat-list>
+        <mat-list-item> {{data.name}}</mat-list-item>
+    </mat-list>
+</h1>
+
+<div mat-dialog-content>
+    <mat-list>
+        <mat-list-item> Description: {{data.description}}</mat-list-item>
+        <mat-divider></mat-divider>
+
+        <mat-list-item>
+            <mat-expansion-panel (opened)="panelOpenState = true"
+            (closed)="panelOpenState = false">
+            <mat-expansion-panel-header class="right-aligned-header">
+                <mat-panel-title>
+                    <h5 mat-line>Stations</h5>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-list>
+                <mat-list-item *ngFor="let station of data.stations"> {{station.name}}</mat-list-item>
+            </mat-list>
+        </mat-expansion-panel>
+    </mat-list-item>
+
+    <mat-divider></mat-divider>
+
+
+    <mat-list-item>
+        <mat-expansion-panel (opened)="panelOpenState = true"
+        (closed)="panelOpenState = false">
+        <mat-expansion-panel-header class="right-aligned-header">
+            <mat-panel-title>
+                <h5 mat-line>Schedules</h5>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list>
+            <mat-list-item *ngFor="let schedule of data.schedules"> {{schedule.name}}</mat-list-item>
+        </mat-list>
+    </mat-expansion-panel>
+</mat-list-item>

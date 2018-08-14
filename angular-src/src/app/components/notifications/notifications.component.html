@@ -1,0 +1,146 @@
+<div class="main-content">
+
+    <button mat-raised-button color="warn" (click)="openCustomIssueDialog()" id="customButton">Add Custom Issue</button>
+
+    <mat-card class="notifications" *ngIf="authService.loggedIn()">
+        <mat-card-header>
+            <mat-card-title>My Notifications</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+
+            <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true"
+                (closed)="panelOpenState = false"
+                *ngFor="let issue of userIssueLogs | async">
+                <mat-expansion-panel-header class="right-aligned-header">
+                    <mat-panel-title>
+                        <h5 mat-line>{{ issue.name }}</h5>
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        <mat-chip-list>
+                            <mat-chip *ngIf="issue.severity=='low'"color="primary" selected="true">Low</mat-chip>
+                            <mat-chip *ngIf="issue.severity=='med'"color="accent" selected="true">Med</mat-chip>
+                            <mat-chip *ngIf="issue.severity=='high'"color="warn" selected="true">High</mat-chip>
+                        </mat-chip-list>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <mat-list>
+                    <mat-list-item>
+                        <p mat-line> Date Created: {{ issue.dateCreated }} </p>
+                    </mat-list-item>
+
+                    <mat-list-item>
+                        <p mat-line> Date Completed: {{ issue.dateCompleted }} </p>
+                    </mat-list-item>
+
+                    <mat-list-item>
+                        <p mat-line> Assigned To: {{ issue.assignedUser }} </p>
+                    </mat-list-item>
+
+                    <mat-list-item>
+                        <p mat-line> Zone: {{ issue.zone }} </p>
+                    </mat-list-item>
+
+                    <mat-list-item>
+                        <p mat-item> Control Box: {{ issue.controlBox }} </p>
+                    </mat-list-item>
+
+                    <mat-list-item>
+                        <p mat-item> Controller: {{ issue.controller }} </p>
+                    </mat-list-item>
+
+                    <mat-list-item>
+                        <p mat-item> Station: {{ issue.station }} </p>
+                    </mat-list-item>
+
+                    <mat-list-item>
+                        <p mat-item> Description: {{ issue.description }} </p>
+                    </mat-list-item>
+
+                    <mat-list-item>
+                        <p mat-item> <button mat-raised-button
+                            color="warn"(click)="deleteIssue(issue._id)"
+                            id="customButton">Delete</button> </p>
+                        </mat-list-item>
+
+                        <mat-list-item>
+                            <p mat-item> <button mat-raised-button
+                                color="warn"(click)="openUpdateDialog(issue)"
+                                id="customButton">Edit</button> </p>
+                            </mat-list-item>
+
+                        </mat-list>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="notifications" id="notificationCard">
+            <mat-card-header>
+                <mat-card-title>Other Notifications</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+
+                <mat-accordion>
+                    <mat-expansion-panel (opened)="panelOpenState = true"
+                    (closed)="panelOpenState = false"
+                    *ngFor="let issue of otherIssueLogs | async">
+                    <mat-expansion-panel-header class="right-aligned-header">
+                        <mat-panel-title>
+                            <h5 mat-line>{{ issue.name }}</h5>
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            <mat-chip-list>
+                                <mat-chip *ngIf="issue.severity=='low'"color="primary" selected="true">Low</mat-chip>
+                                <mat-chip *ngIf="issue.severity=='med'"color="accent" selected="true">Med</mat-chip>
+                                <mat-chip *ngIf="issue.severity=='high'"color="warn" selected="true">High</mat-chip>
+                            </mat-chip-list>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <mat-list>
+                        <mat-list-item>
+                            <p mat-line> Date Created: {{ issue.dateCreated }} </p>
+                        </mat-list-item>
+
+                        <mat-list-item>
+                            <p mat-line> Date Completed: {{ issue.dateCompleted }} </p>
+                        </mat-list-item>
+
+                        <mat-list-item>
+                            <p mat-line> Assigned To: {{ issue.assignedUser }} </p>
+                        </mat-list-item>
+
+                        <mat-list-item>
+                            <p mat-line> Zone: {{ issue.zone }} </p>
+                        </mat-list-item>
+
+                        <mat-list-item>
+                            <p mat-item> Control Box: {{ issue.controlBox }} </p>
+                        </mat-list-item>
+
+                        <mat-list-item>
+                            <p mat-item> Controller: {{ issue.controller }} </p>
+                        </mat-list-item>
+
+                        <mat-list-item>
+                            <p mat-item> Station: {{ issue.station }} </p>
+                        </mat-list-item>
+
+                        <mat-list-item>
+                            <p mat-item> Description: {{ issue.description }} </p>
+                        </mat-list-item>
+
+                        <mat-list-item>
+                            <button mat-raised-button color="warn"(click)="deleteIssue(issue._id)" id="customButton">Delete</button>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <p mat-item> <button mat-raised-button
+                                color="warn"(click)="openUpdateDialog(issue)"
+                                id="customButton">Edit</button> </p>
+                            </mat-list-item>
+                        </mat-list>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </mat-card-content>
+        </mat-card>
+    </div>

@@ -1,0 +1,23 @@
+
+.container{
+    background-color: white;
+    width: 550px;
+    
+}
+
+input {
+    width: 500px;
+}
+
+select {
+    -webkit-appearance: menulist;    
+    width: 500px;
+}
+
+label {
+    color: black;
+}
+
+#formDiv{
+    margin-left: -1px;
+}

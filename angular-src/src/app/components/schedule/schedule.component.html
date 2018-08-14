@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<div class="main-content">
+  <html>
+  <div class="row">
+    <div class="col-xs-6">
+      <form class="example-form">
+        <mat-form-field class="example-full-width">
+          <input type="text" placeholder="Pick a zone" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let zone of irrigationZones | async" [value]="option" (click)="onZoneClick(zone)">
+              {{ zone.name }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="displayZoneCard">
+
+    <div *ngIf="displayZoneSummary;else display_stationList">
+      <div class="col-xs-4">
+        <div class="mdc-card" id="zone-summary">
+          <section class="mdc-card-media">
+            <img src="{{ setZoneImage(zoneName) }}" alt="no image for {{ zoneName }}">
+          </section>
+          <section class="mdc-card__primary">
+            <h2 class="mdc-card__subtitle">{{ zoneName }}</h2>
+          </section>
+          <section class="mdc-card__supporting-text">
+            {{ zoneDescription }}
+          </section>
+          <section class="mdc-card__actions" id="displayZoneButtons">
+            <button [disabled]="isSchedules()" class="btn btn-danger" (click)="onViewScheduleClick()">
+              View Schedules
+            </button>
+            <button class="btn btn-primary" (click)="onCreateScheduleClick()">
+              Create a Schedule
+            </button>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #display_stationList>
+      <div *ngIf="createSchedule;else display_Schedule">
+         <hr>
+        <div class="col-xs-4">
+          <div class="mdc-card" id="stationList">
+            <section class="mdc-card__primary" id="stationListTitle">
+               <img src="{{ setArcGisImage(zoneSelected.name) }}" alt="No arcGIS image for {{ zoneSelected.name }}">
+              <h2 class="mdc-card__subtitle">Available Stations</h2>
+            </section>
+            <div class="container" class="list-group" [dragula]='"first-bag"' [dragulaModel]='stations'>
+              <div *ngFor='let station of zoneSelected.stations' ng-draggable="true">
+                <button type="button" class="list-group-item list-group-item-{{ setColorStation(station.controllerId) }}" (click)="onStationClick(station.name, station.controller)" id="availableButton">
+                  <label> {{ station.name }} </label>
+                </button>
+              </div>
+            </div>
+            <section class="mdc-card__subtitle" *ngIf="displayStationGeneral">
+                    <h3>Station Info </h3>
+                    <p id="stationDescription">
+                      I'm going to put this stuff in the javascript so it is easier and reliable.
+                    </p>
+            </section>
+          </div>
+        </div>
+        <div class="col-xs-5">
+		<form ngNativeValidate id="startTimeForm">
+          <div class="mdc-card" id="scheduleList">
+            <section class="mdc-card__primary" id="scheduleListTitle">
+              <section class="mdc-card__subtitle">
+                <h2>New Schedule</h2>
+              </section>
+
+                  <label>Start Time
+                    <input type="number" name="hour" 	placeholder="Hour" 		id="hourInput" 		max="12" 	min="0" required>:
+                    <input type="number" name="minute" 	placeholder="minute" 	id="minuteInput" 	max="59"	min="0" required>
+                  </label>
+                  <label> <input type="radio" name="timeofDay" value="a.m." id="amRadio" required> a.m.</label>
+                  <label> <input type="radio" name="timeofDay" value="p.m"> p.m.</label>
+                <!--/form-->
+                <p>
+                  <label class ="cycleLabels">weekly <input type="radio" name="cycle" value="1" (click)="getCycle(1)" required></label>
+                  <label class ="cycleLabels">bi-weekly <input type="radio" name="cycle" value="2" (click)="getCycle(2)"></label>
+				          <label>monthly <input type="radio" name="cycle" value="4" (click)="getCycle(4)"></label>
+				        </p>
+				<section id='scheduleDaysID'>
+					<!-- Injected Dynamically through getCycle() in Javascript
+						 Set by weekly, bi-weekly and monthly (1,2 or 4)	-->
+				  </section>
+
+                  <p class ="scheduleLabels">
+						<span><label>Name</label></span>
+				  		<span class="scheduleListLabels"><label>Overlap</label></span>
+						<span class="scheduleListLabels"><label>Run Time</label></span>
+				  </p>
+            </section>
+            <section class="mdc-card__supporting-text">
+            <div class="container" class="list-group" id='no-drop' [dragula]='"first-bag"' [dragulaModel]='scheduleList' draggable="true">
+              <div *ngIf="!scheduleList.length">Drag Stations here to create Schedule</div>
+              <div *ngFor='let station of scheduleList; let i = index;'>
+            	<div>
+                  <popover-content #myPopover title="Controller: {{ station.controller }}, Station: {{ station.name }}" placement="above" [closeOnMouseOutside]="true">
+                    <button type="button" class="btn btn-danger" (click)="onDeleteStationClick(i)">Delete</button>
+                  </popover-content>
+                </div>
+                <div>
+                  <section id="timerForm">
+                    <button type="button" [popover]="myPopover" class="list-group-item list-group-item-{{ station.controllerColor }}" id="droppedButton">
+                      <label>{{ station.name }} </label>
+                        <input type="number" class="offsetTime" name="offset" placeholder="min" min="0" id="offSetInput">
+                        <input type="number" class="timer" name="run" placeholder="min" min="0" id="runTime" required>
+                    </button>
+				</section>
+                </div>
+              </div>
+            </div>
+          </section>
+            <section class="mdc-card__actions" id="saveScheduleButton">
+              <button type="sumbit" class="btn btn-primary" (click)="onSaveScheduleClick()">
+                Save Schedule
+              </button>
+			</section>
+			</div>
+		</form>
+		</div>
+		</div>
+    </ng-template>
+
+    <ng-template #display_Schedule>
+      <div class="col-xs-4" (load)="printCycleDays()">
+        <div class="mdc-card" id="savedSchedule">
+          <section class="mdc-card__primary">
+            <h2 class="mdc-card__subtitle" id="savedScheduleTitle">
+                Current  Schedule
+            </h2>
+            <!--ng-template [ngIf]="!isSchedules()"-->
+            <p id="timeSection">Start time: {{ zoneSelected.schedules[0].startTime }}</p>
+              <section *ngFor='let weeks of viewCycleSchedule' id="cycleSection">
+                {{ weeks }}
+              </section>
+          <!--/ng-template-->
+
+            <p id="currentScheduleBlock">
+              <label class="currentScheduleLabels">Name</label>
+              <label class="currentScheduleLabels">OverLap</label>
+              <label>Timer</label>
+            </p>
+          </section>
+          <div class="container" class="list-group">
+            <div *ngIf="isSchedules()">No set Schedule for this Zone!</div>
+            <!--ng-template [ngIf]="!isSchedules()"-->
+            <div *ngFor='let station of zoneSelected.schedules[0].stations'>
+              <button type="button" class="list-group-item list-group-item-{{ station.controllerColor }}" id="viewScheduleButtons">
+                <label class="viewButtonLabels"> {{ station.name }}</label>
+                <label class="viewButtonLabels">{{ station.overlap }}min</label>
+                <label id="viewButtonLabelTimer">{{ station.runTime }}min </label>
+              </button>
+            </div>
+        <!--/ng-template-->
+
+          </div>
+          <section class="mdc-card__subtitles">
+            <p>
+              <label class="availableBottom">Total Run Time: </label>
+            </p>
+            <p>
+              <label class ="availableBottom">End Time: </label>
+            </p>
+          </section>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  </html>
+</div>
