@@ -4,19 +4,8 @@ import { BrowserModule          } from '@angular/platform-browser';
 import { Routes, RouterModule   } from '@angular/router';
 
 
-import { MapsComponent              } from './components/maps/maps.component';
-import { NotificationsComponent     } from './components/notifications/notifications.component';
 import { EventsComponent            } from './components/events/events.component';
-import { ScheduleComponent          } from './components/schedule/schedule.component';
-import { WeatherComponent           } from './components/weather/weather.component';
-import { RolesComponent             } from './components/roles/roles.component';
-import { ManOperationsComponent     } from './components/man-operations/man-operations.component';
-import { ReportsComponent           } from './components/reports/reports.component';
 import { RegisterComponent          } from './components/register/register.component';
-import { SplashPageComponent        } from './components/splashPage/splashPage.component';
-import { IrrigationZonesComponent   } from './components/irrigation-zones/irrigation-zones.component';
-
-
 import { AuthGuard              } from './guards/auth.guard';
 
 /*
@@ -47,19 +36,10 @@ import { AuthGuard              } from './guards/auth.guard';
 
 export const routes: Routes =[
 
-    { path: 'notifications',    component: NotificationsComponent, canActivate:[AuthGuard]          },
-    { path: 'login',            component: SplashPageComponent                                      },
     { path: 'register',         component: RegisterComponent                                        },
     { path: 'events',           component: EventsComponent                                          },
-    { path: 'man-operations',   component: ManOperationsComponent                                   },
-    { path: 'weather',          component: WeatherComponent                                         },
-    { path: 'schedule',         component: ScheduleComponent, canActivate:[AuthGuard]               }, //protect pages if not logged in
-    { path: 'roles',            component: RolesComponent                                           },
-    { path: 'maps',             component: MapsComponent                                            },
-    { path: 'reports',          component: ReportsComponent                                         },
-    { path: 'irrigation-zones', component: IrrigationZonesComponent                                 },
-    { path: '**',               redirectTo: 'notifications', pathMatch: 'full'                      },
-    { path: '',                 redirectTo: 'notifications', pathMatch: 'full'                      },
+    { path: '**',               redirectTo: 'events', pathMatch: 'full'                      },
+    { path: '',                 redirectTo: 'events', pathMatch: 'full'                      },
 ];
 
 @NgModule({

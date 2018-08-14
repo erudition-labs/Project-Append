@@ -1,12 +1,9 @@
 <div class="wrapper">
-    <app-splashPage *ngIf="!authService.loggedIn()">
-        <!--(login)="onLogin($event)" *ngIf="!authService.loggedIn()"-->
-    </app-splashPage>
     <div class="sidebar" data-color='blue' data-image="">
-        <app-sidebar *ngIf="authService.loggedIn()"></app-sidebar> <!-- doesn't need ! -->
+        <app-sidebar></app-sidebar> 
         <div class="sidebar-background" style="background-image: url(../assets/img/sidebar-4.jpg)"></div>
     </div>
-    <div *ngIf="authService.loggedIn()" class="main-panel">    <!-- doesn't need ! -->
+    <div class="main-panel">   
         <app-navbar></app-navbar>
         <flash-messages></flash-messages>
         
