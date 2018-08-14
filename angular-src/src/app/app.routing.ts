@@ -5,7 +5,6 @@ import { Routes, RouterModule   } from '@angular/router';
 
 
 import { EventsComponent            } from './components/events/events.component';
-import { RegisterComponent          } from './components/register/register.component';
 import { AuthGuard              } from './guards/auth.guard';
 
 /*
@@ -36,7 +35,6 @@ import { AuthGuard              } from './guards/auth.guard';
 
 export const routes: Routes =[
 
-    { path: 'register',         component: RegisterComponent                                        },
     { path: 'events',           component: EventsComponent                                          },
     { path: '**',               redirectTo: 'events', pathMatch: 'full'                      },
     { path: '',                 redirectTo: 'events', pathMatch: 'full'                      },
