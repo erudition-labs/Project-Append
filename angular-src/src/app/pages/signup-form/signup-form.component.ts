@@ -70,7 +70,7 @@ export class SignupFormComponent implements OnInit {
 		);
 	}
 
-	public onSubit() : void {
+	public onSubmit() : void {
 		this.signupForm.controls.email.markAsDirty();
 		this.signupForm.controls.password.markAsDirty();
 		this.signupForm.controls.firstName.markAsDirty();

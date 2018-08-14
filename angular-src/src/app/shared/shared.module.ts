@@ -74,7 +74,8 @@ import { FormMessageComponent } from './form-message/form-message.component';
     MatSlideToggleModule,
 
     BigInputComponent,
-    BigInputActionComponent
+	BigInputActionComponent,
+	FormMessageComponent,
   ]
 })
 export class SharedModule {}

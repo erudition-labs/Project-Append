@@ -1,38 +1,54 @@
 <form [formGroup]="loginForm" method="post" (ngSubmit)="onSubmit()">
-  <div class="columns" *ngIf="loginResult">
-    <div class="column">
-      <app-form-message [messageType]="loginResult.state" [message]="loginResult.message"></app-form-message>
-    </div>
-  </div>
-  <div class="columns is-multiline">
-    <div class="column is-full">
-      <div class="field">
-        <p class="control has-icons-left">
-          <input class="input" type="email" placeholder="Email/Username" formControlName="usernameOrEmail">
-          <span class="icon is-small is-left">
-            <i class="fa fa-envelope"></i>
-          </span>
-        </p>
-        <small class="has-text-danger" *ngIf="loginForm.get('usernameOrEmail').hasError('required') && loginForm.get('usernameOrEmail').dirty">
-          Email or username is required
-        </small>
-      </div>
-    </div>
-    <div class="column is-full">
-      <div class="field">
-        <p class="control has-icons-left">
-          <input class="input" type="password" placeholder="Password" formControlName="password">
-          <span class="icon is-small is-left">
-            <i class="fa fa-lock"></i>
-          </span>
-        </p>
-        <small class="has-text-danger" *ngIf="loginForm.get('password').hasError('required') && loginForm.get('password').dirty">
-          Password is required
-        </small>
-      </div>
-    </div>
-  </div>
-  <button class="button is-primary" type="submit" [ngClass]="{'is-loading': loginLoading}">
-    Log In
-  </button>
+	<div class="columns" *ngIf="loginResult">
+		<div class="column">
+			<app-form-message 
+			 [messageType]="loginResult.state"
+			 [message]="loginResult.message"> </app-form-message>
+		</div>
+	</div>
+
+	<div class="columns is-multiline">
+		<div class="column is-full">
+			<div class="field">
+				<p class="control has-icons-left">
+					<input class="input"
+						   type="email"
+						   placeholder="Email"
+						   formControlName="email">
+					<span class="icon is-small is-left">
+						<i class="fa fa-envelope"></i>
+					</span>
+				</p>
+
+				<small class="has-text-danger"
+					   *ngIf="loginForm.get('email').hasError('required') &&
+					   loginForm.get('email').dirty">
+					Email is required </small>
+			</div>
+		</div>
+
+		<div class="column is-full">
+			<div class="field">
+				<p class="control has-icons-left">
+					<input class="input"
+						   type="password"
+						   placeholder="password"
+						   formControlName="password">
+					<span class="icon is-small is-left">
+						<i class="fa fa-lock"></i>
+					</span>
+				</p>
+
+				<small class="has-text-danger"
+					   *ngIf="loginForm.get('password').hasError('required') &&
+					   loginForm.get('password').dirty">
+					Password is required </small>
+			</div>
+		</div>
+	</div>
+
+	<button class="button is-primary" type="submit" 
+		[ngClass]="{'is-loading':loginLoading}">
+		Log In
+	</button>
 </form>
