@@ -10,29 +10,13 @@ import { HttpModule                         } from '@angular/http';
 
 
 //services
-import { ValidateService        } from './services/validate.service';
 import { AuthService            } from './services/auth.service';
-import { LogService             } from './services/logs.service';
 import { AuthGuard              } from './guards/auth.guard';
-import { MessageService         } from './services/message.service';
-import { UsersService           } from './services/users.service';
-import { ControlBoxService      } from './services/controlBoxes.service';
-import { IrrigationZoneService  } from './services/irrigationZones.service';
 
 
 //tabs are below
 import { AppComponent                                               } from './app.component';
-import { MapsComponent                                              } from './components/maps/maps.component';
-import { NotificationsComponent, CustomLogDialogOverview            } from './components/notifications/notifications.component';
 import { EventsComponent                                            } from './components/events/events.component';
-import { ScheduleComponent                                          } from './components/schedule/schedule.component';
-import { WeatherComponent                                           } from './components/weather/weather.component';
-import { RolesComponent                                             } from './components/roles/roles.component';
-import { ManOperationsComponent                                     } from './components/man-operations/man-operations.component';
-import { ReportsComponent                                           } from './components/reports/reports.component';
-import { RegisterComponent                                          } from './components/register/register.component';
-import { SplashPageComponent                                        } from './components/splashPage/splashPage.component';
-import { IrrigationZonesComponent, DialogOverviewZoneInfoDialog     } from './components/irrigation-zones/irrigation-zones.component';
 
 import { MatAutocompleteModule, MatInputModule   } from '@angular/material';
 import { BrowserAnimationsModule                 } from '@angular/platform-browser/animations';
@@ -59,18 +43,6 @@ import { PopoverModule } from 'ngx-popover';
     declarations: [
         AppComponent,
         EventsComponent,
-        ScheduleComponent,
-        WeatherComponent,
-        RolesComponent,
-        ManOperationsComponent,
-        MapsComponent,
-        NotificationsComponent,
-        ReportsComponent,
-        RegisterComponent,
-        CustomLogDialogOverview,
-        SplashPageComponent,
-        IrrigationZonesComponent,
-        DialogOverviewZoneInfoDialog
     ],
 
     imports: [
@@ -102,19 +74,11 @@ import { PopoverModule } from 'ngx-popover';
         RouterModule.forRoot(routes)
     ],
     providers: [
-        ValidateService, //services go here
         AuthService,
         AuthGuard,
-        LogService,
-        MessageService,
-        UsersService,
-        ControlBoxService,
-        IrrigationZoneService
     ],
 
     entryComponents: [
-        CustomLogDialogOverview,
-        DialogOverviewZoneInfoDialog
     ],
     bootstrap: [AppComponent]
 })
