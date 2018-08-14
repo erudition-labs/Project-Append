@@ -1,142 +1,129 @@
 <div class="container">
-<form [formGroup]="signupForm" method="post" (ngSubmit)="onSubmit()">
-	<div class="columns" *ngIf="signupResult">
-		<div class="column">
-			<app-form-message 	[messageType]="signupResult.state"
-			 					[message]="signupResult.message">
-			</app-form-message>
-		</div>
+	<div [formGroup]="signupForm">
+		<mat-card>
+			<mat-card-header>
+				<mat-card-title>Sign Up</mat-card-title>
+			</mat-card-header>
+
+			<mat-card-content>
+				<mat-list>
+					<mat-list-item>
+						<mat-form-field appearance="outline">
+							<mat-label>Email</mat-label>
+							<input matInput placeholder="Email" 
+											[formControl]="signupForm.get('email')">
+					<!---<mat-icon matSuffix>envelope</mat-icon>-->
+							<mat-error
+								*ngIf="signupForm.get('email').hasError('required') ||
+								signupForm.get('email').dirty">
+								Email is <strong>required</strong>
+							</mat-error>
+
+							<mat-error
+								*ngIf="signupForm.get('email').hasError('email') &&
+								signupForm.get('email').dirty">
+								Valid email <strong>required</strong>
+							</mat-error>
+
+							<mat-error
+								*ngIf="signupForm.get('email').errors &&
+								signupForm.get('email').errors.emailTaken &&
+								signupForm.get('email').dirty">
+								That email is taken
+							</mat-error>
+						</mat-form-field>
+					</mat-list-item>
+
+					<mat-list-item>
+						<mat-form-field appearance="outline">
+							<mat-label>Password</mat-label>
+							<input matInput placeholder="Password"
+											type="password"
+											[formControl]="signupForm.get('password')">
+
+							<mat-error
+								*ngIf="signupForm.get('password').hasError('required') ||
+								signupForm.get('password').dirty">
+								Password is <strong>required</strong>
+							</mat-error>
+						</mat-form-field>
+					</mat-list-item>
+
+						
+					<mat-list-item>
+						<mat-form-field appearance="outline">
+							<mat-label>First Name</mat-label>
+							<input matInput placeholder="First Name"
+											[formControl]="signupForm.get('firstName')">
+
+							<mat-error
+								*ngIf="signupForm.get('firstName').hasError('required') ||
+								signupForm.get('firstName').dirty">
+								First Name is <strong>required</strong>
+							</mat-error>
+						</mat-form-field>
+					</mat-list-item>
+
+
+					<mat-list-item>
+						<mat-form-field appearance="outline">
+							<mat-label>Last Name</mat-label>
+							<input matInput placeholder="Last Name"
+											[formControl]="signupForm.get('lastName')">
+
+							<mat-error
+								*ngIf="signupForm.get('lastName').hasError('required') ||
+								signupForm.get('lastName').dirty">
+								Last Name is <strong>required</strong>
+							</mat-error>
+						</mat-form-field>
+					</mat-list-item>
+
+
+					<mat-list-item>
+						<mat-form-field appearance="outline">
+							<mat-label>Rank</mat-label>
+							<input matInput placeholder="Rank"
+											[formControl]="signupForm.get('rank')">
+
+							<mat-error
+								*ngIf="signupForm.get('rank').hasError('required') ||
+								signupForm.get('rank').dirty">
+								Rank is <strong>required</strong>
+							</mat-error>
+						</mat-form-field>
+					</mat-list-item>
+
+					<mat-list-item>
+						<mat-form-field appearance="outline">
+							<mat-label>Flight</mat-label>
+							<input matInput placeholder="Flight"
+											[formControl]="signupForm.get('flight')">
+
+							<mat-error
+								*ngIf="signupForm.get('flight').hasError('required') ||
+								signupForm.get('flight').dirty">
+								Flight is <strong>required</strong>
+							</mat-error>
+						</mat-form-field>
+					</mat-list-item>
+
+					<mat-list-item>
+						<mat-form-field appearance="outline">
+							<mat-label>Team</mat-label>
+							<input matInput placeholder="Team"
+											[formControl]="signupForm.get('team')">
+
+							<mat-error
+								*ngIf="signupForm.get('team').hasError('required') ||
+								signupForm.get('team').dirty">
+								Team is <strong>required</strong>
+							</mat-error>
+						</mat-form-field>
+					</mat-list-item>
+
+				</mat-list>
+			</mat-card-content>
+		</mat-card>
 	</div>
-
-	<div class="columns is-multiline">
-		<div class="column is-full">
-			<div class="field">
-				<p class="control has-icons-left">
-					<input class="input" type="email" 
-							placeholder="Email" formControlName="email">
-					<span class="icon is-small is-left">
-						<i class="fa" [ngClass]="{'fa-spin 
-						fa-circle-o-notch': emailValidating, 
-						'fa-envelope': !emailValidating}"></i>
-					</span>
-				</p>
-				<small class="has-text-danger"
-					*ngIf="signupForm.get('email').hasError('required') &&
-					signupForm.get('email').dirty"> Email is required </small>
-
-				<small class="has-text-danger"
-					*ngIf="signupForm.get('email').hasError('email') &&
-					signupForm.get('email').dirty"> Must be a valid email </small>
-
-				<small class="has-text-danger"
-					*ngIf="signupForm.get('email').errors &&
-					signupForm.get('email').errors.emailTaken &&
-					signupForm.get('email').dirty"> The Email is taken </small>
-
-			</div>
-		</div>
-
-		<div class="column is-full">
-			<div class="field">
-				<p class="control has-icons-left">
-					<input class="input" type="password" 
-							placeholder="Password" formControlName="password">
-					<span class="icon is-small is-left">
-						<i class="fa fa-lock"></i>
-					</span>
-				</p>
-				<small class="has-text-danger"
-					*ngIf="signupForm.get('password').hasError('required') &&
-					signupForm.get('password').dirty"> Password is Required </small>
-			</div>
-		</div>
-	
-
-		<div class="column is-full">
-			<div class="field">
-				<p class="control has-icons-left">
-					<input class="input" type="text" 
-							placeholder="First Name" formControlName="firstName">
-					<span class="icon is-small is-left">
-						<i class="fas asterisk"></i>
-					</span>
-				</p>
-				<small class="has-text-danger"
-					*ngIf="signupForm.get('firstName').hasError('required') &&
-					signupForm.get('firstName').dirty"> First Name is Required </small>
-			</div>
-		</div>
-	
-
-		<div class="column is-full">
-			<div class="field">
-				<p class="control has-icons-left">
-					<input class="input" type="text" 
-							placeholder="Last Name" formControlName="lastName">
-					<span class="icon is-small is-left">
-						<i class="fas asterisk"></i>
-					</span>
-				</p>
-				<small class="has-text-danger"
-					*ngIf="signupForm.get('lastName').hasError('required') &&
-					signupForm.get('lastName').dirty"> Last Name is Required </small>
-			</div>
-		</div>
-	
-
-		<div class="column is-full">
-			<div class="field">
-				<p class="control has-icons-left">
-					<input class="input" type="text" 
-							placeholder="Rank" formControlName="rank">
-					<span class="icon is-small is-left">
-						<i class="fas asterisk"></i>
-					</span>
-				</p>
-				<small class="has-text-danger"
-					*ngIf="signupForm.get('rank').hasError('required') &&
-					signupForm.get('rank').dirty"> Rank is Required </small>
-			</div>
-		</div>
-	
-
-		<div class="column is-full">
-			<div class="field">
-				<p class="control has-icons-left">
-					<input class="input" type="text" 
-							placeholder="Flight" formControlName="flight">
-					<span class="icon is-small is-left">
-						<i class="fas asterisk"></i>
-					</span>
-				</p>
-				<small class="has-text-danger"
-					*ngIf="signupForm.get('flight').hasError('required') &&
-					signupForm.get('flight').dirty"> Flight is Required </small>
-			</div>
-		</div>
-	
-
-		<div class="column is-full">
-			<div class="field">
-				<p class="control has-icons-left">
-					<input class="input" type="text" 
-							placeholder="Team" formControlName="team">
-					<span class="icon is-small is-left">
-						<i class="fas asterisk"></i>
-					</span>
-				</p>
-				<small class="has-text-danger"
-					*ngIf="signupForm.get('team').hasError('required') &&
-					signupForm.get('team').dirty"> Team is Required </small>
-			</div>
-		</div>
-	
-
-	</div>
-
-	<button class="button is-info" type="submit" 
-		[ngClass]="{'is-loading':signupLoading}">
-		Sign Up
-	</button>	
-</form>
 </div>
