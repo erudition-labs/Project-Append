@@ -1,0 +1,32 @@
+<div class="main-content">
+	<mat-card>
+		<mat-card-header>
+			<mat-card-title>Sign Up</mat-card-title>
+		</mat-card-header>
+
+		<div [formGroup]="signupForm">
+			<mat-form-field>
+				<mat-label>Enter Email</mat-label>
+				<input matInput placeholder="Email" [formControl]="email">
+				<mat-icon matSuffix>envelope</mat-icon>
+
+				<mat-error *ngIf="signupForm.get('email').hasError('required')
+					&& signupForm.get('email').dirty">
+					Email is <strong>required</strong>
+				</mat-error>
+
+				<mat-error *ngIf="signupForm.get('email').hasError('email') 
+					&& signupForm.get('email').dirty">
+					Valid email <strong>required</strong>
+				</mat-error>
+
+				<mat-error *ngIf="signupForm.get('email').errors && 
+					signupForm.get('email').errors.emailTaken &&
+					signupForm.get('email').dirty">
+					Email is taken!
+				</mat-error>
+			</mat-form-field>
+		</div>
+	</mat-card>
+
+</div>
