@@ -10,6 +10,13 @@ import { StaticModule } from "./static";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
+
+//import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+//import { FlatpickrModule } from 'angularx-flatpickr';
+//import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
+
 
 @NgModule({
   imports: [
@@ -26,7 +33,11 @@ import { AppComponent } from "./app.component";
     SettingsModule,
 
     // app
-    AppRoutingModule
+	AppRoutingModule,
+	AngularFontAwesomeModule,
+	//	NgbModule.forRoot(),
+	//NgbModalModule.forRoot(),
+	//FlatpickrModule.forRoot(),
   ],
   declarations: [AppComponent],
   providers: [],

@@ -10,6 +10,12 @@ import { EffectsModule } from '@ngrx/effects';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { PagesRoutingModule } from './pages-routing.module';
+import { CalendarModule } from 'angular-calendar';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { FlatpickrModule } from 'angularx-flatpickr';
+
+
+
 
 import { SharedModule } from '@app/shared';
 import { LoginComponent } from './login/login.component';
@@ -31,6 +37,9 @@ import { EmailVerificationComponent } from './email-verification/email-verificat
   FormsModule,
   ReactiveFormsModule,
   HttpClientModule,
+  CalendarModule.forRoot(),
+  NgbModalModule.forRoot(),
+  FlatpickrModule.forRoot(),
   ],
   declarations: [
   LoginComponent, 
