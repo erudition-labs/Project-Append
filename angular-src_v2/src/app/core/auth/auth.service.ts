@@ -51,6 +51,7 @@ export class AuthService {
 	}
 
 	public setUser(token: string, userInfo: string, expiresAt: number) : void {
+		this.setToken(token);
 		this.setUserInfo(userInfo);
 		this.setExpiresAt(expiresAt);
 	}
