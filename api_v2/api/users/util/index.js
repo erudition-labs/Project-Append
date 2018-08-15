@@ -24,7 +24,7 @@ const hashPassword = password => {
 };
 
 const verifyPassword = (passwordAttempt, hashedPassword) => {
-	return bcrypt.compare(passwordAttempt, hashPassword);
+	return bcrypt.compare(passwordAttempt, hashedPassword);
 };
 
 const requireAdmin = (request, response, nect) => {
