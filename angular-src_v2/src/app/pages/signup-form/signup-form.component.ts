@@ -105,6 +105,7 @@ export class SignupFormComponent implements OnInit {
 				rank,
 				flight,
 				team,
+				role = 'user',
 				phone
 			};
 			
