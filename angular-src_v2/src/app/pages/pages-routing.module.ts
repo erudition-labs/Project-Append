@@ -5,6 +5,7 @@ import { AuthGuardService } from '@app/core';
 import { ParentComponent } from '../examples/theming/parent/parent.component';
 import { LoginComponent } from './login/login.component';
 import { EventsComponent } from './events/events.component';
+import { EmailVerificationComponent } from './email-verification/email-verification.component';
 
 const routes: Routes = [
   {
@@ -25,7 +26,12 @@ const routes: Routes = [
 	  	path:'events',
 		component: EventsComponent,
 		pathMatch: 'full'
-	  },
+	},
+	{
+		path: 'email-verification',
+		component: EmailVerificationComponent,
+		pathMatch: 'full'
+	},
     ]
   }
 ];

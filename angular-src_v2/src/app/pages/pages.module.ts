@@ -21,6 +21,7 @@ import { ChildComponent } from '../examples/theming/child/child.component';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env/environment';
 import { EventsComponent } from './events/events.component';
+import { EmailVerificationComponent } from './email-verification/email-verification.component';
 
 @NgModule({
   imports: [
@@ -38,6 +39,7 @@ import { EventsComponent } from './events/events.component';
   ParentComponent,
   ChildComponent,
   EventsComponent,
+  EmailVerificationComponent,
   ]
 })
 export class PagesModule { 
