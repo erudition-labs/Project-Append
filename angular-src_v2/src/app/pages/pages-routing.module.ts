@@ -28,7 +28,7 @@ const routes: Routes = [
 		pathMatch: 'full'
 	},
 	{
-		path: 'email-verification',
+		path: 'email-verification/:token',
 		component: EmailVerificationComponent,
 		pathMatch: 'full'
 	},
