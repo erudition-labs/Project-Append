@@ -6,5 +6,6 @@ export interface NewUser {
 	rank		: string;
 	flight		: string;
 	team		: string;
+	role		: string;
 	phone		: string;
 }

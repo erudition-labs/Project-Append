@@ -15,6 +15,6 @@ export class UserService {
 				email
 			}
 		});	
-		return this.http.get(`/api/users/check-email`, { params });
+		return this.http.get(`http://localhost:3000/api/v1/users/check-email`, { params });
 	}
 }

@@ -57,7 +57,7 @@ export class AuthService {
 	}
 
 	public signup(user: NewUser) : Observable<any> {
-		return this.http.post(`/api/users`, { ...user });	
+		return this.http.post(`http://localhost:3000/api/v1/users`, { ...user });	
 	}
 
 	public logout() : void {

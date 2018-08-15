@@ -50,6 +50,7 @@ export class SignupFormComponent implements OnInit {
 			rank		: new FormControl('', { }),
 			flight		: new FormControl('', { validators: [Validators.required] }),
 			team		: new FormControl('', { }),
+			role		: new FormControl('user', { }),
 			phone		: new FormControl('', { validators: [Validators.required] })
 		});
 	}
@@ -58,6 +59,7 @@ export class SignupFormComponent implements OnInit {
 		this.emailValidating = true;
 		const email = control.value.toLowerCase();
 
+		console.log(email);
 		return this.userService.checkEmail(email).pipe(
 			map(
 				result => {
@@ -82,6 +84,7 @@ export class SignupFormComponent implements OnInit {
 		this.signupForm.controls.rank.markAsDirty();
 		this.signupForm.controls.flight.markAsDirty();
 		this.signupForm.controls.team.markAsDirty();
+		this.signupForm.controls.role.markAsDirty();
 		this.signupForm.controls.phone.markAsDirty();
 
 		if(this.signupForm.valid) {
@@ -94,6 +97,7 @@ export class SignupFormComponent implements OnInit {
 				rank,
 				flight,
 				team,
+				role,
 				phone
 			} = this.signupForm.value;
 
@@ -105,7 +109,7 @@ export class SignupFormComponent implements OnInit {
 				rank,
 				flight,
 				team,
-				role = 'user',
+				role,
 				phone
 			};
 			
