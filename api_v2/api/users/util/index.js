@@ -29,11 +29,11 @@ const verifyPassword = (passwordAttempt, hashedPassword) => {
 
 const requireAdmin = (request, response, nect) => {
 	if(!request.user) {
-		return response.status(401).json({ success: false, msg: 'Problem Authorizing' });
+		return response.status(401).json({ success: false, message: 'Problem Authorizing' });
 	}
 
 	if(request.user.role !== 'admin') {
-		return response.status(401).json({ success: false, msg: 'Insufficient role' });
+		return response.status(401).json({ success: false, message: 'Insufficient role' });
 	}
 	next();
 };

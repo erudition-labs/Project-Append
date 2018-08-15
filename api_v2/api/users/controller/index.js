@@ -26,13 +26,13 @@ const postUser = async (request, response) => {
 	util.NEV.createTempUser(userData, function(error, existingPersistentUser, newTempUser) {
 		//some sort of error
 		if(error) {
-			return response.status(500).json({ success: false, msg:'Something went wrong'});
+			return response.status(500).json({ success: false, message:'Something went wrong'});
 		}
 
 		//user already exists in persistent collection...
 		if (existingPersistentUser) {
 			//handle user's existence... violently.
-			return response.status(418).json({ success: false, msg:'User already exists'}); //418 is i am a teapot
+			return response.status(418).json({ success: false, message:'User already exists'}); //418 is i am a teapot
 		}
 
 		//a new user
@@ -41,18 +41,18 @@ const postUser = async (request, response) => {
 			util.NEV.sendVerificationEmail(userData.email, URL, function(err, info) {
 				if(error) {
 					console.log(err);
-					return response.status(404).json({success: false, msg: 'ERROR: sending verification email FAILED'});
+					return response.status(404).json({success: false, message: 'ERROR: sending verification email FAILED'});
 				}
 				return response.status(202).json({
 					success: true,
-					msg: 'An email has been sent to you. Please check it to verify your account.',
+					message: 'An email has been sent to you. Please check it to verify your account.',
 					info: info
 				});
 			});
 		} else {
 				//user already exists in temporary collection...
 			console.log("user already exists");
-			return response.status(401).json({ success: false, msg:'Please Verify Your Email'});
+			return response.status(401).json({ success: false, message:'Please Verify Your Email'});
 		}
 	});
 };
@@ -70,10 +70,10 @@ const postVerifyResend = async (request, response) => {
 
 		// the temp user was found
 		if(userFound) {
-			return response.status(200).json({ success: true, msg: 'An email has been sent to you. Please check it to verify your account.'});
+			return response.status(200).json({ success: true, message: 'An email has been sent to you. Please check it to verify your account.'});
 		} else {
 			// the temp user was not found, meaning the token expired
-			return response.status(404).json({ success: false, msg: 'Your verification code has expired. Please sign up again.'});
+			return response.status(404).json({ success: false, message: 'Your verification code has expired. Please sign up again.'});
 		}
 	});
 };
@@ -81,9 +81,9 @@ const postVerifyResend = async (request, response) => {
 const postEmailVerification = async (request, response) => {
 	util.NEV.confirmTempUser(request.params.URL, function(error, user) { // Nev takes care of url being empty
 		if(user) {
-			return response.status(201).json({ success: true, msg: "Account Confirmed" });
+			return response.status(201).json({ success: true, message: "Account Confirmed" });
 		} else {
-			return response.status(404).json({ success:false, msg: "Confirmation Failed" });
+			return response.status(404).json({ success:false, message: "Confirmation Failed" });
 		}
 	});
 };
@@ -100,7 +100,7 @@ const getUserByEmail = async (request, response) => {
 		return response.json({ success: true, emailTaken: false });
 	} catch(error) {
 		console.log(error);
-		return response.status(400).json({ success: false, msg: 'There was a problem checking the email' });
+		return response.status(400).json({ success: false, message: 'There was a problem checking the email' });
 	}
 };
 
