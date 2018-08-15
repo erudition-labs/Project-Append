@@ -7,7 +7,6 @@ const cors 			= require('cors');
 const csrf 			= require('csurf');
 const jwtDecode 	= require('jwt-decode');
 const jwt 			= require('jsonwebtoken');
-const cookieParser	= require('cookie-parser');
 const helmet 		= require('helmet');
 const rateLimit 	= require('express-rate-limit');
 const config		= require('./database/config');
@@ -27,18 +26,18 @@ const limiter = new rateLimit({
 app.use(limiter);
 app.use(helmet());
 
-app.use(cookieParser());
 
 const attatchUser = (request, response, next) => {
-	const token = request.cookies.token;
-	if(!token) {
-		return response.status(401).json({success: false, msg: 'Authentication Invalid'});
+	const token = request.headers.authorization;
+
+	if(token === 'Bearer null' || !token) {
+		return response.status(401).json({success: false, message: 'Authentication Invalid'});
 	}
 	
-	const decodedToken = jwtDecode(token);
+	const decodedToken = jwtDecode(token.replace('Bearer ', ''));
 	
 	if(!decodedToken) {
-		return response.status(401).json({success: false, msg: 'There was a problem authorizing the request'});
+		return response.status(401).json({success: false, message: 'There was a problem authorizing the request'});
 	} else {
 		request.user = decodedToken;
 		next();
@@ -46,9 +45,9 @@ const attatchUser = (request, response, next) => {
 };
 
 const checkJwt = (request, response, next) => {
-	const token = request.cookies.token;
-	if(!token) {
-		return response.status(403).json({success: false, msg: 'Access denied'});
+	const token = request.headers.authorization;
+	if(token === 'Bearer null' || !token) {
+		return response.status(403).json({success: false, message: 'Access denied'});
 	}
 	
 	try {
@@ -59,22 +58,10 @@ const checkJwt = (request, response, next) => {
 		console.log(decoded);
 		next();
 	} catch(error) {
-		return response.status(403).json({success: false, msg: 'Access denied'});
+		return response.status(403).json({success: false, message: 'Access denied'});
 	}
 };
 
-
-/*
- * To avoid help Cross-Site Request Forgery, we use the csurf middleware
- * It generates a random string of letters and numbers that
- * must be present in the headers of any requests meant to mutate data
- *
- * */
-
-const makeCsrfToken = (request, response, next) => {
-	response.cookie('csrf-token', request.csrfToken());
-	next();
-};
 
 /*
  *
@@ -82,7 +69,7 @@ const makeCsrfToken = (request, response, next) => {
  *
  * */
 
-app.use('/api/v1/user', 			require('./api/users'));
+app.use('/api/v1/users', 			require('./api/users'));
 app.use('/api/v1/authenticate', 	require('./api/authenticate'));
 
 /*
@@ -91,8 +78,6 @@ app.use('/api/v1/authenticate', 	require('./api/authenticate'));
  *
  * */
 
-app.use(csrf({cookie: true}));
-app.use(makeCsrfToken);
 app.use(attatchUser);
 app.use(checkJwt);
 
