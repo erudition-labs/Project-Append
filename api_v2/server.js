@@ -29,6 +29,7 @@ app.use(helmet());
 
 const attatchUser = (request, response, next) => {
 	const token = request.headers.authorization;
+
 	if(token === 'Bearer null' || !token) {
 		return response.status(401).json({success: false, message: 'Authentication Invalid'});
 	}
@@ -68,7 +69,7 @@ const checkJwt = (request, response, next) => {
  *
  * */
 
-app.use('/api/v1/user', 			require('./api/users'));
+app.use('/api/v1/users', 			require('./api/users'));
 app.use('/api/v1/authenticate', 	require('./api/authenticate'));
 
 /*
