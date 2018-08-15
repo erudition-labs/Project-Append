@@ -78,7 +78,10 @@ export class AuthService {
 	}
 
 	public verify(token: string) : any {
-		return this.http.post(this.url + 'email-verification/' + token);
+		const params = new HttpParams({
+			fromObject: { token }
+		});
+		return this.http.post(this.url + 'email-verification/', { params });
 	}
 
 	public userHasRole(expectedRole: string) : boolean {
