@@ -1,6 +1,6 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MetaReducer, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { storeFreeze } from 'ngrx-store-freeze';
@@ -19,6 +19,8 @@ import { AuthService } from './auth/auth.service';
 import { AnimationsService } from './animations/animations.service';
 import { TitleService } from './title/title.service';
 import { UserService } from './user/user.service';
+import { TokenInterceptorService as TokenInterceptor } from './auth/token-interceptor.service';
+ 
 
 export const metaReducers: MetaReducer<any>[] = [initStateFromLocalStorage];
 
@@ -60,7 +62,12 @@ if (!environment.production) {
     AnimationsService,
 	TitleService,
 	UserService,
-	AuthService
+	AuthService,
+	{
+		provide: HTTP_INTERCEPTORS,
+		useClass: TokenInterceptor,
+		multi: true
+	},
   ],
   exports: [TranslateModule]
 })
