@@ -82,11 +82,6 @@ const postVerifyResend = async (request, response) => {
 const postEmailVerification = async (request, response) => {
 	util.NEV.confirmTempUser(request.params.URL, function(error, user) { // Nev takes care of url being empty
 		if(user) {
-			const token = createToken(user);
-			const decodedToken = jwtDecode(token);
-			const expiresAt = decodedToken.exp;
-			response.cookie('token', token, { maxAge: 360000, httpOnly: true });
-
 			return response.status(201).json({ success: true, msg: "Account Confirmed" });
 		} else {
 			return response.status(404).json({ success:false, msg: "Confirmation Failed" });
@@ -105,6 +100,7 @@ const getUserByEmail = async (request, response) => {
 		}
 		return response.json({ success: true, emailTaken: false });
 	} catch(error) {
+		console.log(error);
 		return response.status(400).json({ success: false, msg: 'There was a problem checking the email' });
 	}
 };
