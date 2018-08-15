@@ -1,16 +1,18 @@
 <div class="container">
 	<div [formGroup]="signupForm">
-		<mat-card>
-			<mat-card-header>
-				<mat-card-title>Sign Up</mat-card-title>
-			</mat-card-header>
+		<mat-card class="noshadow">
+			<mat-toolbar color="primary">
+			  <mat-toolbar-row>
+			    <span>Register</span>
+			  </mat-toolbar-row>
+			</mat-toolbar>
 
 			<mat-card-content>
 				<mat-list>
 					<mat-list-item>
 						<mat-form-field appearance="outline">
 							<mat-label>Email*</mat-label>
-							<input matInput placeholder="Email" 
+							<input matInput placeholder="Email"
 											[formControl]="signupForm.get('email')">
 					<!---<mat-icon matSuffix>envelope</mat-icon>-->
 							<mat-error
@@ -49,7 +51,7 @@
 						</mat-form-field>
 					</mat-list-item>
 
-						
+
 					<mat-list-item>
 						<mat-form-field appearance="outline">
 							<mat-label>First Name</mat-label>
