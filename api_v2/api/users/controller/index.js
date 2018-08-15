@@ -19,10 +19,9 @@ const postUser = async (request, response) => {
 		rank		: request.body.rank,
 		flight		: request.body.flight,
 		team		: request.body.team,
+		role		: request.body.role,
 		password	: request.body.password
 	});
-
-	console.log(userData);
 
 	util.NEV.createTempUser(userData, function(error, existingPersistentUser, newTempUser) {
 		//some sort of error
