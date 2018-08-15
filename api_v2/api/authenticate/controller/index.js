@@ -28,17 +28,17 @@ const postAuthenticate = async (request, response) => {
 				role		: user.role
 			};
 
-			response.json({ success: true, msg: 'Authentication Successful', 
+			response.json({ success: true, message: 'Authentication Successful', 
 				token,
 				userInfo,
 				expiresAt
 			});
 		} else {
-			response.status(403).json({ success: false, msg: 'Wrong email or password' });
+			response.status(403).json({ success: false, message: 'Wrong email or password' });
 		}
 	} catch(error) {
 		console.log(error);
-		return response.status(400).json({ success: false, msg: 'Something went wrong' });
+		return response.status(400).json({ success: false, message: 'Something went wrong' });
 	}
 };
 

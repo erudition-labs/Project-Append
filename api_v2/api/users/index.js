@@ -12,6 +12,7 @@ router.route('/').post([
 	body('rank').exists().withMessage('Rank Required').trim().escape(),
 	body('flight').exists().withMessage('Flight Required').trim().escape(),
 	body('team').exists().withMessage('Team Required').trim().escape(),
+	body('role').exists().withMessage('User Role Required').trim().escape(),
 	body('password').exists().withMessage('Password Required').trim().escape()
 ], controller.postUser);
 
