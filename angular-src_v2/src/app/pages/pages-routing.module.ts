@@ -4,11 +4,12 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuardService } from '@app/core';
 import { ParentComponent } from '../examples/theming/parent/parent.component';
 import { LoginComponent } from './login/login.component';
+import { EventsComponent } from './events/events.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: LoginComponent,
+	//component: LoginComponent,
     children: [
       {
         path: '',
@@ -20,6 +21,11 @@ const routes: Routes = [
         component: LoginComponent,
         data: { title: 'anms.examples.menu.todos' }
       },
+	  {
+	  	path:'events',
+		component: EventsComponent,
+		pathMatch: 'full'
+	  },
     ]
   }
 ];

@@ -15,12 +15,12 @@ import { SharedModule } from '@app/shared';
 import { LoginComponent } from './login/login.component';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { SignupFormComponent } from './signup-form/signup-form.component';
-//import { FormMessageComponent } from '../shared/form-message/form-message.component';
 
 import { ParentComponent } from '../examples/theming/parent/parent.component';
 import { ChildComponent } from '../examples/theming/child/child.component';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env/environment';
+import { EventsComponent } from './events/events.component';
 
 @NgModule({
   imports: [
@@ -37,6 +37,7 @@ import { environment } from '@env/environment';
   SignupFormComponent,
   ParentComponent,
   ChildComponent,
+  EventsComponent,
   ]
 })
 export class PagesModule { 

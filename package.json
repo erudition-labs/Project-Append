@@ -17,6 +17,7 @@
     "jsonwebtoken": "*",
     "mongoose": "*",
     "mongoose-unique-validator": "^2.0.1",
+    "nodemon": "^1.18.3",
     "passport": "*",
     "passport-jwt": "*",
     "rand-token": "^0.4.0"
