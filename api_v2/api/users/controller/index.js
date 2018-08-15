@@ -91,7 +91,7 @@ const postEmailVerification = async (request, response) => {
 
 const getUserByEmail = async (request, response) => {
 	try {
-		const email = request.body.email.toLowerCase();
+		const email = request.query.email.toLowerCase();
 		const existingEmail = await queries.getUserByEmail(email);
 
 		if(existingEmail) {

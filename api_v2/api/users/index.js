@@ -23,6 +23,6 @@ router.route('/verify-resend').post([
 
 
 router.route('/email-verification/:URL').post(controller.postEmailVerification);
-router.route('/check-email').post(controller.getUserByEmail);
+router.route('/check-email').get(controller.getUserByEmail);
 
 module.exports = router;
