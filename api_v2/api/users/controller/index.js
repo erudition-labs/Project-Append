@@ -22,7 +22,9 @@ const postUser = async (request, response) => {
 		password	: request.body.password
 	});
 
-	util.NEV.createTempUser(newUser, function(error, existingPersistentUser, newTempUser) {
+	console.log(userData);
+
+	util.NEV.createTempUser(userData, function(error, existingPersistentUser, newTempUser) {
 		//some sort of error
 		if(error) {
 			return response.status(500).json({ success: false, msg:'Something went wrong'});
@@ -37,7 +39,7 @@ const postUser = async (request, response) => {
 		//a new user
 		if (newTempUser) {
 			let URL = newTempUser[util.NEV.options.URLFieldName];
-			util.NEV.sendVerificationEmail(newUser.email, URL, function(err, info) {
+			util.NEV.sendVerificationEmail(userData.email, URL, function(err, info) {
 				if(error) {
 					console.log(err);
 					return response.status(404).json({success: false, msg: 'ERROR: sending verification email FAILED'});
