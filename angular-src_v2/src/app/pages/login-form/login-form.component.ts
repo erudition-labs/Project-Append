@@ -49,13 +49,14 @@ export class LoginFormComponent implements OnInit {
 			this.loginLoading = true;
 			this.authService.login(credentials).subscribe(
 				result => {
+					console.log(result);
 					this.loginLoading = false;
 					this.authService.setUser(
 						result.token,
 						result.userInfo,
 						result.expiresAt
 					);
-					this.router.navigate(['dashboard']);
+					this.router.navigate(['about']);
 				}, error => {
 					this.loginResult = {
 						message: error.error.message,

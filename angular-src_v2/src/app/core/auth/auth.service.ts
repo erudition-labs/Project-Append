@@ -26,7 +26,7 @@ export class AuthService {
 	public login(credentials: Credentials) : Observable<any> {
 		//use spread to get individual properties off the supplied user object
 		//to a new object
-		return this.http.post(`/api/authenticate`, { ...credentials });	
+		return this.http.post(`http://localhost:3000/api/v1/authenticate`, { ...credentials });	
 	}
 
 	private setToken(token: string) : void {

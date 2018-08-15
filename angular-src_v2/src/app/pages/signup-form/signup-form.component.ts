@@ -47,9 +47,10 @@ export class SignupFormComponent implements OnInit {
 			password	: new FormControl('', { validators: [Validators.required] }),
 			firstName	: new FormControl('', { validators: [Validators.required] }),
 			lastName	: new FormControl('', { validators: [Validators.required] }),
-			rank		: new FormControl('', { validators: [Validators.required] }),
+			rank		: new FormControl('', { }),
 			flight		: new FormControl('', { validators: [Validators.required] }),
-			team		: new FormControl('', { validators: [Validators.required] })
+			team		: new FormControl('', { }),
+			phone		: new FormControl('', { validators: [Validators.required] })
 		});
 	}
 
@@ -81,6 +82,7 @@ export class SignupFormComponent implements OnInit {
 		this.signupForm.controls.rank.markAsDirty();
 		this.signupForm.controls.flight.markAsDirty();
 		this.signupForm.controls.team.markAsDirty();
+		this.signupForm.controls.phone.markAsDirty();
 
 		if(this.signupForm.valid) {
 			this.signupLoading = true;
@@ -91,7 +93,8 @@ export class SignupFormComponent implements OnInit {
 				lastName,
 				rank,
 				flight,
-				team
+				team,
+				phone
 			} = this.signupForm.value;
 
 			const newUser : NewUser = {
@@ -101,7 +104,8 @@ export class SignupFormComponent implements OnInit {
 				lastName,
 				rank,
 				flight,
-				team
+				team,
+				phone
 			};
 			
 			this.authService.signup(newUser).subscribe(
