@@ -50,6 +50,7 @@ router.delete('/:id', (request, response, next) => {
 
 
 router.get('/profile', (request, response, next) => {
+	console.log(request.headers);
 	return response.status(200).json({user:request.user});
 	/*User.findOne({}, {}, {sort: {'created_at':-1}}, function(error, post) {
 		if(error) {

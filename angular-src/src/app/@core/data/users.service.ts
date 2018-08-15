@@ -56,22 +56,14 @@ readonly url :  string = "http://localhost:3000/api/v1/users";
 			
 					
 		});*/
+			//this.loadToken().then((token)=> console.log(token.token));
 			return this.http.get(this.url + "/profile", httpOptions)
 				.pipe(tap((data) => console.log('got profile data::' + data)),
 				catchError(this.handleError<any>('error data retrievel'))
 				);
 	}
 
-	private loadToken() {
-		return new Promise(resolve => 
-			this.authService.getToken().subscribe((token : NbAuthJWTToken) => {
-				if(token.isValid()) {
-					httpOptions.headers.append('Authorization', token.getValue());
-				}
-				resolve(token);
-			})
-		)
-	}
+
 
 
 	private handleError<T> (operation = 'operation', result?: T) {

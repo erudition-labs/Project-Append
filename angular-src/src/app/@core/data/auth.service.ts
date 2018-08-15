@@ -8,7 +8,8 @@
 import { Inject, Injectable 			} from '@angular/core';
 import { Observable, of as observableOf } from 'rxjs';
 import { switchMap, map 				} from 'rxjs/operators';
-import { NbAuthResult, NbAuthService 	} from '@nebular/auth';
+import { NbAuthResult, NbAuthService,NbAuthJWTToken 	} from '@nebular/auth';
+import { HttpClient, HttpHeaders 	} from '@angular/common/http';
 
 export class EmailPassAuthProvider extends NbEmailPassAuthProvider {
 
@@ -35,6 +36,7 @@ import { HttpClient, HttpHeaders 	} from '@angular/common/http';
 import { Observable, of 			} from 'rxjs';
 import { catchError, map, tap 		} from 'rxjs/operators';
 import { log 						} from 'util';
+import { NbAuthResult, NbAuthService,NbAuthJWTToken 	} from '@nebular/auth';
 
 export interface User {
 	_id				?: string; //perhaps move this to a models folder?
@@ -60,7 +62,8 @@ export class AuthService {
 	readonly url :  string = "http://localhost:3000/api/v1/auth";
 
 
-	constructor(private http: HttpClient) { }
+	constructor(private http: HttpClient,
+				private authService : NbAuthService) { }
 
 	create(user : User)  {  
 		return this.http.post(this.url + "/register", user, httpOptions)
@@ -76,6 +79,23 @@ export class AuthService {
 			);
 	}
 
+	private loadToken() : any {
+		return new Promise(resolve => 
+			this.authService.getToken().subscribe((token : NbAuthJWTToken) => {
+				if(token.isValid()) {
+					//httpOptions.headers.append('Authorization', token.getValue());
+				}
+				resolve(token);
+			})
+		)
+	}
+
+
+	public getToken() : any {
+		var userToken;
+		this.loadToken().then((nbToken) => {return nbToken.token;});
+	
+	}
 
 	/*
 	verify(code : string) {

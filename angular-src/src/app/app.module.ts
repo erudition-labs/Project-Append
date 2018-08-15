@@ -2,7 +2,7 @@ import { APP_BASE_HREF 				} from '@angular/common';
 import { BrowserModule 				} from '@angular/platform-browser';
 import { BrowserAnimationsModule 	} from '@angular/platform-browser/animations';
 import { NgModule 					} from '@angular/core';
-import { HttpClientModule 			} from '@angular/common/http';
+import { HttpClientModule,HTTP_INTERCEPTORS 			} from '@angular/common/http';
 import { CoreModule 				} from './@core/core.module';
 
 import { AppComponent 			} from './app.component';
@@ -11,6 +11,7 @@ import { ThemeModule 			} from './@theme/theme.module';
 import { NgbModule 				} from '@ng-bootstrap/ng-bootstrap';
 import { NbPasswordAuthStrategy, NbAuthModule } from '@nebular/auth';
 import { NbAuthJWTToken } from '@nebular/auth';
+import { TokenInterceptorService as TokenInterceptor} from './@core/utils/token-interceptor.service'
 
 const formSettings : any = {
 	redirectDelay: 500,  // delay before redirect after a successful login, while success message is shown 
@@ -78,6 +79,11 @@ const formSettings : any = {
   bootstrap: [AppComponent],
   providers: [
     { provide: APP_BASE_HREF, useValue: '/' },
+	{
+		provide: HTTP_INTERCEPTORS,
+		useClass: TokenInterceptor,
+		multi: true
+	}
   ],
 })
 export class AppModule {
