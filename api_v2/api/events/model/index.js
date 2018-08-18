@@ -7,9 +7,9 @@ const eventModel = new Schema({
 	isVerified				: { type: Boolean, required: true },
 	isSignupRequired		: { type: Boolean, required: true },
 	startDate				: { type: Date, required: false },
-	endDate					: { type: Date, required false },
+	endDate					: { type: Date, required: false },
 	OIC		: {
-		type: Schema.Types.ObjectsId,
+		type: Schema.Types.ObjectId,
 		ref: 'User',
 		required: false
 	}
