@@ -16,17 +16,17 @@
     "cors": "*",
     "csurf": "*",
     "dotenv": "*",
+    "email-verification": "^0.4.6",
     "express": "*",
-    "express-jwt": "*",
+    "express-jwt": "^5.3.1",
     "express-rate-limit": "*",
     "express-session": "*",
+    "express-validator": "*",
     "helmet": "*",
     "jsonwebtoken": "*",
     "jwt-decode": "*",
-    "mongoose-unique-validator": "*",
-    "express-validator": "*",
-    "email-verification": "^0.4.6",
-    "mongoose": "*"
+    "mongoose": "*",
+    "mongoose-unique-validator": "*"
   },
   "devDependencies": {
     "nodemon": "^1.18.3"
