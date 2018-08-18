@@ -1,5 +1,11 @@
-const express 	= require('express');
-const router	 = express.Router;
+const express 		= require('express');
+const router	 	= express.Router();
+const controller 	= require('./controller');
+const requireAdmin	= ('../../users/util');
 
 router.route('/').get(controller.getEvents);
+router.route('/').post(requireAdmin, controller.postEvent);
 router.route('/:id').get(controller.getEvent);
+router.route('/:id').delete(requireAdmin, controller.deleteExoplanet);
+
+module.exports router;
