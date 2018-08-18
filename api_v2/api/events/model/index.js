@@ -5,6 +5,7 @@ const eventModel = new Schema({
 	name					: { type: String, required: true  },
 	isVerificationRequired	: { type: Boolean, required: true },
 	isVerified				: { type: Boolean, required: true },
+	isSignupRequired		: { type: Boolean, required: true },
 	startDate				: { type: Date, required: false },
 	endDate					: { type: Date, required false },
 	OIC		: {
