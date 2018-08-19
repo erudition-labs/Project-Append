@@ -5,7 +5,7 @@ const { requireAdmin }	= require('./../users/util');
 
 //router.route('/').get(controller.getEvents);
 router.route('/').post(controller.postEvent);
-//router.route('/:id').get(controller.getEvent);
+router.route('/:id').get(controller.getEvent);
 //router.route('/:id').delete(requireAdmin, controller.deleteExoplanet);
 
 module.exports = router;

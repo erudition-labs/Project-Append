@@ -10,6 +10,25 @@ const postEvent = async (request, response) => {
 	}
 }
 
+const getEvent = async (request, response) => {
+	try {
+		const fetchedEvent = await queries.getEvent(request.params.id);	
+		response.json({ success: true, result: fetchedEvent });
+	} catch(error) {
+		return error;
+	}
+};
+/*
+const updateEvent = async (request, response) => {
+	try {
+		const updatedEvent = await queries.updateEvent(request.body.data);
+		response.json({ success: true, result: updatedEvent });
+	} catch(error) {
+		return error;
+	}
+}
+*/
 module.exports = {
-	postEvent
+	postEvent,
+	getEvent
 };

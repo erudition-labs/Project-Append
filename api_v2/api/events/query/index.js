@@ -8,8 +8,35 @@ const createEvent = async (eventData) => {
 		console.log(error);
 		return error;
 	}
-}
+};
+/*
+const getEvent = async (owner, id) => {
+	query = {
+		_id: id
+	};
+
+	if(owner !== 'admin') {
+		query.OIC = owner;
+	}
+
+	try {
+		return await Event.findOne(query);
+	} catch(error) {
+		return error;
+	}
+};
+*/
+
+const getEvent = async (id) => {
+	try {
+		return await Event.findOne({ _id : id });
+	} catch(error) {
+		return error;
+	}
+};
+
 
 module.exports = {
-	createEvent
+	createEvent,
+	getEvent
 };
