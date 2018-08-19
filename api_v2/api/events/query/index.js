@@ -37,17 +37,25 @@ const getEvent = async (id) => {
 
 const updateEvent = async (id, data) => {
 	try {
-		const tmp =  await Event.findByIdAndUpdate(data._id, data, { new: true });
-		console.log(tmp);
-		return tmp;
+		return await Event.findByIdAndUpdate(data._id, data, { new: true });
 	} catch(error) {
 		return error;
 	}
 };
 
+const getEvents = async () => {
+	try {
+		return await Event.find().sort({ date: 'descending' }).limit(30).find();	
+	} catch(error) {
+		console.log(error);
+		return error;
+	}
+}
+
 
 module.exports = {
 	createEvent,
 	getEvent,
-	updateEvent
+	updateEvent,
+	getEvents
 };
