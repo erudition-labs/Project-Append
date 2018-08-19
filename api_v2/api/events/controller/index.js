@@ -40,10 +40,21 @@ const getEvents = async (request, response) => {
 	}
 };
 
+
+const deleteEvent = async (request, response) => {
+	try {
+		await queries.deleteEvent(request.params.id);
+		response.json({ success: true, message: "Event Deleted" });
+	} catch(error) {
+		return error;
+	}
+};
+
 module.exports = {
 
 	postEvent,
 	getEvent,
 	putEvent,
-	getEvents
+	getEvents,
+	deleteEvent
 };

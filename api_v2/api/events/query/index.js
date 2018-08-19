@@ -47,15 +47,22 @@ const getEvents = async () => {
 	try {
 		return await Event.find().sort({ date: 'descending' }).limit(30).find();	
 	} catch(error) {
-		console.log(error);
 		return error;
 	}
 }
 
+const deleteEvent = async (id) => {
+	try {
+		return await Event.findByIdAndDelete(id);	
+	} catch(error) {
+		return error;
+	}
+};
 
 module.exports = {
 	createEvent,
 	getEvent,
 	updateEvent,
-	getEvents
+	getEvents,
+	deleteEvent
 };
