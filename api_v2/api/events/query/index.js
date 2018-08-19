@@ -29,7 +29,17 @@ const getEvent = async (owner, id) => {
 
 const getEvent = async (id) => {
 	try {
-		return await Event.findOne({ _id : id });
+		return await Event.findOne({ _id: id });
+	} catch(error) {
+		return error;
+	}
+};
+
+const updateEvent = async (id, data) => {
+	try {
+		const tmp =  await Event.findByIdAndUpdate(data._id, data, { new: true });
+		console.log(tmp);
+		return tmp;
 	} catch(error) {
 		return error;
 	}
@@ -38,5 +48,6 @@ const getEvent = async (id) => {
 
 module.exports = {
 	createEvent,
-	getEvent
+	getEvent,
+	updateEvent
 };

@@ -1,4 +1,5 @@
-const queries = require('./../query');
+const queries 	= require('./../query');
+const User		= require('./../../users/query');
 
 const postEvent = async (request, response) => {
 	try {
@@ -18,17 +19,20 @@ const getEvent = async (request, response) => {
 		return error;
 	}
 };
-/*
-const updateEvent = async (request, response) => {
+
+const putEvent = async (request, response) => {
 	try {
-		const updatedEvent = await queries.updateEvent(request.body.data);
+		//const userEdited = await User.getUserById(request.user.sub);
+
+		const updatedEvent = await queries.updateEvent(request.user.sub, request.body.data);
 		response.json({ success: true, result: updatedEvent });
 	} catch(error) {
 		return error;
 	}
 }
-*/
 module.exports = {
+
 	postEvent,
-	getEvent
+	getEvent,
+	putEvent
 };
