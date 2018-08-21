@@ -121,7 +121,19 @@ export class EventsComponent implements OnInit {
 				private eventsService: EventsService) { }
 
 	ngOnInit() {
-	this.eventsService.getEvents().subscribe( (result) => console.log(result));			
+		this.eventsService.getEvents().subscribe((result) => {
+			console.log(result.result[0].name)
+			const calendarEvent = {
+				start: startOfDay(new Date()),
+				title: result.result[0].name,
+				color: colors.red,
+				actions: this.actions,
+				draggable: true
+			};
+			this.events.push(calendarEvent);
+			this.refresh.next();
+
+		});			
 	}
 
 	dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
