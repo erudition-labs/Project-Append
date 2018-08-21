@@ -28,24 +28,20 @@ export class HeaderComponent implements OnInit {
   }
 
 	ngOnInit() {
-		console.log(this.authService.isAuthenticated());
 		this.userInfo = this.authService.getUserInfo();
-		console.log(this.userInfo);
-  //  this.userService.getUsers()
-  //  .subscribe((users: any) => this.user = users.nick);
 
-	this.menuService.onItemClick()
-		.pipe(
-		filter(({ tag }) => tag === 'usermenu'),
-		map(({ item: { title } }) => title),
-		).subscribe(title => {
-			if(title === 'Log out') {
-				this.authService.logout();
-			}
+		this.menuService.onItemClick()
+			.pipe(
+			filter(({ tag }) => tag === 'usermenu'),
+			map(({ item: { title } }) => title),
+			).subscribe(title => {
+				if(title === 'Log out') {
+					this.authService.logout();
+				}
 
-			if(title === 'Profile') {
+				if(title === 'Profile') {
 			
-			}
+				}
 		});
 		
 	}
