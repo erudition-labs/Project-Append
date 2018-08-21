@@ -3,12 +3,16 @@ import { CommonModule } from '@angular/common';
 import { NbAuthModule, NbDummyAuthStrategy } from '@nebular/auth';
 import { NbSecurityModule, NbRoleProvider } from '@nebular/security';
 import { of as observableOf } from 'rxjs';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { throwIfAlreadyLoaded } from './module-import-guard';
 import { DataModule } from './data/data.module';
 import { AnalyticsService } from './utils/analytics.service';
 import { AuthService } from './auth/auth.service';
 import { UserService } from './user/user.service';
+import { EventsService } from './events/events.service';
+import { TokenInterceptorService as TokenInterceptor } from './utils/token-interceptor.service';
+
 
 const socialLinks = [
  {
@@ -75,6 +79,12 @@ export const NB_CORE_PROVIDERS = [
   AnalyticsService,
   AuthService,
   UserService,
+  EventsService,
+  {
+  	provide: HTTP_INTERCEPTORS,
+	useClass: TokenInterceptor,
+	multi: true
+  },
 ];
 
 @NgModule({

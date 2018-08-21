@@ -9,3 +9,13 @@ export interface NewUser {
 	role		: string;
 	phone		: string;
 }
+
+export interface User {
+	email 		: string;
+	firstName 	: string;
+	lastName 	: string;
+	rank 		: string;
+	flight 		: string;
+	team 		: string;
+	phone 		: string;
+}
