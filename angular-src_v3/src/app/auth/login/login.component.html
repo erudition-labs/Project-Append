@@ -1,12 +1,12 @@
 
 	<nb-card>
-		<nb-card-content>
+		<nb-card-body>
 			<app-login-form *ngIf="showingLogin"></app-login-form>
 			<app-signup-form *ngIf="showingSignup"></app-signup-form>
-		</nb-card-content>
-		<nb-divider></nb-divider>
-		<nb-card-actions>
+		</nb-card-body>
+		<!--<nb-divider></nb-divider>-->
+		<nb-card-footer>
 			<button mat-stroked-button color="primary" *ngIf="showingLogin" mat-button (click)="showSignup()">Sign Up</button>
 			<button mat-stroked-button color="primary" *ngIf="showingSignup" mat-button (click)="showLogin()">Log In</button>
-		</nb-card-actions>
+		</nb-card-footer>
 	</nb-card>

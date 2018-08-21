@@ -14,6 +14,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ThemeModule } from './@theme/theme.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SharedModule } from './shared/shared.module';
 
 import { LoginComponent } from './auth/login/login.component';
 import { LoginFormComponent } from './auth/login-form/login-form.component';
@@ -25,7 +26,8 @@ import { SignupFormComponent } from './auth/signup-form/signup-form.component';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    AppRoutingModule,
+	AppRoutingModule,
+	SharedModule,
 
     NgbModule.forRoot(),
     ThemeModule.forRoot(),
