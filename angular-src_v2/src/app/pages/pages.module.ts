@@ -11,7 +11,8 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { PagesRoutingModule } from './pages-routing.module';
 import { CalendarModule } from 'angular-calendar';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+//import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap/modal/modal.module';
 import { FlatpickrModule } from 'angularx-flatpickr';
 
 
@@ -37,9 +38,10 @@ import { EmailVerificationComponent } from './email-verification/email-verificat
   FormsModule,
   ReactiveFormsModule,
   HttpClientModule,
-  CalendarModule.forRoot(),
-  NgbModalModule.forRoot(),
+  //NgbModalModule.forRoot(),
+  NgbModule.forRoot(),
   FlatpickrModule.forRoot(),
+  CalendarModule.forRoot(),
   ],
   declarations: [
   LoginComponent, 

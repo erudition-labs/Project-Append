@@ -26,7 +26,8 @@
     "jsonwebtoken": "*",
     "jwt-decode": "*",
     "mongoose": "*",
-    "mongoose-unique-validator": "*"
+    "mongoose-unique-validator": "*",
+    "passport-jwt": "^4.0.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.3"
