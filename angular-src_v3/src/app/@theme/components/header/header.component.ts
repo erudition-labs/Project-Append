@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-
+import { Router } from '@angular/router';
 import { NbMenuService, NbSidebarService } from '@nebular/theme';
 import { UserService } from '../../../@core/user/user.service';
 import { AuthService } from '../../../@core/auth/auth.service';
@@ -16,19 +16,23 @@ export class HeaderComponent implements OnInit {
 
   @Input() position = 'normal';
 
-  userInfo: any;
+  private userInfo: any;
+  private isAuthenticated : boolean = false;
 
   userMenu = [{ title: 'Profile' }, { title: 'Log out' }];
 
-  constructor(private sidebarService: NbSidebarService,
-              private menuService: NbMenuService,
-			  private authService: AuthService,
-              private userService: UserService,
-              private analyticsService: AnalyticsService) {
+  constructor(private sidebarService	: NbSidebarService,
+              private menuService		: NbMenuService,
+			  private authService		: AuthService,
+              private userService		: UserService,
+			  private router			: Router,
+              private analyticsService	: AnalyticsService) {
   }
 
 	ngOnInit() {
+	console.log(this.authService.isAuthenticated());
 		this.userInfo = this.authService.getUserInfo();
+		this.isAuthenticated = this.authService.isAuthenticated();
 
 		this.menuService.onItemClick()
 			.pipe(
@@ -40,7 +44,7 @@ export class HeaderComponent implements OnInit {
 				}
 
 				if(title === 'Profile') {
-			
+					this.router.navigateByUrl("/pages/profile");			
 				}
 		});
 		

@@ -15,13 +15,14 @@
     [class.right]="position === 'normal'"
     [class.left]="position === 'inverse'">
     <nb-action icon="nb-gear" class="toggle-layout" (click)="toggleSettings()"></nb-action>
-      <nb-user *ngIf="authService.isAuthenticated()"
-				[nbContextMenu]="userMenu" 
+	    <nb-action *nbIsGranted="['view', 'user']" >
+      <nb-user	[nbContextMenu]="userMenu" 
 				nbContextMenuTag="usermenu"
 		  		[name]="userInfo?.firstName" 
 				[title]="userInfo?.rank"
 				[picture]="user?.picture">
 	  </nb-user>
+	  </nb-action>
     <nb-action class="control-item" icon="nb-notifications"></nb-action>
     <nb-action class="control-item">
       <nb-search type="rotate-layout" (click)="startSearch()"></nb-search>
