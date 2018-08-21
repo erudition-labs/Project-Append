@@ -13,7 +13,7 @@ export class AuthService {
 	constructor(private http 	: HttpClient,
 				private router	: Router) {}
 
-	readonly url : string = "http://localhost:3000/api/v1/"
+	readonly url : string = "http://localhost:3000/api/v1"
 
 	public isAuthenticated(): boolean {
 		const expiresAt = localStorage.getItem('ExpiresAt');
@@ -28,7 +28,7 @@ export class AuthService {
 	public login(credentials: Credentials) : Observable<any> {
 		//use spread to get individual properties off the supplied user object
 		//to a new object
-		return this.http.post(this.url + `authenticate`, { ...credentials });	
+		return this.http.post(this.url + `/authenticate`, { ...credentials });	
 	}
 
 	private setToken(token: string) : void {
@@ -59,7 +59,7 @@ export class AuthService {
 	}
 
 	public signup(user: NewUser) : Observable<any> {
-		return this.http.post(this.url + `users`, { ...user });	
+		return this.http.post(this.url + `/users`, { ...user });	
 	}
 
 	public logout() : void {
@@ -81,7 +81,7 @@ export class AuthService {
 		const params = new HttpParams({
 			fromObject: { token }
 		});
-		return this.http.post(this.url + 'email-verification/', { params });
+		return this.http.post(this.url + '/email-verification/', { params });
 	}
 
 	public userHasRole(expectedRole: string) : boolean {
