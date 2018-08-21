@@ -26,6 +26,10 @@ export class SignupFormComponent implements OnInit {
 	private emailValidating = false;
 	private signupResult : any;
 
+	private errors: string[] = [];
+	private messages: string[] = [];
+	private submitted: boolean = false;
+
 	constructor(
 		private formBuilder : FormBuilder,
 		private authService : AuthService,
@@ -77,6 +81,9 @@ export class SignupFormComponent implements OnInit {
 	}
 
 	public onSubmit() : void {
+		this.messages = [];
+		this.errors = [];
+
 		this.signupForm.controls.email.markAsDirty();
 		this.signupForm.controls.password.markAsDirty();
 		this.signupForm.controls.firstName.markAsDirty();
@@ -115,18 +122,24 @@ export class SignupFormComponent implements OnInit {
 			
 			this.authService.signup(newUser).subscribe(
 				result => {
-					this.signupResult = {
-						message: result.message,
-						state: 'success'
-					};
-					this.signupLoading = false;
+					if(result.success) {
+						this.signupResult = {
+							message: result.message,
+							state: 'success'
+						};
 
-					const { token, userInfo, expiresAt } = result;
-					this.authService.setUser(token, userInfo, expiresAt);
+						this.messages.push(result.message);
+						this.signupLoading = false;
 
-					setTimeout(() => {
-						this.router.navigate(['dashboard']);
-					}, 1500);
+						const { token, userInfo, expiresAt } = result;
+						this.authService.setUser(token, userInfo, expiresAt);
+
+						setTimeout(() => {
+							this.router.navigate(['dashboard']);
+						}, 2000);
+					} else {
+						this.errors.push(result.message);
+					}
 				}, error => {
 					this.signupResult = {
 						message: error.error.message,

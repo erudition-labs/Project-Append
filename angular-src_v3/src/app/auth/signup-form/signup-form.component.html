@@ -1,3 +1,16 @@
+<nb-auth-block>
+<div *ngIf="errors && errors.length > 0 && !submitted"
+		class="alert alert-danger" role="alert">
+	<div><strong>Oh snap!</strong></div>
+	<div *ngFor="let error of errors">{{ error }}</div>
+</div>
+
+<div *ngIf="messages && messages.length > 0 && !submitted"
+		class="alert alert-success" role="alert">
+	<div><strong>Welcome {{ username }}!</strong></div>
+	<div *ngFor="let message of messages">{{ message }}</div>
+</div>
+
 <div class="container">
 	<div [formGroup]="signupForm">
 		<mat-card class="noshadow">
@@ -17,14 +30,9 @@
 					<!---<mat-icon matSuffix>envelope</mat-icon>-->
 							<mat-error
 								*ngIf="signupForm.get('email').hasError('required') ||
+								signupForm.get('email').hasError('email') ||
 								signupForm.get('email').dirty">
-								Email is <strong>required</strong>
-							</mat-error>
-
-							<mat-error
-								*ngIf="signupForm.get('email').hasError('email') &&
-								signupForm.get('email').dirty">
-								Valid email <strong>required</strong>
+								Valid Email is <strong>required</strong>
 							</mat-error>
 
 							<mat-error
@@ -149,3 +157,4 @@
 		</mat-card>
 	</div>
 </div>
+</nb-auth-block>
