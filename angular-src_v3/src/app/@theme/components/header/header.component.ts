@@ -28,6 +28,7 @@ export class HeaderComponent implements OnInit {
   }
 
 	ngOnInit() {
+		console.log(this.authService.isAuthenticated());
 		this.userInfo = this.authService.getUserInfo();
 		console.log(this.userInfo);
   //  this.userService.getUsers()
