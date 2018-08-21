@@ -63,7 +63,6 @@ export class SignupFormComponent implements OnInit {
 		this.emailValidating = true;
 		const email = control.value.toLowerCase();
 
-		console.log(email);
 		return this.userService.checkEmail(email).pipe(
 			map(
 				result => {
