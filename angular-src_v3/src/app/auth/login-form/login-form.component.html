@@ -30,15 +30,11 @@
 											[formControl]="loginForm.get('email')">
 							<mat-error
 								*ngIf="loginForm.get('email').hasError('required') ||
+								loginForm.get('email').hasError('email') ||
 								loginForm.get('email').dirty">
-								Email is <strong>required</strong>
+								Valid Email is <strong>required</strong>
 							</mat-error>
 
-							<mat-error
-								*ngIf="loginForm.get('email').hasError('email') &&
-								loginForm.get('email').dirty">
-								Valid email is <strong>required</strong>
-							</mat-error>
 						</mat-form-field>
 					</mat-list-item>
 
