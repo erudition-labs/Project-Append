@@ -1,3 +1,17 @@
+<nb-auth-block>
+<div *ngIf="errors && errors.length > 0 && !submitted"
+		class="alert alert-danger" role="alert">
+	<div><strong>Oh snap!</strong></div>
+	<div *ngFor="let error of errors">{{ error }}</div>
+</div>
+
+<div *ngIf="messages && messages.length > 0 && !submitted"
+		class="alert alert-success" role="alert">
+	<div><strong>Welcome {{ username }}!</strong></div>
+	<div *ngFor="let message of messages">{{ message }}</div>
+</div>
+
+
 <div class="container">
 	<div [formGroup]="loginForm">
 		<mat-card class="noshadow">
@@ -50,3 +64,4 @@
 		</mat-card>
 	</div>
 </div>
+</nb-auth-block>
