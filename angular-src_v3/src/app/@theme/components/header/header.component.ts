@@ -16,7 +16,7 @@ export class HeaderComponent implements OnInit {
 
   @Input() position = 'normal';
 
-  user: any;
+  userInfo: any;
 
   userMenu = [{ title: 'Profile' }, { title: 'Log out' }];
 
@@ -28,6 +28,8 @@ export class HeaderComponent implements OnInit {
   }
 
 	ngOnInit() {
+		this.userInfo = this.authService.getUserInfo();
+		console.log(this.userInfo);
   //  this.userService.getUsers()
   //  .subscribe((users: any) => this.user = users.nick);
 
@@ -36,7 +38,6 @@ export class HeaderComponent implements OnInit {
 		filter(({ tag }) => tag === 'usermenu'),
 		map(({ item: { title } }) => title),
 		).subscribe(title => {
-			console.log(title);
 			if(title === 'Log out') {
 				this.authService.logout();
 			}
