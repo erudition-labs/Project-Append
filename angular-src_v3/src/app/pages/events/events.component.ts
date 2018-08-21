@@ -26,6 +26,9 @@ import {
 	CalendarEventTimesChangedEvent
 } from 'angular-calendar';
 
+import { Event } from '../../@core/events/event.model';
+import { EventsService } from '../../@core/events/events.service';
+
 
 const colors: any = {
 	red: {
@@ -76,7 +79,7 @@ export class EventsComponent implements OnInit {
 
 	refresh: Subject<any> = new Subject();
 
-	events: CalendarEvent[] = [
+		events: CalendarEvent[] = [];/* [
 	{
 		start: subDays(startOfDay(new Date()), 1),
 		end: addDays(new Date(), 1),
@@ -108,13 +111,18 @@ export class EventsComponent implements OnInit {
 			afterEnd: true
 		},
 		draggable: true
-	}];
+	}];*/
+
+
 
 	activeDayIsOpen: boolean = true;
 
-	constructor(private modal: NgbModal) { }
+	constructor(private modal: NgbModal,
+				private eventsService: EventsService) { }
 
-	ngOnInit() {}
+	ngOnInit() {
+	this.eventsService.getEvents().subscribe( (result) => console.log(result));			
+	}
 
 	dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
 		if (isSameMonth(date, this.viewDate)) {
