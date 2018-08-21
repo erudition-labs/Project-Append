@@ -8,16 +8,16 @@ const eventModel = new Schema({
 	isSignupRequired		: { type: Boolean, required: true, default: false },
 	startDate				: { type: Date, required: false },
 	endDate					: { type: Date, required: false },
-	OIC		: {[
+	OIC		: [{
 		type: Schema.Types.ObjectId,
 		ref: 'User',
 		required: false
-	]},
-	signedUp : {[
+	}],
+	signedUp : [{
 		type: Schema.Types.ObjectId,
-		ref: 'User,
-		required: false'
-	]}
+		ref: 'User',
+		required: false
+	}]
 });
 
 module.exports = mongoose.model('event', eventModel);
