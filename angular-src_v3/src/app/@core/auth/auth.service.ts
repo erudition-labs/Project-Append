@@ -16,7 +16,7 @@ export class AuthService {
 	readonly url : string = "http://localhost:3000/api/v1"
 
 	public isAuthenticated(): boolean {
-		const expiresAt = localStorage.getItem('ExpiresAt');
+		const expiresAt = localStorage.getItem('expiresAt');
 
 		if(!expiresAt) {
 			return false;
