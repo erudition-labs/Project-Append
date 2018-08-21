@@ -8,6 +8,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
     home: true,
   },
   {
+  	title: 'Events',
+	icon: 'nb-calendar',
+	link: '/pages/events',
+  },
+  {
     title: 'FEATURES',
     group: true,
   },
