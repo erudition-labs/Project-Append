@@ -1,0 +1,29 @@
+input {
+	border: none;
+	background-color: none;
+	outline: 0;
+	box-shadow: none;
+	border-bottom: 1px solid #dbdbdb;
+	border-radius: 0;
+}
+
+input:focus {
+	box-shadow: none;
+	-webkit-box-shadow: none;
+}
+
+mat-list-item {
+	margin: 35px;
+}
+
+.noshadow {
+	box-shadow: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+mat-card-actions{
+	margin: 0px;
+  margin-left: 50px;
+  padding-top: 0px;
+}

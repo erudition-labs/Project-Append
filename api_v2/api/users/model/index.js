@@ -6,9 +6,9 @@ const userModel = new Schema({
 	firstName	: { type: String, required: true },
 	lastName	: { type: String, required: true },
 	email		: { type: String, index: true, unique: true, required: true },
-	rank		: { type: String, required: true },
+	rank		: { type: String, required: false },
 	flight 		: { type: String, required: true },
-	team 		: { type: String, required: true },
+	team 		: { type: String, required: false },
 	password	: { type: String, required: true },
 	role		: { type: String, required: true }
 }).plugin(uniqueValidator);
@@ -17,9 +17,9 @@ const tempUserModel = new Schema({
 	firstName	: { type: String, required: true },
 	lastName	: { type: String, required: true },
 	email		: { type: String, index: true, unique: true, required: true },
-	rank		: { type: String, required: true },
+	rank		: { type: String, required: false },
 	flight 		: { type: String, required: true },
-	team 		: { type: String, required: true },
+	team 		: { type: String, required: false },
 	password	: { type: String, required: true },
 	role		: { type: String, required: true },
 	GENERATED_VERIFYING_URL : { type: String }

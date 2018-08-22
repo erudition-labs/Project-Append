@@ -27,7 +27,7 @@ const verifyPassword = (passwordAttempt, hashedPassword) => {
 	return bcrypt.compare(passwordAttempt, hashedPassword);
 };
 
-const requireAdmin = (request, response, nect) => {
+const requireAdmin = (request, response, next) => {
 	if(!request.user) {
 		return response.status(401).json({ success: false, message: 'Problem Authorizing' });
 	}

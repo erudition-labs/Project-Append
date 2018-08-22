@@ -34,7 +34,7 @@ const postAuthenticate = async (request, response) => {
 				expiresAt
 			});
 		} else {
-			response.status(403).json({ success: false, message: 'Wrong email or password' });
+			response.json({ success: false, message: 'Wrong email or password' });
 		}
 	} catch(error) {
 		console.log(error);

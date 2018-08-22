@@ -1,0 +1,13 @@
+<nb-auth-block>
+	<mat-card>
+		<mat-card-content>
+			<app-login-form *ngIf="showingLogin"></app-login-form>
+			<app-signup-form *ngIf="showingSignup"></app-signup-form>
+		</mat-card-content>
+		<mat-divider></mat-divider>
+		<mat-card-actions>
+			<button mat-stroked-button color="primary" *ngIf="showingLogin" mat-button (click)="showSignup()">Sign Up</button>
+			<button mat-stroked-button color="primary" *ngIf="showingSignup" mat-button (click)="showLogin()">Log In</button>
+		</mat-card-actions>
+	</mat-card>
+</nb-auth-block>

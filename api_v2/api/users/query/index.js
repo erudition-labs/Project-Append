@@ -1,6 +1,6 @@
 const User = require('./../model').user;
 
-const createUser = async userData => {
+const createUser = async (userData) => {
 	try {
 		const newUser = new User(userData);
 		return newUser.save();
@@ -9,7 +9,7 @@ const createUser = async userData => {
 	}
 };
 
-const getUserByEmail = async email => {
+const getUserByEmail = async (email) => {
 	try {
 		return await User.findOne({ email: email });
 	} catch(error) {
@@ -17,4 +17,16 @@ const getUserByEmail = async email => {
 	}
 };
 
-module.exports = { createUser, getUserByEmail };
+const getUserById = async (id) => {
+	try {
+		return await User.findById(id);
+	} catch(error) {
+		return error;
+	}
+};
+
+module.exports = { 
+	createUser, 
+	getUserByEmail,
+	getUserById
+};

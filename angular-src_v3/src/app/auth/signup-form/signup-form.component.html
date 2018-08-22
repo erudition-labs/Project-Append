@@ -1,0 +1,160 @@
+<nb-auth-block>
+<div *ngIf="errors && errors.length > 0 && !submitted"
+		class="alert alert-danger" role="alert">
+	<div><strong>Oh snap!</strong></div>
+	<div *ngFor="let error of errors">{{ error }}</div>
+</div>
+
+<div *ngIf="messages && messages.length > 0 && !submitted"
+		class="alert alert-success" role="alert">
+	<div><strong>Welcome {{ username }}!</strong></div>
+	<div *ngFor="let message of messages">{{ message }}</div>
+</div>
+
+<div class="container">
+	<div [formGroup]="signupForm">
+		<mat-card class="noshadow">
+			<mat-toolbar color="primary">
+			  <mat-toolbar-row>
+			    <span>Register</span>
+			  </mat-toolbar-row>
+			</mat-toolbar>
+
+			<mat-card-content>
+				<mat-list>
+					<mat-list-item>
+						<mat-form-field appearance="outline">
+							<mat-label>Email*</mat-label>
+							<input matInput placeholder="Email"
+											[formControl]="signupForm.get('email')">
+					<!---<mat-icon matSuffix>envelope</mat-icon>-->
+							<mat-error
+								*ngIf="signupForm.get('email').hasError('required') ||
+								signupForm.get('email').hasError('email') ||
+								signupForm.get('email').dirty">
+								Valid Email is <strong>required</strong>
+							</mat-error>
+
+							<mat-error
+								*ngIf="signupForm.get('email').errors &&
+								signupForm.get('email').errors.emailTaken &&
+								signupForm.get('email').dirty">
+								That email is taken
+							</mat-error>
+						</mat-form-field>
+					</mat-list-item>
+
+					<mat-list-item>
+						<mat-form-field appearance="outline">
+							<mat-label>Password*</mat-label>
+							<input matInput placeholder="Password"
+											type="password"
+											[formControl]="signupForm.get('password')">
+
+							<mat-error
+								*ngIf="signupForm.get('password').hasError('required') ||
+								signupForm.get('password').dirty">
+								Password is <strong>required</strong>
+							</mat-error>
+						</mat-form-field>
+					</mat-list-item>
+
+
+					<mat-list-item>
+						<mat-form-field appearance="outline">
+							<mat-label>First Name</mat-label>
+							<input matInput placeholder="First Name"
+											[formControl]="signupForm.get('firstName')">
+
+							<mat-error
+								*ngIf="signupForm.get('firstName').hasError('required') ||
+								signupForm.get('firstName').dirty">
+								First Name is <strong>required</strong>
+							</mat-error>
+						</mat-form-field>
+					</mat-list-item>
+
+
+					<mat-list-item>
+						<mat-form-field appearance="outline">
+							<mat-label>Last Name</mat-label>
+							<input matInput placeholder="Last Name"
+											[formControl]="signupForm.get('lastName')">
+
+							<mat-error
+								*ngIf="signupForm.get('lastName').hasError('required') ||
+								signupForm.get('lastName').dirty">
+								Last Name is <strong>required</strong>
+							</mat-error>
+						</mat-form-field>
+					</mat-list-item>
+
+
+					<mat-list-item>
+						<mat-form-field appearance="outline">
+							<mat-label>Rank</mat-label>
+							<input matInput placeholder="Rank"
+											[formControl]="signupForm.get('rank')">
+
+							<mat-error
+								*ngIf="signupForm.get('rank').hasError('required') ||
+								signupForm.get('rank').dirty">
+								Rank is <strong>required</strong>
+							</mat-error>
+						</mat-form-field>
+					</mat-list-item>
+
+					<mat-list-item>
+						<mat-form-field appearance="outline">
+							<mat-label>Flight*</mat-label>
+							<input matInput placeholder="Flight"
+											[formControl]="signupForm.get('flight')">
+
+							<mat-error
+								*ngIf="signupForm.get('flight').hasError('required') ||
+								signupForm.get('flight').dirty">
+								Flight is <strong>required</strong>
+							</mat-error>
+						</mat-form-field>
+					</mat-list-item>
+
+					<mat-list-item>
+						<mat-form-field appearance="outline">
+							<mat-label>Team</mat-label>
+							<input matInput placeholder="Team"
+											[formControl]="signupForm.get('team')">
+
+							<mat-error
+								*ngIf="signupForm.get('team').hasError('required') ||
+								signupForm.get('team').dirty">
+								Team is <strong>required</strong>
+							</mat-error>
+						</mat-form-field>
+					</mat-list-item>
+
+
+					<mat-list-item>
+						<mat-form-field appearance="outline">
+							<mat-label>Phone Number*</mat-label>
+							<input matInput placeholder="Phone Number"
+											[formControl]="signupForm.get('phone')">
+
+							<mat-error
+								*ngIf="signupForm.get('phone').hasError('required') ||
+								signupForm.get('phone').dirty">
+								Phone Number is <strong>required</strong>
+							</mat-error>
+						</mat-form-field>
+					</mat-list-item>
+
+
+				</mat-list>
+			</mat-card-content>
+
+			<mat-card-actions>
+				<button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+			</mat-card-actions>
+		</mat-card>
+	</div>
+</div>
+</nb-auth-block>

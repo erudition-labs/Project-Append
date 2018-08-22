@@ -1,6 +1,7 @@
 //require('dotenv').config(); so we can use env variables like this...
 //process.env.JWT_SECRET
 const express 		= require('express');
+const expressJwt 	= require('express-jwt');
 const mongoose 		= require('mongoose');
 const bodyParser 	= require('body-parser');
 const cors 			= require('cors');
@@ -43,9 +44,10 @@ const attatchUser = (request, response, next) => {
 		next();
 	}
 };
-
+/*
 const checkJwt = (request, response, next) => {
 	const token = request.headers.authorization;
+	console.log(token)
 	if(token === 'Bearer null' || !token) {
 		return response.status(403).json({success: false, message: 'Access denied'});
 	}
@@ -58,10 +60,14 @@ const checkJwt = (request, response, next) => {
 		console.log(decoded);
 		next();
 	} catch(error) {
+		//console.log(request.headers);
+		//console.log(error);
 		return response.status(403).json({success: false, message: 'Access denied'});
 	}
 };
+*/
 
+const checkJwt = expressJwt({ secret: config.secret });
 
 /*
  *
@@ -80,6 +86,8 @@ app.use('/api/v1/authenticate', 	require('./api/authenticate'));
 
 app.use(attatchUser);
 app.use(checkJwt);
+
+app.use('/api/v1/events', require('./api/events'));
 
 //app.use('/api/something', require('./api.something'));
 
