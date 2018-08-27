@@ -19,6 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   imports: [
@@ -40,7 +41,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatIconModule,
     MatTooltipModule,
     MatSnackBarModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+MatDatepickerModule,
   ],
   declarations: [],
   exports: [
@@ -64,6 +66,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatTooltipModule,
     MatSnackBarModule,
     MatSlideToggleModule,
+MatDatepickerModule,
   ]
 })
 export class SharedModule {}
