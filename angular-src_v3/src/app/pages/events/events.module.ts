@@ -8,7 +8,7 @@ import { ThemeModule 								} from '../../@theme/theme.module';
 import { CalendarModule 							} from 'angular-calendar';
 import { NgbModalModule 							} from '@ng-bootstrap/ng-bootstrap/modal/modal.module';
 import { FlatpickrModule 							} from 'angularx-flatpickr';
-
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -17,6 +17,7 @@ import { FlatpickrModule 							} from 'angularx-flatpickr';
 	EventsRoutingModule,
 	FormsModule,
 	ReactiveFormsModule,
+SharedModule,
 	CalendarModule.forRoot(),
 	NgbModalModule.forRoot(),
 	FlatpickrModule.forRoot(),

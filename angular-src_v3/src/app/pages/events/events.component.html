@@ -157,32 +157,26 @@
           (change)="refresh.next()">
       </td>
       <td>
-        <input
-          class="form-control"
-          type="text"
-          mwlFlatpickr
-          [(ngModel)]="event.start"
-          (ngModelChange)="refresh.next()"
-          [altInput]="true"
-          [convertModelValue]="true"
-          [enableTime]="true"
-          dateFormat="Y-m-dTH:i"
-          altFormat="F j, Y H:i"
-          placeholder="Not set">
+        <mat-form-field>
+  <input matInput 
+  	[matDatepicker]="picker" 
+	placeholder="Choose a date"
+	[(ngModel)]="event.start"
+	(ngModelChange)="refresh.next()">
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
       </td>
       <td>
-        <input
-          class="form-control"
-          type="text"
-          mwlFlatpickr
-          [(ngModel)]="event.end"
-          (ngModelChange)="refresh.next()"
-          [altInput]="true"
-          [convertModelValue]="true"
-          [enableTime]="true"
-          dateFormat="Y-m-dTH:i"
-          altFormat="F j, Y H:i"
-          placeholder="Not set">
+        <mat-form-field>
+  <input matInput 
+  [matDatepicker]="picker2" 
+  placeholder="Choose a date"
+  [(ngModel)]="event.end"
+  (ngModelChange)="refresh.next()">
+  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+  <mat-datepicker #picker2></mat-datepicker>
+</mat-form-field>
       </td>
       <td>
         <button
