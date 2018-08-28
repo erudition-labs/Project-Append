@@ -107,9 +107,10 @@ export class EventsComponent implements OnInit {
 	ngOnInit() {
 		this.eventsService.getEvents().subscribe((result) => {
 			for(let e of result.result) {
+			console.log(e);
 				const calendarEvent : CalendarEvent = {
-					start		: e.startDate,
-					end			: e.endDate,
+					start		: new Date(e.startDate),
+					end			: new Date(e.endDate),
 					title		: e.name,
 					color		: colors.red,
 					actions		: this.actions,
@@ -175,8 +176,8 @@ export class EventsComponent implements OnInit {
 			isSignupRequired		: new FormControl('true', { validators: [Validators.required] }),
 			startDate				: new FormControl('', { }),
 			endDate					: new FormControl('', { }),
-			OIC						: new FormControl('', { }),
-			signedUp				: new FormControl('', { }),
+			OIC						: new FormControl([], { }),
+			signedUp				: new FormControl([], { }),
 			additionalDetails		: new FormControl('', { })
 		});
 	}
