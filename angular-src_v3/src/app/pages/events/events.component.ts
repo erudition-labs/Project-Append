@@ -173,15 +173,15 @@ export class EventsComponent implements OnInit {
 			startDate				: new FormControl('', { validators: [Validators.required] }),
 			endDate					: new FormControl('', { validators: [Validators.required] }),
 			OIC						: new FormControl('', { }),
-			signedUp				: new FormControl('', { })
+			signedUp				: new FormControl('', { }),
 			additionalDetails		: new FormControl('', { })
 		});
 	}
 
-	openDialog(): void {
+	openCreateDialog(): void {
+		this.newEventForm = this.createForm;
 		const dialogRef = this.dialog.open(DialogOverviewCreateEvent, {
-		width: '250px',
-		data: {} //{name: this.name, animal: this.animal}
+		data: this.newEventForm; //{} //{name: this.name, animal: this.animal}
 		});
 
 		dialogRef.afterClosed().subscribe(result => {
