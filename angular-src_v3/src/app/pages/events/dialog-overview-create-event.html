@@ -1,1 +1,82 @@
-asdf
+<h1 mat-dialog-title> Create Event </h1>
+<div mat-dialog-content>
+	<div [formGroup]="data">
+	<mat-card>
+		<mat-card-content>
+		<mat-list> 
+			<mat-list-item>
+				<mat-form-field>
+					<mat-label>Name*</mat-label>
+					<input matInput placeholder="Name"
+						[formControl]="data.get('name')">
+
+					<mat-error
+						*ngIf="data.get('name').hasError('required') ||
+						data.get('name').dirty">
+						Name is <strong>required</strong>
+					</mat-error>
+				</mat-form-field>
+			</mat-list-item>
+
+
+			<mat-list-item>
+					<mat-slide-toggle
+						[formControl]="data.get('isVerificationRequired')"
+						[color]="primary"
+						[checked]="checked">
+						Require Verification
+					</mat-slide-toggle>
+			</mat-list-item>
+
+			<mat-list-item>
+					<mat-slide-toggle
+						[formControl]="data.get('isSignupRequired')"
+						[color]="primary"
+						[checked]="checked">
+						Require user to Signup
+					</mat-slide-toggle>
+			</mat-list-item>
+
+			<mat-list-item>
+				<mat-form-field>
+					<input matInput
+						[matDatepicker]="startPicker"
+						[formControl]="data.get('startDate')"
+						placeholder="Choose start date">
+					<mat-datepicker-toggle matSuffix [for]="startPicker">
+					</mat-datepicker-toggle>
+					<mat-datepicker #startPicker disabled="false"></mat-datepicker>
+				</mat-form-field>
+			</mat-list-item>
+
+			<mat-list-item>
+				<mat-form-field>
+					<input matInput
+						[matDatepicker]="endPicker"
+						[formControl]="data.get('endDate')"
+						placeholder="Choose end date">
+					<mat-datepicker-toggle matSuffix [for]="endPicker">
+					</mat-datepicker-toggle>
+					<mat-datepicker #endPicker disabled="false"></mat-datepicker>
+				</mat-form-field>
+			</mat-list-item>
+
+			<mat-list-item>
+				<mat-form-field>
+					<input matInput [formControl]="data.get('OIC')" placeholder="OICs">
+				</mat-form-field>
+			</mat-list-item>
+
+			<mat-list-item>
+				<mat-form-field>
+					<input matInput
+						[formControl]="data.get('additionalDetails')"
+						placeholder="deets">
+				</mat-form-field>
+			</mat-list-item>
+
+		</mat-list>
+		</mat-card-content>
+	</mat-card>
+	</div>
+</div>

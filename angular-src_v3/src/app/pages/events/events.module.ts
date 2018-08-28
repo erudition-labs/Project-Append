@@ -9,6 +9,7 @@ import { CalendarModule 							} from 'angular-calendar';
 import { NgbModalModule 							} from '@ng-bootstrap/ng-bootstrap/modal/modal.module';
 import { FlatpickrModule 							} from 'angularx-flatpickr';
 import { SharedModule } from '../../shared/shared.module';
+import { DialogOverviewEventComponent } from './events.component'
 
 @NgModule({
   imports: [
@@ -17,13 +18,15 @@ import { SharedModule } from '../../shared/shared.module';
 	EventsRoutingModule,
 	FormsModule,
 	ReactiveFormsModule,
-SharedModule,
+	SharedModule,
 	CalendarModule.forRoot(),
 	NgbModalModule.forRoot(),
 	FlatpickrModule.forRoot(),
   ],
   declarations: [
 	...routedComponents,
-  ]
+	DialogOverviewEventComponent,
+  ],
+  entryComponents: [DialogOverviewEventComponent]
 })
 export class EventsModule { }

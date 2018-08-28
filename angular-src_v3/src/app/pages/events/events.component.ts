@@ -170,8 +170,8 @@ export class EventsComponent implements OnInit {
 			isVerificationRequired 	: new FormControl('true', { validators: [Validators.required] }),
 			isVerified				: new FormControl('false', { validators: [Validators.required] }),
 			isSignupRequired		: new FormControl('true', { validators: [Validators.required] }),
-			startDate				: new FormControl('', { validators: [Validators.required] }),
-			endDate					: new FormControl('', { validators: [Validators.required] }),
+			startDate				: new FormControl({ value:'', disabled: true }),
+			endDate					: new FormControl({ value:'', disabled: true }),
 			OIC						: new FormControl('', { }),
 			signedUp				: new FormControl('', { }),
 			additionalDetails		: new FormControl('', { })
@@ -179,9 +179,9 @@ export class EventsComponent implements OnInit {
 	}
 
 	openCreateDialog(): void {
-		this.newEventForm = this.createForm;
-		const dialogRef = this.dialog.open(DialogOverviewCreateEvent, {
-		data: this.newEventForm; //{} //{name: this.name, animal: this.animal}
+		this.createForm();
+		const dialogRef = this.dialog.open(DialogOverviewEventComponent, {
+		data: this.newEventForm //{} //{name: this.name, animal: this.animal}
 		});
 
 		dialogRef.afterClosed().subscribe(result => {
@@ -195,11 +195,14 @@ export class EventsComponent implements OnInit {
 	selector: 'dialog-overview-create-event',
 	templateUrl: 'dialog-overview-create-event.html',
 	})
-	export class DialogOverviewCreateEvent {
+	export class DialogOverviewEventComponent {
 
 	constructor( 
-		public dialogRef: MatDialogRef<DialogOverviewCreateEvent>,
-			@Inject(MAT_DIALOG_DATA) public data: any) {}
+		public dialogRef: MatDialogRef<DialogOverviewEventComponent>,
+			@Inject(MAT_DIALOG_DATA) public data: any,
+			private formBuilder : FormBuilder) {
+				console.log(data);
+			}
 
 	onNoClick(): void {
 		this.dialogRef.close();
