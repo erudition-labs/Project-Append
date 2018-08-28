@@ -3,8 +3,17 @@ import {
 	ChangeDetectionStrategy,
 	ViewChild,
 	TemplateRef,
-	OnInit 
+	OnInit,
+	Inject
 } from '@angular/core';
+
+import {
+	FormGroup,
+	FormBuilder,
+	FormControl,
+	Validators
+} from '@angular/forms';
+
 
 import {
 	startOfDay,
@@ -25,6 +34,12 @@ import {
 	CalendarEventAction,
 	CalendarEventTimesChangedEvent
 } from 'angular-calendar';
+
+import { 
+	MatDialog, 
+	MatDialogRef, 
+	MAT_DIALOG_DATA 
+} from '@angular/material';
 
 import { Event } from '../../@core/events/event.model';
 import { EventsService } from '../../@core/events/events.service';
@@ -54,15 +69,15 @@ const colors: any = {
 export class EventsComponent implements OnInit {
 	@ViewChild('modalContent') modalContent: TemplateRef<any>;
 
-	view: string = 'month';
-	viewDate: Date = new Date();
+	private view: string = 'month';
+	private viewDate: Date = new Date();
 
 	modalData: {
 		action: string;
 		event: CalendarEvent;
 	}
 
-	actions: CalendarEventAction[] = [
+	private actions: CalendarEventAction[] = [
 	{
 		label: '<i class="fa fa-fw fa-pencil"></i>',
 		onClick: ({ event }: { event: CalendarEvent }): void => {
@@ -77,58 +92,26 @@ export class EventsComponent implements OnInit {
 		}
 	}];
 
-	refresh: Subject<any> = new Subject();
+	private refresh: Subject<any> = new Subject();
+	private events: CalendarEvent[] = [];
+	private activeDayIsOpen: boolean = true;
+	private newEventForm : FormGroup;
 
-		events: CalendarEvent[] = [];/* [
-	{
-		start: subDays(startOfDay(new Date()), 1),
-		end: addDays(new Date(), 1),
-		title: 'A 3 day event',
-		color: colors.red,
-		actions: this.actions
-	},
-	{	
-		start: startOfDay(new Date()),
-		title: 'An event with no end date',
-		color: colors.yellow,
-		actions: this.actions
-	},
-	{
-		start: subDays(endOfMonth(new Date()), 3),
-		end: addDays(endOfMonth(new Date()), 3),
-		title: 'A long event that spans 2 months',
-		color: colors.blue
-	},
-	{
-		start: addHours(startOfDay(new Date()), 2),
-		end: new Date(),
-		title: 'A draggable and resizable event',
-		color: colors.yellow,
-		actions: this.actions,
-		
-		resizable: {
-			beforeStart: true,
-			afterEnd: true
-		},
-		draggable: true
-	}];*/
-
-
-
-	activeDayIsOpen: boolean = true;
-
-	constructor(private modal: NgbModal,
-				private eventsService: EventsService) { }
+	constructor(private modal			: NgbModal,
+				private dialog			: MatDialog,
+				private formBuilder 	: FormBuilder,
+				private eventsService	: EventsService) { }
 
 	ngOnInit() {
+
 		this.eventsService.getEvents().subscribe((result) => {
-			console.log(result.result[0].name)
-			const calendarEvent = {
-				start: startOfDay(new Date()),
-				title: result.result[0].name,
-				color: colors.red,
-				actions: this.actions,
-				draggable: true
+			const calendarEvent : CalendarEvent = {
+				start		: startOfDay(new Date()),
+				end			: endOfDay(new Date()),
+				title		: result.result[0].name,
+				color		: colors.red,
+				actions		: this.actions,
+				draggable	: true,
 			};
 			this.events.push(calendarEvent);
 			this.refresh.next();
@@ -157,7 +140,7 @@ export class EventsComponent implements OnInit {
 	}: CalendarEventTimesChangedEvent): void {
 		event.start = newStart;
 		event.end = newEnd;
-		this.handleEvent('Dropped or resized', event);
+		//this.handleEvent('Dropped or resized', event);
 		this.refresh.next();
 	}
 
@@ -180,4 +163,46 @@ export class EventsComponent implements OnInit {
 		});
 		this.refresh.next();
 	}
+
+	private createForm(): void {
+		this.newEventForm = this.formBuilder.group({
+			name					: new FormControl('', { validators: [Validators.required] }),
+			isVerificationRequired 	: new FormControl('true', { validators: [Validators.required] }),
+			isVerified				: new FormControl('false', { validators: [Validators.required] }),
+			isSignupRequired		: new FormControl('true', { validators: [Validators.required] }),
+			startDate				: new FormControl('', { validators: [Validators.required] }),
+			endDate					: new FormControl('', { validators: [Validators.required] }),
+			OIC						: new FormControl('', { }),
+			signedUp				: new FormControl('', { })
+			additionalDetails		: new FormControl('', { })
+		});
+	}
+
+	openDialog(): void {
+		const dialogRef = this.dialog.open(DialogOverviewCreateEvent, {
+		width: '250px',
+		data: {} //{name: this.name, animal: this.animal}
+		});
+
+		dialogRef.afterClosed().subscribe(result => {
+			console.log('The dialog was closed');
+			//this.animal = result;
+		});
+	}
+}
+
+@Component({
+	selector: 'dialog-overview-create-event',
+	templateUrl: 'dialog-overview-create-event.html',
+	})
+	export class DialogOverviewCreateEvent {
+
+	constructor( 
+		public dialogRef: MatDialogRef<DialogOverviewCreateEvent>,
+			@Inject(MAT_DIALOG_DATA) public data: any) {}
+
+	onNoClick(): void {
+		this.dialogRef.close();
+	}
+
 }

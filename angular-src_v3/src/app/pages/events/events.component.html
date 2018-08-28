@@ -109,8 +109,11 @@
     (eventTimesChanged)="eventTimesChanged($event)">
   </mwl-calendar-day-view>
 </div>
-
-<br><br><br>
+<button mat-fab color="primary">
+	<mat-icon class="ion-plus-round">
+	</mat-icon>
+</button>
+<!--<br><br><br>
 
 <h3>
   Edit events
@@ -162,7 +165,7 @@
   	[matDatepicker]="picker" 
 	placeholder="Choose a date"
 	[(ngModel)]="event.start"
-	(ngModelChange)="refresh.next()">
+	(ngModelChange)="refresh.next()" disabled>
   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
   <mat-datepicker #picker></mat-datepicker>
 </mat-form-field>
@@ -173,9 +176,10 @@
   [matDatepicker]="picker2" 
   placeholder="Choose a date"
   [(ngModel)]="event.end"
-  (ngModelChange)="refresh.next()">
+  (ngModelChange)="refresh.next()" disabled>
   <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-  <mat-datepicker #picker2></mat-datepicker>
+  <mat-datepicker #picker2 >
+  </mat-datepicker>
 </mat-form-field>
       </td>
       <td>
@@ -188,5 +192,5 @@
     </tr>
   </tbody>
 
-</table>
+</table>-->
 </nb-card>
