@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { Event } from './event.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -13,5 +14,9 @@ export class EventsService {
 
 	public getEvents() : Observable<any> {
 		return this.http.get(this.url + '/');	
+	}
+
+	public createEvent(event: Event) : Observable<any> {
+		return this.http.post(this.url + '/', { data: event });	
 	}
 }

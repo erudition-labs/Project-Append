@@ -4,8 +4,9 @@ export interface Event {
 	isVerificationRequired 		: boolean;
 	isVerified 					: boolean;
 	isSignupRequired 			: boolean;
-	startDate 					: Date;
-	endDate 					: Date;
-	OIC 						: User[];
-	signedUp 					: User[];
+	startDate 					: any;
+	endDate 					: any;
+	OIC 						: any[];
+	signedUp 					: any[];
+	additionalDetails			: any[]
 }
