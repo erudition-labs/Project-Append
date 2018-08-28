@@ -181,12 +181,11 @@ export class EventsComponent implements OnInit {
 	openCreateDialog(): void {
 		this.createForm();
 		const dialogRef = this.dialog.open(DialogOverviewEventComponent, {
-		data: this.newEventForm //{} //{name: this.name, animal: this.animal}
+		data: this.newEventForm 
 		});
 
 		dialogRef.afterClosed().subscribe(result => {
-			console.log('The dialog was closed');
-			//this.animal = result;
+			console.log(result);
 		});
 	}
 }
@@ -200,9 +199,7 @@ export class EventsComponent implements OnInit {
 	constructor( 
 		public dialogRef: MatDialogRef<DialogOverviewEventComponent>,
 			@Inject(MAT_DIALOG_DATA) public data: any,
-			private formBuilder : FormBuilder) {
-				console.log(data);
-			}
+			private formBuilder : FormBuilder) {}
 
 	onNoClick(): void {
 		this.dialogRef.close();
