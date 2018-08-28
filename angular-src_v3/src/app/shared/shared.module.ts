@@ -71,7 +71,8 @@ import { MatDialogModule } from '@angular/material';
     MatTooltipModule,
     MatSnackBarModule,
     MatSlideToggleModule,
-MatDatepickerModule,
+	MatDatepickerModule,
+	MatDialogModule,
   ]
 })
 export class SharedModule {}
