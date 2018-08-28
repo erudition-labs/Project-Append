@@ -42,7 +42,9 @@
 					<input matInput
 						[matDatepicker]="startPicker"
 						[formControl]="data.get('startDate')"
-						placeholder="Choose start date">
+						placeholder="Choose start date"
+						(dateInput)="datePickerEvent('startDate', $event)"
+						readonly>
 					<mat-datepicker-toggle matSuffix [for]="startPicker">
 					</mat-datepicker-toggle>
 					<mat-datepicker #startPicker disabled="false"></mat-datepicker>
@@ -54,7 +56,9 @@
 					<input matInput
 						[matDatepicker]="endPicker"
 						[formControl]="data.get('endDate')"
-						placeholder="Choose end date">
+						placeholder="Choose end date"
+						(dateInput)="datePickerEvent('endDate', $event)"
+						readonly>
 					<mat-datepicker-toggle matSuffix [for]="endPicker">
 					</mat-datepicker-toggle>
 					<mat-datepicker #endPicker disabled="false"></mat-datepicker>

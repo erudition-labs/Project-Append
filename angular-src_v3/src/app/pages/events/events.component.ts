@@ -40,6 +40,8 @@ import {
 	MatDialogRef, 
 	MAT_DIALOG_DATA 
 } from '@angular/material';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+
 
 import { Event } from '../../@core/events/event.model';
 import { EventsService } from '../../@core/events/events.service';
@@ -170,12 +172,16 @@ export class EventsComponent implements OnInit {
 			isVerificationRequired 	: new FormControl('true', { validators: [Validators.required] }),
 			isVerified				: new FormControl('false', { validators: [Validators.required] }),
 			isSignupRequired		: new FormControl('true', { validators: [Validators.required] }),
-			startDate				: new FormControl({ value:'', disabled: true }),
-			endDate					: new FormControl({ value:'', disabled: true }),
+			startDate				: new FormControl('', { }),
+			endDate					: new FormControl('', { }),
 			OIC						: new FormControl('', { }),
 			signedUp				: new FormControl('', { }),
 			additionalDetails		: new FormControl('', { })
 		});
+	}
+
+	private dataPickerEvent(type: string, date: MatDatepickerInputEvent<Date>) : void {
+		if(type === 'startDate') this	
 	}
 
 	openCreateDialog(): void {
@@ -185,7 +191,50 @@ export class EventsComponent implements OnInit {
 		});
 
 		dialogRef.afterClosed().subscribe(result => {
-			console.log(result);
+			if(result.valid) {
+				const {
+					name,
+					isVerificationRequired,
+					isVerified,
+					isSignupRequired,
+					startDate,
+					endDate,
+					OIC,
+					signedUp,
+					additionalDetails
+				} = result.value;
+
+				const newEvent : Event = {
+					name,
+					isVerificationRequired,
+					isVerified,
+					isSignupRequired,
+					startDate,
+					endDate,
+					OIC,
+					signedUp,
+					additionalDetails
+				};
+				console.log(newEvent.startDate);
+				this.eventsService.createEvent(newEvent).subscribe(
+					httpResult => {
+						if(httpResult.success) {
+							console.log('success');
+
+							this.events.push({
+							title: newEvent.name,
+							start: newEvent.startDate,
+							end: newEvent.endDate,
+							color: colors.red
+							});
+							this.refresh.next();
+						} else {
+							console.log('nope ' + httpResult);
+						}
+					}, error => {
+						console.log(error);	
+					});
+			}
 		});
 	}
 }
@@ -200,6 +249,12 @@ export class EventsComponent implements OnInit {
 		public dialogRef: MatDialogRef<DialogOverviewEventComponent>,
 			@Inject(MAT_DIALOG_DATA) public data: any,
 			private formBuilder : FormBuilder) {}
+			
+	private datePickerEvent(type: string, date: MatDatepickerInputEvent<Date>) : void {
+		if(type === 'startDate') this.data.controls.startDate.setValue(date.value);
+		if(type === 'endDate') this.data.controls.endDate.setValue(date.value);
+	}
+
 
 	onNoClick(): void {
 		this.dialogRef.close();
