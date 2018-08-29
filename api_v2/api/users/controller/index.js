@@ -104,9 +104,20 @@ const getUserByEmail = async (request, response) => {
 	}
 };
 
+const getUsers = async (request, response) => {
+	try {
+		const users = await queries.getUsers();
+		response.json(users);
+	} catch(error) {
+		console.log(error);
+		return error;
+	}
+};
+
 module.exports = { 
 	postUser, 
 	postVerifyResend,
 	postEmailVerification,
-	getUserByEmail
+	getUserByEmail,
+	getUsers
 };

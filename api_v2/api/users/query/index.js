@@ -25,8 +25,17 @@ const getUserById = async (id) => {
 	}
 };
 
+const getUsers = async () => {
+	try {
+		return await User.find({}, { 'password' : 0 });
+	} catch(error) {
+		return error;
+	}
+};
+
 module.exports = { 
 	createUser, 
 	getUserByEmail,
-	getUserById
+	getUserById,
+	getUsers
 };

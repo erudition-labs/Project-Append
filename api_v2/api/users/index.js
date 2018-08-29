@@ -24,5 +24,6 @@ router.route('/verify-resend').post([
 
 router.route('/email-verification').post(controller.postEmailVerification);
 router.route('/check-email').get(controller.getUserByEmail);
+router.route('/users').get(controller.getUsers);
 
 module.exports = router;
