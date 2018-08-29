@@ -19,4 +19,5 @@ export interface User {
 	flight 		: string;
 	team 		: string;
 	phone 		: string;
+	role		: string;
 }
