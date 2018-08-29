@@ -48,6 +48,7 @@
     "@nebular/security": "2.0.0-rc.9",
     "@nebular/theme": "2.0.0-rc.9",
     "@ng-bootstrap/ng-bootstrap": "1.0.0",
+    "@ng-select/ng-select": "^2.5.1",
     "angular-calendar": "^0.25.2",
     "angularx-flatpickr": "^6.0.0",
     "bootstrap": "4.0.0",
