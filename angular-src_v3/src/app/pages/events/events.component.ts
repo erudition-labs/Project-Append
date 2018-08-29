@@ -109,7 +109,6 @@ export class EventsComponent implements OnInit {
 	ngOnInit() {
 		this.eventsService.getEvents().subscribe((result) => {
 			for(let e of result.result) {
-			console.log(e);
 				const calendarEvent : CalendarEvent = {
 					start		: new Date(e.startDate),
 					end			: new Date(e.endDate),
@@ -248,7 +247,7 @@ export class EventsComponent implements OnInit {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	templateUrl: 'dialog-overview-create-event.html',
 })
-export class DialogOverviewEventComponent {		
+export class DialogOverviewEventComponent implements OnInit {		
 
 	users : Observable<User[]>;
 	selectedUsers = [];
@@ -258,6 +257,12 @@ export class DialogOverviewEventComponent {
 			@Inject(MAT_DIALOG_DATA) public data: any,
 			private formBuilder : FormBuilder,
 			private userService : UserService) {}
+
+	ngOnInit() {
+		this.users = this.userService.getUsers();
+		console.log(this.users);
+		this.users.subscribe(result => console.log(result));
+	}
 			
 	private datePickerEvent(type: string, date: MatDatepickerInputEvent<Date>) : void {
 		if(type === 'startDate') this.data.controls.startDate.setValue(date.value);
