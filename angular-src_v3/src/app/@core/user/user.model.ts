@@ -11,6 +11,7 @@ export interface NewUser {
 }
 
 export interface User {
+	_id			: any;
 	email 		: string;
 	firstName 	: string;
 	lastName 	: string;
