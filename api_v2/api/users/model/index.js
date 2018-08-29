@@ -10,6 +10,7 @@ const userModel = new Schema({
 	flight 		: { type: String, required: true },
 	team 		: { type: String, required: false },
 	password	: { type: String, required: true },
+	phone		: { type: String, required: true},
 	role		: { type: String, required: true }
 }).plugin(uniqueValidator);
 
@@ -21,6 +22,7 @@ const tempUserModel = new Schema({
 	flight 		: { type: String, required: true },
 	team 		: { type: String, required: false },
 	password	: { type: String, required: true },
+	phone		: { type: String, required: true },
 	role		: { type: String, required: true },
 	GENERATED_VERIFYING_URL : { type: String }
 }).plugin(uniqueValidator);
