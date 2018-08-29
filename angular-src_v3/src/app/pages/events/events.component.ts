@@ -46,6 +46,7 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Event } from '../../@core/events/event.model';
 import { User } from '../../@core/user/user.model';
 import { EventsService } from '../../@core/events/events.service';
+import { UserService } from '../../@core/user/user.service';
 
 
 const colors: any = {
@@ -255,7 +256,8 @@ export class DialogOverviewEventComponent {
 	constructor( 
 		public dialogRef: MatDialogRef<DialogOverviewEventComponent>,
 			@Inject(MAT_DIALOG_DATA) public data: any,
-			private formBuilder : FormBuilder) {}
+			private formBuilder : FormBuilder,
+			private userService : UserService) {}
 			
 	private datePickerEvent(type: string, date: MatDatepickerInputEvent<Date>) : void {
 		if(type === 'startDate') this.data.controls.startDate.setValue(date.value);
