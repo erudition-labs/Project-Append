@@ -22,13 +22,14 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material';
 import { MatDialogModule } from '@angular/material';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
   imports: [
-    CommonModule,
+  	CommonModule,
+  	NgSelectModule,
     FormsModule,
-
     MatButtonModule,
     MatToolbarModule,
     MatSelectModule,
@@ -51,10 +52,9 @@ import { MatDialogModule } from '@angular/material';
   ],
   declarations: [],
   exports: [
-    CommonModule,
+  	CommonModule,
+  	NgSelectModule,
     FormsModule,
-
-
     MatButtonModule,
     MatMenuModule,
     MatTabsModule,
