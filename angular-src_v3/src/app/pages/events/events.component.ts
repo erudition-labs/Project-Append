@@ -26,7 +26,7 @@ import {
 	addHours
 } from 'date-fns';
 
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal/modal.module';
 
 import {
@@ -44,6 +44,7 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 
 import { Event } from '../../@core/events/event.model';
+import { User } from '../../@core/user/user.model';
 import { EventsService } from '../../@core/events/events.service';
 
 
@@ -243,9 +244,13 @@ export class EventsComponent implements OnInit {
 
 @Component({
 	selector: 'dialog-overview-create-event',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	templateUrl: 'dialog-overview-create-event.html',
-	})
-	export class DialogOverviewEventComponent {
+})
+export class DialogOverviewEventComponent {		
+
+	users : Observable<User[]>;
+	selectedUsers = [];
 
 	constructor( 
 		public dialogRef: MatDialogRef<DialogOverviewEventComponent>,
