@@ -8,5 +8,5 @@ export interface Event {
 	endDate 					: any;
 	OIC 						: any[];
 	signedUp 					: any[];
-	additionalDetails			: any[]
+	additionalDetails			: string;
 }

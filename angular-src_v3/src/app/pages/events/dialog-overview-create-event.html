@@ -85,10 +85,11 @@
 						[formControl]="data.get('additionalDetails')"
 						placeholder="deets">
 				</mat-form-field> -->
+				<mat-list>
 
 				<mat-form-field>
 				<div formArrayName="additionalDetails">
-					<div *ngFor="let detail of
+					<mat-list-item *ngFor="let detail of
 					data.controls.additionalDetails.controls; let i=index">
 						<div>
 							<span>Detail {{i + 1}}</span>
@@ -113,7 +114,7 @@
 								formControlName="details">
 							</div>
 						</div>
-					</div>
+					</mat-list-item>
 				</div>
 				<div class="margin-20">
 					 <a (click)="addDetailField()" style="cursor: default">
@@ -121,6 +122,9 @@
 					 </a>
 				</div>
 				</mat-form-field>
+
+				</mat-list>
+
 			</mat-list-item>
 
 		</mat-list>

@@ -222,7 +222,8 @@ export class EventsComponent implements OnInit {
 					signedUp,
 					additionalDetails
 				};
-				console.log(newEvent.startDate);
+
+				newEvent.additionalDetails = JSON.stringify(newEvent.additionalDetails);
 				this.eventsService.createEvent(newEvent).subscribe(
 					httpResult => {
 						if(httpResult.success) {
