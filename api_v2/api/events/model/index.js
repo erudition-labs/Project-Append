@@ -17,7 +17,8 @@ const eventModel = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'User',
 		required: false
-	}]
+	}],
+	additionalDetails : [{ type: String, required: false }]
 });
 
 module.exports = mongoose.model('event', eventModel);
