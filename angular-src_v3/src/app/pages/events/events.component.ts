@@ -9,6 +9,7 @@ import {
 
 import {
 	FormGroup,
+	FormArray,
 	FormBuilder,
 	FormControl,
 	Validators
@@ -171,20 +172,23 @@ export class EventsComponent implements OnInit {
 
 	private createForm(): void {
 		this.newEventForm = this.formBuilder.group({
-			name					: new FormControl('', { validators: [Validators.required] }),
-			isVerificationRequired 	: new FormControl('true', { validators: [Validators.required] }),
-			isVerified				: new FormControl('false', { validators: [Validators.required] }),
-			isSignupRequired		: new FormControl('true', { validators: [Validators.required] }),
+			name					: new FormControl('', 		{ validators: [Validators.required] }),
+			isVerificationRequired 	: new FormControl('true', 	{ validators: [Validators.required] }),
+			isVerified				: new FormControl('false', 	{ validators: [Validators.required] }),
+			isSignupRequired		: new FormControl('true', 	{ validators: [Validators.required] }),
 			startDate				: new FormControl('', { }),
 			endDate					: new FormControl('', { }),
 			OIC						: new FormControl([], { }),
 			signedUp				: new FormControl([], { }),
-			additionalDetails		: new FormControl('', { })
+			additionalDetails		: this.formBuilder.array([ this.initDetailField() ])
 		});
 	}
 
-	private dataPickerEvent(type: string, date: MatDatepickerInputEvent<Date>) : void {
-		if(type === 'startDate') this	
+	private initDetailField() : FormGroup {
+		return this.formBuilder.group({
+			title	: [''],
+			details	: ['']
+		});
 	}
 
 	openCreateDialog(): void {
@@ -242,7 +246,9 @@ export class EventsComponent implements OnInit {
 	}
 }
 
+
 @Component({
+	providers: [EventsComponent]
 	selector: 'dialog-overview-create-event',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	templateUrl: 'dialog-overview-create-event.html',
@@ -255,13 +261,12 @@ export class DialogOverviewEventComponent implements OnInit {
 	constructor( 
 		public dialogRef: MatDialogRef<DialogOverviewEventComponent>,
 			@Inject(MAT_DIALOG_DATA) public data: any,
-			private formBuilder : FormBuilder,
-			private userService : UserService) {}
+			private formBuilder 	: FormBuilder,
+			private userService 	: UserService,
+			private eventsComponent	: EventsComponent) {}
 
 	ngOnInit() {
 		this.users = this.userService.getUsers();
-		console.log(this.users);
-		this.users.subscribe(result => console.log(result));
 	}
 			
 	private datePickerEvent(type: string, date: MatDatepickerInputEvent<Date>) : void {
@@ -272,6 +277,17 @@ export class DialogOverviewEventComponent implements OnInit {
 
 	onNoClick(): void {
 		this.dialogRef.close();
+	}
+
+
+	private addDetailField() : void {
+		const control = <FormArray>this.data.controls['additionalDetails'];
+		control.push(this.eventsComponent.initDetailField());
+	}
+
+	private removeDetailField(i: number) : void {
+		const control = <FormArray>this.data.controls['additionalDetails'];
+		control.removeAt(i);
 	}
 
 }
