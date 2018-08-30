@@ -184,7 +184,7 @@ export class EventsComponent implements OnInit {
 		});
 	}
 
-	private initDetailField() : FormGroup {
+	public initDetailField() : FormGroup {
 		return this.formBuilder.group({
 			title	: [''],
 			details	: ['']
@@ -248,7 +248,7 @@ export class EventsComponent implements OnInit {
 
 
 @Component({
-	providers: [EventsComponent]
+	providers: [EventsComponent],
 	selector: 'dialog-overview-create-event',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	templateUrl: 'dialog-overview-create-event.html',
