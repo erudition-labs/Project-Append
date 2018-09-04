@@ -85,14 +85,13 @@
 						[formControl]="data.get('additionalDetails')"
 						placeholder="deets">
 				</mat-form-field> -->
-				<mat-list>
 
 				<mat-form-field>
 				<div formArrayName="additionalDetails">
 					<mat-list-item *ngFor="let detail of
 					data.controls.additionalDetails.controls; let i=index">
 						<div>
-							<span>Detail {{i + 1}}</span>
+							<!---<span>Detail {{i + 1}}</span>-->
 							<span
 								*ngIf="data.controls.additionalDetails.controls.length> 1"
 								(click)="removeDetailField(i)">
@@ -116,14 +115,13 @@
 						</div>
 					</mat-list-item>
 				</div>
-				<div class="margin-20">
+				<div>
 					 <a (click)="addDetailField()" style="cursor: default">
 					 	Add another field
 					 </a>
 				</div>
 				</mat-form-field>
 
-				</mat-list>
 
 			</mat-list-item>
 

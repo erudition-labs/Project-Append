@@ -253,6 +253,7 @@ export class EventsComponent implements OnInit {
 	selector: 'dialog-overview-create-event',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	templateUrl: 'dialog-overview-create-event.html',
+	styleUrls: ['./dialog-overview-create-event.scss']
 })
 export class DialogOverviewEventComponent implements OnInit {		
 
