@@ -117,11 +117,11 @@ export class EventsComponent implements OnInit {
 					color		: colors.red,
 					actions		: this.actions,
 					draggable	: true,
+					meta		: e,
 				};
 				this.events.push(calendarEvent);
 			}
 			this.refresh.next();
-
 		});			
 	}
 
@@ -244,6 +244,12 @@ export class EventsComponent implements OnInit {
 						console.log(error);	
 					});
 			}
+		});
+	}
+
+	openUpdateDialog(): void {
+		let dialogRef = this.dialog.open(DialogOverviewEventComponent, {
+			
 		});
 	}
 }
