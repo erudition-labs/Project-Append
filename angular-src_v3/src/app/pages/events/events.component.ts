@@ -198,6 +198,7 @@ export class EventsComponent implements OnInit {
 		});
 
 		dialogRef.afterClosed().subscribe(result => {
+			if(typeof result === 'undefined' || result == null) { return; }
 			if(result.valid) {
 				const {
 					name,
