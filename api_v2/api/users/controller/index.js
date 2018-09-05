@@ -20,7 +20,8 @@ const postUser = async (request, response) => {
 		flight		: request.body.flight,
 		team		: request.body.team,
 		role		: request.body.role,
-		password	: request.body.password
+		password	: request.body.password,
+		phone	: request.body.phone
 	});
 
 	util.NEV.createTempUser(userData, function(error, existingPersistentUser, newTempUser) {
@@ -114,8 +115,8 @@ const getUsers = async (request, response) => {
 	}
 };
 
-module.exports = { 
-	postUser, 
+module.exports = {
+	postUser,
 	postVerifyResend,
 	postEmailVerification,
 	getUserByEmail,
