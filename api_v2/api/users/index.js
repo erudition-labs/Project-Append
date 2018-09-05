@@ -22,7 +22,7 @@ router.route('/verify-resend').post([
 ], controller.postVerifyResend);
 
 
-router.route('/email-verification').post(controller.postEmailVerification);
+router.route('/email-verification/:token').post(controller.postEmailVerification);
 router.route('/check-email').get(controller.getUserByEmail);
 router.route('/users').get(controller.getUsers);
 

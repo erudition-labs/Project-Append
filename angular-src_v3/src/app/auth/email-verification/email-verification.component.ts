@@ -24,10 +24,13 @@ export class EmailVerificationComponent implements OnInit {
 					this.messages.push(result.msg);
 					this.messages.push("You will be automatically redirected");
 					setTimeout(() => {
-						return this.router.navigateByUrl("/");
+						return this.router.navigateByUrl("dashboard");
 					}, 5000);
 				} else {
-					this.errors.push("Confirmation Failed");
+          	this.errors.push("Confirmation Failed");
+          setTimeout(() => {
+            return this.router.navigateByUrl("dashboard");
+          }, 2000);
 				}
 			});
 		});

@@ -19,9 +19,11 @@ import { SharedModule } from './shared/shared.module';
 import { LoginComponent } from './auth/login/login.component';
 import { LoginFormComponent } from './auth/login-form/login-form.component';
 import { SignupFormComponent } from './auth/signup-form/signup-form.component';
+import { EmailVerificationComponent } from './auth/email-verification/email-verification.component';
+
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, LoginFormComponent, SignupFormComponent,],
+  declarations: [AppComponent, LoginComponent, LoginFormComponent, SignupFormComponent,EmailVerificationComponent,],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

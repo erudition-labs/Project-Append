@@ -28,7 +28,7 @@ export class AuthService {
 	public login(credentials: Credentials) : Observable<any> {
 		//use spread to get individual properties off the supplied user object
 		//to a new object
-		return this.http.post(this.url + `/authenticate`, { ...credentials });	
+		return this.http.post(this.url + `/authenticate`, { ...credentials });
 	}
 
 	private setToken(token: string) : void {
@@ -44,7 +44,7 @@ export class AuthService {
 	}
 
 	private setExpiresAt(expiresAt: number) : void {
-		//javascript Date() handles time differently than our tokens do 
+		//javascript Date() handles time differently than our tokens do
 		localStorage.setItem('expiresAt', JSON.stringify(expiresAt * 1000));
 	}
 
@@ -59,7 +59,7 @@ export class AuthService {
 	}
 
 	public signup(user: NewUser) : Observable<any> {
-		return this.http.post(this.url + `/users`, { ...user });	
+		return this.http.post(this.url + `/users`, { ...user });
 	}
 
 	public logout() : void {
@@ -78,10 +78,10 @@ export class AuthService {
 	}
 
 	public verify(token: string) : any {
-		const params = new HttpParams({
-			fromObject: { token }
-		});
-		return this.http.post(this.url + '/email-verification/', { params });
+		 const params = new HttpParams({
+		 	fromObject: { token }
+		 });
+		return this.http.post(this.url + '/users/email-verification/' + token, { params });
 	}
 
 	public userHasRole(expectedRole: string) : boolean {

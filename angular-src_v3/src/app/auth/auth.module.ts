@@ -17,8 +17,8 @@ FormsModule,
 
   ],
   declarations: [
-LoginComponent, 
-  LoginFormComponent, 
+LoginComponent,
+  LoginFormComponent,
   SignupFormComponent,
   EmailVerificationComponent,
 
