@@ -12,16 +12,13 @@ export class ProfileComponent implements OnInit {
 
   constructor(private userService : UserService, private authService : AuthService) { }
 
-	private user Observable<User>;
+	private user : User;
 
 
   ngOnInit() {
-  // this.userService.getUser(this.authService.parseToken().sub).subscribe((result) => {
-	// 	console.log(result.user);
-	// });
-	// //console.log(this.authService.parseToken().sub);
-
-	this.user = this.userService.getUser(this.authService.parseToken().sub);
-  }
+		this.userService.getUser(this.authService.parseToken().sub).subscribe((result) => {
+		this.user = result.user;
+		});
+	}
 
 }
