@@ -30,7 +30,6 @@ export class HeaderComponent implements OnInit {
   }
 
 	ngOnInit() {
-	console.log(this.authService.isAuthenticated());
 		this.userInfo = this.authService.getUserInfo();
 		this.isAuthenticated = this.authService.isAuthenticated();
 
@@ -44,10 +43,10 @@ export class HeaderComponent implements OnInit {
 				}
 
 				if(title === 'Profile') {
-					this.router.navigateByUrl("/pages/profile");			
+					this.router.navigateByUrl("/pages/profile");
 				}
 		});
-		
+
 	}
 
   toggleSidebar(): boolean {

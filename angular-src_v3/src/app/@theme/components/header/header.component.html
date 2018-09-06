@@ -16,9 +16,9 @@
     [class.left]="position === 'inverse'">
     <nb-action icon="nb-gear" class="toggle-layout" (click)="toggleSettings()"></nb-action>
 	    <nb-action *nbIsGranted="['view', 'user']" >
-      <nb-user	[nbContextMenu]="userMenu" 
+      <nb-user	[nbContextMenu]="userMenu"
 				nbContextMenuTag="usermenu"
-		  		[name]="userInfo?.firstName" 
+		  	[name]="userInfo?.firstName" 
 				[title]="userInfo?.rank"
 				[picture]="user?.picture">
 	  </nb-user>

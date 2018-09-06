@@ -19,7 +19,7 @@ const getUserByEmail = async (email) => {
 
 const getUserById = async (id) => {
 	try {
-		return await User.findById(id);
+		return await User.findById(id, {'password' : 0});
 	} catch(error) {
 		return error;
 	}
@@ -33,8 +33,8 @@ const getUsers = async () => {
 	}
 };
 
-module.exports = { 
-	createUser, 
+module.exports = {
+	createUser,
 	getUserByEmail,
 	getUserById,
 	getUsers

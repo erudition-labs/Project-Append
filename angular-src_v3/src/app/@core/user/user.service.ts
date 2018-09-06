@@ -11,17 +11,21 @@ import { User } from './user.model';
 export class UserService {
 	constructor(private http: HttpClient) {}
 
-	readonly url : string = "http://localhost:3000/api/v1/users"
+	readonly url : string = "http://localhost:3000/api/v1"
 	public checkEmail(email: string) : Observable<any> {
 		const params = new HttpParams({
 			fromObject: {
 				email
 			}
-		});	
-		return this.http.get(this.url + `/check-email`, { params });
+		});
+		return this.http.get(this.url + `/users/check-email`, { params });
 	}
 
 	public getUsers() : Observable<User[]> {
-		return this.http.get<User[]>(this.url + '/users');
+		return this.http.get<User[]>(this.url + '/users/users');
+	}
+
+	public getUser(id : string) : Observable<User> {
+		return this.http.get<User>(this.url + '/users/' + id);
 	}
 }

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { NewUser } from '../user/user.model';
 import { Credentials } from '../user/credentials.model';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
 	providedIn: 'root'
@@ -37,6 +38,12 @@ export class AuthService {
 
 	public getToken() : string {
 		return localStorage.getItem('token');
+	}
+
+	public parseToken() : any {
+		const helper = new JwtHelperService();
+		const decodedToken = helper.decodeToken(this.getToken());
+		return decodedToken;
 	}
 
 	private setUserInfo(userInfo: any) : void {
