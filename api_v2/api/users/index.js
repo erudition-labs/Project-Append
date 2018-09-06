@@ -26,4 +26,6 @@ router.route('/email-verification/:token').post(controller.postEmailVerification
 router.route('/check-email').get(controller.getUserByEmail);
 router.route('/users').get(controller.getUsers);
 
+router.route('/:id').get(controller.getUser);
+
 module.exports = router;
