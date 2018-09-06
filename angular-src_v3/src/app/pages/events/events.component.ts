@@ -194,7 +194,7 @@ export class EventsComponent implements OnInit {
 	openCreateDialog(): void {
 		this.createForm();
 		const dialogRef = this.dialog.open(DialogOverviewEventComponent, {
-		data: this.newEventForm 
+			data: this.newEventForm 
 		});
 
 		dialogRef.afterClosed().subscribe(result => {
@@ -231,10 +231,10 @@ export class EventsComponent implements OnInit {
 							console.log('success');
 
 							this.events.push({
-							title: newEvent.name,
-							start: newEvent.startDate,
-							end: newEvent.endDate,
-							color: colors.red
+								title: newEvent.name,
+								start: newEvent.startDate,
+								end: newEvent.endDate,
+								color: colors.red
 							});
 							this.refresh.next();
 						} else {
