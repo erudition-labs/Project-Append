@@ -310,22 +310,14 @@ export class EventsComponent implements OnInit {
 						let index = this.events.findIndex(x => x.meta._id === newEvent._id);
 						let updatedCalendarEvent : CalendarEvent = {
 							title	: newEvent.name,
-							start	: newEvent.startDate,
-							end		: newEvent.startDate,
+							start	: new Date(newEvent.startDate),
+							end		: new Date(newEvent.endDate),
 							color	: colors.red,
 							meta	: newEvent
 						};
-						console.log(this.events);
 
 						this.events[index] = updatedCalendarEvent;
-						/*
-							this.events.push({
-								title	: newEvent.name,
-								start	: newEvent.startDate,
-								end		: colors.red,
-								meta	: newEvent
-							});*/
-							this.refresh.next(this.events);
+							this.refresh.next();
 						} else {
 							console.log('nope again' + httpResult);
 						}
