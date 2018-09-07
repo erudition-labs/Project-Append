@@ -35,7 +35,7 @@ const getEvent = async (id) => {
 	}
 };
 
-const updateEvent = async (id, data) => {
+const updateEvent = async (data) => {
 	try {
 		return await Event.findByIdAndUpdate(data._id, data, { new: true });
 	} catch(error) {

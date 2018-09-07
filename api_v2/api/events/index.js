@@ -8,6 +8,7 @@ const passport 			= require('passport');
 router.route('/').post(passport.authenticate('jwt', {session: false}), controller.postEvent);
 router.route('/:id').get(controller.getEvent);
 router.route('/').get(controller.getEvents);
+router.route('/').put(controller.putEvent);
 router.route('/:id').put(controller.putEvent);
 router.route('/:id').delete(requireAdmin, controller.deleteEvent);
 

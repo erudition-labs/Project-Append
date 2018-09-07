@@ -24,7 +24,7 @@ const putEvent = async (request, response) => {
 	try {
 		//const userEdited = await User.getUserById(request.user.sub);
 
-		const updatedEvent = await queries.updateEvent(request.user.sub, request.body.data);
+		const updatedEvent = await queries.updateEvent(request.body.data);
 		response.json({ success: true, result: updatedEvent });
 	} catch(error) {
 		return error;
@@ -51,10 +51,10 @@ const deleteEvent = async (request, response) => {
 };
 
 module.exports = {
-
 	postEvent,
 	getEvent,
 	putEvent,
 	getEvents,
-	deleteEvent
+	deleteEvent,
+	putEvent
 };
