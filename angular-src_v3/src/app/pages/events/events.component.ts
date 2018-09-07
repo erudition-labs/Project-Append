@@ -110,6 +110,7 @@ export class EventsComponent implements OnInit {
 	ngOnInit() {
 		this.eventsService.getEvents().subscribe((result) => {
 			for(let e of result.result) {
+				//create calendar event
 				const calendarEvent : CalendarEvent = {
 					start		: new Date(e.startDate),
 					end			: new Date(e.endDate),
@@ -117,9 +118,9 @@ export class EventsComponent implements OnInit {
 					color		: colors.red,
 					actions		: this.actions,
 					draggable	: true,
-					meta		: e,
+					meta		: e, //append our event object to it
 				};
-				this.events.push(calendarEvent);
+				this.events.push(calendarEvent); //put it on the calendar
 			}
 			this.refresh.next();
 		});			
@@ -306,12 +307,24 @@ export class EventsComponent implements OnInit {
 						if(httpResult.success) {
 						console.log(httpResult);
 							
+						let index = this.events.findIndex(x => x.meta._id === newEvent._id);
+						let updatedCalendarEvent : CalendarEvent = {
+							title	: newEvent.name,
+							start	: newEvent.startDate,
+							end		: newEvent.startDate,
+							color	: colors.red,
+							meta	: newEvent
+						};
+						console.log(this.events);
+
+						this.events[index] = updatedCalendarEvent;
+						/*
 							this.events.push({
 								title	: newEvent.name,
 								start	: newEvent.startDate,
 								end		: colors.red,
 								meta	: newEvent
-							});
+							});*/
 							this.refresh.next();
 						} else {
 							console.log('nope again' + httpResult);
