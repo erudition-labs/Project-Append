@@ -152,6 +152,7 @@ export class EventsComponent implements OnInit {
 	}
 
 	handleEvent(action: string, event: CalendarEvent): void {
+		event.meta.additionalDetails = JSON.parse(event.meta.additionalDetails);
 		this.modalData = { event, action };
 		this.modal.open(this.modalContent, { size: 'lg' });
 	}
