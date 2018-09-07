@@ -6,8 +6,8 @@ import { ThemeModule } from '../../@theme/theme.module';
 
 @NgModule({
   imports: [
-    CommonModule,
     ThemeModule,
+    UserManagementRoutingModule,
     SharedModule,
   ],
   declarations: [
