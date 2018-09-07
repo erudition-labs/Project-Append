@@ -186,8 +186,15 @@ export class EventsComponent implements OnInit {
 
 	private populateFormFromModal() : void {
 		this.createForm();
+
+		//remove empty dynamic form
+		const dynamicControl = <FormArray>this.newEventForm.controls['additionalDetails'];
+		dynamicControl.removeAt(0);
+
+		//get data from currently opened modal
 		let data = this.modalData.event.meta;
 
+		//populate formControls
 		this.newEventForm.get('name').setValue(data.name);
 		this.newEventForm.get('isVerificationRequired').setValue(data.isVerificationRequired);
 		this.newEventForm.get('isVerified').setValue(data.isVerified);
@@ -198,11 +205,10 @@ export class EventsComponent implements OnInit {
 		this.newEventForm.get('signedUp').setValue(data.signedUp);
 		
 		let details = JSON.parse(data.additionalDetails);
-		details.forEach(function(obj) { 
+		details.forEach(function(obj) {  //populate formArray
 			const control = <FormArray> this.newEventForm.controls['additionalDetails'];
 			control.push(this.initDetailFieldWithData(obj.title, obj.details));
 		}.bind(this));
-
 		
 	}
 
@@ -220,6 +226,34 @@ export class EventsComponent implements OnInit {
 		});
 	}
 
+	private dialogDataToEvent(result : any) : Event {
+		const {
+				name,
+				isVerificationRequired,
+				isVerified,
+				isSignupRequired,
+				startDate,
+				endDate,
+				OIC,
+				signedUp,
+				additionalDetails
+			} = result.value;
+
+		const newEvent : Event = {
+			name,
+			isVerificationRequired,
+			isVerified,
+			isSignupRequired,
+			startDate,
+			endDate,
+			OIC,
+			signedUp,
+			additionalDetails
+		};	
+		newEvent.additionalDetails = JSON.stringify(result.get('additionalDetails').getRawValue());
+		return newEvent;
+	}
+
 	openCreateDialog(): void {
 		this.createForm();
 		const dialogRef = this.dialog.open(DialogOverviewEventComponent, {
@@ -229,41 +263,19 @@ export class EventsComponent implements OnInit {
 		dialogRef.afterClosed().subscribe(result => {
 			if(typeof result === 'undefined' || result == null) { return; }
 			if(result.valid) {
-				const {
-					name,
-					isVerificationRequired,
-					isVerified,
-					isSignupRequired,
-					startDate,
-					endDate,
-					OIC,
-					signedUp,
-					additionalDetails
-				} = result.value;
+				let newEvent = this.dialogDataToEvent(result);
 
-				const newEvent : Event = {
-					name,
-					isVerificationRequired,
-					isVerified,
-					isSignupRequired,
-					startDate,
-					endDate,
-					OIC,
-					signedUp,
-					additionalDetails
-				};
-
-				newEvent.additionalDetails = JSON.stringify(result.get('additionalDetails').getRawValue());
 				this.eventsService.createEvent(newEvent).subscribe(
 					httpResult => {
 						if(httpResult.success) {
 							console.log('success');
 
 							this.events.push({
-								title: newEvent.name,
-								start: newEvent.startDate,
-								end: newEvent.endDate,
-								color: colors.red
+								title	: newEvent.name,
+								start	: newEvent.startDate,
+								end		: newEvent.endDate,
+								color	: colors.red,
+								meta	: newEvent
 							});
 							this.refresh.next();
 						} else {
@@ -281,6 +293,32 @@ export class EventsComponent implements OnInit {
 		let dialogRef = this.dialog.open(DialogOverviewEventComponent, {
 			data : this.newEventForm
 		});
+
+		dialogRef.afterClosed().subscribe(result => {
+			if(typeof result === 'undefined' || result == null) { return; }
+			if(result.valid) {
+				let newEvent = this.dialogDataToEvent(result);
+
+				this.eventsService.updateEvent(newEvent).subscribe(
+					httpResult => {
+						if(httpResult.success) {
+							
+							this.events.push({
+								title	: newEvent.name,
+								start	: newEvent.startDate,
+								end		: colors.red,
+								meta	: newEvent
+							});
+							this.refresh.next();
+						} else {
+							console.log('nope again' + httpResult);
+						}
+					}, error => {
+						console.log(error);
+					});
+			}
+		});
+
 	}
 }
 
