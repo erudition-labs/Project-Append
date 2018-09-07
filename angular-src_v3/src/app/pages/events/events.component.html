@@ -1,13 +1,20 @@
 <nb-card>
 	<ng-template #modalContent let-close="close">
 		<div class="modal-header">
-			<h5 class="modal-title">Event action occurred</h5>
+			<h5 class="modal-title">{{ modalData.event.title }}</h5>
 				<button type="button" class="close" (click)="close()">
 					<span aria-hidden="true">&times;</span>
 				</button>
 		</div>
 
 		<div class="modal-body">
+			<nb-card>
+				<nb-card-body>
+					<!--- ALL THE FIELDS WOULD GO HERE IN SOME SORT OF STYLED ORDER-->
+		 <!--- ACCESS THE DAT USEING {{ modalData.event.meta.FIELDNAME}}-->
+				</nb-card-body>
+			</nb-card>
+			<!---
 			<div>
 				Action:
 				<pre>{{ modalData?.action }}</pre>
@@ -16,8 +23,8 @@
 			<div>
 				Event:
 				<pre>{{ modalData?.event | json }}</pre>
-			</div>
-		</div>
+			</div> -->
+		</div> 
 
 		<div class="modal-footer">
 			<button type="button" class="btn
