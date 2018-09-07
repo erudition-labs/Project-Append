@@ -254,7 +254,7 @@ export class EventsComponent implements OnInit {
 		return newEvent;
 	}
 
-	openCreateDialog(): void {
+	public openCreateDialog(): void {
 		this.createForm();
 		const dialogRef = this.dialog.open(DialogOverviewEventComponent, {
 			data: this.newEventForm 
@@ -288,7 +288,7 @@ export class EventsComponent implements OnInit {
 		});
 	}
 
-	openUpdateDialog(): void {
+	public openUpdateDialog(): void {
 		this.populateFormFromModal();
 		let dialogRef = this.dialog.open(DialogOverviewEventComponent, {
 			data : this.newEventForm
@@ -298,10 +298,13 @@ export class EventsComponent implements OnInit {
 			if(typeof result === 'undefined' || result == null) { return; }
 			if(result.valid) {
 				let newEvent = this.dialogDataToEvent(result);
+				//be sure to attatch the id of the event since we are editing
+				newEvent._id = this.modalData.event.meta._id; 
 
 				this.eventsService.updateEvent(newEvent).subscribe(
 					httpResult => {
 						if(httpResult.success) {
+						console.log(httpResult);
 							
 							this.events.push({
 								title	: newEvent.name,
