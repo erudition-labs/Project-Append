@@ -19,4 +19,8 @@ export class EventsService {
 	public createEvent(event: Event) : Observable<any> {
 		return this.http.post(this.url + '/', { data: event });	
 	}
+
+	public updateEvent(event: Event) : Observable<any> {
+		return this.http.put(this.url + '/', { data: event });	
+	}
 }
