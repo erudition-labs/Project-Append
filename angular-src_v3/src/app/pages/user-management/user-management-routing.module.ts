@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
-import { EventsComponent } from './events.component';
+import { UserManagementComponent } from './user-management.component';
 
 const routes: Routes = [{
   path: '',
-  component: EventsComponent,
+  component: UserManagementComponent,
+
 }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class EventsRoutingModule { }
+export class UserManagementRoutingModule { }
 
 export const routedComponents = [
-  EventsComponent,
+  UserManagementComponent,
 ];

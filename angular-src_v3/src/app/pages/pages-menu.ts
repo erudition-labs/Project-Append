@@ -9,8 +9,13 @@ export const MENU_ITEMS: NbMenuItem[] = [
   },
   {
   	title: 'Events',
-	icon: 'nb-calendar',
-	link: '/pages/events',
+	  icon: 'nb-calendar',
+	  link: '/pages/events',
+  },
+  {
+  	title: 'User Management',
+	  icon: 'nb-calendar',
+	  link: '/pages/user-management',
   },
   {
     title: 'FEATURES',
