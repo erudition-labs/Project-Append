@@ -184,6 +184,35 @@ export class EventsComponent implements OnInit {
 		});
 	}
 
+	private populateFormFromModal() : void {
+		this.createForm();
+		let data = this.modalData.event.meta;
+
+		this.newEventForm.get('name').setValue(data.name);
+		this.newEventForm.get('isVerificationRequired').setValue(data.isVerificationRequired);
+		this.newEventForm.get('isVerified').setValue(data.isVerified);
+		this.newEventForm.get('isSignupRequired').setValue(data.isSignupRequired);
+		this.newEventForm.get('startDate').setValue(data.startDate);
+		this.newEventForm.get('endDate').setValue(data.endDate);
+		this.newEventForm.get('OIC').setValue(data.OIC);
+		this.newEventForm.get('signedUp').setValue(data.signedUp);
+		
+		let details = JSON.parse(data.additionalDetails);
+		details.forEach(function(obj) { 
+			const control = <FormArray> this.newEventForm.controls['additionalDetails'];
+			control.push(this.initDetailFieldWithData(obj.title, obj.details));
+		}.bind(this));
+
+		
+	}
+
+	private initDetailFieldWithData(_title:string, _details:string) : FormGroup {
+		return this.formBuilder.group({
+			title	: [_title],
+			details	: [_details]
+		});
+	}
+
 	public initDetailField() : FormGroup {
 		return this.formBuilder.group({
 			title	: [''],
@@ -224,7 +253,7 @@ export class EventsComponent implements OnInit {
 					additionalDetails
 				};
 
-				newEvent.additionalDetails = JSON.stringify(newEvent.additionalDetails);
+				newEvent.additionalDetails = JSON.stringify(result.get('additionalDetails').getRawValue());
 				this.eventsService.createEvent(newEvent).subscribe(
 					httpResult => {
 						if(httpResult.success) {
@@ -248,8 +277,9 @@ export class EventsComponent implements OnInit {
 	}
 
 	openUpdateDialog(): void {
+		this.populateFormFromModal();
 		let dialogRef = this.dialog.open(DialogOverviewEventComponent, {
-			
+			data : this.newEventForm
 		});
 	}
 }
