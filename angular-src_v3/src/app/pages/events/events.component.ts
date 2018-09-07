@@ -325,7 +325,7 @@ export class EventsComponent implements OnInit {
 								end		: colors.red,
 								meta	: newEvent
 							});*/
-							this.refresh.next();
+							this.refresh.next(this.events);
 						} else {
 							console.log('nope again' + httpResult);
 						}
