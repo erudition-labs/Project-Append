@@ -1,5 +1,6 @@
 import { User } from '../user/user.model';
 export interface Event {
+	_id							?: string;
 	name 						: string;
 	isVerificationRequired 		: boolean;
 	isVerified 					: boolean;
