@@ -49,14 +49,14 @@
 					</mat-datepicker-toggle>
 					<mat-datepicker #startPicker disabled="false"></mat-datepicker>
 				-->
-				<input placeholder="Date Time Range:"
+				<input placeholder="Select a date range"
 					[style.width]="'350px'"
-					[formControl]="data.get('startDate')"
+					[formControl]="data.get('date')"
 					[selectMode]="'range'"
-					[owlDateTimeTrigger]="startPicker" 
-					[owlDateTime]="startPicker"
+					[owlDateTimeTrigger]="datePicker" 
+					[owlDateTime]="datePicker"
 					readonly>
-		 <owl-date-time #startPicker></owl-date-time>
+		 <owl-date-time #datePicker></owl-date-time>
 
 			</mat-list-item>
 <!---

@@ -112,8 +112,8 @@ export class EventsComponent implements OnInit {
 			for(let e of result.result) {
 				//create calendar event
 				const calendarEvent : CalendarEvent = {
-					start		: new Date(e.startDate),
-					end			: new Date(e.endDate),
+					start		: new Date(e.date[0]),
+					end			: new Date(e.date[1]),
 					title		: e.name,
 					color		: colors.red,
 					actions		: this.actions,
@@ -178,8 +178,7 @@ export class EventsComponent implements OnInit {
 			isVerificationRequired 	: new FormControl('true', 	{ validators: [Validators.required] }),
 			isVerified				: new FormControl('false', 	{ validators: [Validators.required] }),
 			isSignupRequired		: new FormControl('true', 	{ validators: [Validators.required] }),
-			startDate				: new FormControl('', { }),
-			endDate					: new FormControl('', { }),
+			date					: new FormControl([], { }),
 			OIC						: new FormControl([], { }),
 			signedUp				: new FormControl([], { }),
 			additionalDetails		: this.formBuilder.array([ this.initDetailField() ])
@@ -201,17 +200,16 @@ export class EventsComponent implements OnInit {
 		this.newEventForm.get('isVerificationRequired').setValue(data.isVerificationRequired);
 		this.newEventForm.get('isVerified').setValue(data.isVerified);
 		this.newEventForm.get('isSignupRequired').setValue(data.isSignupRequired);
-		this.newEventForm.get('startDate').setValue(data.startDate);
-		this.newEventForm.get('endDate').setValue(data.endDate);
+		this.newEventForm.get('date').setValue(data.date);
 		this.newEventForm.get('OIC').setValue(data.OIC);
 		this.newEventForm.get('signedUp').setValue(data.signedUp);
 		
-		let details = JSON.parse(data.additionalDetails);
-		details.forEach(function(obj) {  //populate formArray
+		console.log(data.additionalDetails)
+		data.additionalDetails.forEach(function(obj) {  //populate formArray
 			const control = <FormArray> this.newEventForm.controls['additionalDetails'];
 			control.push(this.initDetailFieldWithData(obj.title, obj.details));
 		}.bind(this));
-		
+	
 	}
 
 	private initDetailFieldWithData(_title:string, _details:string) : FormGroup {
@@ -234,8 +232,7 @@ export class EventsComponent implements OnInit {
 				isVerificationRequired,
 				isVerified,
 				isSignupRequired,
-				startDate,
-				endDate,
+				date,
 				OIC,
 				signedUp,
 				additionalDetails
@@ -246,8 +243,7 @@ export class EventsComponent implements OnInit {
 			isVerificationRequired,
 			isVerified,
 			isSignupRequired,
-			startDate,
-			endDate,
+			date,
 			OIC,
 			signedUp,
 			additionalDetails
@@ -267,15 +263,16 @@ export class EventsComponent implements OnInit {
 			if(result.valid) {
 				let newEvent = this.dialogDataToEvent(result);
 				console.log(newEvent);
-				/*this.eventsService.createEvent(newEvent).subscribe(
+				this.eventsService.createEvent(newEvent).subscribe(
 					httpResult => {
 						if(httpResult.success) {
 							console.log('success');
+							newEvent.additionalDetails = JSON.parse(newEvent.additionalDetails);
 
 							this.events.push({
 								title	: newEvent.name,
-								start	: newEvent.startDate,
-								end		: newEvent.endDate,
+								start	: newEvent.date[0],
+								end		: newEvent.date[1],
 								color	: colors.red,
 								meta	: newEvent
 							});
@@ -285,7 +282,7 @@ export class EventsComponent implements OnInit {
 						}
 					}, error => {
 						console.log(error);	
-				}); */
+				}); 
 			}
 		});
 	}
@@ -307,12 +304,12 @@ export class EventsComponent implements OnInit {
 					httpResult => {
 						if(httpResult.success) {
 						console.log(httpResult);
-							
+
 						let index = this.events.findIndex(x => x.meta._id === newEvent._id);
 						let updatedCalendarEvent : CalendarEvent = {
 							title	: newEvent.name,
-							start	: new Date(newEvent.startDate),
-							end		: new Date(newEvent.endDate),
+							start	: new Date(newEvent.date[0]),
+							end		: new Date(newEvent.date[1]),
 							color	: colors.red,
 							meta	: newEvent
 						};
@@ -353,6 +350,7 @@ export class DialogOverviewEventComponent implements OnInit {
 
 	ngOnInit() {
 		this.users = this.userService.getUsers();
+		console.log(this.data);
 	}
 			
 	private datePickerEvent(type: string, date: MatDatepickerInputEvent<Date>) : void {

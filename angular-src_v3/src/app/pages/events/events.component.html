@@ -17,11 +17,11 @@
 					<!--- ALL THE FIELDS WOULD GO HERE IN SOME SORT OF STYLED ORDER-->
 		 <!--- ACCESS THE DAT USEING {{ modalData.event.meta.FIELDNAME}}-->
 		 			<div>
-						Start Date <pre>{{ modalData.event.meta.startDate }}</pre>
+						Start Date <pre>{{ modalData.event.meta.date[0] }}</pre>
 					</div>
 
 					<div>
-						End Date <pre>{{ modalData.event.meta.endDate }}</pre>
+						End Date <pre>{{ modalData.event.meta.date[1] }}</pre>
 					</div>
 
 					<div> Assigned OIC
@@ -65,16 +65,6 @@
 					</ng-container>
 				</nb-card-body>
 			</nb-card>
-			<!---
-			<div>
-				Action:
-				<pre>{{ modalData?.action }}</pre>
-			</div>
-
-			<div>
-				Event:
-				<pre>{{ modalData?.event | json }}</pre>
-			</div> -->
 		</div> 
 
 		<div class="modal-footer">

@@ -5,8 +5,7 @@ export interface Event {
 	isVerificationRequired 		: boolean;
 	isVerified 					: boolean;
 	isSignupRequired 			: boolean;
-	startDate 					: any;
-	endDate 					: any;
+	date 						: any[];
 	OIC 						: any[];
 	signedUp 					: any[];
 	additionalDetails			: string;
