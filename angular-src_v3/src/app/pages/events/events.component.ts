@@ -266,8 +266,8 @@ export class EventsComponent implements OnInit {
 			if(typeof result === 'undefined' || result == null) { return; }
 			if(result.valid) {
 				let newEvent = this.dialogDataToEvent(result);
-
-				this.eventsService.createEvent(newEvent).subscribe(
+				console.log(newEvent);
+				/*this.eventsService.createEvent(newEvent).subscribe(
 					httpResult => {
 						if(httpResult.success) {
 							console.log('success');
@@ -285,7 +285,7 @@ export class EventsComponent implements OnInit {
 						}
 					}, error => {
 						console.log(error);	
-					});
+				}); */
 			}
 		});
 	}
@@ -358,6 +358,7 @@ export class DialogOverviewEventComponent implements OnInit {
 	private datePickerEvent(type: string, date: MatDatepickerInputEvent<Date>) : void {
 		if(type === 'startDate') this.data.controls.startDate.setValue(date.value);
 		if(type === 'endDate') this.data.controls.endDate.setValue(date.value);
+		console.log(this.data.controls.startDate.setValue(date.value));
 	}
 
 
