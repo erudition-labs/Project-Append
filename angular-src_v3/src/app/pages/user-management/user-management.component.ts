@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 @Component({
   selector: 'user-management',
@@ -8,6 +9,22 @@ import { Component, OnInit } from '@angular/core';
 export class UserManagementComponent implements OnInit {
 
   constructor() { }
+  settings = {
+    columns: {
+      id: {
+        title: 'ID'
+      },
+      name: {
+        title: 'Full Name'
+      },
+      username: {
+        title: 'User Name'
+      },
+      email: {
+        title: 'Email'
+      }
+    }
+  };
 
   ngOnInit() {
   }
