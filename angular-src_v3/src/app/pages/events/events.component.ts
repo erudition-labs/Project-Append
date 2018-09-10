@@ -120,6 +120,7 @@ export class EventsComponent implements OnInit {
 					draggable	: true,
 					meta		: e, //append our event object to it
 				};
+				calendarEvent.meta.additionalDetails = JSON.parse(calendarEvent.meta.additionalDetails);
 				this.events.push(calendarEvent); //put it on the calendar
 			}
 			this.refresh.next();
@@ -152,7 +153,6 @@ export class EventsComponent implements OnInit {
 	}
 
 	handleEvent(action: string, event: CalendarEvent): void {
-		event.meta.additionalDetails = JSON.parse(event.meta.additionalDetails);
 		this.modalData = { event, action };
 		this.modal.open(this.modalContent, { size: 'lg' });
 	}
