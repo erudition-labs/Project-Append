@@ -10,6 +10,7 @@ router.route('/:id').get(controller.getEvent);
 router.route('/').get(controller.getEvents);
 router.route('/').put(controller.putEvent);
 router.route('/signup').put(controller.putSignupEvent);
+router.route('/unregister').put(controller.putUnregisterEvent);
 router.route('/:id').put(controller.putEvent);
 router.route('/:id').delete(requireAdmin, controller.deleteEvent);
 

@@ -2,8 +2,18 @@
 	<ng-template #modalContent let-close="close">
 		<div class="modal-header">
 			<h5 class="modal-title">{{ modalData.event.title }}
-			<button type="button" class="btn
-				btn-outline-primary"(click)="signupUser(); close();">Sign Up</button>
+				<ng-container *ngIf="authService.isAuthenticated()">
+					<button *ngIf="!eventsService.isSignedUp(modalData.event.meta); 
+												else Pending"
+					type="button" class="btn
+					btn-outline-primary"(click)="signupUser(); close();">Sign Up</button>
+				</ng-container>
+
+				<ng-template #Pending>
+					<button type="button" 
+					class="btn btn-outline-primary"
+					(click)="unregister(); close();">Pending</button>
+				</ng-template>
 			</h5>
 
 				<button type="button" class="close" (click)="close()">

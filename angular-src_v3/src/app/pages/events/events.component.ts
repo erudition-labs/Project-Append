@@ -350,6 +350,28 @@ export class EventsComponent implements OnInit {
 			});
 		}
 	}
+
+	private unregister() : void {
+		if(this.eventsService.isSignedUp(this.modalData.event.meta)) {
+			let event = this.modalData.event.meta;
+
+			this.eventsService.unregisterUser(event)
+			.subscribe(httpResult => {
+				console.log(httpResult);
+				if(httpResult.success) {
+					let index = this.events.findIndex(x => x.meta._id === this.modalData.event.meta._id);
+					this.events[index].meta.signedUp = httpResult.result.signedUp;
+					this.modalData.event.meta.signedUp = httpResult.result.signedUp;
+					this.modalData.event.meta.additionalDetails = JSON.parse(this.modalData.event.meta.additionalDetails);
+					this.refresh.next();
+				} else {
+					console.log('RIP ' + httpResult);
+				}
+			}, error => {
+				console.log(error);
+			});
+		}
+	}
 }
 
 

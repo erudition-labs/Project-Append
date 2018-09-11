@@ -74,6 +74,25 @@ const putSignupEvent = async (request, response) => {
 	}
 };
 
+const putUnregisterEvent = async (request, response) => {
+	try {
+		let event = request.body.data;
+		let signedUp = request.body.data.signedUp;
+		console.log(event);
+		//event.signedUp.push(request.body.user);
+		for (var i=signedUp.length-1; i>=0; i--) {
+			if (signedUp[i]._id.equals(request.body.user)) {
+				signedUp.splice(i, 1);
+			}
+		}
+		event.signedUp = signedUp;
+		const updatedEvent = await queries.updateEvent(event);
+		response.json({ success: true, result: updatedEvent });
+	} catch(error){
+		return error;
+	}
+};
+
 module.exports = {
 	postEvent,
 	getEvent,
@@ -81,5 +100,6 @@ module.exports = {
 	getEvents,
 	deleteEvent,
 	putEvent,
-	putSignupEvent
+	putSignupEvent,
+	putUnregisterEvent
 };
