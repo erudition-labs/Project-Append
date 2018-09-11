@@ -41,10 +41,19 @@ const updateUser = async (id, user) => {
 	}
 };
 
+const deleteUser = async (id) => {
+	try {
+		return await User.findByIdAndRemove(id);
+	} catch(error) {
+		return error;
+	}
+};
+
 module.exports = {
 	createUser,
 	getUserByEmail,
 	getUserById,
 	getUsers,
-	updateUser
+	updateUser,
+	deleteUser,
 };

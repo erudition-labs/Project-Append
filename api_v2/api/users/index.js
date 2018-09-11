@@ -30,4 +30,6 @@ router.route('/:id').get(controller.getUser);
 
 router.route('/:id').put(controller.putUser);
 
+router.route('/:id').delete(controller.deleteUser);
+
 module.exports = router;

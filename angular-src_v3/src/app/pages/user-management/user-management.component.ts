@@ -144,19 +144,21 @@ export class UserManagementComponent implements OnInit {
   private onDeleteConfirm(event) {
     if (window.confirm('Are you sure you want to delete?')) {
       event.confirm.resolve();
-      console.log(event.data);
-      
-      this.toastr.error(event.data.firstName + '\'s acount has been deleted', 'Deleted!', {
-        timeOut: 5000,
-        closeButton: true,
-        progressBar: true,
-        progressAnimation: 'decreasing',
-        positionClass: 'toast-bottom-right',
-
+      this.userService.deleteUser(event.data._id).subscribe((result) => {
+        console.log(result.message);
+        if(result.success) {
+          this.toastr.error(event.data.firstName + '\'s acount has been deleted', 'Deleted!', {
+            timeOut: 5000,
+            closeButton: true,
+            progressBar: true,
+            progressAnimation: 'decreasing',
+            positionClass: 'toast-bottom-right',
+    
+          });
+        }
       });
     } else {
       event.confirm.reject();
     }
-
-
+  }
 }

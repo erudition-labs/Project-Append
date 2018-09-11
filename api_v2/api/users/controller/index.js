@@ -132,7 +132,6 @@ const putUser = async (request, response) => {
 	try {
 		const userId = request.params.id;
 		const userData = request.body.userData;
-		console.log(userId);
 		const updatedUser = await queries.updateUser(userId, userData);
 		response.json({ success: true, result: updatedUser });
 	} catch(error) {
@@ -140,6 +139,15 @@ const putUser = async (request, response) => {
 	}
 };
 
+const deleteUser = async (request, response) => {
+	try {
+		const userId = request.params.id;
+		await queries.deleteUser(userId);
+		response.json({success: true, message: 'User deleted'});
+	} catch(error) {
+		return error;
+	}
+}
 module.exports = {
 	postUser,
 	postVerifyResend,
@@ -148,4 +156,5 @@ module.exports = {
 	getUser,
 	getUsers,
 	putUser,
+	deleteUser,
 };
