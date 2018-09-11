@@ -27,6 +27,9 @@ export class UserManagementComponent implements OnInit {
 
       if(this.isAdmin) {
         this.settings = {
+          actions: {
+            columnTitle: 'Action/Search',
+          },
           add: {
             addButtonContent: '<i class="nb-plus"></i>',
             createButtonContent: '<i class="nb-checkmark"></i>',
@@ -40,6 +43,7 @@ export class UserManagementComponent implements OnInit {
           },
           delete: {
             deleteButtonContent: '<i class="nb-trash"></i>',
+            confirmDelete: true,
           },
           columns: {
             firstName: {
@@ -136,5 +140,23 @@ export class UserManagementComponent implements OnInit {
       event.confirm.reject();
     }
   }
+
+  private onDeleteConfirm(event) {
+    if (window.confirm('Are you sure you want to delete?')) {
+      event.confirm.resolve();
+      console.log(event.data);
+      
+      this.toastr.error(event.data.firstName + '\'s acount has been deleted', 'Deleted!', {
+        timeOut: 5000,
+        closeButton: true,
+        progressBar: true,
+        progressAnimation: 'decreasing',
+        positionClass: 'toast-bottom-right',
+
+      });
+    } else {
+      event.confirm.reject();
+    }
+
 
 }
