@@ -27,6 +27,12 @@ export class EventsService {
 	}
 
 	public isOIC(event: Event) : boolean {
-		return (event.OIC.includes(this.authService.parseToken().sub));
+		for(let user of event.OIC) {
+			//console.log(user);
+			if(user._id === this.authService.parseToken().sub) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

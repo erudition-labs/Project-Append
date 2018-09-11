@@ -6,7 +6,7 @@ export interface Event {
 	isVerified 					: boolean;
 	isSignupRequired 			: boolean;
 	date 						: any[];
-	OIC 						: any[];
+	OIC 						: User[];
 	signedUp 					: any[];
 	additionalDetails			: string;
 }
