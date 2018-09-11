@@ -1,5 +1,7 @@
 const queries 	= require('./../query');
 const User		= require('./../../users/query');
+const mongoose 	= require('mongoose');
+
 
 const postEvent = async (request, response) => {
 	try {
@@ -21,14 +23,13 @@ const getEvent = async (request, response) => {
 };
 
 const putEvent = async (request, response) => {
-	//if(request.body.data.OIC.includes.includes())
 	
 	try {
 		//get old event for list of OIC..in case user tried to add themselves as OIC
-		const oldEvent = await queries.getEvent(request.body.data._id); 
+		const oldEvent = await queries.getEvent(request.body.data._id);
 
-		if(oldEvent.OIC.includes(request.body.user)) {
-			return response.json({ success: false, message:"User not Authorized" });
+		if(oldEvent.OIC.indexOf(request.body.user) === -1) {
+			response.json({ success: false, message:"User not Authorized" });
 		}
 
 		const updatedEvent = await queries.updateEvent(request.body.data);
