@@ -21,8 +21,15 @@ const getEvent = async (request, response) => {
 };
 
 const putEvent = async (request, response) => {
+	//if(request.body.data.OIC.includes.includes())
+	
 	try {
-		//const userEdited = await User.getUserById(request.user.sub);
+		//get old event for list of OIC..in case user tried to add themselves as OIC
+		const oldEvent = await queries.getEvent(request.body.data._id); 
+
+		if(oldEvent.OIC.includes(request.body.user)) {
+			return response.json({ success: false, message:"User not Authorized" });
+		}
 
 		const updatedEvent = await queries.updateEvent(request.body.data);
 		response.json({ success: true, result: updatedEvent });
