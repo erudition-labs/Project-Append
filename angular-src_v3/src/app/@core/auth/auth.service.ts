@@ -56,7 +56,7 @@ export class AuthService {
 	}
 
 	public getUserInfo() : any {
-		return JSON.parse(localStorage.getItem('userInfo'));
+		return this.parseToken();
 	}
 
 	public setUser(token: string, userInfo: string, expiresAt: number) : void {
@@ -78,9 +78,6 @@ export class AuthService {
 
 	public isAdmin() : boolean {
 		const userInfo = this.getUserInfo();
-		if(!userInfo) {
-			return false;
-		}
 		return userInfo.role === 'admin';
 	}
 
