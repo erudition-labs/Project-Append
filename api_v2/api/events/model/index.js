@@ -8,13 +8,13 @@ const eventModel = new Schema({
 	isSignupRequired		: { type: Boolean, required: true, default: false },
 	date					: [{ type: Date, required: false }],
 	OIC		: [{
-		type: Schema.Types.ObjectId,
-		ref: 'User',
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'user',
 		required: false
 	}],
 	signedUp : [{
 		type: Schema.Types.ObjectId,
-		ref: 'User',
+		ref: 'user',
 		required: false
 	}],
 	additionalDetails : { type: String, required: false }

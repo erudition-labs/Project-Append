@@ -1,4 +1,5 @@
 const Event = require('./../model');
+const User	= require('../../users/model');
 
 const createEvent = async (eventData) => {
 	try {
@@ -45,7 +46,7 @@ const updateEvent = async (data) => {
 
 const getEvents = async () => {
 	try {
-		return await Event.find().sort({ date: 'descending' }).limit(30).find();	
+		return await Event.find().sort({ date: 'descending' }).limit(30).populate('OIC');
 	} catch(error) {
 		return error;
 	}
