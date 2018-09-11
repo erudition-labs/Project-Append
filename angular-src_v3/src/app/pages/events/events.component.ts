@@ -119,7 +119,7 @@ export class EventsComponent implements OnInit {
 					title		: e.name,
 					color		: colors.red,
 					actions		: this.actions,
-					draggable	: true,
+					draggable	: false,
 					meta		: e, //append our event object to it
 				};
 				calendarEvent.meta.additionalDetails = JSON.parse(calendarEvent.meta.additionalDetails);
