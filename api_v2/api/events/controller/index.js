@@ -78,14 +78,14 @@ const putUnregisterEvent = async (request, response) => {
 	try {
 		let event = request.body.data;
 		let signedUp = request.body.data.signedUp;
-		console.log(event);
-		//event.signedUp.push(request.body.user);
+		let ids = [];
+
 		for (var i=signedUp.length-1; i>=0; i--) {
-			if (signedUp[i]._id.equals(request.body.user)) {
-				signedUp.splice(i, 1);
+			if(JSON.stringify(signedUp[i]._id) !== JSON.stringify(request.body.user)) {
+				ids.push(signedUp[i]._id);
 			}
 		}
-		event.signedUp = signedUp;
+		event.signedUp = ids;
 		const updatedEvent = await queries.updateEvent(event);
 		response.json({ success: true, result: updatedEvent });
 	} catch(error){
