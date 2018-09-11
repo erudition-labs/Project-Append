@@ -313,6 +313,8 @@ export class EventsComponent implements OnInit {
 							color	: colors.red,
 							meta	: newEvent
 						};
+						updatedCalendarEvent.meta.additionalDetails = JSON.parse(updatedCalendarEvent.meta.additionalDetails);
+
 
 						this.events[index] = updatedCalendarEvent;
 							this.refresh.next();
