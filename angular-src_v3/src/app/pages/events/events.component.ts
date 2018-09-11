@@ -357,7 +357,6 @@ export class EventsComponent implements OnInit {
 
 			this.eventsService.unregisterUser(event)
 			.subscribe(httpResult => {
-				console.log(httpResult);
 				if(httpResult.success) {
 					let index = this.events.findIndex(x => x.meta._id === this.modalData.event.meta._id);
 					this.events[index].meta.signedUp = httpResult.result.signedUp;
