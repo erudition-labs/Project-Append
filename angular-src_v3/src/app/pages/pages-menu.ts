@@ -14,7 +14,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   },
   {
   	title: 'User Management',
-	  icon: 'nb-calendar',
+	  icon: 'nb-person',
 	  link: '/pages/user-management',
   },
   {
