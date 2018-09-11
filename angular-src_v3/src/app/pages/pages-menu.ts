@@ -13,6 +13,51 @@ export const MENU_ITEMS: NbMenuItem[] = [
 	  link: '/pages/events',
   },
   {
+  	title: 'User Directory',
+	  icon: 'nb-person',
+	  link: '/pages/user-management',
+  },
+  {
+    title: 'FEATURES',
+    group: true,
+  },
+  {
+    title: 'Auth',
+    icon: 'nb-locked',
+    children: [
+      {
+        title: 'Login',
+        link: '/auth/login',
+      },
+      {
+        title: 'Register',
+        link: '/auth/register',
+      },
+      {
+        title: 'Request Password',
+        link: '/auth/request-password',
+      },
+      {
+        title: 'Reset Password',
+        link: '/auth/reset-password',
+      },
+    ],
+  },
+];
+
+export const MENU_ITEMS_ADMIN: NbMenuItem[] = [
+  {
+    title: 'Dashboard',
+    icon: 'nb-home',
+    link: '/pages/dashboard',
+    home: true,
+  },
+  {
+  	title: 'Events',
+	  icon: 'nb-calendar',
+	  link: '/pages/events',
+  },
+  {
   	title: 'User Management',
 	  icon: 'nb-person',
 	  link: '/pages/user-management',
