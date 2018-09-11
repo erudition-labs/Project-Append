@@ -43,8 +43,8 @@
 							<mat-list>
 								<pre>
 									<mat-list-item *ngFor="let user of modalData.event.meta.signedUp">
-										<nb-user [name]="user"
-												[title]="">
+										<nb-user [name]="user.lastName + ',' + user.firstName"
+												[title]="user.rank">
 										</nb-user>
 									</mat-list-item>
 								</pre>

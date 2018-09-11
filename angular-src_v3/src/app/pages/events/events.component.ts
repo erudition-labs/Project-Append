@@ -47,6 +47,7 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Event } from '../../@core/events/event.model';
 import { User } from '../../@core/user/user.model';
 import { EventsService } from '../../@core/events/events.service';
+import { AuthService } from '../../@core/auth/auth.service';
 import { UserService } from '../../@core/user/user.service';
 
 
@@ -105,7 +106,8 @@ export class EventsComponent implements OnInit {
 	constructor(private modal			: NgbModal,
 				private dialog			: MatDialog,
 				private formBuilder 	: FormBuilder,
-				private eventsService	: EventsService) { }
+				private eventsService	: EventsService,
+				private authService		: AuthService) { }
 
 	ngOnInit() {
 		this.eventsService.getEvents().subscribe((result) => {
@@ -262,7 +264,9 @@ export class EventsComponent implements OnInit {
 			if(typeof result === 'undefined' || result == null) { return; }
 			if(result.valid) {
 				let newEvent = this.dialogDataToEvent(result);
-				console.log(newEvent);
+				//console.log(newEvent);
+				//In the case of creating event for OIC to edit, automatically sign them up
+				newEvent.signedUp = newEvent.OIC;
 				this.eventsService.createEvent(newEvent).subscribe(
 					httpResult => {
 						if(httpResult.success) {
