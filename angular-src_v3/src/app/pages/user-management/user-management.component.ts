@@ -68,8 +68,13 @@ export class UserManagementComponent implements OnInit {
         };
       } else {
         this.settings = {
+          actions: {
+            add: false,
+            edit: false,
+            delete: false
+          },
           add: {
-            addButtonContent: '<i class="nb-plus"></i>',
+            addButtonContent: '<i class="nb-plus" disabled></i>',
             createButtonContent: '<i class="nb-checkmark"></i>',
             cancelButtonContent: '<i class="nb-close"></i>',
           },
