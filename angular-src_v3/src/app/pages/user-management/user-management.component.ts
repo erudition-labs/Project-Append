@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { UserService } from '../../@core/user/user.service';
+import { User } from '../../@core/user/user.model';
+
 
 @Component({
   selector: 'user-management',
@@ -8,7 +11,10 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 })
 export class UserManagementComponent implements OnInit {
 
-  constructor() { }
+  constructor(private userService : UserService) { }
+
+  private users : User[];
+
   settings = {
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -24,46 +30,60 @@ export class UserManagementComponent implements OnInit {
       deleteButtonContent: '<i class="nb-trash"></i>',
     },
     columns: {
-      id: {
-        title: 'ID'
+      firstName: {
+        title: 'First Name'
       },
-      name: {
-        title: 'Full Name'
+      lastName: {
+        title: 'Last Name'
       },
-      username: {
-        title: 'User Name'
+      rank: {
+        title: 'Rank'
+      },
+      flight: {
+        title: 'Flight'
+      },
+      team: {
+        title: 'Team'
+      },
+      phone: {
+        title: 'Phone'
       },
       email: {
         title: 'Email'
-      }
+      },
     }
   };
 
-  data = [
-    {
-      id: 1,
-      name: "Leanne Graham",
-      username: "Bret",
-      email: "Sincere@april.biz"
-    },
-    {
-      id: 2,
-      name: "Ervin Howell",
-      username: "Antonette",
-      email: "Shanna@melissa.tv"
-    },
+  // data = [
+  //   {
+  //     name: "Leanne Graham",
+  //     rank: "Captain",
+  //     flight: "Bret",
+  //     team: "Rifle",
+  //     phone: "661-208-1140"
+  //     email: "Sincere@april.biz",
+  //   },
+  //   // {
+  //   //   id: 2,
+  //   //   name: "Ervin Howell",
+  //   //   username: "Antonette",
+  //   //   email: "Shanna@melissa.tv"
+  //   // },
     
-    // ... list of items
+  //   // // ... list of items
     
-    {
-      id: 11,
-      name: "Nicholas DuBuque",
-      username: "Nicholas.Stanton",
-      email: "Rey.Padberg@rosamond.biz"
-    }
-  ];
+  //   // {
+  //   //   id: 11,
+  //   //   name: "Nicholas DuBuque",
+  //   //   username: "Nicholas.Stanton",
+  //   //   email: "Rey.Padberg@rosamond.biz"
+  //   // }
+  // ];
 
   ngOnInit() {
+    this.userService.getUsers().subscribe((result) => {
+      		this.users = result;
+      });
   }
 
 }
