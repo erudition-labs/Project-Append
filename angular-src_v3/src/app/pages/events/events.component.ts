@@ -261,78 +261,88 @@ export class EventsComponent implements OnInit {
 	}
 
 	public openCreateDialog(): void {
-		this.createForm();
-		const dialogRef = this.dialog.open(DialogOverviewEventComponent, {
-			data: this.newEventForm 
-		});
+		if(this.authService.isAuthenticated() && this.authService.isAdmin()) {
+			this.createForm();
+			const dialogRef = this.dialog.open(DialogOverviewEventComponent, {
+				data: this.newEventForm 
+			});
 
-		dialogRef.afterClosed().subscribe(result => {
-			if(typeof result === 'undefined' || result == null) { return; }
-			if(result.valid) {
-				let newEvent = this.dialogDataToEvent(result);
-				//In the case of creating event for OIC to edit, automatically sign them up
-				newEvent.signedUp = newEvent.OIC;
-				this.eventsService.createEvent(newEvent).subscribe(
-					httpResult => {
-						if(httpResult.success) {
-							newEvent._id = httpResult.result._id;
-							newEvent.additionalDetails = JSON.parse(newEvent.additionalDetails);
+			dialogRef.afterClosed().subscribe(result => {
+				if(typeof result === 'undefined' || result == null) { return; }
+				if(result.valid) {
+					let newEvent = this.dialogDataToEvent(result);
+					//In the case of creating event for OIC to edit, automatically sign them up
+					newEvent.signedUp = newEvent.OIC;
+					this.eventsService.createEvent(newEvent).subscribe(
+						httpResult => {
+							if(httpResult.success) {
+								newEvent._id = httpResult.result._id;
+								newEvent.additionalDetails = JSON.parse(newEvent.additionalDetails);
 
-							this.events.push({
-								title	: newEvent.name,
-								start	: newEvent.date[0],
-								end		: newEvent.date[1],
-								color	: colors.red,
-								meta	: newEvent
-							});
-							this.refresh.next();
-						} else {
-							console.log('nope ' + httpResult);
-						}
-					}, error => {
-						console.log(error);	
-				}); 
-			}
-		});
+								this.events.push({
+									title	: newEvent.name,
+									start	: newEvent.date[0],
+									end		: newEvent.date[1],
+									color	: colors.red,
+									meta	: newEvent
+								});
+								this.refresh.next();
+							} else {
+								console.log('nope ' + httpResult);
+							}
+						}, error => {
+							console.log(error);	
+					}); 
+				}
+			});
+		} else {
+
+			//tell them they no have access
+		}
 	}
 
 	public openUpdateDialog(): void {
-		this.populateFormFromModal();
-		let dialogRef = this.dialog.open(DialogOverviewEventComponent, {
-			data : this.newEventForm
-		});
+		if((this.authService.isAuthenticated() && this.authService.isAdmin()) ||
+			this.authService.isAuthenticated() && this.eventsService.isOIC(this.modalData.event.meta)) {
+			
+				this.populateFormFromModal();
+			let dialogRef = this.dialog.open(DialogOverviewEventComponent, {
+				data : this.newEventForm
+			});
 
-		dialogRef.afterClosed().subscribe(result => {
-			if(typeof result === 'undefined' || result == null) { return; }
-			if(result.valid) {
-				let newEvent = this.dialogDataToEvent(result);
-				//be sure to attatch the id of the event since we are editing
-				newEvent._id = this.modalData.event.meta._id; 
+			dialogRef.afterClosed().subscribe(result => {
+				if(typeof result === 'undefined' || result == null) { return; }
+				if(result.valid) {
+					let newEvent = this.dialogDataToEvent(result);
+					//be sure to attatch the id of the event since we are editing
+					newEvent._id = this.modalData.event.meta._id; 
 
-				this.eventsService.updateEvent(newEvent).subscribe(
-					httpResult => {
-						if(httpResult.success) {
-							let index = this.events.findIndex(x => x.meta._id === newEvent._id);
-							let updatedCalendarEvent : CalendarEvent = {
-								title	: newEvent.name,
-								start	: new Date(newEvent.date[0]),
-								end		: new Date(newEvent.date[1]),
-								color	: colors.red,
-								meta	: newEvent
-							};
-						updatedCalendarEvent.meta.additionalDetails = JSON.parse(updatedCalendarEvent.meta.additionalDetails);
+					this.eventsService.updateEvent(newEvent).subscribe(
+						httpResult => {
+							if(httpResult.success) {
+								let index = this.events.findIndex(x => x.meta._id === newEvent._id);
+								let updatedCalendarEvent : CalendarEvent = {
+									title	: newEvent.name,
+									start	: new Date(newEvent.date[0]),
+									end		: new Date(newEvent.date[1]),
+									color	: colors.red,
+									meta	: newEvent
+								};
+							updatedCalendarEvent.meta.additionalDetails = JSON.parse(updatedCalendarEvent.meta.additionalDetails);
 
-						this.events[index] = updatedCalendarEvent;
-						this.refresh.next();
-						} else {
-							console.log('nope again' + httpResult);
-						}
-					}, error => {
-						console.log(error);
-					});
-			}
-		});
-
+							this.events[index] = updatedCalendarEvent;
+							this.refresh.next();
+							} else {
+								console.log('nope again' + httpResult);
+							}
+						}, error => {
+							console.log(error);
+						});
+				}
+			});
+		} else {
+			//toast they dont have access
+		}
 	}
 	private signupUser() : void {
 		if(!this.eventsService.isSignedUp(this.modalData.event.meta)) {
