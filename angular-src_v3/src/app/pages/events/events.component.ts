@@ -183,6 +183,7 @@ export class EventsComponent implements OnInit {
 			date					: new FormControl([], { }),
 			OIC						: new FormControl([], { }),
 			signedUp				: new FormControl([], { }),
+			pending					: new FormControl([], { }),
 			additionalDetails		: this.formBuilder.array([ this.initDetailField() ])
 		});
 	}
@@ -205,6 +206,7 @@ export class EventsComponent implements OnInit {
 		this.newEventForm.get('date').setValue(data.date);
 		this.newEventForm.get('OIC').setValue(data.OIC);
 		this.newEventForm.get('signedUp').setValue(data.signedUp);
+		this.newEventForm.get('pending').setValue(data.pending);
 		
 		console.log(data.additionalDetails)
 		data.additionalDetails.forEach(function(obj) {  //populate formArray
@@ -238,6 +240,7 @@ export class EventsComponent implements OnInit {
 				date,
 				OIC,
 				signedUp,
+				pending,
 				additionalDetails
 			} = result.value;
 
@@ -250,6 +253,7 @@ export class EventsComponent implements OnInit {
 			date,
 			OIC,
 			signedUp,
+			pending,
 			additionalDetails
 		};	
 		newEvent.additionalDetails = JSON.stringify(result.get('additionalDetails').getRawValue());
