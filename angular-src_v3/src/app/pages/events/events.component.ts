@@ -230,6 +230,7 @@ export class EventsComponent implements OnInit {
 
 	private dialogDataToEvent(result : any) : Event {
 		const {
+				_id,
 				name,
 				isVerificationRequired,
 				isVerified,
@@ -241,6 +242,7 @@ export class EventsComponent implements OnInit {
 			} = result.value;
 
 		const newEvent : Event = {
+			_id,
 			name,
 			isVerificationRequired,
 			isVerified,
@@ -264,13 +266,12 @@ export class EventsComponent implements OnInit {
 			if(typeof result === 'undefined' || result == null) { return; }
 			if(result.valid) {
 				let newEvent = this.dialogDataToEvent(result);
-				//console.log(newEvent);
 				//In the case of creating event for OIC to edit, automatically sign them up
 				newEvent.signedUp = newEvent.OIC;
 				this.eventsService.createEvent(newEvent).subscribe(
 					httpResult => {
 						if(httpResult.success) {
-							console.log('success');
+							newEvent._id = httpResult.result._id;
 							newEvent.additionalDetails = JSON.parse(newEvent.additionalDetails);
 
 							this.events.push({
@@ -306,7 +307,6 @@ export class EventsComponent implements OnInit {
 
 				this.eventsService.updateEvent(newEvent).subscribe(
 					httpResult => {
-						console.log(httpResult);
 						if(httpResult.success) {
 							let index = this.events.findIndex(x => x.meta._id === newEvent._id);
 							let updatedCalendarEvent : CalendarEvent = {
@@ -319,7 +319,7 @@ export class EventsComponent implements OnInit {
 						updatedCalendarEvent.meta.additionalDetails = JSON.parse(updatedCalendarEvent.meta.additionalDetails);
 
 						this.events[index] = updatedCalendarEvent;
-							this.refresh.next();
+						this.refresh.next();
 						} else {
 							console.log('nope again' + httpResult);
 						}
@@ -331,14 +331,22 @@ export class EventsComponent implements OnInit {
 
 	}
 	private signupUser() : void {
-		//console.log(this.eventsService.isSignedUp(this.modalData.event.meta));
 		if(!this.eventsService.isSignedUp(this.modalData.event.meta)) {
 			let event = this.modalData.event.meta;
-			event.additionalDetails = JSON.stringify(event.additionalDetails);
 
 			this.eventsService.signupUser(event)
-			.subscribe(result => {
-				console.log(result);
+			.subscribe(httpResult => {
+				if(httpResult.success) {
+					let index = this.events.findIndex(x => x.meta._id === this.modalData.event.meta._id);
+					this.events[index].meta.signedUp = httpResult.result.signedUp;
+					this.modalData.event.meta.signedUp = httpResult.result.signedUp;
+					this.modalData.event.meta.additionalDetails = JSON.parse(this.modalData.event.meta.additionalDetails);
+					this.refresh.next();
+				} else {
+					console.log('RIP ' + httpResult);
+				}
+			}, error => {
+				console.log(error);
 			});
 		}
 	}

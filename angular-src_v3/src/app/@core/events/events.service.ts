@@ -46,8 +46,8 @@ export class EventsService {
 	}
 
 	public signupUser(event: Event) : Observable<any> {
-		event.signedUp.push()
-		//event.additionalDetails = JSON.stringify(event.additionalDetails);
+		//event.signedUp.push()
+		event.additionalDetails = JSON.stringify(event.additionalDetails);
 		return this.http.put(this.url + '/signup', { data: event, user: this.authService.parseToken().sub });
 	}
 }

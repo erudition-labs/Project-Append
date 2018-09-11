@@ -27,12 +27,16 @@ const putEvent = async (request, response) => {
 	try {
 		//get old event for list of OIC..in case user tried to add themselves as OIC
 		const oldEvent = await queries.getEvent(request.body.data._id);
+		const submitter = await User.getUserById(request.body.user);
 
-		if(oldEvent.OIC.indexOf(request.body.user) === -1) {
-			response.json({ success: false, message:"User not Authorized" });
+		if(oldEvent.OIC.indexOf(request.body.user) === -1 &&
+			submitter.role !== 'admin') 
+		{
+			return response.json({ success: false, message:"User not Authorized" });
 		}
 
 		const updatedEvent = await queries.updateEvent(request.body.data);
+		console.log(updatedEvent);
 		response.json({ success: true, result: updatedEvent });
 	} catch(error) {
 		return error;
@@ -62,6 +66,7 @@ const putSignupEvent = async (request, response) => {
 	try {
 		const event = request.body.data;
 		event.signedUp.push(request.body.user);
+
 		const updatedEvent = await queries.updateEvent(event);
 		response.json({ success: true, result: updatedEvent });
 	} catch(error){
