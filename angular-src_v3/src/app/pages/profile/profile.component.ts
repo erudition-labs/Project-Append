@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../@core/user/user.service';
+import { User } from '../../@core/user/user.model';
+
 import { AuthService } from '../../@core/auth/auth.service';
 
 
@@ -12,12 +14,12 @@ export class ProfileComponent implements OnInit {
 
   constructor(private userService : UserService, private authService : AuthService) { }
 
-	//private user : User;
+	private user : User;
 
 
   ngOnInit() {
 		this.userService.getUser(this.authService.parseToken().sub).subscribe((result) => {
-		//		this.user = result.user;
+				this.user = result["user"];
 		});
 	}
 
