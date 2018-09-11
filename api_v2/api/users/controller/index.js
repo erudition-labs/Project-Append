@@ -127,6 +127,19 @@ const getUsers = async (request, response) => {
 	}
 };
 
+const putUser = async (request, response) => {
+	
+	try {
+		const userId = request.params.id;
+		const userData = request.body.userData;
+		console.log(userId);
+		const updatedUser = await queries.updateUser(userId, userData);
+		response.json({ success: true, result: updatedUser });
+	} catch(error) {
+		return error;
+	}
+};
+
 module.exports = {
 	postUser,
 	postVerifyResend,
@@ -134,4 +147,5 @@ module.exports = {
 	getUserByEmail,
 	getUser,
 	getUsers,
+	putUser,
 };

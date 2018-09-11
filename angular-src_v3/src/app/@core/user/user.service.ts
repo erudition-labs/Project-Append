@@ -28,4 +28,8 @@ export class UserService {
 	public getUser(id : string) : Observable<User> {
 		return this.http.get<User>(this.url + '/users/' + id);
 	}
+
+	public updateUser(id : string, user: User) : Observable<any> {
+		return this.http.put(this.url + '/users/' + id, { userData: user });	
+	}
 }

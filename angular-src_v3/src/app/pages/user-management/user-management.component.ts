@@ -117,8 +117,12 @@ export class UserManagementComponent implements OnInit {
 
   private onSaveConfirm(event) {
     if (window.confirm('Are you sure you want to save?')) {
-      console.log(event.newData);
+
       event.confirm.resolve(event.newData);
+      console.log(event.newData);
+      this.userService.updateUser(event.newData._id, event.newData).subscribe((result) => {
+        
+      });
     } else {
       event.confirm.reject();
     }

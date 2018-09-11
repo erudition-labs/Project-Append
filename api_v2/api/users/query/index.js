@@ -33,9 +33,18 @@ const getUsers = async () => {
 	}
 };
 
+const updateUser = async (id, user) => {
+	try {
+		return await User.findByIdAndUpdate(id, user, { new: true });
+	} catch(error) {
+		return error;
+	}
+};
+
 module.exports = {
 	createUser,
 	getUserByEmail,
 	getUserById,
-	getUsers
+	getUsers,
+	updateUser
 };

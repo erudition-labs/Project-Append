@@ -28,4 +28,6 @@ router.route('/users').get(controller.getUsers);
 
 router.route('/:id').get(controller.getUser);
 
+router.route('/:id').put(controller.putUser);
+
 module.exports = router;
