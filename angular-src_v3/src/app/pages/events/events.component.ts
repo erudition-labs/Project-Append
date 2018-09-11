@@ -302,19 +302,17 @@ export class EventsComponent implements OnInit {
 
 				this.eventsService.updateEvent(newEvent).subscribe(
 					httpResult => {
-						if(httpResult.success) {
 						console.log(httpResult);
-
-						let index = this.events.findIndex(x => x.meta._id === newEvent._id);
-						let updatedCalendarEvent : CalendarEvent = {
-							title	: newEvent.name,
-							start	: new Date(newEvent.date[0]),
-							end		: new Date(newEvent.date[1]),
-							color	: colors.red,
-							meta	: newEvent
-						};
+						if(httpResult.success) {
+							let index = this.events.findIndex(x => x.meta._id === newEvent._id);
+							let updatedCalendarEvent : CalendarEvent = {
+								title	: newEvent.name,
+								start	: new Date(newEvent.date[0]),
+								end		: new Date(newEvent.date[1]),
+								color	: colors.red,
+								meta	: newEvent
+							};
 						updatedCalendarEvent.meta.additionalDetails = JSON.parse(updatedCalendarEvent.meta.additionalDetails);
-
 
 						this.events[index] = updatedCalendarEvent;
 							this.refresh.next();
