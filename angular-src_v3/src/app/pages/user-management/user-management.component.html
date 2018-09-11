@@ -1,1 +1,4 @@
-<ng2-smart-table [settings]="settings" [source]="users"></ng2-smart-table>
+<ng2-smart-table 
+    [settings]="settings" 
+    [source]="users"
+    (editConfirm)="onSaveConfirm($event)"></ng2-smart-table>

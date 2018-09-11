@@ -17,6 +17,7 @@ export class UserManagementComponent implements OnInit {
   private users : User[];
   private isAdmin = this.authService.isAdmin();
   settings : any;
+  
 
 
   ngOnInit() {
@@ -35,6 +36,7 @@ export class UserManagementComponent implements OnInit {
             editButtonContent: '<i class="nb-edit"></i>',
             saveButtonContent: '<i class="nb-checkmark"></i>',
             cancelButtonContent: '<i class="nb-close"></i>',
+            confirmSave: true,
           },
           delete: {
             deleteButtonContent: '<i class="nb-trash"></i>',
@@ -112,4 +114,14 @@ export class UserManagementComponent implements OnInit {
         };
       }
   }
+
+  private onSaveConfirm(event) {
+    if (window.confirm('Are you sure you want to save?')) {
+      console.log(event.newData);
+      event.confirm.resolve(event.newData);
+    } else {
+      event.confirm.reject();
+    }
+  }
+
 }

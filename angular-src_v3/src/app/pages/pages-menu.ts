@@ -9,7 +9,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   },
   {
   	title: 'Events',
-	  icon: 'nb-calendar',
+	  icon: 'nb-tables',
 	  link: '/pages/events',
   },
   {
@@ -54,7 +54,7 @@ export const MENU_ITEMS_ADMIN: NbMenuItem[] = [
   },
   {
   	title: 'Events',
-	  icon: 'nb-calendar',
+	  icon: 'nb-tables',
 	  link: '/pages/events',
   },
   {
