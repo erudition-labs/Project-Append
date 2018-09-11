@@ -35,7 +35,7 @@
 				"node_modules/angular-calendar/css/angular-calendar.css",
 				"node_modules/@ng-select/ng-select/themes/material.theme.css",
               "src/app/@theme/styles/styles.scss",
-			  "src/styles.css"
+        "src/styles.css"
 
             ],
             "scripts": [

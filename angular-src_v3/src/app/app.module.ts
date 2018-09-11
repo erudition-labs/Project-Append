@@ -21,6 +21,8 @@ import { LoginFormComponent } from './auth/login-form/login-form.component';
 import { SignupFormComponent } from './auth/signup-form/signup-form.component';
 import { EmailVerificationComponent } from './auth/email-verification/email-verification.component';
 
+import { ToastrModule } from 'ngx-toastr';
+
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, LoginFormComponent, SignupFormComponent,EmailVerificationComponent,],
@@ -34,6 +36,7 @@ import { EmailVerificationComponent } from './auth/email-verification/email-veri
     NgbModule.forRoot(),
     ThemeModule.forRoot(),
     CoreModule.forRoot(),
+    ToastrModule.forRoot(),
   ],
   bootstrap: [AppComponent],
   providers: [

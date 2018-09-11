@@ -3,7 +3,7 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { AuthService } from '../../@core/auth/auth.service';
 import { UserService } from '../../@core/user/user.service';
 import { User } from '../../@core/user/user.model';
-
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'user-management',
@@ -12,15 +12,15 @@ import { User } from '../../@core/user/user.model';
 })
 export class UserManagementComponent implements OnInit {
 
-  constructor(private userService : UserService, private authService : AuthService) { }
+  constructor(private userService : UserService, private authService : AuthService, private toastr: ToastrService) { }
 
   private users : User[];
   private isAdmin = this.authService.isAdmin();
   settings : any;
-  
 
 
   ngOnInit() {
+    
     this.userService.getUsers().subscribe((result) => {
       		this.users = result;
       });
@@ -119,8 +119,17 @@ export class UserManagementComponent implements OnInit {
     if (window.confirm('Are you sure you want to save?')) {
 
       event.confirm.resolve(event.newData);
-      console.log(event.newData);
       this.userService.updateUser(event.newData._id, event.newData).subscribe((result) => {
+        if(result.success) {
+          this.toastr.success(event.newData.firstName + '\'s acount has been updated.', 'Success!', {
+            timeOut: 5000,
+            closeButton: true,
+            progressBar: true,
+            progressAnimation: 'decreasing',
+            positionClass: 'toast-bottom-right',
+
+          });
+        }
         
       });
     } else {
