@@ -43,7 +43,12 @@ export class AuthService {
 	public parseToken() : any {
 		const helper = new JwtHelperService();
 		const decodedToken = helper.decodeToken(this.getToken());
-		return decodedToken;
+		//if there is a token, return the token, if not return false
+		if(!helper.isTokenExpired(this.getToken())) {
+			return decodedToken;
+		} else {
+			return false;
+		}
 	}
 
 	private setUserInfo(userInfo: any) : void {
@@ -56,7 +61,8 @@ export class AuthService {
 	}
 
 	public getUserInfo() : any {
-		return JSON.parse(localStorage.getItem('userInfo'));
+		//either a token or false
+		return this.parseToken();
 	}
 
 	public setUser(token: string, userInfo: string, expiresAt: number) : void {
@@ -77,10 +83,8 @@ export class AuthService {
 	}
 
 	public isAdmin() : boolean {
+		//either false from there being no token, or true or false from comparing the token
 		const userInfo = this.getUserInfo();
-		if(!userInfo) {
-			return false;
-		}
 		return userInfo.role === 'admin';
 	}
 
