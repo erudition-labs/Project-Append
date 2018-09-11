@@ -35,4 +35,19 @@ export class EventsService {
 		}
 		return false;
 	}
+
+	public isSignedUp(event: Event) : boolean {
+		for(let user of event.signedUp){
+			if(user._id === this.authService.parseToken().sub) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public signupUser(event: Event) : Observable<any> {
+		event.signedUp.push()
+		//event.additionalDetails = JSON.stringify(event.additionalDetails);
+		return this.http.put(this.url + '/signup', { data: event, user: this.authService.parseToken().sub });
+	}
 }

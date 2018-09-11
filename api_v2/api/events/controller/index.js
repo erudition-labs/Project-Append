@@ -58,11 +58,23 @@ const deleteEvent = async (request, response) => {
 	}
 };
 
+const putSignupEvent = async (request, response) => {
+	try {
+		const event = request.body.data;
+		event.signedUp.push(request.body.user);
+		const updatedEvent = await queries.updateEvent(event);
+		response.json({ success: true, result: updatedEvent });
+	} catch(error){
+		return error;
+	}
+};
+
 module.exports = {
 	postEvent,
 	getEvent,
 	putEvent,
 	getEvents,
 	deleteEvent,
-	putEvent
+	putEvent,
+	putSignupEvent
 };

@@ -143,7 +143,7 @@ export class EventsComponent implements OnInit {
 		}
 	}
 
-	eventTimesChanged({
+	eventTimesChanged({ //in case we ever to decide to make events draggable
 		event,
 		newStart,
 		newEnd
@@ -158,7 +158,7 @@ export class EventsComponent implements OnInit {
 		this.modalData = { event, action };
 		this.modal.open(this.modalContent, { size: 'lg' });
 	}
-
+/*
 	addEvent(): void {
 		this.events.push({
 			title: 'New event',
@@ -172,7 +172,7 @@ export class EventsComponent implements OnInit {
 			}
 		});
 		this.refresh.next();
-	}
+	}*/
 
 	private createForm(): void {
 		this.newEventForm = this.formBuilder.group({
@@ -330,6 +330,18 @@ export class EventsComponent implements OnInit {
 		});
 
 	}
+	private signupUser() : void {
+		//console.log(this.eventsService.isSignedUp(this.modalData.event.meta));
+		if(!this.eventsService.isSignedUp(this.modalData.event.meta)) {
+			let event = this.modalData.event.meta;
+			event.additionalDetails = JSON.stringify(event.additionalDetails);
+
+			this.eventsService.signupUser(event)
+			.subscribe(result => {
+				console.log(result);
+			});
+		}
+	}
 }
 
 
@@ -356,13 +368,6 @@ export class DialogOverviewEventComponent implements OnInit {
 		this.users = this.userService.getUsers();
 		console.log(this.data);
 	}
-			
-	private datePickerEvent(type: string, date: MatDatepickerInputEvent<Date>) : void {
-		if(type === 'startDate') this.data.controls.startDate.setValue(date.value);
-		if(type === 'endDate') this.data.controls.endDate.setValue(date.value);
-		console.log(this.data.controls.startDate.setValue(date.value));
-	}
-
 
 	onNoClick(): void {
 		this.dialogRef.close();
