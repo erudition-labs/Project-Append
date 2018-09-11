@@ -68,7 +68,7 @@
 		</div> 
 
 		<div class="modal-footer">
-      <button *ngIf="eventsService.isOIC(modalData.event.meta)"
+      <button *ngIf="eventsService.isOIC(modalData.event.meta) || authService.isAdmin()"
         type="button" class="btn
 				btn-outline-primary"(click)="close(); openUpdateDialog();">Edit</button>
 			<button type="button" class="btn btn-outline-primary"(click)="close()">OK</button>
