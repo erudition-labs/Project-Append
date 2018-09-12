@@ -29,6 +29,11 @@ const putEvent = async (request, response) => {
 		const oldEvent = await queries.getEvent(request.body.data._id);
 		const submitter = await User.getUserById(request.body.user);
 
+		if(request.body.signup && submitter) {
+			const updatedEvent = await queries.updateEvent(request.body.data);
+			response.json({ success: true, result: updatedEvent });			
+		}
+
 		if(oldEvent.OIC.indexOf(request.body.user) === -1 &&
 			submitter.role !== 'admin') 
 		{
@@ -36,7 +41,6 @@ const putEvent = async (request, response) => {
 		}
 
 		const updatedEvent = await queries.updateEvent(request.body.data);
-		console.log(updatedEvent);
 		response.json({ success: true, result: updatedEvent });
 	} catch(error) {
 		return error;
@@ -62,44 +66,11 @@ const deleteEvent = async (request, response) => {
 	}
 };
 
-const putSignupEvent = async (request, response) => {
-	try {
-		const event = request.body.data;
-		event.signedUp.push(request.body.user);
-
-		const updatedEvent = await queries.updateEvent(event);
-		response.json({ success: true, result: updatedEvent });
-	} catch(error){
-		return error;
-	}
-};
-
-const putUnregisterEvent = async (request, response) => {
-	try {
-		let event = request.body.data;
-		let signedUp = request.body.data.signedUp;
-		let ids = [];
-
-		for (var i=signedUp.length-1; i>=0; i--) {
-			if(JSON.stringify(signedUp[i]._id) !== JSON.stringify(request.body.user)) {
-				ids.push(signedUp[i]._id);
-			}
-		}
-		event.signedUp = ids;
-		const updatedEvent = await queries.updateEvent(event);
-		response.json({ success: true, result: updatedEvent });
-	} catch(error){
-		return error;
-	}
-};
-
 module.exports = {
 	postEvent,
 	getEvent,
 	putEvent,
 	getEvents,
 	deleteEvent,
-	putEvent,
-	putSignupEvent,
-	putUnregisterEvent
+	putEvent
 };

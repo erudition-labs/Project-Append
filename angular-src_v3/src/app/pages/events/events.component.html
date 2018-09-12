@@ -66,12 +66,24 @@
 						</ng-template>
 					</div>
 
+					<div *ngIf="eventsService.isOIC(modalData.event.meta) || 
+					authService.isAdmin()"> Pending
+						<mat-list>
+							<pre>
+								<mat-list-item *ngFor="let user of modalData.event.meta.pending">
+									<nb-user [name]="user.lastName + ',' + user.firstName"
+										[title]="user.rank">
+									</nb-user>
+								</mat-list-item>>
+							</pre>>
+						</mat-list>>
+					</div>>
+
 					<ng-container *ngIf="modalData.event.meta.additionalDetails.length > 0">
 						<div *ngFor="let detail of modalData.event.meta.additionalDetails">
 							{{ detail?.title }}
 							<pre>{{ detail?.details}}</pre>
 						</div>
-					
 					</ng-container>
 				</nb-card-body>
 			</nb-card>

@@ -158,21 +158,6 @@ export class EventsComponent implements OnInit {
 		this.modalData = { event, action };
 		this.modal.open(this.modalContent, { size: 'lg' });
 	}
-/*
-	addEvent(): void {
-		this.events.push({
-			title: 'New event',
-			start: startOfDay(new Date()),
-			end: endOfDay(new Date()),
-			color: colors.red,
-			draggable: true,
-			resizable: {
-				beforeStart: true,
-				afterEnd: true
-			}
-		});
-		this.refresh.next();
-	}*/
 
 	private createForm(): void {
 		this.newEventForm = this.formBuilder.group({
@@ -362,6 +347,8 @@ export class EventsComponent implements OnInit {
 			}, error => {
 				console.log(error);
 			});
+		} else {
+			//nothing to be
 		}
 	}
 
@@ -383,8 +370,36 @@ export class EventsComponent implements OnInit {
 			}, error => {
 				console.log(error);
 			});
+		} else if(this.eventsService.isPending(this.modalData.event.meta)) {
+			let event = this.modalData.event.meta;
+
+			this.eventsService.unregisterUser(event)
+			.subscribe(httpResult => {
+				if(httpResult.success) {
+					let index = this.events.findIndex(x => x.meta._id === this.modalData.event.meta._id);
+					this.events[index].meta.pending = httpResult.result.pending;
+					this.modalData.event.meta.pending = httpResult.result.pending;
+					this.modalData.event.meta.additionalDetails = JSON.parse(this.modalData.event.meta.additionalDetails);
+					this.refresh.next();
+				} else {
+					console.log('RIP ' + httpResult);
+				}
+			}, error => {
+				console.log(error);
+			});
+		} else {
+				//Nothing to be done, some error
 		}
 	}
+/*
+	private acceptPending() : void {
+		if(this.eventsService.isSignedUp(this.modalData.event.meta)) return;
+		if()
+	}
+
+	private rejectPending() : void {
+
+	}*/
 }
 
 
