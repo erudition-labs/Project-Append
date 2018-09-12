@@ -39,7 +39,7 @@ export class EventsService {
 
 	public isSignedUp(event: Event) : boolean {
 		for(let user of event.signedUp){
-			if(user._id === this.authService.parseToken().sub) {
+			if(user && (user._id === this.authService.parseToken().sub)) {
 				return true;
 			}
 		}
@@ -48,7 +48,7 @@ export class EventsService {
 
 	public isPending(event: Event) : boolean {
 		for(let user of event.pending){
-			if(user._id === this.authService.parseToken().sub) {
+			if(user && (user._id === this.authService.parseToken().sub)) {
 				return true;
 			}
 		}
@@ -110,7 +110,7 @@ export class EventsService {
 
 		event.signedUp = ids;
 		event.pending = pendingIds;
-		
+
 		return this.http.put(this.url + '/', { data: event, user:  this.authService.parseToken().sub });	
 	}
 }

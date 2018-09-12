@@ -3,8 +3,7 @@
 		<div class="modal-header">
 			<h5 class="modal-title">{{ modalData.event.title }}
 				<ng-container *ngIf="authService.isAuthenticated()">
-					<button *ngIf="!eventsService.isSignedUp(modalData.event.meta); 
-												else Pending"
+					<button *ngIf="!eventsService.isSignedUp(modalData.event.meta); else Pending"
 					type="button" class="btn
 					btn-outline-primary"(click)="signupUser(); close();">Sign Up</button>
 				</ng-container>
@@ -74,10 +73,10 @@
 									<nb-user [name]="user.lastName + ',' + user.firstName"
 										[title]="user.rank">
 									</nb-user>
-								</mat-list-item>>
-							</pre>>
-						</mat-list>>
-					</div>>
+								</mat-list-item>
+							</pre>
+						</mat-list>
+					</div>
 
 					<ng-container *ngIf="modalData.event.meta.additionalDetails.length > 0">
 						<div *ngFor="let detail of modalData.event.meta.additionalDetails">
