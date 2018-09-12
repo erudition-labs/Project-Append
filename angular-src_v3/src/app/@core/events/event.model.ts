@@ -8,5 +8,6 @@ export interface Event {
 	date 						: any[];
 	OIC 						: any[];
 	signedUp 					: any[];
+	pending						: any[];
 	additionalDetails			: string;
 }

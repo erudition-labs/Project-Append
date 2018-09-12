@@ -17,6 +17,11 @@ const eventModel = new Schema({
 		ref: 'user',
 		required: false
 	}],
+	pending : [{
+		type: Schema.Types.ObjectId,
+		ref: 'user',
+		required: false
+	}],
 	additionalDetails : { type: String, required: false }
 });
 
