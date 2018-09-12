@@ -28,9 +28,11 @@ export class EventsService {
 	}
 
 	public isOIC(event: Event) : boolean {
+		let currUserId = this.authService.parseToken().sub
+
 		for(let user of event.OIC) {
 			//console.log(user);
-			if(user._id === this.authService.parseToken().sub) {
+			if(user._id === currUserId) {
 				return true;
 			}
 		}
@@ -38,8 +40,10 @@ export class EventsService {
 	}
 
 	public isSignedUp(event: Event) : boolean {
+		let currUserId = this.authService.parseToken().sub
+
 		for(let user of event.signedUp){
-			if(user && (user._id === this.authService.parseToken().sub)) {
+			if(user && currUserId && (user._id === currUserId)) {
 				return true;
 			}
 		}
@@ -47,8 +51,10 @@ export class EventsService {
 	}
 
 	public isPending(event: Event) : boolean {
+		let currUserId = this.authService.parseToken().sub
+
 		for(let user of event.pending){
-			if(user && (user._id === this.authService.parseToken().sub)) {
+			if(user && currUserId && (user._id === currUserId)) {
 				return true;
 			}
 		}
