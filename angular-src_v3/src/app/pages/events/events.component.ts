@@ -391,6 +391,31 @@ export class EventsComponent implements OnInit {
 				//Nothing to be done, some error
 		}
 	}
+
+	private userPending() : void {
+		if(!this.eventsService.isSignedUp(this.modalData.event.meta) &&
+		!this.eventsService.isPending(this.modalData.event.meta)) 
+		{
+			let event = this.modalData.event.meta;
+
+			this.eventsService.userPending(event)
+			.subscribe(httpResult => {
+				if(httpResult.success) {
+					let index = this.events.findIndex(x => x.meta._id === this.modalData.event.meta._id);
+					this.events[index].meta.pending = httpResult.result.pending;
+					this.modalData.event.meta.pending = httpResult.result.pending;
+					this.modalData.event.meta.additionalDetails = JSON.parse(this.modalData.event.meta.additionalDetails);
+					this.refresh.next();
+				} else {
+					console.log('RIP ' + httpResult);
+				}
+			}, error => {
+				console.log(error);
+			});
+		} else {
+			//nothing to be
+		}
+	}
 /*
 	private acceptPending() : void {
 		if(this.eventsService.isSignedUp(this.modalData.event.meta)) return;
@@ -424,7 +449,6 @@ export class DialogOverviewEventComponent implements OnInit {
 
 	ngOnInit() {
 		this.users = this.userService.getUsers();
-		console.log(this.data);
 	}
 
 	onNoClick(): void {

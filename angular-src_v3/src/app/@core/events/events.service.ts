@@ -79,6 +79,16 @@ export class EventsService {
 		return this.http.put(this.url + '/', { data: event, user: submitter, signup: true });
 	}
 
+	public userPending(event : Event) : Observable<any> {
+		event.additionalDetails = JSON.stringify(event.additionalDetails);
+		let submitter = this.authService.parseToken().sub;
+		let ids = this.getIds(event.pending);
+
+		ids.push(submitter);
+		event.pending = ids;
+		return this.http.put(this.url + '/', { data: event, user: submitter, signup: true });
+	}
+
 	public unregisterUser(event: Event) : Observable<any> {
 		event.additionalDetails = JSON.stringify(event.additionalDetails);
 		let submitter = this.authService.parseToken().sub;
