@@ -19,7 +19,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   },
   {
   	title: 'Updates',
-	  icon: 'nb-email',
+	  icon: 'nb-alert',
 	  link: '/pages/updates',
   },
   {
