@@ -6,6 +6,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { EventsComponent } from './events/events.component';
 import { UserManagementComponent } from './user-management/user-management.component';
 import { ProfileComponent } from './profile/profile.component';
+import { UpdatesComponent } from './updates/updates.component';
+
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
 
 
@@ -25,6 +27,10 @@ const routes: Routes = [{
   {
 		path:'user-management',
 		loadChildren: './user-management/user-management.module#UserManagementModule',
+  },
+  {
+		path:'updates',
+		loadChildren: './updates/updates.module#UpdatesModule',
 	},
 	{
 		path:'profile',

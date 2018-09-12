@@ -18,6 +18,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
 	  link: '/pages/user-management',
   },
   {
+  	title: 'Updates',
+	  icon: 'nb-email',
+	  link: '/pages/updates',
+  },
+  {
     title: 'FEATURES',
     group: true,
   },
@@ -61,6 +66,11 @@ export const MENU_ITEMS_ADMIN: NbMenuItem[] = [
   	title: 'User Management',
 	  icon: 'nb-person',
 	  link: '/pages/user-management',
+  },
+  {
+  	title: 'Updates',
+	  icon: 'nb-alert',
+	  link: '/pages/updates',
   },
   {
     title: 'FEATURES',
