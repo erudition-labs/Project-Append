@@ -4,6 +4,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Event } from './event.model';
 import { User } from '../user/user.model';
 import { AuthService } from '../auth/auth.service';
+import 'rxjs/add/operator/mergeMap';
+
 
 @Injectable({
 	providedIn: 'root'
@@ -19,12 +21,81 @@ export class EventsService {
 		return this.http.get(this.url + '/');	
 	}
 
+	public getEvent(id: string) : Observable<any> {
+		return this.http.get(this.url + '/' + id);
+	}
+
 	public createEvent(event: Event) : Observable<any> {
 		return this.http.post(this.url + '/', { data: event });	
 	}
 
 	public updateEvent(event: Event) : Observable<any> {
-		return this.http.put(this.url + '/', { data: event, user:  this.authService.parseToken().sub });	
+		let OICids 		= this.getIds(event.OIC);
+		let signedUpIds = this.getIds(event.signedUp);
+
+		event.OIC = OICids;
+		event.pending = this.getIds(event.pending);
+		let singupSet = new Set();
+
+		return this.getEvent(event._id).flatMap(httpResult => {
+			if(httpResult.success) {
+				let oldOICids = this.getIds(httpResult.result.OIC);
+
+				for(let id of oldOICids) {
+					let index = signedUpIds.indexOf(id);
+					if(index > -1) {
+						signedUpIds.splice(index, 1);
+					}
+				}
+			}
+			for(let id of OICids) {
+				singupSet.add(id);
+			}
+	
+			for(let id of signedUpIds) {
+				singupSet.add(id);
+			}
+	
+			event.signedUp = Array.from(singupSet);
+			console.log(event);
+			return this.http.put(this.url + '/', { data: event, user:  this.authService.parseToken().sub });
+		});
+
+
+/*
+		let OICids 		= this.getIds(event.OIC);
+		let signedUpIds = this.getIds(event.signedUp);
+
+		event.OIC = OICids;
+		event.pending = this.getIds(event.pending);
+		let singupSet = new Set();
+
+
+
+
+		this.getEvent(event._id).subscribe(httpResult => {
+			if(httpResult.success) {
+				let oldOICids = this.getIds(httpResult.result.OIC);
+
+				for(let id of oldOICids) {
+					let index = signedUpIds.indexOf(id);
+					if(index > -1) {
+						signedUpIds.splice(index, 1);
+					}
+				}
+			}
+			for(let id of OICids) {
+				singupSet.add(id);
+			}
+	
+			for(let id of signedUpIds) {
+				singupSet.add(id);
+			}
+	
+			event.signedUp = Array.from(singupSet);
+			console.log(event);
+			return this.http.put(this.url + '/', { data: event, user:  this.authService.parseToken().sub });	
+		});*/
 	}
 
 	public isOIC(event: Event) : boolean {
@@ -63,7 +134,7 @@ export class EventsService {
 
 	private getIds(users : User[]) : string[] {
 		let ids = [];
-		for (var i=users.length-1; i>=0; i--) { 
+		for (let i=users.length-1; i>=0; i--) { 
 			ids.push(users[i]._id);
 		}
 		return ids;
@@ -74,7 +145,10 @@ export class EventsService {
 		let submitter = this.authService.parseToken().sub;
 		let ids = this.getIds(event.signedUp);
 
-		ids.push(submitter); //push current user
+		//to ensure the ids are unique 
+		if(ids.indexOf(submitter) === -1) {
+			ids.push(submitter); //push current user
+		}
 		event.signedUp = ids;
 		return this.http.put(this.url + '/', { data: event, user: submitter, signup: true });
 	}
@@ -84,7 +158,9 @@ export class EventsService {
 		let submitter = this.authService.parseToken().sub;
 		let ids = this.getIds(event.pending);
 
-		ids.push(submitter);
+		if(ids.indexOf(submitter) === -1) {
+			ids.push(submitter); //push current user
+		}
 		event.pending = ids;
 		return this.http.put(this.url + '/', { data: event, user: submitter, signup: true });
 	}

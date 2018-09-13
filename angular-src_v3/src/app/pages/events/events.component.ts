@@ -300,7 +300,7 @@ export class EventsComponent implements OnInit {
 		if((this.authService.isAuthenticated() && this.authService.isAdmin()) ||
 			this.authService.isAuthenticated() && this.eventsService.isOIC(this.modalData.event.meta)) {
 			
-				this.populateFormFromModal();
+			this.populateFormFromModal();
 			let dialogRef = this.dialog.open(DialogOverviewEventComponent, {
 				data : this.newEventForm
 			});
@@ -314,17 +314,19 @@ export class EventsComponent implements OnInit {
 
 					this.eventsService.updateEvent(newEvent).subscribe(
 						httpResult => {
+							console.log('HTTP    '+ httpResult.result);
 							if(httpResult.success) {
 								let index = this.events.findIndex(x => x.meta._id === newEvent._id);
 								if(index === -1) return; //no event to update
 
 								let updatedCalendarEvent : CalendarEvent = {
-									title	: newEvent.name,
-									start	: new Date(newEvent.date[0]),
-									end		: new Date(newEvent.date[1]),
+									title	: httpResult.result.name,
+									start	: new Date(httpResult.result.date[0]),
+									end		: new Date(httpResult.result.date[1]),
 									color	: colors.red,
-									meta	: newEvent
+									meta	: httpResult.result
 								};
+								
 							updatedCalendarEvent.meta.additionalDetails = JSON.parse(updatedCalendarEvent.meta.additionalDetails);
 
 							this.events[index] = updatedCalendarEvent;
