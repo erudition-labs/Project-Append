@@ -2,7 +2,8 @@
 	<ng-template #modalContent let-close="close">
 		<div class="modal-header">
 			<h5 class="modal-title">{{ modalData?.event?.title }}
-				<ng-container *ngIf="authService.isAuthenticated()">
+				<ng-container *ngIf="authService.isAuthenticated() && 
+													!eventsService.isOIC(modalData.event.meta)">
 					<ng-container *ngIf="eventsService.isSignedUp(modalData.event.meta)">
 							<button 
 									type="button" class="btn btn-outline-primary"
@@ -63,25 +64,26 @@
 						</mat-list>
 					</div>
 
-					<div>Signed Up 
-						<ng-container *ngIf="modalData.event.meta.isSignupRequired &&
-											modalData.event.meta.signedUp.length> 0; 
-											else NoUsersSignedUp">
-							<mat-list>
-								<pre>
-									<mat-list-item *ngFor="let user of modalData.event.meta.signedUp">
-										<nb-user [name]="user?.lastName + ', ' + user?.firstName"
-												[title]="user?.rank">
-										</nb-user>
-									</mat-list-item>
-								</pre>
-							</mat-list>	
-						</ng-container>
+					<ng-container *ngIf="modalData.event.meta.isSignupRequired">
+						<div>Signed Up 
+							<ng-container *ngIf="modalData.event.meta.signedUp.length> 0; 
+												else NoUsersSignedUp">
+								<mat-list>
+									<pre>
+										<mat-list-item *ngFor="let user of modalData.event.meta.signedUp">
+											<nb-user [name]="user?.lastName + ', ' + user?.firstName"
+													[title]="user?.rank">
+											</nb-user>
+										</mat-list-item>
+									</pre>
+								</mat-list>	
+							</ng-container>
 						
-						<ng-template #NoUsersSignedUp>
-							<pre> No Users Signed Up</pre>
-						</ng-template>
-					</div>
+							<ng-template #NoUsersSignedUp>
+								<pre> No Users Signed Up</pre>
+							</ng-template>
+						</div>
+					</ng-container>
 
 					<div *ngIf="(eventsService.isOIC(modalData.event.meta) || 
 											authService.isAdmin()) &&
@@ -105,8 +107,8 @@
 						</mat-list>
 					</div>
 
-					<ng-container *ngIf="modalData.event.meta.additionalDetails.length > 0">
-						<div *ngFor="let detail of modalData.event.meta.additionalDetails">
+					<ng-container *ngIf="modalData?.event?.meta?.additionalDetails?.length > 0">
+						<div *ngFor="let detail of modalData?.event?.meta?.additionalDetails">
 							{{ detail?.title }}
 							<pre>{{ detail?.details}}</pre>
 						</div>

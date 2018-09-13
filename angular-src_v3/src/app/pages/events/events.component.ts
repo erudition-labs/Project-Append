@@ -314,7 +314,6 @@ export class EventsComponent implements OnInit {
 
 					this.eventsService.updateEvent(newEvent).subscribe(
 						httpResult => {
-							console.log('HTTP    '+ httpResult.result);
 							if(httpResult.success) {
 								let index = this.events.findIndex(x => x.meta._id === newEvent._id);
 								if(index === -1) return; //no event to update
@@ -354,7 +353,6 @@ export class EventsComponent implements OnInit {
 			this.eventsService.signupUser(event)
 			.subscribe(httpResult => {
 				if(httpResult.success) {
-					console.log(httpResult);
 					let index = this.events.findIndex(x => x.meta._id === this.modalData.event.meta._id);
 
 					if(index > -1) {
