@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { UpdatesService } from '../../@core/updates/updates.service';
+import { Update } from '../../@core/updates/update.model';
+
+
 
 @Component({
   selector: 'updates',
@@ -7,9 +11,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UpdatesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private updatesService : UpdatesService) { }
+
+  private updates : Update[] = [];
 
   ngOnInit() {
+    this.updatesService.getUpdates().subscribe((result) => {
+      this.updates = result.result;
+      for(let update of this.updates) {
+        update.date = new Date(update.date);
+      }
+  });
   }
 
 }

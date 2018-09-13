@@ -1,101 +1,18 @@
 <div class="row">
-  <div class="col-xxxl-3 col-md-6">
+  <div *ngFor="let update of updates" class="col-xxxl-3 col-md-6">
     <nb-card accent="active">
-      <nb-card-header>Title | <strong>date</strong></nb-card-header>
+      <nb-card-header>{{update.title}} <span style="float: right;"><i>{{update.date.toDateString()}}</i></span></nb-card-header>
       <nb-card-body>
-        content  content  content  content  content  content  content  content  content 
-        content  content  content  content  content  content  content  content  content 
-        content  content  content  content  content  content  content  content  content 
+        {{update.content}}
       </nb-card-body>
       <nb-card-footer>
         <nb-user
-        name="Jonh Doe"
-        title="Engineer"
-        badgeText="99+"
+        name="{{update.author.firstName + ' ' + update.author.lastName}}"
+        title="{{update.author.rank}}"
+        badgeText="{{update.author.team}}"
         badgeStatus="success"
         badgePosition="bottom right">
         </nb-user>
       </nb-card-footer>
     </nb-card>
   </div>
-
-  <div class="col-xxxl-3 col-md-6">
-      <nb-card accent="active">
-        <nb-card-header>Title | <strong>date</strong></nb-card-header>
-        <nb-card-body>
-          content  content  content  content  content  content  content  content  content 
-          content  content  content  content  content  content  content  content  content 
-          content  content  content  content  content  content  content  content  content 
-        </nb-card-body>
-        <nb-card-footer>
-          <nb-user
-          name="Jonh Doe"
-          title="Engineer"
-          badgeText="99+"
-          badgeStatus="success"
-          badgePosition="bottom right">
-          </nb-user>
-        </nb-card-footer>
-      </nb-card>
-    </div>
-
-    <div class="col-xxxl-3 col-md-6">
-        <nb-card accent="active">
-          <nb-card-header>Title | <strong>date</strong></nb-card-header>
-          <nb-card-body>
-            content  content  content  content  content  content  content  content  content 
-            content  content  content  content  content  content  content  content  content 
-            content  content  content  content  content  content  content  content  content 
-          </nb-card-body>
-          <nb-card-footer>
-            <nb-user
-            name="Jonh Doe"
-            title="Engineer"
-            badgeText="99+"
-            badgeStatus="success"
-            badgePosition="bottom right">
-            </nb-user>
-          </nb-card-footer>
-        </nb-card>
-      </div>
-
-  <div class="col-xxxl-3 col-md-6">
-    <nb-card accent="active">
-      <nb-card-header>Title | <strong>date</strong></nb-card-header>
-      <nb-card-body>
-        content  content  content  content  content  content  content  content  content 
-        content  content  content  content  content  content  content  content  content 
-        content  content  content  content  content  content  content  content  content 
-      </nb-card-body>
-      <nb-card-footer>
-        <nb-user
-        name="Jonh Doe"
-        title="Engineer"
-        badgeText="99+"
-        badgeStatus="success"
-        badgePosition="bottom right">
-        </nb-user>
-      </nb-card-footer>
-    </nb-card>
-  </div>
-
-  <div class="col-xxxl-3 col-md-6">
-      <nb-card accent="active">
-        <nb-card-header>Title | <strong>date</strong></nb-card-header>
-        <nb-card-body>
-          content  content  content  content  content  content  content  content  content 
-          content  content  content  content  content  content  content  content  content 
-          content  content  content  content  content  content  content  content  content 
-        </nb-card-body>
-        <nb-card-footer>
-          <nb-user
-          name="Jonh Doe"
-          title="Engineer"
-          badgeText="99+"
-          badgeStatus="success"
-          badgePosition="bottom right">
-          </nb-user>
-        </nb-card-footer>
-      </nb-card>
-    </div>
-</div>
