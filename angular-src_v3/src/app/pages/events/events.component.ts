@@ -173,7 +173,7 @@ export class EventsComponent implements OnInit {
 			isVerificationRequired 	: new FormControl('true', 	{ validators: [Validators.required] }),
 			isVerified				: new FormControl('false', 	{ validators: [Validators.required] }),
 			isSignupRequired		: new FormControl('true', 	{ validators: [Validators.required] }),
-			date					: new FormControl([], { }),
+			date					: new FormControl([], 		{ validators: [Validators.required] }),
 			OIC						: new FormControl([], { }),
 			signedUp				: new FormControl([], { }),
 			pending					: new FormControl([], { }),

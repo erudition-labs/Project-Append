@@ -43,9 +43,8 @@
 					[formControl]="data.get('date')"
 					[selectMode]="'range'"
 					[owlDateTimeTrigger]="datePicker" 
-					[owlDateTime]="datePicker"
-					readonly>
-		 <owl-date-time #datePicker></owl-date-time>
+					[owlDateTime]="datePicker">
+				 <owl-date-time #datePicker></owl-date-time>
 			</mat-list-item>
 
 			<mat-list-item>
@@ -107,7 +106,8 @@
 		<div mat-dialog-actions>
 			<button mat-button (click)="onNoClick()">Cancel</button>
 			<button mat-button [mat-dialog-close]="data" 
-					[disabled]="data.get('name').invalid">
+					[disabled]="data.get('name').invalid || 
+								data.get('date').invalid">
 			Submit</button>
 		</div>
 	</mat-card>
