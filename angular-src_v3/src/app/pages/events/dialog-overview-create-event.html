@@ -51,7 +51,7 @@
 					<ng-select
 						[items]="users | async"
 						[multiple]="true"
-						[closeOnSelect]="false"
+						[closeOnSelect]="true"
 						[hideSelected]="true"
 						bindLabel="firstName"
 						bindValie="_id"
@@ -72,19 +72,24 @@
 							</span>
 						</div>
 
-						<div [formGroupName]="i">
+						<div [formGroupName]="i" class="input-group">
 							<!-- Dynamic Field Title -->
-							<div style="margin-top: 20px">
+							<div>
 								<mat-label><strong>Title</strong><br></mat-label>
 								<input  type="text" placeholder="title"
+								class="form-control"
 								formControlName="title">
 							</div>
-
+						
 							<!-- Dynamic Field details -->
 							<div>
 								<mat-label><strong>Details</strong><br></mat-label>
-								<input  type="text" placeholder="details"
-								formControlName="details">
+								<textarea  
+									type="text" 
+									placeholder="details"
+									class="form-control"
+									formControlName="details"
+									rows="1"></textarea>
 							</div>
 						</div>
 					</mat-list-item>

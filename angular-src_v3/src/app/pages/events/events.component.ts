@@ -546,10 +546,14 @@ export class DialogOverviewEventComponent implements OnInit {
 			@Inject(MAT_DIALOG_DATA) public data: any,
 			private formBuilder 	: FormBuilder,
 			private userService 	: UserService,
-			private eventsComponent	: EventsComponent) {}
+			private eventsComponent	: EventsComponent,
+			private authService		: AuthService) {}
+
+		private isAdmin : boolean = false;
 
 	ngOnInit() {
 		this.users = this.userService.getUsers();
+		this.isAdmin = this.authService.isAdmin();
 	}
 
 	onNoClick(): void {
