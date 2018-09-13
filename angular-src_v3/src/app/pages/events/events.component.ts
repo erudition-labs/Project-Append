@@ -51,6 +51,7 @@ import { User } from '../../@core/user/user.model';
 import { EventsService } from '../../@core/events/events.service';
 import { AuthService } from '../../@core/auth/auth.service';
 import { UserService } from '../../@core/user/user.service';
+import {MatPaginator, MatTableDataSource} from '@angular/material';
 
 
 const colors: any = {
@@ -76,6 +77,10 @@ const colors: any = {
 })
 export class EventsComponent implements OnInit {
 	@ViewChild('modalContent') modalContent: TemplateRef<any>;
+	@ViewChild(MatPaginator) paginator: MatPaginator;
+
+
+	displayedColumns: string[] = ['title', 'date'];
 
 	private view: string = 'month';
 	private viewDate: Date = new Date();
@@ -104,6 +109,9 @@ export class EventsComponent implements OnInit {
 	private events: CalendarEvent[] = [];
 	private activeDayIsOpen: boolean = true;
 	private newEventForm : FormGroup;
+	private settings : any;
+
+	private dataSource : any;// = new MatTableDataSource<CalendarEvent>(this.events);
 
 	constructor(private modal				: NgbModal,
 				private dialog				: MatDialog,
@@ -130,8 +138,25 @@ export class EventsComponent implements OnInit {
 				this.events.push(calendarEvent); //put it on the calendar
 			}
 			this.refresh.next();
+			this.dataSource = new MatTableDataSource<CalendarEvent>(this.events);
+			this.dataSource.paginator = this.paginator;
 		});	
-		
+		this.settings = {
+			actions: {
+			  add: false,
+			  edit: false,
+			  delete: false
+			},
+			columns: {
+			  title: {
+				title: 'Event Name'
+			  },
+			  start: {
+				title: 'Start Date/Time'
+			  },
+			}
+		  };
+		 // this.changeDetectorRef.markForCheck();
 	}
 
 	dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {

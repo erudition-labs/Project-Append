@@ -23,6 +23,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material';
 import { MatDialogModule } from '@angular/material';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+
 
 
 @NgModule({
@@ -45,10 +48,12 @@ import { NgSelectModule } from '@ng-select/ng-select';
     MatIconModule,
     MatTooltipModule,
     MatSnackBarModule,
-	MatSlideToggleModule,
-	MatDialogModule,
-	MatNativeDateModule,
-	MatDatepickerModule,
+	  MatSlideToggleModule,
+	  MatDialogModule,
+	  MatNativeDateModule,
+    MatDatepickerModule,
+    MatTableModule,
+    MatPaginatorModule,
   ],
   declarations: [],
   exports: [
@@ -71,8 +76,10 @@ import { NgSelectModule } from '@ng-select/ng-select';
     MatTooltipModule,
     MatSnackBarModule,
     MatSlideToggleModule,
-	MatDatepickerModule,
-	MatDialogModule,
+	  MatDatepickerModule,
+    MatDialogModule,
+    MatTableModule,
+    MatPaginatorModule,
   ]
 })
 export class SharedModule {}

@@ -42,10 +42,6 @@
 						Event Date <pre>{{ parseDate(modalData?.event?.start) }} to {{ parseDate(modalData?.event?.end) }} </pre>
 					</div>
 
-					<div>
-						End Date <pre>{{ modalData?.event?.meta?.date[1] }}</pre>
-					</div>
-					
 					<div *ngIf="modalData.event.meta.summary">
 						Event Summary
 						<pre> {{ modalData?.event?.meta?.summary }} </pre>
@@ -218,4 +214,26 @@
 		</mat-icon>
 	</button>
 </div>
+</nb-card>
+
+
+<nb-card>
+		<div class="mat-elevation-z8">
+				<table mat-table [dataSource]="dataSource">
+
+							<ng-container matColumnDef="title">
+									<th mat-header-cell *matHeaderCellDef> Event Name </th>
+									<td mat-cell *matCellDef="let element"> {{ element.title }} </td>
+								</ng-container>
+								
+								<ng-container matColumnDef="date">
+										<th mat-header-cell *matHeaderCellDef> Date </th>
+										<td mat-cell *matCellDef="let element"> {{ parseDate(element.start) }} to {{ parseDate(element.end) }}</td>
+									</ng-container>
+
+								<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+								<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+							</table>
+							<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+			</div>
 </nb-card>
