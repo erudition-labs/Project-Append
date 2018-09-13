@@ -96,15 +96,15 @@ export class EventsService {
 		//handled accepted signed up users
 		let ids = this.getIds(event.signedUp);
 		let index = ids.indexOf(submitter);
-		if(index !==  -1) {
+		if(index >  -1) {
 			ids.splice(index, 1); //if found remove it
 		}
-		event.signedUp = ids;
+		event.signedUp = ids; //deep copy of ids
 
 		//handle pending signed up users
 		let pendingIds = this.getIds(event.pending);
 		index = pendingIds.indexOf(submitter);
-		if(index !==  -1) {
+		if(index >  -1) {
 			pendingIds.splice(index, 1); //if found remove it
 		}
 		event.pending = pendingIds;
