@@ -47,6 +47,7 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Event } from '../../@core/events/event.model';
 import { User } from '../../@core/user/user.model';
 import { EventsService } from '../../@core/events/events.service';
+import { AuthService } from '../../@core/auth/auth.service';
 import { UserService } from '../../@core/user/user.service';
 
 
@@ -105,7 +106,8 @@ export class EventsComponent implements OnInit {
 	constructor(private modal			: NgbModal,
 				private dialog			: MatDialog,
 				private formBuilder 	: FormBuilder,
-				private eventsService	: EventsService) { }
+				private eventsService	: EventsService,
+				private authService		: AuthService) { }
 
 	ngOnInit() {
 		this.eventsService.getEvents().subscribe((result) => {
@@ -117,7 +119,7 @@ export class EventsComponent implements OnInit {
 					title		: e.name,
 					color		: colors.red,
 					actions		: this.actions,
-					draggable	: true,
+					draggable	: false,
 					meta		: e, //append our event object to it
 				};
 				calendarEvent.meta.additionalDetails = JSON.parse(calendarEvent.meta.additionalDetails);
@@ -141,7 +143,7 @@ export class EventsComponent implements OnInit {
 		}
 	}
 
-	eventTimesChanged({
+	eventTimesChanged({ //in case we ever to decide to make events draggable
 		event,
 		newStart,
 		newEnd
@@ -157,21 +159,6 @@ export class EventsComponent implements OnInit {
 		this.modal.open(this.modalContent, { size: 'lg' });
 	}
 
-	addEvent(): void {
-		this.events.push({
-			title: 'New event',
-			start: startOfDay(new Date()),
-			end: endOfDay(new Date()),
-			color: colors.red,
-			draggable: true,
-			resizable: {
-				beforeStart: true,
-				afterEnd: true
-			}
-		});
-		this.refresh.next();
-	}
-
 	private createForm(): void {
 		this.newEventForm = this.formBuilder.group({
 			name					: new FormControl('', 		{ validators: [Validators.required] }),
@@ -181,6 +168,7 @@ export class EventsComponent implements OnInit {
 			date					: new FormControl([], { }),
 			OIC						: new FormControl([], { }),
 			signedUp				: new FormControl([], { }),
+			pending					: new FormControl([], { }),
 			additionalDetails		: this.formBuilder.array([ this.initDetailField() ])
 		});
 	}
@@ -203,6 +191,7 @@ export class EventsComponent implements OnInit {
 		this.newEventForm.get('date').setValue(data.date);
 		this.newEventForm.get('OIC').setValue(data.OIC);
 		this.newEventForm.get('signedUp').setValue(data.signedUp);
+		this.newEventForm.get('pending').setValue(data.pending);
 		
 		console.log(data.additionalDetails)
 		data.additionalDetails.forEach(function(obj) {  //populate formArray
@@ -228,6 +217,7 @@ export class EventsComponent implements OnInit {
 
 	private dialogDataToEvent(result : any) : Event {
 		const {
+				_id,
 				name,
 				isVerificationRequired,
 				isVerified,
@@ -235,10 +225,12 @@ export class EventsComponent implements OnInit {
 				date,
 				OIC,
 				signedUp,
+				pending,
 				additionalDetails
 			} = result.value;
 
 		const newEvent : Event = {
+			_id,
 			name,
 			isVerificationRequired,
 			isVerified,
@@ -246,6 +238,7 @@ export class EventsComponent implements OnInit {
 			date,
 			OIC,
 			signedUp,
+			pending,
 			additionalDetails
 		};	
 		newEvent.additionalDetails = JSON.stringify(result.get('additionalDetails').getRawValue());
@@ -253,79 +246,160 @@ export class EventsComponent implements OnInit {
 	}
 
 	public openCreateDialog(): void {
-		this.createForm();
-		const dialogRef = this.dialog.open(DialogOverviewEventComponent, {
-			data: this.newEventForm 
-		});
+		if(this.authService.isAuthenticated() && this.authService.isAdmin()) {
+			this.createForm();
+			const dialogRef = this.dialog.open(DialogOverviewEventComponent, {
+				data: this.newEventForm 
+			});
 
-		dialogRef.afterClosed().subscribe(result => {
-			if(typeof result === 'undefined' || result == null) { return; }
-			if(result.valid) {
-				let newEvent = this.dialogDataToEvent(result);
-				console.log(newEvent);
-				this.eventsService.createEvent(newEvent).subscribe(
-					httpResult => {
-						if(httpResult.success) {
-							console.log('success');
-							newEvent.additionalDetails = JSON.parse(newEvent.additionalDetails);
+			dialogRef.afterClosed().subscribe(result => {
+				if(typeof result === 'undefined' || result == null) { return; }
+				if(result.valid) {
+					let newEvent = this.dialogDataToEvent(result);
+					//In the case of creating event for OIC to edit, automatically sign them up
+					newEvent.signedUp = newEvent.OIC;
+					this.eventsService.createEvent(newEvent).subscribe(
+						httpResult => {
+							if(httpResult.success) {
+								newEvent._id = httpResult.result._id;
+								newEvent.additionalDetails = JSON.parse(newEvent.additionalDetails);
 
-							this.events.push({
-								title	: newEvent.name,
-								start	: newEvent.date[0],
-								end		: newEvent.date[1],
-								color	: colors.red,
-								meta	: newEvent
-							});
-							this.refresh.next();
-						} else {
-							console.log('nope ' + httpResult);
-						}
-					}, error => {
-						console.log(error);	
-				}); 
-			}
-		});
+								this.events.push({
+									title	: newEvent.name,
+									start	: newEvent.date[0],
+									end		: newEvent.date[1],
+									color	: colors.red,
+									meta	: newEvent
+								});
+								this.refresh.next();
+							} else {
+								console.log('nope ' + httpResult);
+							}
+						}, error => {
+							console.log(error);	
+					}); 
+				}
+			});
+		} else {
+
+			//tell them they no have access
+		}
 	}
 
 	public openUpdateDialog(): void {
-		this.populateFormFromModal();
-		let dialogRef = this.dialog.open(DialogOverviewEventComponent, {
-			data : this.newEventForm
-		});
+		if((this.authService.isAuthenticated() && this.authService.isAdmin()) ||
+			this.authService.isAuthenticated() && this.eventsService.isOIC(this.modalData.event.meta)) {
+			
+				this.populateFormFromModal();
+			let dialogRef = this.dialog.open(DialogOverviewEventComponent, {
+				data : this.newEventForm
+			});
 
-		dialogRef.afterClosed().subscribe(result => {
-			if(typeof result === 'undefined' || result == null) { return; }
-			if(result.valid) {
-				let newEvent = this.dialogDataToEvent(result);
-				//be sure to attatch the id of the event since we are editing
-				newEvent._id = this.modalData.event.meta._id; 
+			dialogRef.afterClosed().subscribe(result => {
+				if(typeof result === 'undefined' || result == null) { return; }
+				if(result.valid) {
+					let newEvent = this.dialogDataToEvent(result);
+					//be sure to attatch the id of the event since we are editing
+					newEvent._id = this.modalData.event.meta._id; 
 
-				this.eventsService.updateEvent(newEvent).subscribe(
-					httpResult => {
-						console.log(httpResult);
-						if(httpResult.success) {
-							let index = this.events.findIndex(x => x.meta._id === newEvent._id);
-							let updatedCalendarEvent : CalendarEvent = {
-								title	: newEvent.name,
-								start	: new Date(newEvent.date[0]),
-								end		: new Date(newEvent.date[1]),
-								color	: colors.red,
-								meta	: newEvent
-							};
-						updatedCalendarEvent.meta.additionalDetails = JSON.parse(updatedCalendarEvent.meta.additionalDetails);
+					this.eventsService.updateEvent(newEvent).subscribe(
+						httpResult => {
+							if(httpResult.success) {
+								let index = this.events.findIndex(x => x.meta._id === newEvent._id);
+								let updatedCalendarEvent : CalendarEvent = {
+									title	: newEvent.name,
+									start	: new Date(newEvent.date[0]),
+									end		: new Date(newEvent.date[1]),
+									color	: colors.red,
+									meta	: newEvent
+								};
+							updatedCalendarEvent.meta.additionalDetails = JSON.parse(updatedCalendarEvent.meta.additionalDetails);
 
-						this.events[index] = updatedCalendarEvent;
+							this.events[index] = updatedCalendarEvent;
 							this.refresh.next();
-						} else {
-							console.log('nope again' + httpResult);
-						}
-					}, error => {
-						console.log(error);
-					});
-			}
-		});
-
+							} else {
+								console.log('nope again' + httpResult);
+							}
+						}, error => {
+							console.log(error);
+						});
+				}
+			});
+		} else {
+			//toast they dont have access
+		}
 	}
+	private signupUser() : void {
+		if(!this.eventsService.isSignedUp(this.modalData.event.meta)) {
+			let event = this.modalData.event.meta;
+
+			this.eventsService.signupUser(event)
+			.subscribe(httpResult => {
+				if(httpResult.success) {
+					let index = this.events.findIndex(x => x.meta._id === this.modalData.event.meta._id);
+					this.events[index].meta.signedUp = httpResult.result.signedUp;
+					this.modalData.event.meta.signedUp = httpResult.result.signedUp;
+					this.modalData.event.meta.additionalDetails = JSON.parse(this.modalData.event.meta.additionalDetails);
+					this.refresh.next();
+				} else {
+					console.log('RIP ' + httpResult);
+				}
+			}, error => {
+				console.log(error);
+			});
+		} else {
+			//nothing to be
+		}
+	}
+
+	private unregister() : void {
+		if(this.eventsService.isSignedUp(this.modalData.event.meta)) {
+			let event = this.modalData.event.meta;
+
+			this.eventsService.unregisterUser(event)
+			.subscribe(httpResult => {
+				if(httpResult.success) {
+					let index = this.events.findIndex(x => x.meta._id === this.modalData.event.meta._id);
+					this.events[index].meta.signedUp = httpResult.result.signedUp;
+					this.modalData.event.meta.signedUp = httpResult.result.signedUp;
+					this.modalData.event.meta.additionalDetails = JSON.parse(this.modalData.event.meta.additionalDetails);
+					this.refresh.next();
+				} else {
+					console.log('RIP ' + httpResult);
+				}
+			}, error => {
+				console.log(error);
+			});
+		} else if(this.eventsService.isPending(this.modalData.event.meta)) {
+			let event = this.modalData.event.meta;
+
+			this.eventsService.unregisterUser(event)
+			.subscribe(httpResult => {
+				if(httpResult.success) {
+					let index = this.events.findIndex(x => x.meta._id === this.modalData.event.meta._id);
+					this.events[index].meta.pending = httpResult.result.pending;
+					this.modalData.event.meta.pending = httpResult.result.pending;
+					this.modalData.event.meta.additionalDetails = JSON.parse(this.modalData.event.meta.additionalDetails);
+					this.refresh.next();
+				} else {
+					console.log('RIP ' + httpResult);
+				}
+			}, error => {
+				console.log(error);
+			});
+		} else {
+				//Nothing to be done, some error
+		}
+	}
+/*
+	private acceptPending() : void {
+		if(this.eventsService.isSignedUp(this.modalData.event.meta)) return;
+		if()
+	}
+
+	private rejectPending() : void {
+
+	}*/
 }
 
 
@@ -352,13 +426,6 @@ export class DialogOverviewEventComponent implements OnInit {
 		this.users = this.userService.getUsers();
 		console.log(this.data);
 	}
-			
-	private datePickerEvent(type: string, date: MatDatepickerInputEvent<Date>) : void {
-		if(type === 'startDate') this.data.controls.startDate.setValue(date.value);
-		if(type === 'endDate') this.data.controls.endDate.setValue(date.value);
-		console.log(this.data.controls.startDate.setValue(date.value));
-	}
-
 
 	onNoClick(): void {
 		this.dialogRef.close();
