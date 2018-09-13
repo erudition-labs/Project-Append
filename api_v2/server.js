@@ -60,6 +60,7 @@ app.use(helmet());
 app.use('/api/v1/users', 			require('./api/users'));
 app.use('/api/v1/authenticate', 	require('./api/authenticate'));
 app.use('/api/v1/events', 			require('./api/events'));
+app.use('/api/v1/updates', 			require('./api/updates'))
 
 
 async function connect() {
