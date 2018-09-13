@@ -47,7 +47,7 @@
 				 <owl-date-time #datePicker></owl-date-time>
 			</mat-list-item>
 
-			<mat-list-item>
+			<mat-list-item style="padding-bottom: 0px;">
 					<ng-select
 						[items]="users | async"
 						[multiple]="true"
@@ -60,7 +60,7 @@
 					</ng-select>
 			</mat-list-item>
 
-			<mat-list-item>
+			<mat-list>
 				<mat-form-field>
 				<div formArrayName="additionalDetails">
 					<mat-list-item *ngFor="let detail of
@@ -75,16 +75,16 @@
 
 						<div [formGroupName]="i">
 							<!-- Dynamic Field Title -->
-							<div>
-								<mat-label>Title</mat-label>
-								<input matInput
+							<div style="margin-top: 20px">
+								<mat-label><strong>Title</strong><br></mat-label>
+								<input  type="text" placeholder="title"
 								formControlName="title">
 							</div>
 
 							<!-- Dynamic Field details -->
 							<div>
-								<mat-label>Details</mat-label>
-								<input matInput
+								<mat-label><strong>Details</strong><br></mat-label>
+								<input  type="text" placeholder="details"
 								formControlName="details">
 							</div>
 						</div>
@@ -98,7 +98,7 @@
 				</mat-form-field>
 
 
-			</mat-list-item>
+			</mat-list>
 
 		</mat-list>
 		</mat-card-content>
