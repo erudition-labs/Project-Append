@@ -3,11 +3,28 @@
 		<div class="modal-header">
 			<h5 class="modal-title">{{ modalData?.event?.title }}
 				<ng-container *ngIf="authService.isAuthenticated()">
-					<button *ngIf="!eventsService.isSignedUp(modalData.event.meta) &&
-					!eventsService.isPending(modalData.event.meta); else Pending"
-					type="button" class="btn
-					btn-outline-primary"(click)="userPending()">Sign Up</button>
+					<ng-container *ngIf="eventsService.isSignedUp(modalData.event.meta)">
+							<button 
+									type="button" class="btn btn-outline-primary"
+									(click)="unregister()">Unregister</button>
+					</ng-container>
+
+					<ng-container *ngIf="!eventsService.isSignedUp(modalData.event.meta) &&
+												!eventsService.isPending(modalData.event.meta)">
+							<button 
+									type="button" class="btn btn-outline-primary"
+									(click)="userPending()">Sign Up</button>
+					</ng-container>
+
+				<ng-container *ngIf="!eventsService.isSignedUp(modalData.event.meta) &&
+														eventsService.isPending(modalData.event.meta)">
+						<button 
+								type="button" class="btn btn-outline-primary"
+								(click)="userPending()">Pending</button>
 				</ng-container>
+
+				</ng-container>
+				
 
 				<ng-template #Pending>
 					<button type="button" 

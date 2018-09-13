@@ -42,6 +42,8 @@ import {
 	MatDialogRef, 
 	MAT_DIALOG_DATA 
 } from '@angular/material';
+import { ToastrService } from 'ngx-toastr';
+
 
 
 import { Event } from '../../@core/events/event.model';
@@ -108,6 +110,7 @@ export class EventsComponent implements OnInit {
 				private formBuilder 		: FormBuilder,
 				private eventsService		: EventsService,
 				private authService			: AuthService,
+				private toast				: ToastrService,
 				private changeDetectorRef	: ChangeDetectorRef) { }
 
 	ngOnInit() {
@@ -198,7 +201,6 @@ export class EventsComponent implements OnInit {
 		this.newEventForm.get('signedUp').setValue(data.signedUp);
 		this.newEventForm.get('pending').setValue(data.pending);
 		
-		console.log(data.additionalDetails)
 		data.additionalDetails.forEach(function(obj) {  //populate formArray
 			const control = <FormArray> this.newEventForm.controls['additionalDetails'];
 			control.push(this.initDetailFieldWithData(obj.title, obj.details));
@@ -277,17 +279,20 @@ export class EventsComponent implements OnInit {
 									meta	: newEvent
 								});
 								this.refresh.next();
+								this.success('Event added');
 							} else {
 								console.log('nope ' + httpResult);
+								this.error('API Error');
 							}
 						}, error => {
 							console.log(error);	
+							this.error('API Error');
 					}); 
 				}
 			});
 		} else {
-
 			//tell them they no have access
+			this.error('You are not authorized');
 		}
 	}
 
@@ -324,16 +329,20 @@ export class EventsComponent implements OnInit {
 
 							this.events[index] = updatedCalendarEvent;
 							this.refresh.next();
+							this.success('Update Successful');
 							} else {
 								console.log('nope again' + httpResult);
+								this.error('API Error');
 							}
 						}, error => {
 							console.log(error);
+							this.error('API Error');
 						});
 				}
 			});
 		} else {
 			//toast they dont have access
+			this.error('You are not authorized');
 		}
 	}
 	private signupUser() : void {
@@ -343,6 +352,7 @@ export class EventsComponent implements OnInit {
 			this.eventsService.signupUser(event)
 			.subscribe(httpResult => {
 				if(httpResult.success) {
+					console.log(httpResult);
 					let index = this.events.findIndex(x => x.meta._id === this.modalData.event.meta._id);
 
 					if(index > -1) {
@@ -350,15 +360,19 @@ export class EventsComponent implements OnInit {
 						this.modalData.event.meta.signedUp = httpResult.result.signedUp;
 					} else {
 						//event doesnt exist
+						this.error('Something went wrong. This event doesn\' exist!');
 					}
 				} else {
 					console.log('RIP ' + httpResult);
+					this.error('API Error');
 				}
 			}, error => {
 				console.log(error);
+				this.error('API Error');
 			});
 		} else {
 			//nothing to be
+			this.error('User already signed up');
 		}
 	}
 
@@ -381,15 +395,19 @@ export class EventsComponent implements OnInit {
 						this.modalData.event.meta.pending = httpResult.result.pending;
 					} else {
 						//event doesnt exist
+						this.error('Something went wrong. This event doesn\' exist!');
 					}
 				} else {
 					console.log('RIP ' + httpResult);
+					this.error('API Error');
 				}
 			}, error => {
 				console.log(error);
+				this.error('API Error');
 			});
 		} else {
 				//Nothing to be done, some error
+				this.error('Nothing to be done');
 		}
 	}
 
@@ -407,17 +425,22 @@ export class EventsComponent implements OnInit {
 					if(index > -1) {
 						this.events[index].meta.pending = httpResult.result.pending;
 						this.modalData.event.meta.pending = httpResult.result.pending;
+						this.success('User pending acceptance');
 					} else {
 						//no event exists in frontend
+						this.error('Something went wrong. This event doesn\' exist!');
 					}
 				} else {
 					console.log('RIP ' + httpResult);
+					this.error('API Error');
 				}
 			}, error => {
 				console.log(error);
+				this.error('API Error');
 			});
 		} else {
 			//nothing to be
+			this.error('Nothing to be done');
 		}
 	}
 
@@ -438,17 +461,20 @@ export class EventsComponent implements OnInit {
 					if(httpResult.success) {
 						this.modalData.event.meta.signedUp.push(tmpUser);
 						//give success msg
+						this.success('User accepted');
 					} else {
 						//failed
 						console.log('RIPPP' + httpResult);
+						this.error('API Error');
 					}
 				}, error => {
 					console.log(error);
+					this.error('API Error');
 				});
 			} //otherwise something is terribly terribly worng lol
 		} else {
-
 			//user already signed up or is not pending
+			this.error('Nothing to be done');
 		}
 	}
 
@@ -468,15 +494,37 @@ export class EventsComponent implements OnInit {
 					} else {
 						console.log('RIPPP' + httpResult);
 						//faileddddd
+						this.error('API Error');
 					}
 				}, error => {
 					console.log(error);
+					this.error('API Error');
 				});
 			} //otherwise something is terribly terribly worng lol
 		} else {
-
 			//Nothing to reject
+			this.error('Nothing to be done');
 		}
+	}
+
+	private error(msg : string) : void {
+		this.toast.error(msg, 'Error!', {
+			timeOut: 5000,
+			closeButton: true,
+			progressBar: true,
+			progressAnimation: 'decreasing',
+			positionClass: 'toast-top-right',
+		  });
+	}
+
+	private success(msg: string) : void {
+		this.toast.success(msg, 'Success!', {
+			timeOut: 5000,
+			closeButton: true,
+			progressBar: true,
+			progressAnimation: 'decreasing',
+			positionClass: 'toast-top-right',
+		  });
 	}
 }
 
