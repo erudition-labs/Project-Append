@@ -562,6 +562,10 @@ export class EventsComponent implements OnInit {
 		date = date + " " + d.getHours() + ":" + d.getMinutes(); 
 		return date;
 	}
+
+	private applyFilter(filterValue: string) {
+		this.dataSource.filter = filterValue.trim().toLowerCase();
+	  }
 }
 
 
