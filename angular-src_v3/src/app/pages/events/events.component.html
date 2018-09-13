@@ -1,17 +1,35 @@
 <nb-card>
 	<ng-template #modalContent let-close="close">
 		<div class="modal-header">
-			<h5 class="modal-title">{{ modalData.event.title }}
+			<h5 class="modal-title">{{ modalData?.event?.title }}
 				<ng-container *ngIf="authService.isAuthenticated()">
-					<button *ngIf="!eventsService.isSignedUp(modalData.event.meta); else Pending"
-					type="button" class="btn
-					btn-outline-primary"(click)="signupUser(); close();">Sign Up</button>
+					<ng-container *ngIf="eventsService.isSignedUp(modalData.event.meta)">
+							<button 
+									type="button" class="btn btn-outline-primary"
+									(click)="unregister()">Unregister</button>
+					</ng-container>
+
+					<ng-container *ngIf="!eventsService.isSignedUp(modalData.event.meta) &&
+												!eventsService.isPending(modalData.event.meta)">
+							<button 
+									type="button" class="btn btn-outline-primary"
+									(click)="userPending()">Sign Up</button>
+					</ng-container>
+
+				<ng-container *ngIf="!eventsService.isSignedUp(modalData.event.meta) &&
+														eventsService.isPending(modalData.event.meta)">
+						<button 
+								type="button" class="btn btn-outline-primary"
+								(click)="userPending()">Pending</button>
 				</ng-container>
+
+				</ng-container>
+				
 
 				<ng-template #Pending>
 					<button type="button" 
 					class="btn btn-outline-primary"
-					(click)="unregister(); close();">Pending</button>
+					(click)="unregister()">Pending</button>
 				</ng-template>
 			</h5>
 
@@ -26,19 +44,19 @@
 					<!--- ALL THE FIELDS WOULD GO HERE IN SOME SORT OF STYLED ORDER-->
 		 <!--- ACCESS THE DAT USEING {{ modalData.event.meta.FIELDNAME}}-->
 		 			<div>
-						Start Date <pre>{{ modalData.event.meta.date[0] }}</pre>
+						Start Date <pre>{{ modalData?.event?.meta?.date[0] }}</pre>
 					</div>
 
 					<div>
-						End Date <pre>{{ modalData.event.meta.date[1] }}</pre>
+						End Date <pre>{{ modalData?.event?.meta?.date[1] }}</pre>
           </div>
 
 					<div> Assigned OIC
 						<mat-list>
 							<pre>
 								<mat-list-item *ngFor="let user of modalData.event.meta.OIC">
-									<nb-user [name]="user.lastName + ',' + user.firstName" 
-											[title]="user.rank">
+									<nb-user [name]="user?.lastName + ',' + user?.firstName" 
+											[title]="user?.rank">
 									</nb-user>
 								</mat-list-item>
 							</pre>
@@ -52,12 +70,12 @@
 							<mat-list>
 								<pre>
 									<mat-list-item *ngFor="let user of modalData.event.meta.signedUp">
-										<nb-user [name]="user.lastName + ',' + user.firstName"
-												[title]="user.rank">
+										<nb-user [name]="user?.lastName + ', ' + user?.firstName"
+												[title]="user?.rank">
 										</nb-user>
 									</mat-list-item>
 								</pre>
-							</mat-list>
+							</mat-list>	
 						</ng-container>
 						
 						<ng-template #NoUsersSignedUp>
@@ -65,14 +83,23 @@
 						</ng-template>
 					</div>
 
-					<div *ngIf="eventsService.isOIC(modalData.event.meta) || 
-					authService.isAdmin()"> Pending
+					<div *ngIf="(eventsService.isOIC(modalData.event.meta) || 
+											authService.isAdmin()) &&
+											modalData.event.meta.pending.length> 0"> Pending
 						<mat-list>
 							<pre>
 								<mat-list-item *ngFor="let user of modalData.event.meta.pending">
-									<nb-user [name]="user.lastName + ',' + user.firstName"
-										[title]="user.rank">
+									<nb-user [name]="user?.lastName + ', ' + user?.firstName"
+										[title]="user?.rank">
 									</nb-user>
+									<button type="button" class="btn
+									btn-outline-primary">
+											<i class="nb-checkmark" (click)="acceptPending(user._id)"></i>
+									</button>
+									<button type="button" class="btn
+									btn-outline-primary">
+											<i class="nb-trash" (click)="rejectPending(user._id)"></i>
+									</button>
 								</mat-list-item>
 							</pre>
 						</mat-list>
