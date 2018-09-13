@@ -272,6 +272,7 @@ export class EventsComponent implements OnInit {
 					this.eventsService.createEvent(newEvent).subscribe(
 						httpResult => {
 							if(httpResult.success) {
+								console.log(httpResult.result);
 								newEvent._id = httpResult.result._id;
 								newEvent.additionalDetails = JSON.parse(newEvent.additionalDetails);
 
@@ -529,6 +530,12 @@ export class EventsComponent implements OnInit {
 			progressAnimation: 'decreasing',
 			positionClass: 'toast-top-right',
 		  });
+	}
+
+	private parseDate(d : Date) : string {
+		let date = d.toDateString();
+		date = date + " " + d.getHours() + ":" + d.getMinutes(); 
+		return date;
 	}
 }
 

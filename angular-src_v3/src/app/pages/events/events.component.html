@@ -25,13 +25,7 @@
 				</ng-container>
 
 				</ng-container>
-				
 
-				<ng-template #Pending>
-					<button type="button" 
-					class="btn btn-outline-primary"
-					(click)="unregister()">Pending</button>
-				</ng-template>
 			</h5>
 
 				<button type="button" class="close" (click)="close()">
@@ -45,14 +39,20 @@
 					<!--- ALL THE FIELDS WOULD GO HERE IN SOME SORT OF STYLED ORDER-->
 		 <!--- ACCESS THE DAT USEING {{ modalData.event.meta.FIELDNAME}}-->
 		 			<div>
-						Start Date <pre>{{ modalData?.event?.meta?.date[0] }}</pre>
+						Event Date <pre>{{ parseDate(modalData?.event?.start) }} to {{ parseDate(modalData?.event?.end) }} </pre>
 					</div>
 
 					<div>
 						End Date <pre>{{ modalData?.event?.meta?.date[1] }}</pre>
-          </div>
+					</div>
+					
+					<div *ngIf="modalData.event.meta.summary">
+						Event Summary
+						<pre> {{ modalData?.event?.meta?.summary }} </pre>
+					</div>
 
-					<div> Assigned OIC
+					<div *ngIf="modalData.event.meta.OIC &&
+								modalData.event.meta.OIC.length > 1"> Assigned OIC
 						<mat-list>
 							<pre>
 								<mat-list-item *ngFor="let user of modalData.event.meta.OIC">
@@ -109,8 +109,8 @@
 
 					<ng-container *ngIf="modalData?.event?.meta?.additionalDetails?.length > 0">
 						<div *ngFor="let detail of modalData?.event?.meta?.additionalDetails">
-							{{ detail?.title }}
-							<pre>{{ detail?.details}}</pre>
+							<ng-container *ngIf="detail?.title !== '' ">{{ detail?.title }}</ng-container>
+							<pre *ngIf="detail?.details !== '' ">{{ detail?.details}}</pre>
 						</div>
 					</ng-container>
 				</nb-card-body>
