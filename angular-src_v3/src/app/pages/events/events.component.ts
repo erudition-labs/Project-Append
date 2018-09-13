@@ -424,7 +424,8 @@ export class EventsComponent implements OnInit {
 
 	private acceptPending(id : string) : void {
 		if(!this.eventsService.isSignedUp(this.modalData.event.meta, id) &&
-		this.eventsService.isPending(this.modalData.event.meta, id)) { 
+		this.eventsService.isPending(this.modalData.event.meta, id)) 
+		{ 
 			let index = this.modalData.event.meta.pending.findIndex(x => x._id === id);
 		
 			if(index > -1) { //if we find an index
@@ -450,10 +451,33 @@ export class EventsComponent implements OnInit {
 			//user already signed up or is not pending
 		}
 	}
-/*
-	private rejectPending() : void {
 
-	}*/
+	private rejectPending(id : string) : void {
+		if(!this.eventsService.isSignedUp(this.modalData.event.meta, id) &&
+		this.eventsService.isPending(this.modalData.event.meta, id)) 
+		{
+			let index = this.modalData.event.meta.pending.findIndex(x => x._id === id);
+			if(index > -1) { //if we find an index
+				this.modalData.event.meta.pending.splice(index, 1);
+				let event = Object.assign({}, this.modalData.event.meta);
+				this.eventsService.unregisterUser(event)
+				.subscribe(httpResult => {
+					console.log(httpResult.result);
+					if(httpResult.success) {
+						//successsss
+					} else {
+						console.log('RIPPP' + httpResult);
+						//faileddddd
+					}
+				}, error => {
+					console.log(error);
+				});
+			} //otherwise something is terribly terribly worng lol
+		} else {
+
+			//Nothing to reject
+		}
+	}
 }
 
 

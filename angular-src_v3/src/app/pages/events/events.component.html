@@ -75,8 +75,13 @@
 									<nb-user [name]="user?.lastName + ', ' + user?.firstName"
 										[title]="user?.rank">
 									</nb-user>
-									<button type="button" class="close">
+									<button type="button" class="btn
+									btn-outline-primary">
 											<i class="nb-checkmark" (click)="acceptPending(user._id)"></i>
+									</button>
+									<button type="button" class="btn
+									btn-outline-primary">
+											<i class="nb-trash" (click)="rejectPending(user._id)"></i>
 									</button>
 								</mat-list-item>
 							</pre>
