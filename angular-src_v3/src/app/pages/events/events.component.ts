@@ -311,6 +311,8 @@ export class EventsComponent implements OnInit {
 						httpResult => {
 							if(httpResult.success) {
 								let index = this.events.findIndex(x => x.meta._id === newEvent._id);
+								if(index === -1) return; //no event to update
+
 								let updatedCalendarEvent : CalendarEvent = {
 									title	: newEvent.name,
 									start	: new Date(newEvent.date[0]),
@@ -336,16 +338,19 @@ export class EventsComponent implements OnInit {
 	}
 	private signupUser() : void {
 		if(!this.eventsService.isSignedUp(this.modalData.event.meta)) {
-			let event = this.modalData.event.meta;
+			let event = Object.assign({}, this.modalData.event.meta);
 
 			this.eventsService.signupUser(event)
 			.subscribe(httpResult => {
 				if(httpResult.success) {
 					let index = this.events.findIndex(x => x.meta._id === this.modalData.event.meta._id);
-					this.events[index].meta.signedUp = httpResult.result.signedUp;
-					this.modalData.event.meta.signedUp = httpResult.result.signedUp;
-					this.modalData.event.meta.additionalDetails = JSON.parse(this.modalData.event.meta.additionalDetails);
-					this.refresh.next();
+
+					if(index > -1) {
+						this.events[index].meta.signedUp = httpResult.result.signedUp;
+						this.modalData.event.meta.signedUp = httpResult.result.signedUp;
+					} else {
+						//event doesnt exist
+					}
 				} else {
 					console.log('RIP ' + httpResult);
 				}
@@ -358,34 +363,25 @@ export class EventsComponent implements OnInit {
 	}
 
 	private unregister() : void {
-		if(this.eventsService.isSignedUp(this.modalData.event.meta)) {
-			let event = this.modalData.event.meta;
+		if(this.eventsService.isSignedUp(this.modalData.event.meta) ||
+			this.eventsService.isPending(this.modalData.event.meta)) 
+		{
+			let event = Object.assign({}, this.modalData.event.meta);
 
 			this.eventsService.unregisterUser(event)
 			.subscribe(httpResult => {
 				if(httpResult.success) {
 					let index = this.events.findIndex(x => x.meta._id === this.modalData.event.meta._id);
-					this.events[index].meta.signedUp = httpResult.result.signedUp;
-					this.modalData.event.meta.signedUp = httpResult.result.signedUp;
-					this.modalData.event.meta.additionalDetails = JSON.parse(this.modalData.event.meta.additionalDetails);
-					this.refresh.next();
-				} else {
-					console.log('RIP ' + httpResult);
-				}
-			}, error => {
-				console.log(error);
-			});
-		} else if(this.eventsService.isPending(this.modalData.event.meta)) {
-			let event = this.modalData.event.meta;
 
-			this.eventsService.unregisterUser(event)
-			.subscribe(httpResult => {
-				if(httpResult.success) {
-					let index = this.events.findIndex(x => x.meta._id === this.modalData.event.meta._id);
-					this.events[index].meta.pending = httpResult.result.pending;
-					this.modalData.event.meta.pending = httpResult.result.pending;
-					this.modalData.event.meta.additionalDetails = JSON.parse(this.modalData.event.meta.additionalDetails);
-					this.refresh.next();
+					if(index > -1) {
+						this.events[index].meta.signedUp = httpResult.result.signedUp;
+						this.modalData.event.meta.signedUp = httpResult.result.signedUp;
+
+						this.events[index].meta.pending = httpResult.result.pending;
+						this.modalData.event.meta.pending = httpResult.result.pending;
+					} else {
+						//event doesnt exist
+					}
 				} else {
 					console.log('RIP ' + httpResult);
 				}
@@ -401,16 +397,19 @@ export class EventsComponent implements OnInit {
 		if(!this.eventsService.isSignedUp(this.modalData.event.meta) &&
 		!this.eventsService.isPending(this.modalData.event.meta)) 
 		{
-			let event = this.modalData.event.meta;
+			let event = Object.assign({}, this.modalData.event.meta);
 
 			this.eventsService.userPending(event)
 			.subscribe(httpResult => {
 				if(httpResult.success) {
 					let index = this.events.findIndex(x => x.meta._id === this.modalData.event.meta._id);
-					this.events[index].meta.pending = httpResult.result.pending;
-					this.modalData.event.meta.pending = httpResult.result.pending;
-					this.modalData.event.meta.additionalDetails = JSON.parse(this.modalData.event.meta.additionalDetails);
-					this.refresh.next();
+
+					if(index > -1) {
+						this.events[index].meta.pending = httpResult.result.pending;
+						this.modalData.event.meta.pending = httpResult.result.pending;
+					} else {
+						//no event exists in frontend
+					}
 				} else {
 					console.log('RIP ' + httpResult);
 				}
@@ -424,28 +423,32 @@ export class EventsComponent implements OnInit {
 
 
 	private acceptPending(id : string) : void {
-		//if(this.eventsService.isSignedUp(id)) return;
-		let index = this.modalData.event.meta.pending.findIndex(x => x._id === id);
+		if(!this.eventsService.isSignedUp(this.modalData.event.meta, id) &&
+		this.eventsService.isPending(this.modalData.event.meta, id)) { 
+			let index = this.modalData.event.meta.pending.findIndex(x => x._id === id);
 		
-		if(index > -1) { //if we find an index
-			let tmpUser = Object.assign({}, this.modalData.event.meta.pending[index]);
-			this.modalData.event.meta.pending.splice(index, 1);
-			let event = Object.assign({}, this.modalData.event.meta); //deep copy to get rid of reference
+			if(index > -1) { //if we find an index
+				let tmpUser = Object.assign({}, this.modalData.event.meta.pending[index]);
+				this.modalData.event.meta.pending.splice(index, 1);
+				let event = Object.assign({}, this.modalData.event.meta); //deep copy to get rid of reference
 
-			this.eventsService.signupUser(event)
-			.subscribe(httpResult => {
-				if(httpResult.success) {
-					this.modalData.event.meta.signedUp.push(tmpUser);
-					//give success msg
-				} else {
-					//failed
-					console.log('RIPPP' + httpResult);
-				}
-			}, error => {
-				console.log(error);
-			});
-		} //otherwise something is terribly terribly worng lol
+				this.eventsService.signupUser(event)
+				.subscribe(httpResult => {
+					if(httpResult.success) {
+						this.modalData.event.meta.signedUp.push(tmpUser);
+						//give success msg
+					} else {
+						//failed
+						console.log('RIPPP' + httpResult);
+					}
+				}, error => {
+					console.log(error);
+				});
+			} //otherwise something is terribly terribly worng lol
+		} else {
 
+			//user already signed up or is not pending
+		}
 	}
 /*
 	private rejectPending() : void {

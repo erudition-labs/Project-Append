@@ -6,13 +6,13 @@
 					<button *ngIf="!eventsService.isSignedUp(modalData.event.meta) &&
 					!eventsService.isPending(modalData.event.meta); else Pending"
 					type="button" class="btn
-					btn-outline-primary"(click)="userPending(); close();">Sign Up</button>
+					btn-outline-primary"(click)="userPending()">Sign Up</button>
 				</ng-container>
 
 				<ng-template #Pending>
 					<button type="button" 
 					class="btn btn-outline-primary"
-					(click)="unregister(); close();">Pending</button>
+					(click)="unregister()">Pending</button>
 				</ng-template>
 			</h5>
 
