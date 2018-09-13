@@ -10,6 +10,7 @@ import { NgbModalModule 							} from '@ng-bootstrap/ng-bootstrap/modal/modal.mo
 import { FlatpickrModule 							} from 'angularx-flatpickr';
 import { SharedModule } from '../../shared/shared.module';
 import { DialogOverviewEventComponent } from './events.component';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 
@@ -23,6 +24,7 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 	SharedModule,
 	OwlDateTimeModule,
 	OwlNativeDateTimeModule,
+	Ng2SmartTableModule,
 	CalendarModule.forRoot(),
 	NgbModalModule.forRoot(),
 	FlatpickrModule.forRoot(),

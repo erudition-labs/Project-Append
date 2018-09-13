@@ -1,6 +1,7 @@
 import { 
 	Component, 
 	ChangeDetectionStrategy,
+	ChangeDetectorRef,
 	ViewChild,
 	TemplateRef,
 	OnInit,
@@ -41,7 +42,6 @@ import {
 	MatDialogRef, 
 	MAT_DIALOG_DATA 
 } from '@angular/material';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 
 import { Event } from '../../@core/events/event.model';
@@ -103,11 +103,12 @@ export class EventsComponent implements OnInit {
 	private activeDayIsOpen: boolean = true;
 	private newEventForm : FormGroup;
 
-	constructor(private modal			: NgbModal,
-				private dialog			: MatDialog,
-				private formBuilder 	: FormBuilder,
-				private eventsService	: EventsService,
-				private authService		: AuthService) { }
+	constructor(private modal				: NgbModal,
+				private dialog				: MatDialog,
+				private formBuilder 		: FormBuilder,
+				private eventsService		: EventsService,
+				private authService			: AuthService,
+				private changeDetectorRef	: ChangeDetectorRef) { }
 
 	ngOnInit() {
 		this.eventsService.getEvents().subscribe((result) => {
@@ -126,7 +127,8 @@ export class EventsComponent implements OnInit {
 				this.events.push(calendarEvent); //put it on the calendar
 			}
 			this.refresh.next();
-		});			
+		});	
+		
 	}
 
 	dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
@@ -159,6 +161,9 @@ export class EventsComponent implements OnInit {
 		this.modal.open(this.modalContent, { size: 'lg' });
 	}
 
+	onCustom(event) {
+		alert(`Custom event '${event.action}' fired on row №: ${event.data._id}`)
+	  }
 	private createForm(): void {
 		this.newEventForm = this.formBuilder.group({
 			name					: new FormControl('', 		{ validators: [Validators.required] }),
@@ -416,12 +421,33 @@ export class EventsComponent implements OnInit {
 			//nothing to be
 		}
 	}
-/*
-	private acceptPending() : void {
-		if(this.eventsService.isSignedUp(this.modalData.event.meta)) return;
-		if()
-	}
 
+
+	private acceptPending(id : string) : void {
+		//if(this.eventsService.isSignedUp(id)) return;
+		let index = this.modalData.event.meta.pending.findIndex(x => x._id === id);
+		
+		if(index > -1) { //if we find an index
+			let tmpUser = Object.assign({}, this.modalData.event.meta.pending[index]);
+			this.modalData.event.meta.pending.splice(index, 1);
+			let event = Object.assign({}, this.modalData.event.meta); //deep copy to get rid of reference
+
+			this.eventsService.signupUser(event)
+			.subscribe(httpResult => {
+				if(httpResult.success) {
+					this.modalData.event.meta.signedUp.push(tmpUser);
+					//give success msg
+				} else {
+					//failed
+					console.log('RIPPP' + httpResult);
+				}
+			}, error => {
+				console.log(error);
+			});
+		} //otherwise something is terribly terribly worng lol
+
+	}
+/*
 	private rejectPending() : void {
 
 	}*/

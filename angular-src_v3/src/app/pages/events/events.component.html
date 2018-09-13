@@ -58,7 +58,7 @@
 										</nb-user>
 									</mat-list-item>
 								</pre>
-							</mat-list>
+							</mat-list>	
 						</ng-container>
 						
 						<ng-template #NoUsersSignedUp>
@@ -75,6 +75,9 @@
 									<nb-user [name]="user?.lastName + ', ' + user?.firstName"
 										[title]="user?.rank">
 									</nb-user>
+									<button type="button" class="close">
+											<i class="nb-checkmark" (click)="acceptPending(user._id)"></i>
+									</button>
 								</mat-list-item>
 							</pre>
 						</mat-list>
