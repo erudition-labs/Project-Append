@@ -57,52 +57,14 @@ export class EventsService {
 			}
 	
 			event.signedUp = Array.from(singupSet);
-			console.log(event);
 			return this.http.put(this.url + '/', { data: event, user:  this.authService.parseToken().sub });
 		});
-
-
-/*
-		let OICids 		= this.getIds(event.OIC);
-		let signedUpIds = this.getIds(event.signedUp);
-
-		event.OIC = OICids;
-		event.pending = this.getIds(event.pending);
-		let singupSet = new Set();
-
-
-
-
-		this.getEvent(event._id).subscribe(httpResult => {
-			if(httpResult.success) {
-				let oldOICids = this.getIds(httpResult.result.OIC);
-
-				for(let id of oldOICids) {
-					let index = signedUpIds.indexOf(id);
-					if(index > -1) {
-						signedUpIds.splice(index, 1);
-					}
-				}
-			}
-			for(let id of OICids) {
-				singupSet.add(id);
-			}
-	
-			for(let id of signedUpIds) {
-				singupSet.add(id);
-			}
-	
-			event.signedUp = Array.from(singupSet);
-			console.log(event);
-			return this.http.put(this.url + '/', { data: event, user:  this.authService.parseToken().sub });	
-		});*/
 	}
 
 	public isOIC(event: Event) : boolean {
 		let currUserId = this.authService.parseToken().sub
 
 		for(let user of event.OIC) {
-			//console.log(user);
 			if(user._id === currUserId) {
 				return true;
 			}
@@ -143,25 +105,23 @@ export class EventsService {
 	public signupUser(event: Event) : Observable<any> {
 		event.additionalDetails = JSON.stringify(event.additionalDetails);
 		let submitter = this.authService.parseToken().sub;
-		let ids = this.getIds(event.signedUp);
+		//let ids = this.getIds(event.signedUp);
 
 		//to ensure the ids are unique 
-		if(ids.indexOf(submitter) === -1) {
-			ids.push(submitter); //push current user
-		}
-		event.signedUp = ids;
+		let idsSet = new Set(this.getIds(event.signedUp));
+		idsSet.add(submitter);
+		event.signedUp = Array.from(idsSet);
+
 		return this.http.put(this.url + '/', { data: event, user: submitter, signup: true });
 	}
 
 	public userPending(event : Event) : Observable<any> {
 		event.additionalDetails = JSON.stringify(event.additionalDetails);
 		let submitter = this.authService.parseToken().sub;
-		let ids = this.getIds(event.pending);
+		let idsSet = new Set(this.getIds(event.pending));
 
-		if(ids.indexOf(submitter) === -1) {
-			ids.push(submitter); //push current user
-		}
-		event.pending = ids;
+		idsSet.add(submitter);
+		event.pending = Array.from(idsSet);
 		return this.http.put(this.url + '/', { data: event, user: submitter, signup: true });
 	}
 
@@ -191,16 +151,18 @@ export class EventsService {
 	public acceptPending(event: Event) : Observable<any> {
 		let submitter = this.authService.parseToken().sub;
 		let pendingIds = this.getIds(event.pending);
-		let ids = this.getIds(event.signedUp);
+		//let ids = this.getIds(event.signedUp);
 
+		let idsSet = new Set(this.getIds(event.signedUp));
 		let index = pendingIds.indexOf(submitter); //look for id in pending
+		
 		if(index !==  -1) {
 			pendingIds.splice(index, 1); //if found remove it
 			//add to approved signed up array
-			ids.push(submitter);
+			idsSet.add(submitter);
 		}
 
-		event.signedUp = ids;
+		event.signedUp = Array.from(idsSet);
 		event.pending = pendingIds;
 
 		return this.http.put(this.url + '/', { data: event, user:  this.authService.parseToken().sub });	
