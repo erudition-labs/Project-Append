@@ -1,19 +1,57 @@
 <div class="row">
-  <div *ngFor="let update of updates" class="col-xxxl-3 col-md-6">
-    <nb-card accent="active" size="small">
-      <nb-card-header>{{update.title}} <span style="float: right;"><i>{{update.date.toDateString()}}</i></span></nb-card-header>
-      <nb-card-body>
-        {{update.content}}
-      </nb-card-body>
-      <nb-card-footer>
-        <nb-user
-        name="{{update.author.firstName + ' ' + update.author.lastName}}"
-        title="{{update.author.rank}}"
-        badgeText="{{update.author.team}}"
-        badgeStatus="success"
-        badgePosition="bottom right">
-        </nb-user>
-      </nb-card-footer>
-    </nb-card>
-  </div>
+  <ng-container *ngIf="!singleUpdate">
+    <div *ngFor="let update of updates" class="col-xxxl-3 col-md-6 box">
+      <nb-card accent="active" size="small">
+        <nb-card-header>{{update.title}} <span style="float: right;"><i>{{update.date.toDateString()}}</i></span></nb-card-header>
+        <nb-card-body>
+          {{update.content}}
+          <span class="divLink" (click)="singleUpdateSet(update)">UPDATE URL</span>
+        </nb-card-body>
+        <nb-card-footer>
+          <nb-user
+          name="{{update.author.firstName + ' ' + update.author.lastName}}"
+          title="{{update.author.rank}}"
+          badgeText="{{update.author.team}}"
+          badgeStatus="success"
+          badgePosition="bottom right">
+          </nb-user>
+          
+        </nb-card-footer>
+      </nb-card>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="singleUpdate">
+    <div class="col-md-8">
+      <nb-card size="xxlarge" accent="active">
+          <nb-card-header>
+            <i>Update</i>
+          </nb-card-header>
+          <nb-card-body>
+              <div class="font-row font-secondary">
+                <div class="header">
+                  <div class="name bold">{{update.title}}</div>
+                    <div class="variants">
+                      <span class="font-w-light">{{update.date.toDateString()}}</span>
+                    </div>
+                </div>
+                <p>
+                    {{update.content}}
+                </p>
+              </div>  
+          </nb-card-body>
+      </nb-card>
+    </div>
+    <div class="col-md-4">
+        <nb-card size="medium" accent="info">
+            <nb-card-header>
+              <span style="float: right;"><i>The Author</i></span>
+            </nb-card-header>
+            <nb-card-body>
+              <div class="header">
+                test
+              </div>
+            </nb-card-body>
+        </nb-card>
+      </div>
+  </ng-container>
 </div>

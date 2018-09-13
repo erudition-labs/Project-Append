@@ -13,7 +13,9 @@ export class UpdatesComponent implements OnInit {
 
   constructor(private updatesService : UpdatesService) { }
 
-  private updates : Update[] = [];
+  updates : Update[] = [];
+  singleUpdate : Boolean = false;
+  update : Update;
 
   ngOnInit() {
     this.updatesService.getUpdates().subscribe((result) => {
@@ -22,6 +24,11 @@ export class UpdatesComponent implements OnInit {
         update.date = new Date(update.date);
       }
   });
+  }
+
+  private singleUpdateSet(update : Update) {
+    this.singleUpdate = true;
+    this.update = update;
   }
 
 }
