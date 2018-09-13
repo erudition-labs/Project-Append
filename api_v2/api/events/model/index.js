@@ -6,6 +6,7 @@ const eventModel = new Schema({
 	isVerificationRequired	: { type: Boolean, required: true, default: true },
 	isVerified				: { type: Boolean, required: true, default: false },
 	isSignupRequired		: { type: Boolean, required: true, default: false },
+	summary					: { type: String, required: false },
 	date					: [{ type: Date, required: false }],
 	OIC		: [{
 		type: mongoose.Schema.Types.ObjectId,

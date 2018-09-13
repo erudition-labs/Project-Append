@@ -174,6 +174,7 @@ export class EventsComponent implements OnInit {
 			isVerified				: new FormControl('false', 	{ validators: [Validators.required] }),
 			isSignupRequired		: new FormControl('true', 	{ validators: [Validators.required] }),
 			date					: new FormControl([], 		{ validators: [Validators.required] }),
+			summary					: new FormControl('', { }),
 			OIC						: new FormControl([], { }),
 			signedUp				: new FormControl([], { }),
 			pending					: new FormControl([], { }),
@@ -197,6 +198,7 @@ export class EventsComponent implements OnInit {
 		this.newEventForm.get('isVerified').setValue(data.isVerified);
 		this.newEventForm.get('isSignupRequired').setValue(data.isSignupRequired);
 		this.newEventForm.get('date').setValue(data.date);
+		this.newEventForm.get('summary').setValue(data.summary);
 		this.newEventForm.get('OIC').setValue(data.OIC);
 		this.newEventForm.get('signedUp').setValue(data.signedUp);
 		this.newEventForm.get('pending').setValue(data.pending);
@@ -230,6 +232,7 @@ export class EventsComponent implements OnInit {
 				isVerified,
 				isSignupRequired,
 				date,
+				summary,
 				OIC,
 				signedUp,
 				pending,
@@ -243,6 +246,7 @@ export class EventsComponent implements OnInit {
 			isVerified,
 			isSignupRequired,
 			date,
+			summary,
 			OIC,
 			signedUp,
 			pending,
