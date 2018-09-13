@@ -39,7 +39,7 @@ export class EventsService {
 		return false;
 	}
 
-	public isSignedUp(event: Event) : boolean {
+	public isSignedUp(event: Event, id?: string) : boolean {
 		let currUserId = this.authService.parseToken().sub
 
 		for(let user of event.signedUp){
@@ -50,7 +50,7 @@ export class EventsService {
 		return false;
 	}
 
-	public isPending(event: Event) : boolean {
+	public isPending(event: Event, id?: string) : boolean {
 		let currUserId = this.authService.parseToken().sub
 
 		for(let user of event.pending){
