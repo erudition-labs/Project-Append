@@ -39,17 +39,24 @@
                 </p>
               </div>  
           </nb-card-body>
+          <nb-card-footer>back</nb-card-footer>
       </nb-card>
     </div>
     <div class="col-md-4">
-        <nb-card size="medium" accent="info">
+        <nb-card size="small" accent="info">
             <nb-card-header>
               <span style="float: right;"><i>The Author</i></span>
             </nb-card-header>
             <nb-card-body>
-              <div class="header">
-                test
-              </div>
+                <div class="font-row font-main">
+                  <div class="header">
+                    <div class="name bold">{{update.author.firstName}} {{update.author.lastName}}</div>
+    
+                    <div class="variants">
+                      <span class="font-w-regular">{{update.author.rank}}</span>
+                    </div>
+                  </div>
+                </div>
             </nb-card-body>
         </nb-card>
       </div>
