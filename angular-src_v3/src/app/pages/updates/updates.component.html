@@ -1,6 +1,6 @@
 <div class="row">
   <div *ngFor="let update of updates" class="col-xxxl-3 col-md-6">
-    <nb-card accent="active">
+    <nb-card accent="active" size="small">
       <nb-card-header>{{update.title}} <span style="float: right;"><i>{{update.date.toDateString()}}</i></span></nb-card-header>
       <nb-card-body>
         {{update.content}}
