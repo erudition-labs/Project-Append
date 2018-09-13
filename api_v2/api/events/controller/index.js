@@ -42,7 +42,7 @@ const putEvent = async (request, response) => {
 const getEvents = async (request, response) => {
 	try {
 		const events = await queries.getEvents();
-		response.json({ success: true, result: events});
+		response.json({ success: true, result: events });
 	} catch(error) {
 		return error;
 	}
