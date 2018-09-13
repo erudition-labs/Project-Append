@@ -40,7 +40,7 @@ import {
 import { 
 	MatDialog, 
 	MatDialogRef, 
-	MAT_DIALOG_DATA 
+	MAT_DIALOG_DATA
 } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 
