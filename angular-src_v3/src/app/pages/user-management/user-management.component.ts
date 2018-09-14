@@ -14,8 +14,8 @@ export class UserManagementComponent implements OnInit {
 
   constructor(private userService : UserService, private authService : AuthService, private toastr: ToastrService) { }
 
-  private users : User[];
-  private isAdmin = this.authService.isAdmin();
+   users : User[];
+   isAdmin = this.authService.isAdmin();
   settings : any;
 
 
@@ -119,7 +119,7 @@ export class UserManagementComponent implements OnInit {
       }
   }
 
-  private onSaveConfirm(event) {
+   onSaveConfirm(event) {
     if (window.confirm('Are you sure you want to save?')) {
 
       event.confirm.resolve(event.newData);
@@ -141,7 +141,7 @@ export class UserManagementComponent implements OnInit {
     }
   }
 
-  private onDeleteConfirm(event) {
+   onDeleteConfirm(event) {
     if (window.confirm('Are you sure you want to delete?')) {
       event.confirm.resolve();
       this.userService.deleteUser(event.data._id).subscribe((result) => {

@@ -15,13 +15,13 @@ import { Credentials } from '../../@core/user/credentials.model';
   styleUrls: ['./login-form.component.css']
 })
 export class LoginFormComponent implements OnInit {
-	private loginForm: FormGroup;
+	public loginForm: FormGroup;
 	private loginLoading = false;
 	private loginResult: any;
 
-	private errors: string[] = [];
-	private messages: string[] = [];
-	private submitted: boolean = false;
+	public errors: string[] = [];
+	public messages: string[] = [];
+	public submitted: boolean = false;
 	private username: string;
 
 	constructor(

@@ -86,8 +86,8 @@ export class EventsComponent implements OnInit {
 
 	displayedColumns: string[] = ['title', 'date'];
 
-	private view: string = 'month';
-	private viewDate: Date = new Date();
+	 view: string = 'month';
+	 viewDate: Date = new Date();
 
 	modalData: {
 		action: string;
@@ -109,19 +109,19 @@ export class EventsComponent implements OnInit {
 		}
 	}];
 
-	private refresh: Subject<any> = new Subject();
-	private events: CalendarEvent[] = [];
-	private activeDayIsOpen: boolean = true;
-	private newEventForm : FormGroup;
-	private settings : any;
+	 refresh: Subject<any> = new Subject();
+	 events: CalendarEvent[] = [];
+	 activeDayIsOpen: boolean = true;
+	 newEventForm : FormGroup;
+	 settings : any;
 
-	private dataSource : any;
+	 dataSource : any;
 
 	constructor(private modal				: NgbModal,
 				private dialog				: MatDialog,
 				private formBuilder 		: FormBuilder,
 				private eventsService		: EventsService,
-				private authService			: AuthService,
+				public authService			: AuthService,
 				private toast				: ToastrService,
 				private changeDetectorRef	: ChangeDetectorRef) { }
 
@@ -586,7 +586,7 @@ export class EventsComponent implements OnInit {
 		return date;
 	}
 
-	private applyFilter(filterValue: string) {
+	public applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	  }
 }
@@ -610,9 +610,9 @@ export class DialogOverviewEventComponent implements OnInit {
 			private formBuilder 	: FormBuilder,
 			private userService 	: UserService,
 			private eventsComponent	: EventsComponent,
-			private authService		: AuthService) {}
+			public authService		: AuthService) {}
 
-		private isAdmin : boolean = false;
+		 isAdmin : boolean = false;
 
 	ngOnInit() {
 		this.users = this.userService.getUsers();
@@ -624,7 +624,7 @@ export class DialogOverviewEventComponent implements OnInit {
 	}
 
 
-	private addDetailField() : void {
+	public addDetailField() : void {
 		const control = <FormArray>this.data.controls['additionalDetails'];
 		control.push(this.eventsComponent.initDetailField());
 	}

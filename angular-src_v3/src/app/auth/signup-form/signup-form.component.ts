@@ -21,14 +21,14 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./signup-form.component.css']
 })
 export class SignupFormComponent implements OnInit {
-	private signupForm : FormGroup;
+	public signupForm : FormGroup;
 	private signupLoading = false;
 	private emailValidating = false;
 	private signupResult : any;
 
-	private errors: string[] = [];
-	private messages: string[] = [];
-	private submitted: boolean = false;
+	public errors: string[] = [];
+	public messages: string[] = [];
+	public submitted: boolean = false;
 
 	constructor(
 		private formBuilder : FormBuilder,
