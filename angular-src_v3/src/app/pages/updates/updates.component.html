@@ -1,16 +1,18 @@
 <div class="row">
-    <ng-container *ngIf="!singleUpdate">
+    <ng-container *ngIf="!singleUpdate && addUpdateClicked">
         <div class="col-xxxl-3 col-md-6 box">
           <nb-card accent="active" size="small">
-            <nb-card-header>
-              <input type="text" placeholder="Title of Update">
-            </nb-card-header>
-            <nb-card-body>
-              <textarea rows="9" cols="38" placeholder="Content of Update"></textarea>
-            </nb-card-body>
-            <nb-card-footer>
-              <button>Update</button>
-            </nb-card-footer>
+            <ng-container [formGroup]="updateForm">
+              <nb-card-header>
+                <input [formControl]="updateForm.get('title')" type="text" placeholder="Title of Update">
+              </nb-card-header>
+              <nb-card-body>
+                <textarea [formControl]="updateForm.get('content')" rows="9" cols="38" placeholder="Content of Update"></textarea>
+              </nb-card-body>
+              <nb-card-footer>
+                <button class="btn btn-hero-primary btn-demo" (click)="onClick()">Update</button>
+              </nb-card-footer>
+            </ng-container>
           </nb-card>
         </div>
       </ng-container>
@@ -88,7 +90,7 @@
 <div class="fab-container">
 	<button mat-fab 
 		color="primary"
-		(click)="openCreateDialog();">
+		(click)="createUpdate();">
 		<mat-icon class="ion-plus-round">
 		</mat-icon>
 	</button> 
