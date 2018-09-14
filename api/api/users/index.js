@@ -3,6 +3,7 @@ const router 									= express.Router();
 const controller 								= require('./controller');
 const { body, check, validationResult }			= require('express-validator/check');
 const { sanitizeBody }							= require('express-validator/filter');
+const passport 									= require('passport');
 
 
 router.route('/').post([
