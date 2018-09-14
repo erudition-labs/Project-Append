@@ -14,16 +14,11 @@ export class AuthService {
 	constructor(private http 	: HttpClient,
 				private router	: Router) {}
 
-	readonly url : string = "http://localhost:3000/api/v1"
+	readonly url : string = "http://localhost:3000/api/v1";
 
 	public isAuthenticated(): boolean {
-		const expiresAt = localStorage.getItem('expiresAt');
-
-		if(!expiresAt) {
-			return false;
-		}
-
-		return new Date().getTime() < parseInt(expiresAt);
+		const helper = new JwtHelperService();
+		return helper.isTokenExpired(this.getToken());
 	}
 
 	public login(credentials: Credentials) : Observable<any> {

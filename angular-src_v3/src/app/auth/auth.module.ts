@@ -8,19 +8,20 @@ import { LoginFormComponent } from './login-form/login-form.component';
 import { SignupFormComponent } from './signup-form/signup-form.component';
 import { EmailVerificationComponent } from './email-verification/email-verification.component';
 
+
 @NgModule({
   imports: [
     CommonModule,
-SharedModule,
-FormsModule,
-  ReactiveFormsModule,
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
 
   ],
   declarations: [
-LoginComponent,
-  LoginFormComponent,
-  SignupFormComponent,
-  EmailVerificationComponent,
+    LoginComponent,
+    LoginFormComponent,
+    SignupFormComponent,
+    EmailVerificationComponent,
 
 
 ]
