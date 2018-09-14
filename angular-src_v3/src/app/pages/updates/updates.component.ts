@@ -30,5 +30,8 @@ export class UpdatesComponent implements OnInit {
     this.singleUpdate = true;
     this.update = update;
   }
+  private back() {
+    this.singleUpdate = false; 
+  }
 
 }
