@@ -1,10 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { NbMenuService, NbSidebarService } from '@nebular/theme';
-import { UserService } from '../../../@core/user/user.service';
 import { AuthService } from '../../../@core/auth/auth.service';
+import { UserService } from '../../../@core/user/user.service';
 import { AnalyticsService } from '../../../@core/utils/analytics.service';
-import { filter, map } from 'rxjs/operators';
+import { User } from '../../../@core/user/user.model';
 
 @Component({
   selector: 'ngx-header',
@@ -21,32 +20,19 @@ export class HeaderComponent implements OnInit {
 
   userMenu = [{ title: 'Profile' }, { title: 'Log out' }];
 
-  constructor(private sidebarService	: NbSidebarService,
-              private menuService		: NbMenuService,
-			  private authService		: AuthService,
-              private userService		: UserService,
-			  private router			: Router,
-              private analyticsService	: AnalyticsService) {
+  constructor(private sidebarService  	: NbSidebarService,
+              private menuService	    	: NbMenuService,
+              private analyticsService	: AnalyticsService,
+              private authService       : AuthService,
+              private userService       : UserService) {
   }
 
 	ngOnInit() {
-		this.userInfo = this.authService.getUserInfo();
-		this.isAuthenticated = this.authService.isAuthenticated();
-
-		this.menuService.onItemClick()
-			.pipe(
-			filter(({ tag }) => tag === 'usermenu'),
-			map(({ item: { title } }) => title),
-			).subscribe(title => {
-				if(title === 'Log out') {
-					this.authService.logout();
-				}
-
-				if(title === 'Profile') {
-					this.router.navigateByUrl("/pages/profile");
-				}
-		});
-
+   let decodedToken = this.authService.getUserInfo();
+   console.log(decodedToken);
+   this.userService.getUser(decodedToken.sub).subscribe(httpResult  => {
+       this.userInfo = httpResult;
+   });
 	}
 
   toggleSidebar(): boolean {
