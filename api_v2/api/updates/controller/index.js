@@ -9,8 +9,18 @@ const getUpdates = async(request, response) => {
     } catch(error) {
         return error;
     }
+};
+
+const createUpdate = async(request, response) => {
+    try { 
+        const newUpdate = await queries.createUpdate(request.body.data);
+        response.json({ success: true, message: 'Update Created', result: newUpdate });
+    } catch (error) {
+        return error;
+    }
 }
 
 module.exports = {
-	getUpdates,
+    getUpdates,
+    createUpdate,
 };

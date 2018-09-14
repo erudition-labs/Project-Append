@@ -19,6 +19,8 @@ export class UpdatesService {
 	}
 
 	public createUpdate(update: Update) : Observable<any> {
+		console.log(update);
+		
 		return this.http.post(this.url + '/', { data: update });	
 	}
 

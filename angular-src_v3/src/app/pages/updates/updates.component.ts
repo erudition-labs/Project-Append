@@ -39,8 +39,8 @@ export class UpdatesComponent implements OnInit {
 
   private createForm() : void {
 		this.updateForm = this.formBuilder.group({
-			title 		: new FormControl('', { validators: [Validators.required] }),
-      content 	: new FormControl('', { validators: [Validators.required] }),
+			title 		: new FormControl('', {}),
+      content 	: new FormControl('', {}),
       author    : new FormControl('', {}),
       date      : new FormControl('', {}),
 		});
@@ -62,12 +62,12 @@ export class UpdatesComponent implements OnInit {
     update.date = new Date();
     update.author = this.authService.parseToken().sub;
 
-    console.log(update);
     this.addUpdateClicked = false;
     
-    this.updatesService.createUpdate(this.update).subscribe((result) => {
-      console.log(result.success);
+    this.updatesService.createUpdate(update).subscribe((result) => {
+      console.log(result.message);
     });
+    location.reload();
   }
 
   private singleUpdateSet(update : Update) {
