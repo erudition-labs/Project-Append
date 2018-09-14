@@ -11,7 +11,7 @@ import { User } from './user.model';
 export class UserService {
 	constructor(private http: HttpClient) {}
 
-	readonly url : string = "http://localhost:3000/api/v1"
+	readonly url : string = "http://cadet.ca782.org:3000/api/v1"
 	public checkEmail(email: string) : Observable<any> {
 		const params = new HttpParams({
 			fromObject: {

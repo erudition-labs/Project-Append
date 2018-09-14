@@ -15,7 +15,7 @@ export class EventsService {
 	constructor(private http		: HttpClient,
 				private authService	: AuthService) {}
 
-	readonly url : string = "http://localhost:3000/api/v1/events"
+	readonly url : string = "http://cadet.ca782.org:3000/api/v1/events"
 
 	public getEvents() : Observable<any> {
 		return this.http.get(this.url + '/');	

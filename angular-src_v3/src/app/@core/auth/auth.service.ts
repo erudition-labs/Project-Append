@@ -14,7 +14,7 @@ export class AuthService {
 	constructor(private http 	: HttpClient,
 				private router	: Router) {}
 
-	readonly url : string = "http://localhost:3000/api/v1";
+	readonly url : string = "http://cadet.ca782.org:3000/api/v1";
 
 	public isAuthenticated(): boolean {
 		//const helper = new JwtHelperService();
