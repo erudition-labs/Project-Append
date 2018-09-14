@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../@core/data/users.service';
+import { UserService } from '../../@core/user/user.service';
+import { User } from '../../@core/user/user.model';
+
+import { AuthService } from '../../@core/auth/auth.service';
+
 
 @Component({
 	selector: 'profile',
@@ -8,12 +12,15 @@ import { UserService } from '../../@core/data/users.service';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(private userService : UserService) { }
+  constructor(private userService : UserService, private authService : AuthService) { }
+
+	public user : User;
+
 
   ngOnInit() {
-  	this.userService.getProfile().subscribe((result) => {
-		console.log(result.data);
-	});
-  }
+		this.userService.getUser(this.authService.parseToken().sub).subscribe((result) => {
+				this.user = result["user"];
+		});
+	}
 
 }

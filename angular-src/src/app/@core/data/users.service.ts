@@ -1,16 +1,9 @@
-import { of as observableOf,  Observable, of } from 'rxjs';
+
+import { of as observableOf,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { catchError, map, tap 		} from 'rxjs/operators';
-import { HttpClient, HttpHeaders 	} from '@angular/common/http';
-import { NbAuthService, NbAuthJWTToken, NbTokenService} from '@nebular/auth';
-import { switchMap } from 'rxjs/operators';
 
 
 let counter = 0;
-
-const  httpOptions = {
-	headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
 
 @Injectable()
 export class UserService {
@@ -26,11 +19,7 @@ export class UserService {
 
   private userArray: any[];
 
-
-readonly url :  string = "http://localhost:3000/api/v1/users";
-  constructor(
-  		private http: HttpClient,
-		private authService : NbAuthService,) {
+  constructor() {
     // this.userArray = Object.values(this.users);
   }
 
@@ -46,40 +35,4 @@ readonly url :  string = "http://localhost:3000/api/v1/users";
     counter = (counter + 1) % this.userArray.length;
     return observableOf(this.userArray[counter]);
   }
-
-
-	getProfile() {
-	/*this.authService.getToken().subscribe((token : NbAuthJWTToken) => {
-		if(token.isValid()) {
-			httpOptions.headers.append('Authorization', token.getValue());
-			
-			
-					
-		});*/
-			//this.loadToken().then((token)=> console.log(token.token));
-			return this.http.get(this.url + "/profile", httpOptions)
-				.pipe(tap((data) => console.log('got profile data::' + data)),
-				catchError(this.handleError<any>('error data retrievel'))
-				);
-	}
-
-
-
-
-	private handleError<T> (operation = 'operation', result?: T) {
-		return (error: any): Observable<T> => {
-
-      // send the error to remote logging infrastructure
-			console.error(error); // log to console instead
-
-      // transform error for user consumption
-			console.log(`${operation} failed: ${error.message}`);
-
-      // Let the app keep running by returning an empty result.
-	  		return of(result as T);
-		};
-	}
-
-
-
 }

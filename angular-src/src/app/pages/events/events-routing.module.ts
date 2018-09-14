@@ -6,7 +6,6 @@ import { EventsComponent } from './events.component';
 const routes: Routes = [{
   path: '',
   component: EventsComponent,
- 
 }];
 
 @NgModule({

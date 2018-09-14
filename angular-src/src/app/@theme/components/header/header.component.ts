@@ -1,8 +1,9 @@
-import { Component, Input, OnInit 			} from '@angular/core';
-import { filter 							} from 'rxjs/operators/filter';
-import { NbAuthJWTToken, NbAuthService 		} from '@nebular/auth';
-import { NbMenuService, NbSidebarService 	} from '@nebular/theme';
-import { AnalyticsService 					} from '../../../@core/utils/analytics.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { NbMenuService, NbSidebarService } from '@nebular/theme';
+import { AuthService } from '../../../@core/auth/auth.service';
+import { UserService } from '../../../@core/user/user.service';
+import { AnalyticsService } from '../../../@core/utils/analytics.service';
+import { User } from '../../../@core/user/user.model';
 
 @Component({
   selector: 'ngx-header',
@@ -14,27 +15,24 @@ export class HeaderComponent implements OnInit {
 
   @Input() position = 'normal';
 
-  user: any;
+  private userInfo: any;
+  private isAuthenticated : boolean = false;
 
   userMenu = [{ title: 'Profile' }, { title: 'Log out' }];
 
-	constructor(private sidebarService: NbSidebarService,
-              private menuService: NbMenuService,
-			  private authService: NbAuthService,
-			  private analyticsService: AnalyticsService) {
-
-		this.authService.onTokenChange()
-			.subscribe((token: NbAuthJWTToken) => {
-				if (token.isValid()) {
-					this.user = token.getPayload().data;
-				}
-			 });
-	}
-
-  ngOnInit() {
-  //this.userService.getUsers()
-  //  .subscribe((users: any) => this.user = users.nick);
+  constructor(private sidebarService  	: NbSidebarService,
+              private menuService	    	: NbMenuService,
+              private analyticsService	: AnalyticsService,
+              private authService       : AuthService,
+              private userService       : UserService) {
   }
+
+	ngOnInit() {
+   let decodedToken = this.authService.getUserInfo();
+   this.userService.getUser(decodedToken.sub).subscribe(httpResult  => {
+       this.userInfo = httpResult;
+   });
+	}
 
   toggleSidebar(): boolean {
     this.sidebarService.toggle(true, 'menu-sidebar');

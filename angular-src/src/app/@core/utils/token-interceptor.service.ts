@@ -8,7 +8,7 @@ import {
   HttpErrorResponse
 } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { AuthService } from '../data/auth.service';
+import { AuthService } from '../auth/auth.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { tap } from 'rxjs/operators';
 
@@ -24,7 +24,7 @@ export class TokenInterceptorService implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     request = request.clone({
       setHeaders: {
-	  	Authorization: `Bearer ${this.authService.getToken()}`
+        Authorization: `Bearer ${this.authService.getToken()}`
       }
     });
     // next.handle returns an observable
@@ -39,7 +39,7 @@ export class TokenInterceptorService implements HttpInterceptor {
             if (err.status === 401) {
               // if the request is unauthorized,
               // make the user log in again
-			  //this.authService.logout();
+              this.authService.logout();
             }
           }
         }

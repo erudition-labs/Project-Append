@@ -4,52 +4,49 @@ import { NgModule } from '@angular/core';
 import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
+import { AuthGuardService } from './../@core/auth/auth-guard.service';
+
 
 const routes: Routes = [{
   path: '',
   component: PagesComponent,
-  children: [{
-    path: 'dashboard',
-    component: DashboardComponent,
-  }, {
-    path: 'ui-features',
-    loadChildren: './ui-features/ui-features.module#UiFeaturesModule',
-  }, {
-    path: 'components',
-    loadChildren: './components/components.module#ComponentsModule',
-  }, {
-    path: 'maps',
-    loadChildren: './maps/maps.module#MapsModule',
-  }, {
-    path: 'charts',
-    loadChildren: './charts/charts.module#ChartsModule',
-  }, {
-    path: 'editors',
-    loadChildren: './editors/editors.module#EditorsModule',
-  }, {
-    path: 'forms',
-    loadChildren: './forms/forms.module#FormsModule',
-  }, {
-    path: 'tables',
-    loadChildren: './tables/tables.module#TablesModule',
-  }, {
-    path: 'miscellaneous',
-    loadChildren: './miscellaneous/miscellaneous.module#MiscellaneousModule',
-  }, {
-		path: 'events',
-		loadChildren: './events/events.module#EventsModule',
-  }, {
-    path: 'profile',
-    loadChildren: './profile/profile.module#ProfileModule',
+  children: [
+    {
+      path: 'dashboard',
+      component: DashboardComponent,
+      canActivate: [AuthGuardService],
+    },
+	{
+		path:'events',
+    loadChildren: './events/events.module#EventsModule',
+    canActivate: [AuthGuardService],
+	},
+  {
+		path:'user-management',
+    loadChildren: './user-management/user-management.module#UserManagementModule',
+    canActivate: [AuthGuardService],
   },
   {
-    path: '',
-    redirectTo: 'dashboard',
-    pathMatch: 'full',
-  }, {
+		path:'updates',
+    loadChildren: './updates/updates.module#UpdatesModule',
+    canActivate: [AuthGuardService],
+	},
+	{
+		path:'profile',
+    loadChildren: './profile/profile.module#ProfileModule',
+    canActivate: [AuthGuardService],
+	},
+    {
+      path: '',
+      redirectTo: 'dashboard',
+      pathMatch: 'full',
+    },
+{
     path: '**',
     component: NotFoundComponent,
-  }],
+  }
+
+  ],
 }];
 
 @NgModule({

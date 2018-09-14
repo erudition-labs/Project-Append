@@ -1,69 +1,62 @@
 import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-
-import { NgxAuthComponent,
-	NgxAuthBlockComponent,
-	NgxLoginComponent,
-	NgxRegisterComponent,
-	NgxLogoutComponent,
-	NgxRequestPasswordComponent, 
-	NgxResetPasswordComponent,
-	EmailVerificationComponent } from './@theme/components/auth';
-
-
+import {
+  NbAuthComponent,
+  //NbLoginComponent,
+  NbLogoutComponent,
+  NbRegisterComponent,
+  NbRequestPasswordComponent,
+  NbResetPasswordComponent,
+} from '@nebular/auth';
+import { LoginComponent } from './auth/login/login.component';
+import { EmailVerificationComponent } from './auth/email-verification/email-verification.component';
 const routes: Routes = [
-	{ path: 'pages', loadChildren: 'app/pages/pages.module#PagesModule' },
-	{
-		path: 'auth',
-		component: NgxAuthComponent,
-		children: [
-			{
-				path: '',
-				component: NgxLoginComponent,
-			},
-
-			{
-				path: 'login',
-				component: NgxLoginComponent,
-			},
-
-			{
-				path: 'register',
-				component: NgxRegisterComponent,
-			},
- 
-			{
-				path: 'logout',
-				component: NgxLogoutComponent,
-			},
-
-			{
-				path: 'email-verification/:code',
-				component: EmailVerificationComponent
-			},
-
-			{
-				path: 'request-password',
-				component: NgxRequestPasswordComponent,
-			},
-
-			{
-				path: 'reset-password',
-				component: NgxResetPasswordComponent,
-			},
-		],
-	},
-	{ path: '', redirectTo: 'pages', pathMatch: 'full' },
-	{ path: '**', redirectTo: 'pages' },
+  { path: 'pages', loadChildren: 'app/pages/pages.module#PagesModule' },
+  {
+    path: 'auth',
+    component: NbAuthComponent,
+    children: [
+      {
+        path: '',
+        component: LoginComponent,
+      },
+      {
+        path: 'login',
+        component: LoginComponent,
+      },
+      {
+        path: 'register',
+        component: LoginComponent,
+      },
+      {
+        path: 'logout',
+        component: NbLogoutComponent,
+      },
+      {
+        path: 'request-password',
+        component: NbRequestPasswordComponent,
+      },
+      {
+        path: 'reset-password',
+        component: NbResetPasswordComponent,
+      },
+      {
+        path: 'email-verification/:code',
+        component: EmailVerificationComponent,
+      },
+    ],
+  },
+  { path: '', redirectTo: 'pages', pathMatch: 'full' },
+  { path: '**', redirectTo: 'pages' },
 ];
 
 const config: ExtraOptions = {
-	useHash: true,
+  useHash: true,
 };
 
 @NgModule({
-	imports: [RouterModule.forRoot(routes, config)],
-	exports: [RouterModule],
+  imports: [RouterModule.forRoot(routes, config)],
+  exports: [RouterModule],
 })
 export class AppRoutingModule {
 }
