@@ -25,7 +25,7 @@ export class UpdatesComponent implements OnInit {
   update : Update;
   closeResult: string;
   addUpdateClicked : Boolean = false;
-   updateForm: FormGroup;
+  updateForm: FormGroup;
 
   ngOnInit() {
     this.updatesService.getUpdates().subscribe((result) => {
@@ -63,6 +63,7 @@ export class UpdatesComponent implements OnInit {
     update.author = this.authService.parseToken().sub;
 
     console.log(update);
+    this.addUpdateClicked = false;
     
   }
 

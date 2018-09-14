@@ -18,6 +18,10 @@ export class UpdatesService {
 		return this.http.get(this.url + '/');	
 	}
 
+	public createUpdate(update: Update) : Observable<any> {
+		return this.http.post(this.url + '/', { data: update });	
+	}
+
 	// public createEvent(event: Event) : Observable<any> {
 	// 	return this.http.post(this.url + '/', { data: event });	
 	// }
