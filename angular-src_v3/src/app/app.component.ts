@@ -27,7 +27,6 @@ export class AppComponent implements OnInit {
               {}
 
   onContecxtItemSelection(title) {
-    console.log('click', title);
     if(title === 'Log out') {
       this.authService.logout();
     }

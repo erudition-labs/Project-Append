@@ -22,32 +22,6 @@ export const MENU_ITEMS: NbMenuItem[] = [
 	  icon: 'nb-alert',
 	  link: '/pages/updates',
   },
-  {
-    title: 'FEATURES',
-    group: true,
-  },
-  {
-    title: 'Auth',
-    icon: 'nb-locked',
-    children: [
-      {
-        title: 'Login',
-        link: '/auth/login',
-      },
-      {
-        title: 'Register',
-        link: '/auth/register',
-      },
-      {
-        title: 'Request Password',
-        link: '/auth/request-password',
-      },
-      {
-        title: 'Reset Password',
-        link: '/auth/reset-password',
-      },
-    ],
-  },
 ];
 
 export const MENU_ITEMS_ADMIN: NbMenuItem[] = [
@@ -71,31 +45,5 @@ export const MENU_ITEMS_ADMIN: NbMenuItem[] = [
   	title: 'Updates',
 	  icon: 'nb-alert',
 	  link: '/pages/updates',
-  },
-  {
-    title: 'FEATURES',
-    group: true,
-  },
-  {
-    title: 'Auth',
-    icon: 'nb-locked',
-    children: [
-      {
-        title: 'Login',
-        link: '/auth/login',
-      },
-      {
-        title: 'Register',
-        link: '/auth/register',
-      },
-      {
-        title: 'Request Password',
-        link: '/auth/request-password',
-      },
-      {
-        title: 'Reset Password',
-        link: '/auth/reset-password',
-      },
-    ],
   },
 ];
