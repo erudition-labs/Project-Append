@@ -24,12 +24,9 @@ router.route('/verify-resend').post([
 
 router.route('/email-verification/:token').post(controller.postEmailVerification);
 router.route('/check-email').get(controller.getUserByEmail);
-router.route('/users').get(controller.getUsers);
-
-router.route('/:id').get(controller.getUser);
-
-router.route('/:id').put(controller.putUser);
-
-router.route('/:id').delete(controller.deleteUser);
+router.route('/users').get(passport.authenticate('jwt', { session: false }), controller.getUsers);
+router.route('/:id').get(passport.authenticate('jwt', { session: false }), controller.getUser);
+router.route('/:id').put(passport.authenticate('jwt', { session: false }), controller.putUser);
+router.route('/:id').delete(passport.authenticate('jwt', { session: false }), controller.deleteUser);
 
 module.exports = router;
