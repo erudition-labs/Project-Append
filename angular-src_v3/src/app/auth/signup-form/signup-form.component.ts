@@ -130,9 +130,6 @@ export class SignupFormComponent implements OnInit {
 						this.messages.push(result.message);
 						this.signupLoading = false;
 
-						const { token, userInfo, expiresAt } = result;
-						this.authService.setUser(token, userInfo, expiresAt);
-
 						setTimeout(() => {
 							this.router.navigate(['dashboard']);
 						}, 2000);
