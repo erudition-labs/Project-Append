@@ -472,6 +472,8 @@ export class EventsComponent implements OnInit {
 					if(index > -1) {
 						this.events[index].meta.pending = httpResult.result.pending;
 						this.modalData.event.meta.pending = httpResult.result.pending;
+						this.modalData.event.color = colors.yellow;
+						this.refresh.next();
 						this.success('User pending acceptance');
 					} else {
 						//no event exists in frontend
@@ -493,6 +495,10 @@ export class EventsComponent implements OnInit {
 
 
 	private acceptPending(id : string) : void {
+		console.log(!this.eventsService.isSignedUp(this.modalData.event.meta, id))
+		console.log(this.eventsService.isPending(this.modalData.event.meta, id));
+		
+
 		if(!this.eventsService.isSignedUp(this.modalData.event.meta, id) &&
 		this.eventsService.isPending(this.modalData.event.meta, id)) 
 		{ 
