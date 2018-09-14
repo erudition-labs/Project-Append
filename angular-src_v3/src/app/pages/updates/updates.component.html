@@ -1,4 +1,19 @@
 <div class="row">
+    <ng-container *ngIf="!singleUpdate">
+        <div class="col-xxxl-3 col-md-6 box">
+          <nb-card accent="active" size="small">
+            <nb-card-header>
+              <input type="text" placeholder="Title of Update">
+            </nb-card-header>
+            <nb-card-body>
+              <textarea rows="9" cols="38" placeholder="Content of Update"></textarea>
+            </nb-card-body>
+            <nb-card-footer>
+              <button>Update</button>
+            </nb-card-footer>
+          </nb-card>
+        </div>
+      </ng-container>
   <ng-container *ngIf="!singleUpdate">
     <div *ngFor="let update of updates" class="col-xxxl-3 col-md-6 box">
       <nb-card accent="active" size="small">
