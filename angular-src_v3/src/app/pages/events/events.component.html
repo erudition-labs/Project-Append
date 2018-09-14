@@ -21,7 +21,7 @@
 														eventsService.isPending(modalData.event.meta)">
 						<button 
 								type="button" class="btn btn-outline-primary"
-								(click)="userPending()">Pending</button>
+								(click)="unregister()">Pending</button>
 				</ng-container>
 
 				</ng-container>
@@ -48,7 +48,7 @@
 					</div>
 
 					<div *ngIf="modalData.event.meta.OIC &&
-								modalData.event.meta.OIC.length > 1"> Assigned OIC
+								modalData.event.meta.OIC.length > 0"> Assigned OIC
 						<mat-list>
 							<pre>
 								<mat-list-item *ngFor="let user of modalData.event.meta.OIC">
@@ -206,7 +206,7 @@
     (eventTimesChanged)="eventTimesChanged($event)">
   </mwl-calendar-day-view>
 </div>
-<div class="fab-container">
+<div *ngIf="authService.isAdmin()" class="fab-container">
 	<button mat-fab 
 		color="primary"
 		(click)="openCreateDialog()">

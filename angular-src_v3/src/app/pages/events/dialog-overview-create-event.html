@@ -19,7 +19,7 @@
 			</mat-list-item>
 
 
-			<mat-list-item>
+			<mat-list-item *ngIf="isAdmin">
 					<mat-slide-toggle
 						[formControl]="data.get('isVerificationRequired')"
 						[color]="primary"
@@ -28,7 +28,7 @@
 					</mat-slide-toggle>
 			</mat-list-item>
 
-			<mat-list-item>
+			<mat-list-item *ngIf="isAdmin">
 					<mat-slide-toggle
 						[formControl]="data.get('isSignupRequired')"
 						[color]="primary"

@@ -66,6 +66,10 @@ const colors: any = {
 	yellow: {
 		primary: '#e3bc08',
 		secondary: '#FDF1BA'
+	},
+	green: {
+		primary: '#008000',
+		secondary: '#008000'
 	}
 };
 
@@ -111,7 +115,7 @@ export class EventsComponent implements OnInit {
 	private newEventForm : FormGroup;
 	private settings : any;
 
-	private dataSource : any;// = new MatTableDataSource<CalendarEvent>(this.events);
+	private dataSource : any;
 
 	constructor(private modal				: NgbModal,
 				private dialog				: MatDialog,
@@ -124,12 +128,25 @@ export class EventsComponent implements OnInit {
 	ngOnInit() {
 		this.eventsService.getEvents().subscribe((result) => {
 			for(let e of result.result) {
+				let color = colors.red;
+				if(this.eventsService.isPending(e)) {
+					color = colors.yellow;
+				} else if(this.eventsService.isSignedUp(e)) {
+					color = colors.green;
+				} else {
+					color = colors.red;
+				}
+
+				if(this.authService.isAdmin() && !e.isVerified) {
+					color = colors.blue;
+				}
+
 				//create calendar event
 				const calendarEvent : CalendarEvent = {
 					start		: new Date(e.date[0]),
 					end			: new Date(e.date[1]),
 					title		: e.name,
-					color		: colors.red,
+					color		: color,
 					actions		: this.actions,
 					draggable	: false,
 					meta		: e, //append our event object to it
