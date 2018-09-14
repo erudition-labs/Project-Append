@@ -65,6 +65,9 @@ export class UpdatesComponent implements OnInit {
     console.log(update);
     this.addUpdateClicked = false;
     
+    this.updatesService.createUpdate(this.update).subscribe((result) => {
+      console.log(result.success);
+    });
   }
 
   private singleUpdateSet(update : Update) {
@@ -77,6 +80,10 @@ export class UpdatesComponent implements OnInit {
   }
 
   public createUpdate(): void {
+    console.log(this.authService.isAuthenticated());
+    console.log(this.authService.isAdmin());
+    
+    
 		if(this.authService.isAuthenticated() && this.authService.isAdmin()) {
       this.addUpdateClicked = true;
 		} else {
