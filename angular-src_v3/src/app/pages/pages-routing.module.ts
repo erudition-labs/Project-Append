@@ -3,13 +3,8 @@ import { NgModule } from '@angular/core';
 
 import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { EventsComponent } from './events/events.component';
-import { UserManagementComponent } from './user-management/user-management.component';
-import { ProfileComponent } from './profile/profile.component';
-import { UpdatesComponent } from './updates/updates.component';
-
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
-
+import { AuthGuardService } from './../@core/auth/auth-guard.service';
 
 
 const routes: Routes = [{
@@ -19,22 +14,27 @@ const routes: Routes = [{
     {
       path: 'dashboard',
       component: DashboardComponent,
+      canActivate: [AuthGuardService],
     },
 	{
 		path:'events',
-		loadChildren: './events/events.module#EventsModule',
+    loadChildren: './events/events.module#EventsModule',
+    canActivate: [AuthGuardService],
 	},
   {
 		path:'user-management',
-		loadChildren: './user-management/user-management.module#UserManagementModule',
+    loadChildren: './user-management/user-management.module#UserManagementModule',
+    canActivate: [AuthGuardService],
   },
   {
 		path:'updates',
-		loadChildren: './updates/updates.module#UpdatesModule',
+    loadChildren: './updates/updates.module#UpdatesModule',
+    canActivate: [AuthGuardService],
 	},
 	{
 		path:'profile',
-		loadChildren: './profile/profile.module#ProfileModule',
+    loadChildren: './profile/profile.module#ProfileModule',
+    canActivate: [AuthGuardService],
 	},
     {
       path: '',

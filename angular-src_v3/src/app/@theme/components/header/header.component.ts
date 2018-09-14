@@ -29,7 +29,6 @@ export class HeaderComponent implements OnInit {
 
 	ngOnInit() {
    let decodedToken = this.authService.getUserInfo();
-   console.log(decodedToken);
    this.userService.getUser(decodedToken.sub).subscribe(httpResult  => {
        this.userInfo = httpResult;
    });
