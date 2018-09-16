@@ -3,7 +3,9 @@ import 'rxjs/add/operator/map';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { User } from './user.model';
+import { Event } from './../events/event.model';
 import { environment } from '../../../environments/environment';
+import { UtilsService } from '../utils/utils.service';
 
 
 @Injectable({
@@ -11,7 +13,8 @@ import { environment } from '../../../environments/environment';
 })
 
 export class UserService {
-	constructor(private http: HttpClient) {}
+	constructor(private http	: HttpClient,
+				private utils	: UtilsService) {}
 
 	readonly url : string = environment.API_URL + "/api/v1/users"
 	public checkEmail(email: string) : Observable<any> {
@@ -31,7 +34,14 @@ export class UserService {
 		return this.http.get<User>(this.url + '/' + id);
 	}
 
-	public updateUser(id : string, user: User) : Observable<any> {
+	public updateUser(id : string, user: User, event?: Event) : Observable<any> {
+		//convert events array back to ObjectId and add new event 
+		//if we are adding an event
+		if(event) {
+			let ids = this.utils.getIds(user.events);
+			ids.push(event._id);
+			user.events = ids;
+		}
 		return this.http.put(this.url + '/' + id, { userData: user });	
 	}
 
