@@ -4,6 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Event } from './event.model';
 import { User } from '../user/user.model';
 import { AuthService } from '../auth/auth.service';
+import { environment } from '../../../environments/environment';
 import 'rxjs/add/operator/mergeMap';
 
 
@@ -15,7 +16,7 @@ export class EventsService {
 	constructor(private http		: HttpClient,
 				private authService	: AuthService) {}
 
-	readonly url : string = "http://cadet.ca782.org:3000/api/v1/events"
+	readonly url : string = environment.API_URL + "/api/v1/events"
 
 	public getEvents() : Observable<any> {
 		return this.http.get(this.url + '/');	
