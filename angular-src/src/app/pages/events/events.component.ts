@@ -435,14 +435,20 @@ export class EventsComponent implements OnInit {
 					let index = this.events.findIndex(x => x.meta._id === this.modalData.event.meta._id);
 
 					if(index > -1) {
-						this.events[index].meta.signedUp = httpResult.result.signedUp;
-						this.modalData.event.meta.signedUp = httpResult.result.signedUp;
+						this.userService.eventUnregister(httpResult.result).subscribe(result => {
+							if(result.success) {
+								this.events[index].meta.signedUp = httpResult.result.signedUp;
+								this.modalData.event.meta.signedUp = httpResult.result.signedUp;
 
-						this.events[index].meta.pending = httpResult.result.pending;
-						this.modalData.event.meta.pending = httpResult.result.pending;
+								this.events[index].meta.pending = httpResult.result.pending;
+								this.modalData.event.meta.pending = httpResult.result.pending;
+							} else {
+								this.error('Something went wrong. API Error');
+							}
+						});
 					} else {
 						//event doesnt exist
-						this.error('Something went wrong. This event doesn\' exist!');
+						this.error('Something went wrong. This event doesn\'t exist!');
 					}
 				} else {
 					console.log('RIP ' + httpResult);

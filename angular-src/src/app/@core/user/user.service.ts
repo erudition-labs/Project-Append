@@ -6,6 +6,7 @@ import { User } from './user.model';
 import { Event } from './../events/event.model';
 import { environment } from '../../../environments/environment';
 import { UtilsService } from '../utils/utils.service';
+import { AuthService } from '../auth/auth.service';
 import 'rxjs/add/operator/mergeMap';
 
 
@@ -15,8 +16,9 @@ import 'rxjs/add/operator/mergeMap';
 })
 
 export class UserService {
-	constructor(private http	: HttpClient,
-				private utils	: UtilsService) {}
+	constructor(private http		: HttpClient,
+				private utils		: UtilsService,
+				private authService	: AuthService) {}
 
 	readonly url : string = environment.API_URL + "/api/v1/users"
 	public checkEmail(email: string) : Observable<any> {
@@ -49,17 +51,36 @@ export class UserService {
 			if(httpResult.success) {
 				let user = httpResult.result;
 				let events = user.events;
-				console.log(events);
 				if(events) {
 					let oldEventIdsSet = new Set(this.utils.getIds(events));
 					oldEventIdsSet.add(event._id);
 					user.events = Array.from(oldEventIdsSet);
-				}
-				//console.log(user.events);
-				
+				}				
 				return this.http.put(this.url + '/' + id, { userData: user });
 			}
 		});
+	}
+
+	public eventUnregister(event: Event, id?: string) : Observable<any> {
+		//let idSet = new Set(this.utils.getIds(user.events));
+		if(!id) id = this.authService.parseToken().sub;
+		
+		return this.getUser(id).flatMap(httpRsult => {
+			if(httpRsult.success) {
+				let user = httpRsult.result;
+				let events = user.events;
+				if(events) {
+					let ids = this.utils.getIds(events);
+					let index = ids.indexOf(event._id);
+					if(index > -1) {
+						ids.splice(index, 1);
+					}
+					user.events = ids;
+				}
+				return this.http.put(this.url + '/' + id, { userData: user });
+			}
+		});
+		
 	}
 
 	public deleteUser(id : string) : Observable<any> {
