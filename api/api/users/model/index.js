@@ -11,7 +11,12 @@ const userModel = new Schema({
 	team 		: { type: String, required: false },
 	password	: { type: String, required: true },
 	phone		: { type: String, required: true},
-	role		: { type: String, required: true }
+	role		: { type: String, required: true },
+	events		: [{
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'event',
+		required: false
+	}],
 }).plugin(uniqueValidator);
 
 const tempUserModel = new Schema({
@@ -24,6 +29,11 @@ const tempUserModel = new Schema({
 	password	: { type: String, required: true },
 	phone		: { type: String, required: true },
 	role		: { type: String, required: true },
+	events		: [{
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'event',
+		required: false
+	}],
 	GENERATED_VERIFYING_URL : { type: String }
 }).plugin(uniqueValidator);
 
