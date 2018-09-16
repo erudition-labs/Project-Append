@@ -35,7 +35,8 @@ const getUsers = async () => {
 
 const updateUser = async (id, user) => {
 	try {
-		return await User.findByIdAndUpdate(id, user, { new: true });
+		return await User.findByIdAndUpdate(id, user, { new: true })
+		.populate('events');
 	} catch(error) {
 		return error;
 	}
