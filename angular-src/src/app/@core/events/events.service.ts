@@ -4,6 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Event } from './event.model';
 import { User } from '../user/user.model';
 import { AuthService } from '../auth/auth.service';
+import { UtilsService } from '../utils/utils.service';
 import { environment } from '../../../environments/environment';
 import 'rxjs/add/operator/mergeMap';
 
@@ -14,7 +15,8 @@ import 'rxjs/add/operator/mergeMap';
 
 export class EventsService {
 	constructor(private http		: HttpClient,
-				private authService	: AuthService) {}
+				private authService	: AuthService,
+				private utils		: UtilsService) {}
 
 	readonly url : string = environment.API_URL + "/api/v1/events"
 
@@ -31,16 +33,16 @@ export class EventsService {
 	}
 
 	public updateEvent(event: Event) : Observable<any> {
-		let OICids 		= this.getIds(event.OIC);
-		let signedUpIds = this.getIds(event.signedUp);
+		let OICids 		= this.utils.getIds(event.OIC);
+		let signedUpIds = this.utils.getIds(event.signedUp);
 
 		event.OIC = OICids;
-		event.pending = this.getIds(event.pending);
+		event.pending = this.utils.getIds(event.pending);
 		let singupSet = new Set();
 
 		return this.getEvent(event._id).flatMap(httpResult => {
 			if(httpResult.success) {
-				let oldOICids = this.getIds(httpResult.result.OIC);
+				let oldOICids = this.utils.getIds(httpResult.result.OIC);
 
 				for(let id of oldOICids) {
 					let index = signedUpIds.indexOf(id);
@@ -115,21 +117,12 @@ export class EventsService {
 		}
 	}
 
-	private getIds(users : User[]) : string[] {
-		let ids = [];
-		for (let i=users.length-1; i>=0; i--) { 
-			ids.push(users[i]._id);
-		}
-		return ids;
-	}
-
 	public signupUser(event: Event) : Observable<any> {
 		event.additionalDetails = JSON.stringify(event.additionalDetails);
 		let submitter = this.authService.parseToken().sub;
-		//let ids = this.getIds(event.signedUp);
 
 		//to ensure the ids are unique 
-		let idsSet = new Set(this.getIds(event.signedUp));
+		let idsSet = new Set(this.utils.getIds(event.signedUp));
 		idsSet.add(submitter);
 		event.signedUp = Array.from(idsSet);
 
@@ -139,7 +132,7 @@ export class EventsService {
 	public userPending(event : Event) : Observable<any> {
 		event.additionalDetails = JSON.stringify(event.additionalDetails);
 		let submitter = this.authService.parseToken().sub;
-		let idsSet = new Set(this.getIds(event.pending));
+		let idsSet = new Set(this.utils.getIds(event.pending));
 
 		idsSet.add(submitter);
 		event.pending = Array.from(idsSet);
@@ -151,7 +144,7 @@ export class EventsService {
 		let submitter = this.authService.parseToken().sub;
 		
 		//handled accepted signed up users
-		let ids = this.getIds(event.signedUp);
+		let ids = this.utils.getIds(event.signedUp);
 		let index = ids.indexOf(submitter);
 		if(index >  -1) {
 			ids.splice(index, 1); //if found remove it
@@ -159,7 +152,7 @@ export class EventsService {
 		event.signedUp = ids; //deep copy of ids
 
 		//handle pending signed up users
-		let pendingIds = this.getIds(event.pending);
+		let pendingIds = this.utils.getIds(event.pending);
 		index = pendingIds.indexOf(submitter);
 		if(index >  -1) {
 			pendingIds.splice(index, 1); //if found remove it
@@ -171,10 +164,9 @@ export class EventsService {
 
 	public acceptPending(event: Event) : Observable<any> {
 		let submitter = this.authService.parseToken().sub;
-		let pendingIds = this.getIds(event.pending);
-		//let ids = this.getIds(event.signedUp);
+		let pendingIds = this.utils.getIds(event.pending);
 
-		let idsSet = new Set(this.getIds(event.signedUp));
+		let idsSet = new Set(this.utils.getIds(event.signedUp));
 		let index = pendingIds.indexOf(submitter); //look for id in pending
 		
 		if(index !==  -1) {

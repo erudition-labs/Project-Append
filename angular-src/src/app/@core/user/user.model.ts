@@ -8,6 +8,7 @@ export interface NewUser {
 	team		: string;
 	role		: string;
 	phone		: string;
+	events		: any[];
 }
 
 export interface User {
@@ -20,4 +21,5 @@ export interface User {
 	team 		: string;
 	phone 		: string;
 	role		: string;
+	events		: any[];
 }

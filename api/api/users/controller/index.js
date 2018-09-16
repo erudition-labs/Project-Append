@@ -110,7 +110,7 @@ const getUser = async (request, response) => {
 	try {
 		const userId = request.params.id;
 		const user = await queries.getUserById(userId);
-		return response.json({success: true, user});
+		return response.json({success: true, result: user});
 	} catch(error) {
 		console.log(error);
 		return error;
@@ -132,6 +132,7 @@ const putUser = async (request, response) => {
 	try {
 		const userId = request.params.id;
 		const userData = request.body.userData;
+		console.log(userData);
 		const updatedUser = await queries.updateUser(userId, userData);
 		response.json({ success: true, result: updatedUser });
 	} catch(error) {

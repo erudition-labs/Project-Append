@@ -51,7 +51,7 @@ import { User } from '../../@core/user/user.model';
 import { EventsService } from '../../@core/events/events.service';
 import { AuthService } from '../../@core/auth/auth.service';
 import { UserService } from '../../@core/user/user.service';
-import {MatPaginator, MatTableDataSource} from '@angular/material';
+import { MatPaginator, MatTableDataSource } from '@angular/material';
 
 
 const colors: any = {
@@ -123,7 +123,7 @@ export class EventsComponent implements OnInit {
 				private eventsService		: EventsService,
 				public authService			: AuthService,
 				private toast				: ToastrService,
-				private changeDetectorRef	: ChangeDetectorRef) { }
+				private userService			: UserService) { }
 
 	ngOnInit() {
 		this.eventsService.getEvents().subscribe((result) => {
@@ -435,14 +435,20 @@ export class EventsComponent implements OnInit {
 					let index = this.events.findIndex(x => x.meta._id === this.modalData.event.meta._id);
 
 					if(index > -1) {
-						this.events[index].meta.signedUp = httpResult.result.signedUp;
-						this.modalData.event.meta.signedUp = httpResult.result.signedUp;
+						this.userService.eventUnregister(httpResult.result).subscribe(result => {
+							if(result.success) {
+								this.events[index].meta.signedUp = httpResult.result.signedUp;
+								this.modalData.event.meta.signedUp = httpResult.result.signedUp;
 
-						this.events[index].meta.pending = httpResult.result.pending;
-						this.modalData.event.meta.pending = httpResult.result.pending;
+								this.events[index].meta.pending = httpResult.result.pending;
+								this.modalData.event.meta.pending = httpResult.result.pending;
+							} else {
+								this.error('Something went wrong. API Error');
+							}
+						});
 					} else {
 						//event doesnt exist
-						this.error('Something went wrong. This event doesn\' exist!');
+						this.error('Something went wrong. This event doesn\'t exist!');
 					}
 				} else {
 					console.log('RIP ' + httpResult);
@@ -495,10 +501,6 @@ export class EventsComponent implements OnInit {
 
 
 	private acceptPending(id : string) : void {
-		console.log(!this.eventsService.isSignedUp(this.modalData.event.meta, id))
-		console.log(this.eventsService.isPending(this.modalData.event.meta, id));
-		
-
 		if(!this.eventsService.isSignedUp(this.modalData.event.meta, id) &&
 		this.eventsService.isPending(this.modalData.event.meta, id)) 
 		{ 
@@ -512,9 +514,19 @@ export class EventsComponent implements OnInit {
 				this.eventsService.signupUser(event)
 				.subscribe(httpResult => {
 					if(httpResult.success) {
-						this.modalData.event.meta.signedUp.push(tmpUser);
+						this.userService.eventSignup(event, tmpUser._id) //update user db to show they signed up
+						.subscribe(result => {
+							if(result.success) {
+								this.modalData.event.meta.signedUp.push(result.result);
+								//give success msg
+								this.success('User accepted');
+							} else {
+								this.error('Something went wrong: API Error');
+							}
+						});
+						//this.modalData.event.meta.signedUp.push(tmpUser);
 						//give success msg
-						this.success('User accepted');
+						//this.success('User accepted');
 					} else {
 						//failed
 						console.log('RIPPP' + httpResult);
