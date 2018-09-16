@@ -11,7 +11,8 @@ const createUser = async (userData) => {
 
 const getUserByEmail = async (email) => {
 	try {
-		return await User.findOne({ email: email });
+		return await User.findOne({ email: email })
+		.populate('events');
 	} catch(error) {
 		return error;
 	}
@@ -19,7 +20,8 @@ const getUserByEmail = async (email) => {
 
 const getUserById = async (id) => {
 	try {
-		return await User.findById(id, {'password' : 0});
+		return await User.findById(id, {'password' : 0})
+		.populate('events');
 	} catch(error) {
 		return error;
 	}
@@ -27,7 +29,8 @@ const getUserById = async (id) => {
 
 const getUsers = async () => {
 	try {
-		return await User.find({}, { 'password' : 0 });
+		return await User.find({}, { 'password' : 0 })
+		.populate('events');
 	} catch(error) {
 		return error;
 	}

@@ -110,7 +110,7 @@ const getUser = async (request, response) => {
 	try {
 		const userId = request.params.id;
 		const user = await queries.getUserById(userId);
-		return response.json({success: true, user});
+		return response.json({success: true, result: user});
 	} catch(error) {
 		console.log(error);
 		return error;
