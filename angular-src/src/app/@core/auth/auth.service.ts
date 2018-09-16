@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { NewUser } from '../user/user.model';
 import { Credentials } from '../user/credentials.model';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
 	providedIn: 'root'
@@ -14,7 +15,7 @@ export class AuthService {
 	constructor(private http 	: HttpClient,
 				private router	: Router) {}
 
-	readonly url : string = "http://cadet.ca782.org:3000/api/v1";
+	readonly url : string = environment.API_URL + "/api/v1";
 
 	public isAuthenticated(): boolean {
 		//const helper = new JwtHelperService();
