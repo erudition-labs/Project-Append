@@ -19,7 +19,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
 		this.userService.getUser(this.authService.parseToken().sub).subscribe((result) => {
-				this.user = result["user"];
+				this.user = result.result;
 		});
 	}
 
