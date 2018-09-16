@@ -51,7 +51,7 @@ import { User } from '../../@core/user/user.model';
 import { EventsService } from '../../@core/events/events.service';
 import { AuthService } from '../../@core/auth/auth.service';
 import { UserService } from '../../@core/user/user.service';
-import {MatPaginator, MatTableDataSource} from '@angular/material';
+import { MatPaginator, MatTableDataSource } from '@angular/material';
 
 
 const colors: any = {
@@ -123,7 +123,7 @@ export class EventsComponent implements OnInit {
 				private eventsService		: EventsService,
 				public authService			: AuthService,
 				private toast				: ToastrService,
-				private changeDetectorRef	: ChangeDetectorRef) { }
+				private userService			: UserService) { }
 
 	ngOnInit() {
 		this.eventsService.getEvents().subscribe((result) => {
@@ -495,10 +495,6 @@ export class EventsComponent implements OnInit {
 
 
 	private acceptPending(id : string) : void {
-		console.log(!this.eventsService.isSignedUp(this.modalData.event.meta, id))
-		console.log(this.eventsService.isPending(this.modalData.event.meta, id));
-		
-
 		if(!this.eventsService.isSignedUp(this.modalData.event.meta, id) &&
 		this.eventsService.isPending(this.modalData.event.meta, id)) 
 		{ 
@@ -512,9 +508,19 @@ export class EventsComponent implements OnInit {
 				this.eventsService.signupUser(event)
 				.subscribe(httpResult => {
 					if(httpResult.success) {
-						this.modalData.event.meta.signedUp.push(tmpUser);
+						this.userService.updateUser(tmpUser._id, tmpUser, httpResult.result) //update user db to show they signed up
+						.subscribe(result => {
+							if(result.success) {
+								this.modalData.event.meta.signedUp.push(result.result);
+								//give success msg
+								this.success('User accepted');
+							} else {
+								this.error('Something went wrong: API Error');
+							}
+						});
+						//this.modalData.event.meta.signedUp.push(tmpUser);
 						//give success msg
-						this.success('User accepted');
+						//this.success('User accepted');
 					} else {
 						//failed
 						console.log('RIPPP' + httpResult);
