@@ -6,6 +6,8 @@ import { User } from './user.model';
 import { Event } from './../events/event.model';
 import { environment } from '../../../environments/environment';
 import { UtilsService } from '../utils/utils.service';
+import 'rxjs/add/operator/mergeMap';
+
 
 
 @Injectable({
@@ -30,19 +32,34 @@ export class UserService {
 		return this.http.get<User[]>(this.url + '/users');
 	}
 
-	public getUser(id : string) : Observable<User> {
-		return this.http.get<User>(this.url + '/' + id);
+	public getUser(id : string) : Observable<any> {
+		return this.http.get(this.url + '/' + id);
 	}
 
-	public updateUser(id : string, user: User, event?: Event) : Observable<any> {
-		//convert events array back to ObjectId and add new event 
-		//if we are adding an event
-		if(event) {
-			let ids = this.utils.getIds(user.events);
-			ids.push(event._id);
-			user.events = ids;
-		}
+	public updateUser(id : string, user: User) : Observable<any> {
+		//convert Users Objects back to user ids
+		let idSet = new Set(this.utils.getIds(user.events));
+		user.events = Array.from(idSet);
+		
 		return this.http.put(this.url + '/' + id, { userData: user });	
+	}
+
+	public eventSignup(event: Event, id: string) : Observable<any> {
+		return this.getUser(id).flatMap(httpResult => {
+			if(httpResult.success) {
+				let user = httpResult.result;
+				let events = user.events;
+				console.log(events);
+				if(events) {
+					let oldEventIdsSet = new Set(this.utils.getIds(events));
+					oldEventIdsSet.add(event._id);
+					user.events = Array.from(oldEventIdsSet);
+				}
+				//console.log(user.events);
+				
+				return this.http.put(this.url + '/' + id, { userData: user });
+			}
+		});
 	}
 
 	public deleteUser(id : string) : Observable<any> {

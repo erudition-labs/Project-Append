@@ -508,7 +508,7 @@ export class EventsComponent implements OnInit {
 				this.eventsService.signupUser(event)
 				.subscribe(httpResult => {
 					if(httpResult.success) {
-						this.userService.updateUser(tmpUser._id, tmpUser, httpResult.result) //update user db to show they signed up
+						this.userService.eventSignup(event, tmpUser._id) //update user db to show they signed up
 						.subscribe(result => {
 							if(result.success) {
 								this.modalData.event.meta.signedUp.push(result.result);
