@@ -372,11 +372,18 @@ export class EventsComponent implements OnInit {
 					//be sure to attatch the id of the event since we are editing
 					newEvent._id = this.modalData.event.meta._id; 
 
+				//validate dates
+				if(!newEvent.date[0]) newEvent.date[0] = newEvent.date[1];
+				if(!newEvent.date[1]) newEvent.date[1] = newEvent.date[0];
+				if(!newEvent.date[0] && !newEvent.date[1]) {
+					newEvent.date = this.modalData.event.meta.date;
+				}
+
 					this.eventsService.updateEvent(newEvent).subscribe(
 						httpResult => {
 							if(httpResult.success) {
 								let index = this.events.findIndex(x => x.meta._id === newEvent._id);
-								if(index === -1) return; //no event to update
+								if(index === -1) return; //no event to update	
 
 								let updatedCalendarEvent : CalendarEvent = {
 									title	: httpResult.result.name,
