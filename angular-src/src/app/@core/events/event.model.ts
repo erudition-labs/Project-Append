@@ -10,4 +10,5 @@ export interface Event {
 	signedUp 					: any[];
 	pending						: any[];
 	additionalDetails			: string;
+	author						: any;
 }

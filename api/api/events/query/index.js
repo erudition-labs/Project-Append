@@ -33,7 +33,8 @@ const getEvent = async (id) => {
 		return await Event.findOne({ _id: id })
 		.populate('OIC')
 		.populate('signedUp')
-		.populate('pending');
+		.populate('pending')
+		.populate('author');
 	} catch(error) {
 		return error;
 	}
@@ -44,7 +45,8 @@ const updateEvent = async (data) => {
 		return await Event.findByIdAndUpdate(data._id, data, { new: true })
 		.populate('OIC')
 		.populate('signedUp')
-		.populate('pending');
+		.populate('pending')
+		.populate('author');
 	} catch(error) {
 		return error;
 	}
@@ -52,10 +54,11 @@ const updateEvent = async (data) => {
 
 const getEvents = async () => {
 	try {
-		return await Event.find().sort({ date: 'descending' }).limit(30)
+		return await Event.find().sort({ date: 'descending' }).limit(100)
 		.populate('OIC')
 		.populate('signedUp')
-		.populate('pending');
+		.populate('pending')
+		.populate('author');
 	} catch(error) {
 		return error;
 	}

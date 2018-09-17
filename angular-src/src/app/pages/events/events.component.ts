@@ -220,6 +220,7 @@ export class EventsComponent implements OnInit {
 			OIC						: new FormControl([], { }),
 			signedUp				: new FormControl([], { }),
 			pending					: new FormControl([], { }),
+			author					: new FormControl('', { }),
 			additionalDetails		: this.formBuilder.array([ this.initDetailField() ])
 		});
 	}
@@ -244,6 +245,7 @@ export class EventsComponent implements OnInit {
 		this.newEventForm.get('OIC').setValue(data.OIC);
 		this.newEventForm.get('signedUp').setValue(data.signedUp);
 		this.newEventForm.get('pending').setValue(data.pending);
+		this.newEventForm.get('author').setValue(data.author);
 		
 		data.additionalDetails.forEach(function(obj) {  //populate formArray
 			const control = <FormArray> this.newEventForm.controls['additionalDetails'];
@@ -278,6 +280,7 @@ export class EventsComponent implements OnInit {
 				OIC,
 				signedUp,
 				pending,
+				author,
 				additionalDetails
 			} = result.value;
 
@@ -292,6 +295,7 @@ export class EventsComponent implements OnInit {
 			OIC,
 			signedUp,
 			pending,
+			author,
 			additionalDetails
 		};	
 		newEvent.additionalDetails = JSON.stringify(result.get('additionalDetails').getRawValue());
@@ -309,12 +313,12 @@ export class EventsComponent implements OnInit {
 				if(typeof result === 'undefined' || result == null) { return; }
 				if(result.valid) {
 					let newEvent = this.dialogDataToEvent(result);
+					newEvent.author = this.authService.parseToken().sub;
 					//In the case of creating event for OIC to edit, automatically sign them up
 					newEvent.signedUp = newEvent.OIC;
 					this.eventsService.createEvent(newEvent).subscribe(
 						httpResult => {
 							if(httpResult.success) {
-								console.log(httpResult.result);
 								newEvent._id = httpResult.result._id;
 								newEvent.additionalDetails = JSON.parse(newEvent.additionalDetails);
 
@@ -553,7 +557,6 @@ export class EventsComponent implements OnInit {
 				let event = Object.assign({}, this.modalData.event.meta);
 				this.eventsService.unregisterUser(event)
 				.subscribe(httpResult => {
-					console.log(httpResult.result);
 					if(httpResult.success) {
 						//successsss
 					} else {
