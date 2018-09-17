@@ -298,6 +298,7 @@ export class EventsComponent implements OnInit {
 			author,
 			additionalDetails
 		};	
+
 		newEvent.additionalDetails = JSON.stringify(result.get('additionalDetails').getRawValue());
 		return newEvent;
 	}
@@ -314,6 +315,14 @@ export class EventsComponent implements OnInit {
 				if(result.valid) {
 					let newEvent = this.dialogDataToEvent(result);
 					newEvent.author = this.authService.parseToken().sub;
+
+					//check dates
+					if(!newEvent.date[0]) newEvent.date[0] = newEvent.date[1];
+					if(!newEvent.date[1]) newEvent.date[1] = newEvent.date[0];
+					if(!newEvent.date[0] && !newEvent.date[1]){
+						newEvent.date[0] = new Date();
+						newEvent.date[0] = new Date();
+					}
 					//In the case of creating event for OIC to edit, automatically sign them up
 					newEvent.signedUp = newEvent.OIC;
 					this.eventsService.createEvent(newEvent).subscribe(
