@@ -66,7 +66,8 @@ export class EventsService {
 
 	public isOIC(event: Event) : boolean {
 		let currUserId = this.authService.parseToken().sub
-
+		if(!event.OIC) return false;
+		
 		for(let user of event.OIC) {
 			if(user._id === currUserId) {
 				return true;

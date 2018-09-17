@@ -47,20 +47,23 @@
 						<pre> {{ modalData?.event?.meta?.summary }} </pre>
 					</div>
 
-					<div *ngIf="modalData.event.meta.OIC &&
-								modalData.event.meta.OIC.length > 0"> Assigned OIC
-						<mat-list>
-							<pre>
-								<mat-list-item *ngFor="let user of modalData.event.meta.OIC">
-									<nb-user [name]="user?.lastName + ',' + user?.firstName" 
-											[title]="user?.rank">
-									</nb-user>
-								</mat-list-item>
-							</pre>
-						</mat-list>
-					</div>
+					<ng-container *ngIf="modalData.event.meta.OIC">
+						<div *ngIf="modalData.event.meta.OIC?.length > 0"> Assigned OIC
+							<mat-list>
+								<pre>
+									<mat-list-item *ngFor="let user of modalData.event.meta.OIC">
+										<nb-user [name]="user?.lastName + ',' + user?.firstName" 
+												[title]="user?.rank">
+										</nb-user>
+									</mat-list-item>
+								</pre>
+							</mat-list>
+						</div>
+					</ng-container>
 
-					<ng-container *ngIf="modalData.event.meta.isSignupRequired">
+					<ng-container *ngIf="modalData.event.meta.isSignupRequired &&
+															(eventsService.isOIC(modalData.event.meta.OIC) ||
+															authService.isAdmin())">
 						<div>Signed Up 
 							<ng-container *ngIf="modalData.event.meta.signedUp.length> 0; 
 												else NoUsersSignedUp">
