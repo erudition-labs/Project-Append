@@ -80,7 +80,6 @@ const postVerifyResend = async (request, response) => {
 };
 
 const postEmailVerification = async (request, response) => {
-	console.log(request.params.token);
 	util.NEV.confirmTempUser(request.params.token, function(error, user) { // Nev takes care of url being empty
 		if(user) {
 			return response.status(201).json({ success: true, message: "Account Confirmed" });
@@ -132,7 +131,6 @@ const putUser = async (request, response) => {
 	try {
 		const userId = request.params.id;
 		const userData = request.body.userData;
-		console.log(userData);
 		const updatedUser = await queries.updateUser(userId, userData);
 		response.json({ success: true, result: updatedUser });
 	} catch(error) {

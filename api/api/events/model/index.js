@@ -23,6 +23,11 @@ const eventModel = new Schema({
 		ref: 'user',
 		required: false
 	}],
+	author	: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'user',
+		required: true
+	},
 	additionalDetails : { type: String, required: false }
 });
 
