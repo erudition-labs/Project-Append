@@ -54,7 +54,7 @@ const updateEvent = async (data) => {
 
 const getEvents = async () => {
 	try {
-		return await Event.find().sort({ date: 'descending' }).limit(30)
+		return await Event.find().sort({ date: 'descending' }).limit(100)
 		.populate('OIC')
 		.populate('signedUp')
 		.populate('pending')
