@@ -13,7 +13,7 @@ const createToken = user => {
 		aud			: 'api.euriditionlabs.com'
 	},
 		config.secret, //////////////////////////////////////change this
-		{ algorithm: 'HS256', expiresIn: '1m' }
+		{ algorithm: 'HS256', expiresIn: '1h' }
 	);
 };
 

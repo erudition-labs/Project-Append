@@ -15,6 +15,7 @@ const getUserByEmail = async (email) => {
 		let user =  await User.findOne({ email: email })
 		.populate('events');
 
+		if(!user) return null;
 		return util.unescapeUser(user);
 	} catch(error) {
 		return error;
