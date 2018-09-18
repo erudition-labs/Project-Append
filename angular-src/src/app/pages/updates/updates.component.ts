@@ -23,9 +23,13 @@ export class UpdatesComponent implements OnInit {
   updates : Update[] = [];
   singleUpdate : Boolean = false;
   update : Update;
+  edittedUpdate : Update;
   closeResult: string;
   addUpdateClicked : Boolean = false;
+  editButtonClicked : Boolean = false;
   updateForm: FormGroup;
+  editForm: FormGroup;
+
 
   ngOnInit() {
     this.updatesService.getUpdates().subscribe((result) => {
@@ -39,6 +43,13 @@ export class UpdatesComponent implements OnInit {
 
   private createForm() : void {
 		this.updateForm = this.formBuilder.group({
+			title 		: new FormControl('', {}),
+      content 	: new FormControl('', {}),
+      author    : new FormControl('', {}),
+      date      : new FormControl('', {}),
+    });
+    
+    this.editForm = this.formBuilder.group({
 			title 		: new FormControl('', {}),
       content 	: new FormControl('', {}),
       author    : new FormControl('', {}),
@@ -63,6 +74,8 @@ export class UpdatesComponent implements OnInit {
     update.author = this.authService.parseToken().sub;
 
     this.addUpdateClicked = false;
+    this.editButtonClicked = false;
+
     
     this.updatesService.createUpdate(update).subscribe((result) => {
       console.log(result.message);
@@ -70,14 +83,55 @@ export class UpdatesComponent implements OnInit {
     location.reload();
   }
 
+  public onClickEdit() : void {
+    this.singleUpdate = false;
+    this.addUpdateClicked = false;
+		this.editForm.controls.title.markAsDirty();
+		this.editForm.controls.content.markAsDirty();
+
+		const { title, content, author, date } = this.editForm.value;
+		const edittedUpdate : Update = {
+			title,
+      content,
+      author,
+      date
+    };
+
+    edittedUpdate.author = this.update.author;
+    edittedUpdate.date = this.update.date;
+    this.addUpdateClicked = false;
+    this.editButtonClicked = false;
+
+    console.log(edittedUpdate);
+    
+   // location.reload();
+  }
+
+  private populateForm() : void {
+		this.createForm();
+
+		//get data from currently opened section
+		let data = this.update;
+
+		//populate formControls
+		this.editForm.get('title').setValue(data.title);
+		this.editForm.get('content').setValue(data.content);
+	
+	}
+
+
   private singleUpdateSet(update : Update) {
     this.singleUpdate = true;
     this.update = update;
+    this.editButtonClicked = false;
+
   }
 
   private back() {
     this.singleUpdate = false; 
     this.addUpdateClicked = false;
+    this.editButtonClicked = false;
+
   }
 
   public createUpdate(): void {
@@ -94,8 +148,10 @@ export class UpdatesComponent implements OnInit {
   }
 
   private edit() {
-    console.log("edit");
-    
+    this.editButtonClicked = true;
+    if(this.authService.isAuthenticated() && this.authService.isAdmin()) {
+      this.populateForm();
+    }
   }
 
   private delete() {

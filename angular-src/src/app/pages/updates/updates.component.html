@@ -23,7 +23,7 @@
     </div>
   </ng-container>
   
-  <ng-container *ngIf="singleUpdate">
+  <ng-container *ngIf="singleUpdate && !editButtonClicked">
     <div class="col-md-8">
       <nb-card size="xxlarge" accent="active">
           <nb-card-header>
@@ -79,10 +79,68 @@
       </div>
   </ng-container>
 
+  <ng-container *ngIf="editButtonClicked && authService.isAdmin()">
+      <div class="col-md-8">
+        <nb-card size="xxlarge" accent="active">
+          <ng-container [formGroup]="editForm">
+            <nb-card-header>
+              <i>Edit Post</i>
+            </nb-card-header>
+            <nb-card-body>
+                <div class="font-row font-secondary">
+                  <div class="header">
+                    <div class="name bold">
+                      <input [formControl]="editForm.get('title')" type="text" placeholder="Title of Post" class="form-textbox">
+                    </div>
+                      <div class="variants">
+                        <span class="font-w-light">{{update.date.toDateString()}}</span>
+                      </div>
+                  </div>
+                  <p>
+                      <textarea [formControl]="editForm.get('content')" rows="30" placeholder="Content of Post" class="form-textarea"></textarea>
+                  </p>
+                </div>  
+            </nb-card-body>
+            <nb-card-footer>
+              <button class="btn btn-hero-primary btn-demo" (click)="back()">Back</button>
+              <span style="float:right;" *ngIf="authService.isAdmin()">
+                  <button class="btn btn-outline-success"s (click)="onClickEdit()">Save</button>
+              </span>
+            </nb-card-footer>
+          </ng-container>
+        </nb-card>
+      </div>
+      <div class="col-md-4">
+          <nb-card size="xsmall" accent="info">
+              <nb-card-header>
+                <span style="float: right;"><i>The Author</i></span>
+              </nb-card-header>
+              <nb-card-body>
+                  <div class="font-row font-main">
+                    <div class="header">
+                      <div class="name bold">{{update.author.firstName}} {{update.author.lastName}}</div>
+      
+                      <div class="variants">
+                        <span class="font-w-regular">{{update.author.rank}}</span>
+                      </div>
+                    </div>
+                  </div>
+                    <nb-user size="large"
+                      name="{{update.author.firstName}} {{update.author.lastName}}"
+                      title="{{update.author.rank}}"
+                      badgeText="{{update.author.team}}"
+                      badgeStatus="success"
+                      badgePosition="bottom right">
+                   </nb-user>
+              </nb-card-body>
+          </nb-card>
+        </div>
+    </ng-container>
+
   <ng-container *ngIf="addUpdateClicked && !singleUpdate && authService.isAdmin()">
       <div class="col-md-12">
         <nb-card size="xxlarge" accent="active">
-          <ng-container [formGroup]="updateForm">
+          <ng-container [formGroup]="editForm">
             <nb-card-header>
               <i>Add Post</i>
             </nb-card-header>
@@ -90,18 +148,18 @@
                 <div class="font-row font-secondary">
                   <div class="header">
                     <div class="name bold">
-                      <input [formControl]="updateForm.get('title')" type="text" placeholder="Title of Post" class="form-textbox">
+                      <input [formControl]="editForm.get('title')" type="text" placeholder="Title of Post" class="form-textbox">
                     </div>  
                   </div>
                   <p>
-                    <textarea [formControl]="updateForm.get('content')" rows="30" placeholder="Content of Post" class="form-textarea"></textarea>
+                    <textarea [formControl]="editForm.get('content')" rows="30" placeholder="Content of Post" class="form-textarea"></textarea>
                   </p>
                 </div>  
             </nb-card-body>
             <nb-card-footer>
               <button class="btn btn-hero-primary btn-demo" (click)="back()">Back</button>
               <span style="float:right;" *ngIf="authService.isAdmin()">
-                  <button class="btn btn-hero-info btn-demo" (click)="onClick()">Post</button>
+                  <button class="btn btn-hero-info btn-demo" (click)="onClick()">Save</button>
               </span>
             </nb-card-footer>
           </ng-container>
