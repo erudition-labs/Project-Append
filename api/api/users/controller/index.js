@@ -1,5 +1,4 @@
 const queries 				= require('./../query');
-const util 					= require('./../util');
 const models				= require('./../model');
 const { createToken } 		= require('./../../authenticate/util');
 const jwtDecode 			= require('jwt-decode');
@@ -109,6 +108,7 @@ const getUser = async (request, response) => {
 	try {
 		const userId = request.params.id;
 		const user = await queries.getUserById(userId);
+
 		return response.json({success: true, result: user});
 	} catch(error) {
 		console.log(error);
@@ -131,6 +131,7 @@ const putUser = async (request, response) => {
 	try {
 		const userId = request.params.id;
 		const userData = request.body.userData;
+
 		const updatedUser = await queries.updateUser(userId, userData);
 		response.json({ success: true, result: updatedUser });
 	} catch(error) {

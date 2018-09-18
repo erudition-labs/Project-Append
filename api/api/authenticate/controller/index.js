@@ -2,6 +2,7 @@ const { getUserByEmail 			} = require('./../../users/query');
 const { verifyPassword 		} = require('./../../users/util');
 const { createToken 		} = require('./../util');
 const { validationResult 	} = require('express-validator/check');
+const util = require('../../users/util');
 const jwtDecode = require('jwt-decode');
 
 const postAuthenticate = async (request, response) => {
@@ -14,13 +15,14 @@ const postAuthenticate = async (request, response) => {
 		const email 	= request.body.email;
 		const password 	= request.body.password;
 		
-		const user 				= await getUserByEmail(email);
+		var user 				= await getUserByEmail(email);
 		const isValidPassword 	= await verifyPassword(password, user.password);
 
 		if(isValidPassword) {
 			const token 		= createToken(user);
 			const decodedToken 	= jwtDecode(token);
 			const expiresAt 	= decodedToken.exp;
+			user = util.unescapeUser(user);
 
 			const userInfo = {
 				email		: user.email,

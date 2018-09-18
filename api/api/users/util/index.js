@@ -2,6 +2,8 @@ const bcrypt 	= require('bcryptjs');
 const mongoose	= require('mongoose');
 const nev		= require('email-verification')(mongoose);
 const models	= require('./../model');
+const validator = require('validator');
+
 
 const TempUser 	= models.tmpUser;
 const User		= models.user;
@@ -37,6 +39,25 @@ const requireAdmin = (request, response, next) => {
 	}
 	next();
 };
+
+const unescapeUser = (user) => {
+	if(user.firstName) 		user.firstName		= validator.unescape(user.firstName);
+	if(user.lastName) 		user.lastName		= validator.unescape(user.lastName);
+	if(user.rank) 			user.rank			= validator.unescape(user.rank);
+	if(user.flight) 		user.flight			= validator.unescape(user.flight);
+	if(user.team) 			user.team 			= validator.unescape(user.team);
+	if(user.email) 			user.email			= validator.unescape(user.email);
+	if(user.phone) 			user.phone			= validator.unescape(user.phone);
+	if(user.role) 			user.role			= validator.unescape(user.role);
+	return user;
+};
+
+const unescapeUserArray = (users) => {
+	for(let i=0; i<users.length; i++) {
+		users[i] = unescapeUser(users[i]);
+	}
+	return users;
+}
 
 // hashing function for nev
 var hashFunction = function(password, tempUserData, insertTempUser, callback) {
@@ -89,5 +110,11 @@ nev.configure({
 
 
 
-module.exports = { hashPassword, verifyPassword, requireAdmin };
+module.exports = { 
+	hashPassword, 
+	verifyPassword, 
+	requireAdmin, 
+	unescapeUser,
+	unescapeUserArray
+};
 module.exports.NEV = nev;
