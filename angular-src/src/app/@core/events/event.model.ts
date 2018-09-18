@@ -3,7 +3,7 @@ export interface Event {
 	name 						: string;
 	isVerificationRequired 		: boolean;
 	isVerified 					: boolean;
-	isSignupRequired 			: boolean;
+	isClosed		 			: boolean;
 	summary						: string;
 	date 						: any[];
 	OIC 						: any[];
