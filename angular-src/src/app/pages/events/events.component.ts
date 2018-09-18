@@ -634,6 +634,8 @@ export class DialogOverviewEventComponent implements OnInit {
 
 	users : Observable<User[]>;
 	selectedUsers = [];
+	signupText : string;
+	isClosed : boolean;
 
 	constructor( 
 		public dialogRef: MatDialogRef<DialogOverviewEventComponent>,
@@ -645,15 +647,26 @@ export class DialogOverviewEventComponent implements OnInit {
 
 		 isAdmin : boolean = false;
 
+
 	ngOnInit() {
 		this.users = this.userService.getUsers();
 		this.isAdmin = this.authService.isAdmin();
+		this.isClosed = this.data.get('isClosed');
 	}
 
 	onNoClick(): void {
 		this.dialogRef.close();
 	}
 
+	enableSignups() : void {
+		this.data.get('isClosed').setValue(false);
+		this.isClosed = false;		
+	}
+
+	disableSignups() : void {
+		this.data.get('isClosed').setValue(true);
+		this.isClosed = true;		
+	}
 
 	public addDetailField() : void {
 		const control = <FormArray>this.data.controls['additionalDetails'];
