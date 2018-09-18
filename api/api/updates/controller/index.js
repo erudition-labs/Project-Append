@@ -20,7 +20,21 @@ const createUpdate = async(request, response) => {
     }
 }
 
+const editUpdate = async (request, response) => {
+	try {
+    
+		const updateId = request.body.data._id;
+        const updateData = request.body.data;
+
+		const edittedUpdate = await queries.editUpdate(updateId, updateData);
+		response.json({ success: true, message: 'Successfully editted' });
+	} catch(error) {
+		return error;
+	}
+};
+
 module.exports = {
     getUpdates,
     createUpdate,
+    editUpdate
 };

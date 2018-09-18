@@ -99,11 +99,14 @@ export class UpdatesComponent implements OnInit {
 
     edittedUpdate.author = this.update.author;
     edittedUpdate.date = this.update.date;
+    edittedUpdate._id = this.update._id;
     this.addUpdateClicked = false;
     this.editButtonClicked = false;
 
-    console.log(edittedUpdate);
-    
+    this.updatesService.editUpdate(edittedUpdate).subscribe((result) => {
+      this.success(result.message)
+    });
+
    // location.reload();
   }
 
@@ -155,8 +158,7 @@ export class UpdatesComponent implements OnInit {
   }
 
   private delete() {
-    console.log("delete");
-    
+    alert(this.update.title);
   }
   
   private error(msg : string) : void {

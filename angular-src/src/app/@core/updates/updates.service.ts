@@ -21,16 +21,10 @@ export class UpdatesService {
 	}
 
 	public createUpdate(update: Update) : Observable<any> {
-		console.log(update);
-		
 		return this.http.post(this.url + '/', { data: update });	
 	}
 
-	// public createEvent(event: Event) : Observable<any> {
-	// 	return this.http.post(this.url + '/', { data: event });	
-	// }
-
-	// public updateEvent(event: Event) : Observable<any> {
-	// 	return this.http.put(this.url + '/', { data: event, user:  this.authService.parseToken().sub });	
-	// }
+	public editUpdate(update : Update) : Observable<any> {
+		return this.http.put(this.url + '/', { data: update });	
+	}
 }

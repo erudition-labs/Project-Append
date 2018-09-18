@@ -18,7 +18,18 @@ const createUpdate = async (updateData) => {
 		return error;
 	}
 };
+
+const editUpdate = async (id, update) => {
+	try {
+		return await Update.findByIdAndUpdate(id, update, { new: true });
+	} catch(error) {
+		return error;
+	}
+};
+
+
 module.exports = {
     getUpdates,
     createUpdate,
+    editUpdate
 };
