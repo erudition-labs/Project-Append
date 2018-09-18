@@ -32,10 +32,10 @@ const getEvent = async (owner, id) => {
 const getEvent = async (id) => {
 	try {
 		let event =  await Event.findOne({ _id: id })
-		.populate('OIC')
-		.populate('signedUp')
-		.populate('pending')
-		.populate('author');
+		.populate('OIC', 		{ password: 0 })
+		.populate('signedUp', 	{ password: 0 })
+		.populate('pending', 	{ password: 0 })
+		.populate('author', 	{ password: 0 });
 
 		return Util.unescapeEvent(event);
 	} catch(error) {
@@ -46,10 +46,10 @@ const getEvent = async (id) => {
 const updateEvent = async (data) => {
 	try {
 		let event = await Event.findByIdAndUpdate(data._id, data, { new: true })
-		.populate('OIC')
-		.populate('signedUp')
-		.populate('pending')
-		.populate('author');
+		.populate('OIC', 		{ password: 0 })
+		.populate('signedUp', 	{ password: 0 })
+		.populate('pending', 	{ password: 0 })
+		.populate('author', 	{ password: 0 });
 		return Util.unescapeEvent(event);
 	} catch(error) {
 		return error;
@@ -59,10 +59,10 @@ const updateEvent = async (data) => {
 const getEvents = async () => {
 	try {
 		let events = await Event.find().sort({ date: 'descending' }).limit(100)
-		.populate('OIC')
-		.populate('signedUp')
-		.populate('pending')
-		.populate('author');
+		.populate('OIC', 		{ password: 0 })
+		.populate('signedUp', 	{ password: 0 })
+		.populate('pending', 	{ password: 0 })
+		.populate('author', 	{ password: 0 });
 
 		return Util.unescapeEventArray(events);
 	} catch(error) {

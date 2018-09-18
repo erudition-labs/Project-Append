@@ -46,7 +46,7 @@ const getUsers = async () => {
 
 const updateUser = async (id, user) => {
 	try {
-		let user = await User.findByIdAndUpdate(id, user, { new: true })
+		let user = await User.findByIdAndUpdate(id, this.user, { new: true })
 		.populate('events');
 
 		return util.unescapeUser(user);
