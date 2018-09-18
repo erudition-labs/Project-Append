@@ -77,15 +77,15 @@ export class UpdatesComponent implements OnInit {
 
   private back() {
     this.singleUpdate = false; 
+    this.addUpdateClicked = false;
   }
 
   public createUpdate(): void {
-    console.log(this.authService.isAuthenticated());
-    console.log(this.authService.isAdmin());
-    
-    
 		if(this.authService.isAuthenticated() && this.authService.isAdmin()) {
       this.addUpdateClicked = true;
+      this.singleUpdate = false;
+      console.log(this.addUpdateClicked);
+      
 		} else {
 			//tell them they no have access
       this.error('You are not authorized');
