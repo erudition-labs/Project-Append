@@ -13,9 +13,16 @@ const postAuthenticate = async (request, response) => {
 
 		const email 	= request.body.email;
 		const password 	= request.body.password;
-		
+
 		const user 				= await getUserByEmail(email);
+		if(!user) {
+			return response.json({success: false, message: 'Email or Password doesnt exist'});
+		}
+		console.log(user);
+		
 		const isValidPassword 	= await verifyPassword(password, user.password);
+
+		
 
 		if(isValidPassword) {
 			const token 		= createToken(user);

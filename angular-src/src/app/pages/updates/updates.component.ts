@@ -92,6 +92,16 @@ export class UpdatesComponent implements OnInit {
       this.addUpdateClicked = false;
 		}
   }
+
+  private edit() {
+    console.log("edit");
+    
+  }
+
+  private delete() {
+    console.log("delete");
+    
+  }
   
   private error(msg : string) : void {
 		this.toast.error(msg, 'Error!', {
