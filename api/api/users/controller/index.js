@@ -1,5 +1,4 @@
 const queries 				= require('./../query');
-const util 					= require('./../util');
 const models				= require('./../model');
 const { createToken } 		= require('./../../authenticate/util');
 const jwtDecode 			= require('jwt-decode');
@@ -108,9 +107,8 @@ const getUserByEmail = async (request, response) => {
 const getUser = async (request, response) => {
 	try {
 		const userId = request.params.id;
-		var user = await queries.getUserById(userId);
-		
-		user = util.unescapeUser(user);
+		const user = await queries.getUserById(userId);
+
 		return response.json({success: true, result: user});
 	} catch(error) {
 		console.log(error);
@@ -120,11 +118,7 @@ const getUser = async (request, response) => {
 
 const getUsers = async (request, response) => {
 	try {
-		var users = await queries.getUsers();
-		for(var i=0; i<users.length-1; i++) {
-			users[i] = util.unescapeUser(users[i]);
-		}
-
+		const users = await queries.getUsers();
 		response.json(users);
 	} catch(error) {
 		console.log(error);
@@ -138,8 +132,7 @@ const putUser = async (request, response) => {
 		const userId = request.params.id;
 		const userData = request.body.userData;
 
-		var updatedUser = await queries.updateUser(userId, userData);
-		updateUser = util.unescapeUser(updatedUser);
+		const updatedUser = await queries.updateUser(userId, userData);
 		response.json({ success: true, result: updatedUser });
 	} catch(error) {
 		return error;

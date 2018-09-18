@@ -52,6 +52,13 @@ const unescapeUser = (user) => {
 	return user;
 };
 
+const unescapeUserArray = (users) => {
+	for(let i=0; i<users.length; i++) {
+		users[i] = unescapeUser(users[i]);
+	}
+	return users;
+}
+
 // hashing function for nev
 var hashFunction = function(password, tempUserData, insertTempUser, callback) {
 	bcrypt.genSalt(10, function(err, salt) {
@@ -103,5 +110,11 @@ nev.configure({
 
 
 
-module.exports = { hashPassword, verifyPassword, requireAdmin, unescapeUser };
+module.exports = { 
+	hashPassword, 
+	verifyPassword, 
+	requireAdmin, 
+	unescapeUser,
+	unescapeUserArray
+};
 module.exports.NEV = nev;

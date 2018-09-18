@@ -1,4 +1,5 @@
 const User = require('./../model').user;
+const util = require('./../util');
 
 const createUser = async (userData) => {
 	try {
@@ -11,8 +12,10 @@ const createUser = async (userData) => {
 
 const getUserByEmail = async (email) => {
 	try {
-		return await User.findOne({ email: email })
+		let user =  await User.findOne({ email: email })
 		.populate('events');
+
+		return util.unescapeUser(user);
 	} catch(error) {
 		return error;
 	}
@@ -20,8 +23,10 @@ const getUserByEmail = async (email) => {
 
 const getUserById = async (id) => {
 	try {
-		return await User.findById(id, {'password' : 0})
+		let user = await User.findById(id, {'password' : 0})
 		.populate('events');
+
+		return util.unescapeUser(user);
 	} catch(error) {
 		return error;
 	}
@@ -29,8 +34,11 @@ const getUserById = async (id) => {
 
 const getUsers = async () => {
 	try {
-		return await User.find({}, { 'password' : 0 })
+		let users = await User.find({}, { 'password' : 0 })
 		.populate('events');
+
+		users = util.unescapeUserArray(users);
+		return users;
 	} catch(error) {
 		return error;
 	}
@@ -38,8 +46,10 @@ const getUsers = async () => {
 
 const updateUser = async (id, user) => {
 	try {
-		return await User.findByIdAndUpdate(id, user, { new: true })
+		let user = await User.findByIdAndUpdate(id, user, { new: true })
 		.populate('events');
+
+		return util.unescapeUser(user);
 	} catch(error) {
 		return error;
 	}
