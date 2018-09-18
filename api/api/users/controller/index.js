@@ -108,7 +108,9 @@ const getUserByEmail = async (request, response) => {
 const getUser = async (request, response) => {
 	try {
 		const userId = request.params.id;
-		const user = await queries.getUserById(userId);
+		var user = await queries.getUserById(userId);
+		
+		user = util.unescapeUser(user);
 		return response.json({success: true, result: user});
 	} catch(error) {
 		console.log(error);
@@ -118,7 +120,11 @@ const getUser = async (request, response) => {
 
 const getUsers = async (request, response) => {
 	try {
-		const users = await queries.getUsers();
+		var users = await queries.getUsers();
+		for(var i=0; i<users.length-1; i++) {
+			users[i] = util.unescapeUser(users[i]);
+		}
+
 		response.json(users);
 	} catch(error) {
 		console.log(error);
@@ -131,7 +137,9 @@ const putUser = async (request, response) => {
 	try {
 		const userId = request.params.id;
 		const userData = request.body.userData;
-		const updatedUser = await queries.updateUser(userId, userData);
+
+		var updatedUser = await queries.updateUser(userId, userData);
+		updateUser = util.unescapeUser(updatedUser);
 		response.json({ success: true, result: updatedUser });
 	} catch(error) {
 		return error;
