@@ -392,6 +392,7 @@ export class EventsComponent implements OnInit {
 									color	: colors.red,
 									meta	: httpResult.result
 								};
+								console.log(httpResult.result);
 								
 							updatedCalendarEvent.meta.additionalDetails = JSON.parse(updatedCalendarEvent.meta.additionalDetails);
 
@@ -651,7 +652,7 @@ export class DialogOverviewEventComponent implements OnInit {
 	ngOnInit() {
 		this.users = this.userService.getUsers();
 		this.isAdmin = this.authService.isAdmin();
-		this.isClosed = this.data.get('isClosed');
+		this.isClosed = this.data.get('isClosed').value;
 	}
 
 	onNoClick(): void {
