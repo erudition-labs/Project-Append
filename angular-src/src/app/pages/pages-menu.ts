@@ -18,7 +18,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
 	  link: '/pages/user-management',
   },
   {
-  	title: 'Updates',
+  	title: 'News',
 	  icon: 'nb-alert',
 	  link: '/pages/updates',
   },
@@ -42,7 +42,7 @@ export const MENU_ITEMS_ADMIN: NbMenuItem[] = [
 	  link: '/pages/user-management',
   },
   {
-  	title: 'Updates',
+  	title: 'News',
 	  icon: 'nb-alert',
 	  link: '/pages/updates',
   },
