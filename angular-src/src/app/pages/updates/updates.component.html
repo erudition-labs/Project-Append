@@ -140,7 +140,7 @@
   <ng-container *ngIf="addUpdateClicked && !singleUpdate && authService.isAdmin()">
       <div class="col-md-12">
         <nb-card size="xxlarge" accent="active">
-          <ng-container [formGroup]="editForm">
+          <ng-container [formGroup]="updateForm">
             <nb-card-header>
               <i>Add Post</i>
             </nb-card-header>
@@ -148,11 +148,11 @@
                 <div class="font-row font-secondary">
                   <div class="header">
                     <div class="name bold">
-                      <input [formControl]="editForm.get('title')" type="text" placeholder="Title of Post" class="form-textbox">
+                      <input [formControl]="updateForm.get('title')" type="text" placeholder="Title of Post" class="form-textbox">
                     </div>  
                   </div>
                   <p>
-                    <textarea [formControl]="editForm.get('content')" rows="30" placeholder="Content of Post" class="form-textarea"></textarea>
+                    <textarea [formControl]="updateForm.get('content')" rows="30" placeholder="Content of Post" class="form-textarea"></textarea>
                   </p>
                 </div>  
             </nb-card-body>

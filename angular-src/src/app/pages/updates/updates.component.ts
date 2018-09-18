@@ -105,9 +105,10 @@ export class UpdatesComponent implements OnInit {
 
     this.updatesService.editUpdate(edittedUpdate).subscribe((result) => {
       this.success(result.message)
+
     });
 
-   // location.reload();
+    location.reload();
   }
 
   private populateForm() : void {
