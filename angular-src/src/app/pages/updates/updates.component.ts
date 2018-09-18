@@ -18,7 +18,7 @@ import {
 })
 export class UpdatesComponent implements OnInit {
 
-  constructor(private updatesService : UpdatesService, private authService : AuthService, private toast : ToastrService, private formBuilder : FormBuilder,) { }
+  constructor(private updatesService : UpdatesService, public authService : AuthService, private toast : ToastrService, private formBuilder : FormBuilder,) { }
 
   updates : Update[] = [];
   singleUpdate : Boolean = false;

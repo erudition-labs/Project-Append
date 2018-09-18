@@ -33,7 +33,7 @@
     "release:changelog": "npm run conventional-changelog -- -p angular -i CHANGELOG.md -s"
   },
   "dependencies": {
-    "@angular/animations": "^6.0.0",
+    "@angular/animations": "^6.0.5",
     "@angular/cdk": "^6.4.6",
     "@angular/common": "6.0.0",
     "@angular/compiler": "6.0.0",

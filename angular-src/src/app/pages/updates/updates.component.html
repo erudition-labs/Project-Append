@@ -56,7 +56,14 @@
                 </p>
               </div>  
           </nb-card-body>
-          <nb-card-footer><button class="btn btn-hero-primary btn-demo" (click)="back()">Back</button></nb-card-footer>
+          <nb-card-footer>
+            <button class="btn btn-hero-primary btn-demo" (click)="back()">Back</button>
+            <span style="float:right;">
+                <button class="btn btn-outline-success btn-icon btn-tn" style="font-size: 2em; padding: 1px 3px;" (click)="back()"><i class="nb-edit"></i></button>
+                <span style="margin: 0 2px;"></span>
+                <button class="btn btn-outline-danger btn-icon btn-tn" style="font-size: 2em; padding: 1px 3px;" (click)="back()"><i class="nb-trash"></i></button>
+            </span>
+          </nb-card-footer>
       </nb-card>
     </div>
     <div class="col-md-4">
@@ -87,7 +94,7 @@
   </ng-container>
 </div>
 
-<div class="fab-container">
+<div class="fab-container" *ngIf="authService.isAdmin()">
 	<button mat-fab 
 		color="primary"
 		(click)="createUpdate();">
