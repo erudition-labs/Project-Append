@@ -44,6 +44,26 @@
 				</mat-list-item>
 			</ng-container>
 
+		<mat-list-item>
+			<mat-form-field>
+
+				<mat-label>Spots Available</mat-label>
+				<input matInput type="number"
+						[formControl]="data.get('spots')"
+						placeholder="Spots Available"
+						[attr.disabled]="isCapDisabled ? '' : null">
+
+				<mat-error *ngIf="data.get('spots').hasError('validateNumber') || data.get('spots').dirty">
+					Must be a number
+				</mat-error>
+			</mat-form-field>
+			<mat-checkbox [(ngModel)]="isCapDisabled"
+							[ngModelOptions]="{standalone: true}"
+							(click)="disableCap()">
+			No limit
+		</mat-checkbox>
+		</mat-list-item>
+
 			<mat-list-item>
 				<input placeholder="Select a date range"
 					[style.width]="'350px'"

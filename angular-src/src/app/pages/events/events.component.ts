@@ -5,7 +5,9 @@ import {
 	ViewChild,
 	TemplateRef,
 	OnInit,
-	Inject
+	Inject,
+	Input,
+	Directive
 } from '@angular/core';
 
 import {
@@ -221,6 +223,7 @@ export class EventsComponent implements OnInit {
 			signedUp				: new FormControl([], { }),
 			pending					: new FormControl([], { }),
 			author					: new FormControl('', { }),
+			spots					: new FormControl('', { validators: [this.validateNumber.bind(this)] }),
 			additionalDetails		: this.formBuilder.array([ this.initDetailField() ])
 		});
 	}
@@ -246,6 +249,8 @@ export class EventsComponent implements OnInit {
 		this.newEventForm.get('signedUp').setValue(data.signedUp);
 		this.newEventForm.get('pending').setValue(data.pending);
 		this.newEventForm.get('author').setValue(data.author);
+		this.newEventForm.get('spots').setValue(data.spots);
+
 		
 		data.additionalDetails.forEach(function(obj) {  //populate formArray
 			const control = <FormArray> this.newEventForm.controls['additionalDetails'];
@@ -281,6 +286,7 @@ export class EventsComponent implements OnInit {
 				signedUp,
 				pending,
 				author,
+				spots,
 				additionalDetails
 			} = result.value;
 
@@ -296,6 +302,7 @@ export class EventsComponent implements OnInit {
 			signedUp,
 			pending,
 			author,
+			spots,
 			additionalDetails
 		};	
 
@@ -621,8 +628,14 @@ export class EventsComponent implements OnInit {
 	public applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	  }
-}
 
+
+	private validateNumber(control: FormControl): { [s: string]: boolean } {
+		if (control.value === null) return null;
+  		if (isNaN(control.value)) return { 'NaN': true };
+		return null; 
+	}
+}
 
 @Component({
 	providers: [EventsComponent],
@@ -637,6 +650,7 @@ export class DialogOverviewEventComponent implements OnInit {
 	selectedUsers = [];
 	signupText : string;
 	isClosed : boolean;
+	isCapDisabled : boolean;
 
 	constructor( 
 		public dialogRef: MatDialogRef<DialogOverviewEventComponent>,
@@ -653,6 +667,11 @@ export class DialogOverviewEventComponent implements OnInit {
 		this.users = this.userService.getUsers();
 		this.isAdmin = this.authService.isAdmin();
 		this.isClosed = this.data.get('isClosed').value;
+		this.isCapDisabled = false;
+	}
+
+	disableCap() : void {
+		if(this.isCapDisabled) this.data.get('spots').setValue(null);
 	}
 
 	onNoClick(): void {
