@@ -1,4 +1,4 @@
-const { getUserByEmail 			} = require('./../../users/query');
+const { getUserByEmail 		} = require('./../../users/query');
 const { verifyPassword 		} = require('./../../users/util');
 const { createToken 		} = require('./../util');
 const { validationResult 	} = require('express-validator/check');
@@ -16,6 +16,7 @@ const postAuthenticate = async (request, response) => {
 		const password 	= request.body.password;
 		
 		var user 				= await getUserByEmail(email);
+		if(!user) return response.json({ success: false, message: 'Wrong email or password' });
 		const isValidPassword 	= await verifyPassword(password, user.password);
 
 		if(isValidPassword) {
