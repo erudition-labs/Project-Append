@@ -7,6 +7,7 @@ const eventModel = new Schema({
 	isVerified				: { type: Boolean, required: true, default: false },
 	isClosed				: { type: Boolean, required: true, default: false },
 	summary					: { type: String, required: false },
+	spots					: { type: Number, required: false },
 	date					: [{ type: Date, required: false }],
 	OIC		: [{
 		type: mongoose.Schema.Types.ObjectId,

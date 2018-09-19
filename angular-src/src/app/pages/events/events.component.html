@@ -2,29 +2,42 @@
 	<ng-template #modalContent let-close="close">
 		<div class="modal-header">
 			<h5 class="modal-title">{{ modalData?.event?.title }}
-				<ng-container *ngIf="authService.isAuthenticated() && 
-													!eventsService.isOIC(modalData.event.meta) &&
-													!modalData.event.meta.isClosed">
-					<ng-container *ngIf="eventsService.isSignedUp(modalData.event.meta)">
+				
+					<ng-container *ngIf="authService.isAuthenticated() && 
+														!eventsService.isOIC(modalData.event.meta)">
+							<ng-container *ngIf="eventsService.isSignedUp(modalData.event.meta)">
+								<button 
+										type="button" class="btn btn-outline-primary"
+										(click)="unregister()">Unregister</button>
+							</ng-container>
+
+							<ng-container *ngIf="!modalData.event.meta.isClosed">
+							<ng-container *ngIf="!eventsService.isSignedUp(modalData.event.meta) &&
+													!eventsService.isPending(modalData.event.meta)">
+								<button 
+										type="button" class="btn btn-outline-primary"
+										(click)="userPending()">Sign Up</button>
+							</ng-container>
+
+						<ng-container *ngIf="!eventsService.isSignedUp(modalData.event.meta) &&
+															eventsService.isPending(modalData.event.meta)">
 							<button 
 									type="button" class="btn btn-outline-primary"
-									(click)="unregister()">Unregister</button>
-					</ng-container>
+									(click)="unregister()">Pending</button>
+						</ng-container>
 
-					<ng-container *ngIf="!eventsService.isSignedUp(modalData.event.meta) &&
-												!eventsService.isPending(modalData.event.meta)">
-							<button 
-									type="button" class="btn btn-outline-primary"
-									(click)="userPending()">Sign Up</button>
-					</ng-container>
+						<ng-container *ngIf="modalData.event.meta.spots !== -1">
+							<pre>{{  modalData.event.meta.signedUp.length }} / {{  modalData.event.meta.spots }}</pre>
+						</ng-container>
 
-				<ng-container *ngIf="!eventsService.isSignedUp(modalData.event.meta) &&
-														eventsService.isPending(modalData.event.meta)">
-						<button 
-								type="button" class="btn btn-outline-primary"
-								(click)="unregister()">Pending</button>
+						<ng-container *ngIf="modalData.event.meta.spots === -1">
+								<pre>No Signup Limit</pre>
+							</ng-container>
+					</ng-container>
 				</ng-container>
 
+				<ng-container *ngIf="modalData.event.meta.isClosed">
+					<pre>(Signups Closed)</pre>
 				</ng-container>
 
 			</h5>
@@ -62,8 +75,7 @@
 						</div>
 					</ng-container>
 
-					<ng-container *ngIf="!modalData.event.meta.isClosed &&
-															(eventsService.isOIC(modalData.event.meta.OIC) ||
+					<ng-container *ngIf="(eventsService.isOIC(modalData.event.meta.OIC) ||
 															authService.isAdmin())">
 						<div>Signed Up 
 							<ng-container *ngIf="modalData.event.meta.signedUp.length> 0; 
@@ -74,6 +86,11 @@
 											<nb-user [name]="user?.lastName + ', ' + user?.firstName"
 													[title]="user?.rank">
 											</nb-user>
+											<ng-container *ngIf="!eventsService.isOIC(modalData.event.meta, user._id)">
+													<button type="button" class="btn btn-outline-primary">
+												<i class="nb-trash" (click)="removeSignedUp(user._id)"></i>
+										</button>
+											</ng-container>
 										</mat-list-item>
 									</pre>
 								</mat-list>	
