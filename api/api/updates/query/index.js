@@ -18,7 +18,27 @@ const createUpdate = async (updateData) => {
 		return error;
 	}
 };
+
+const editUpdate = async (id, update) => {
+	try {
+		return await Update.findByIdAndUpdate(id, update, { new: true }).populate('author', {password: 0});
+	} catch(error) {
+		return error;
+	}
+};
+
+const deleteUpdate = async (id) => {
+	try {
+		return await Update.findByIdAndRemove(id);
+	} catch(error) {
+		return error;
+	}
+};
+
+
 module.exports = {
     getUpdates,
     createUpdate,
+	editUpdate,
+	deleteUpdate,
 };

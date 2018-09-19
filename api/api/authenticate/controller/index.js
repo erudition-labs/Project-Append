@@ -19,6 +19,8 @@ const postAuthenticate = async (request, response) => {
 		if(!user) return response.json({ success: false, message: 'Wrong email or password' });
 		const isValidPassword 	= await verifyPassword(password, user.password);
 
+		
+
 		if(isValidPassword) {
 			const token 		= createToken(user);
 			const decodedToken 	= jwtDecode(token);
