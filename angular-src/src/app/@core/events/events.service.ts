@@ -60,12 +60,6 @@ export class EventsService {
 			}
 	
 			event.signedUp = Array.from(singupSet);
-
-			if(event.isClosed) {
-				event.signedUp = [];
-				event.pending = [];
-			}
-
 			return this.http.put(this.url + '/', { data: event, user:  this.authService.parseToken().sub });
 		});
 	}

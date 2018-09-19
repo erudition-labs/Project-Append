@@ -74,8 +74,7 @@
 						</div>
 					</ng-container>
 
-					<ng-container *ngIf="!modalData.event.meta.isClosed &&
-															(eventsService.isOIC(modalData.event.meta.OIC) ||
+					<ng-container *ngIf="(eventsService.isOIC(modalData.event.meta.OIC) ||
 															authService.isAdmin())">
 						<div>Signed Up 
 							<ng-container *ngIf="modalData.event.meta.signedUp.length> 0; 
@@ -86,6 +85,11 @@
 											<nb-user [name]="user?.lastName + ', ' + user?.firstName"
 													[title]="user?.rank">
 											</nb-user>
+											<ng-container>
+													<button type="button" class="btn btn-outline-primary">
+												<i class="nb-trash" (click)="rejectPending(user._id)"></i>
+										</button>
+											</ng-container>
 										</mat-list-item>
 									</pre>
 								</mat-list>	

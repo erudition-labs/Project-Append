@@ -224,7 +224,6 @@ export class EventsComponent implements OnInit {
 			pending					: new FormControl([], { }),
 			author					: new FormControl('', { }),
 			spots					: new FormControl('', { validators: [this.validateNumber.bind(this), Validators.required] }),
-
 			additionalDetails		: this.formBuilder.array([ this.initDetailField() ])
 		});
 	}
@@ -406,6 +405,7 @@ export class EventsComponent implements OnInit {
 									color	: colors.red,
 									meta	: httpResult.result
 								};								
+								console.log(httpResult.result);
 								
 							updatedCalendarEvent.meta.additionalDetails = JSON.parse(updatedCalendarEvent.meta.additionalDetails);
 
@@ -710,13 +710,14 @@ export class DialogOverviewEventComponent implements OnInit {
 	enableSignups() : void {
 		this.data.get('isClosed').setValue(false);
 		this.data.get('spots').setValue(null);
-		this.isClosed = false;		
+		this.isClosed = false;	
 	}
 
 	disableSignups() : void {
 		this.data.get('isClosed').setValue(true);
 		this.data.get('spots').setValue(0);
 		this.isClosed = true;		
+		console.log(this.data);
 	}
 
 	public addDetailField() : void {
