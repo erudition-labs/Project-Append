@@ -48,15 +48,16 @@ export class SignupFormComponent implements OnInit {
 				asyncValidators: [this.checkEmail.bind(this)],
 				updateOn: 'blur'
 			}),
-			password	: new FormControl('', { validators: [Validators.required] }),
-			firstName	: new FormControl('', { validators: [Validators.required] }),
-			lastName	: new FormControl('', { validators: [Validators.required] }),
-			rank		: new FormControl('', { }),
-			flight		: new FormControl('', { validators: [Validators.required] }),
-			team		: new FormControl('', { }),
-			role		: new FormControl('user', { }),
-			phone		: new FormControl('', { validators: [Validators.required] }),
-			events		: new FormControl([], { })
+			password			: new FormControl('', { validators: [Validators.required] }),
+			firstName			: new FormControl('', { validators: [Validators.required] }),
+			lastName			: new FormControl('', { validators: [Validators.required] }),
+			rank				: new FormControl('', { }),
+			flight				: new FormControl('', { validators: [Validators.required] }),
+			team				: new FormControl('', { }),
+			role				: new FormControl('user', { }),
+			phone				: new FormControl('', { validators: [Validators.required] }),
+			isChangelogViewed 	: new FormControl(false, { }),
+			events				: new FormControl([], { })
 		});
 	}
 
@@ -107,6 +108,7 @@ export class SignupFormComponent implements OnInit {
 				team,
 				role,
 				phone,
+				isChangelogViewed,
 				events
 			} = this.signupForm.value;
 
@@ -120,6 +122,7 @@ export class SignupFormComponent implements OnInit {
 				team,
 				role,
 				phone,
+				isChangelogViewed,
 				events
 			};
 			
