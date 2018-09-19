@@ -3,28 +3,36 @@
 		<div class="modal-header">
 			<h5 class="modal-title">{{ modalData?.event?.title }}
 				<ng-container *ngIf="!modalData.event.meta.isClosed">
-				<ng-container *ngIf="authService.isAuthenticated() && 
-													!eventsService.isOIC(modalData.event.meta)">
-						<ng-container *ngIf="eventsService.isSignedUp(modalData.event.meta)">
-							<button 
-									type="button" class="btn btn-outline-primary"
-									(click)="unregister()">Unregister</button>
-						</ng-container>
+					<ng-container *ngIf="authService.isAuthenticated() && 
+														!eventsService.isOIC(modalData.event.meta)">
+							<ng-container *ngIf="eventsService.isSignedUp(modalData.event.meta)">
+								<button 
+										type="button" class="btn btn-outline-primary"
+										(click)="unregister()">Unregister</button>
+							</ng-container>
+
+							<ng-container *ngIf="!eventsService.isSignedUp(modalData.event.meta) &&
+													!eventsService.isPending(modalData.event.meta)">
+								<button 
+										type="button" class="btn btn-outline-primary"
+										(click)="userPending()">Sign Up</button>
+							</ng-container>
 
 						<ng-container *ngIf="!eventsService.isSignedUp(modalData.event.meta) &&
-												!eventsService.isPending(modalData.event.meta)">
+															eventsService.isPending(modalData.event.meta)">
 							<button 
 									type="button" class="btn btn-outline-primary"
-									(click)="userPending()">Sign Up</button>
+									(click)="unregister()">Pending</button>
 						</ng-container>
 
-					<ng-container *ngIf="!eventsService.isSignedUp(modalData.event.meta) &&
-														eventsService.isPending(modalData.event.meta)">
-						<button 
-								type="button" class="btn btn-outline-primary"
-								(click)="unregister()">Pending</button>
+						<ng-container *ngIf="modalData.event.meta.spots !== -1">
+							<pre>{{  modalData.event.meta.signedUp.length }} / {{  modalData.event.meta.spots }}</pre>
+						</ng-container>
+
+						<ng-container *ngIf="modalData.event.meta.spots === -1">
+								<pre>No Signup Limit</pre>
+							</ng-container>
 					</ng-container>
-				</ng-container>
 				</ng-container>
 
 				<ng-container *ngIf="modalData.event.meta.isClosed">
