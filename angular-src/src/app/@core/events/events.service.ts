@@ -129,7 +129,7 @@ export class EventsService {
 		if(totalSpots === -1) return true;
 		let signedUp = event.signedUp.length;
 
-		return totalSpots > signedUp;
+		return totalSpots >= signedUp;
 	}
 
 	public signupUser(event: Event) : Observable<any> {

@@ -400,7 +400,6 @@ export class EventsComponent implements OnInit {
 									color	: colors.red,
 									meta	: httpResult.result
 								};
-								console.log(httpResult.result);
 								
 							updatedCalendarEvent.meta.additionalDetails = JSON.parse(updatedCalendarEvent.meta.additionalDetails);
 
@@ -699,14 +698,14 @@ export class DialogOverviewEventComponent implements OnInit {
 	}
 
 	enableSignups() : void {
-		this.data.get('isClosed').setValue(true);
-		this.isClosed = true;		
+		this.data.get('isClosed').setValue(false);
+		this.isClosed = false;		
 	}
 
 	disableSignups() : void {
-		this.data.get('isClosed').setValue(false);
+		this.data.get('isClosed').setValue(true);
 		this.data.get('spots').setValue(0);
-		this.isClosed = false;		
+		this.isClosed = true;		
 	}
 
 	public addDetailField() : void {
