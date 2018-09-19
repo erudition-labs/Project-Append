@@ -124,6 +124,14 @@ export class EventsService {
 		}
 	}
 
+	public isSpotsLeft(event: Event) : boolean {
+		let totalSpots = event.spots;
+		if(totalSpots === -1) return true;
+		let signedUp = event.signedUp.length;
+
+		return totalSpots > signedUp;
+	}
+
 	public signupUser(event: Event) : Observable<any> {
 		event.additionalDetails = JSON.stringify(event.additionalDetails);
 		let submitter = this.authService.parseToken().sub;

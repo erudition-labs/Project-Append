@@ -223,7 +223,8 @@ export class EventsComponent implements OnInit {
 			signedUp				: new FormControl([], { }),
 			pending					: new FormControl([], { }),
 			author					: new FormControl('', { }),
-			spots					: new FormControl('', { validators: [this.validateNumber.bind(this)] }),
+			spots					: new FormControl('', { validators: [this.validateNumber.bind(this), Validators.required] }),
+
 			additionalDetails		: this.formBuilder.array([ this.initDetailField() ])
 		});
 	}
@@ -422,7 +423,8 @@ export class EventsComponent implements OnInit {
 		}
 	}
 	private signupUser() : void {
-		if(!this.eventsService.isSignedUp(this.modalData.event.meta)) {
+		if(!this.eventsService.isSignedUp(this.modalData.event.meta) &&
+			this.eventsService.isSpotsLeft(this.modalData.event.meta)) {
 			let event = Object.assign({}, this.modalData.event.meta);
 
 			this.eventsService.signupUser(event)
@@ -494,7 +496,8 @@ export class EventsComponent implements OnInit {
 
 	private userPending() : void {
 		if(!this.eventsService.isSignedUp(this.modalData.event.meta) &&
-		!this.eventsService.isPending(this.modalData.event.meta)) 
+			!this.eventsService.isPending(this.modalData.event.meta) &&
+			this.eventsService.isSpotsLeft(this.modalData.event.meta)) 
 		{
 			let event = Object.assign({}, this.modalData.event.meta);
 
@@ -530,7 +533,8 @@ export class EventsComponent implements OnInit {
 
 	private acceptPending(id : string) : void {
 		if(!this.eventsService.isSignedUp(this.modalData.event.meta, id) &&
-		this.eventsService.isPending(this.modalData.event.meta, id)) 
+			this.eventsService.isPending(this.modalData.event.meta, id) &&
+			this.eventsService.isSpotsLeft(this.modalData.event.meta)) 
 		{ 
 			let index = this.modalData.event.meta.pending.findIndex(x => x._id === id);
 		
@@ -631,7 +635,7 @@ export class EventsComponent implements OnInit {
 
 
 	private validateNumber(control: FormControl): { [s: string]: boolean } {
-		if (control.value === null) return null;
+		//if (control.value === null) return null;
   		if (isNaN(control.value)) return { 'NaN': true };
 		return null; 
 	}
@@ -661,17 +665,33 @@ export class DialogOverviewEventComponent implements OnInit {
 			public authService		: AuthService) {}
 
 		 isAdmin : boolean = false;
+		 ishiddenSpots : boolean;
 
 
 	ngOnInit() {
 		this.users = this.userService.getUsers();
 		this.isAdmin = this.authService.isAdmin();
 		this.isClosed = this.data.get('isClosed').value;
-		this.isCapDisabled = false;
+
+		if(this.data.get('spots').value === -1) {
+			this.isCapDisabled = true;
+			this.ishiddenSpots = false;
+		} else {
+			this.isCapDisabled = false;
+			this.ishiddenSpots = true;
+		}
 	}
 
-	disableCap() : void {
-		if(this.isCapDisabled) this.data.get('spots').setValue(null);
+	toggleCap() : void {
+		if(!this.isCapDisabled) {
+			this.data.get('spots').setValue(-1);
+			this.ishiddenSpots = false;
+		} 
+
+		if(this.isCapDisabled) {
+			this.data.get('spots').setValue(null);
+			this.ishiddenSpots = true;
+		}
 	}
 
 	onNoClick(): void {
@@ -679,13 +699,14 @@ export class DialogOverviewEventComponent implements OnInit {
 	}
 
 	enableSignups() : void {
-		this.data.get('isClosed').setValue(false);
-		this.isClosed = false;		
+		this.data.get('isClosed').setValue(true);
+		this.isClosed = true;		
 	}
 
 	disableSignups() : void {
-		this.data.get('isClosed').setValue(true);
-		this.isClosed = true;		
+		this.data.get('isClosed').setValue(false);
+		this.data.get('spots').setValue(0);
+		this.isClosed = false;		
 	}
 
 	public addDetailField() : void {

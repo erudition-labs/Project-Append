@@ -5,26 +5,35 @@
 				<ng-container *ngIf="authService.isAuthenticated() && 
 													!eventsService.isOIC(modalData.event.meta) &&
 													!modalData.event.meta.isClosed">
-					<ng-container *ngIf="eventsService.isSignedUp(modalData.event.meta)">
+						<ng-container *ngIf="eventsService.isSignedUp(modalData.event.meta)">
 							<button 
 									type="button" class="btn btn-outline-primary"
 									(click)="unregister()">Unregister</button>
-					</ng-container>
+						</ng-container>
 
-					<ng-container *ngIf="!eventsService.isSignedUp(modalData.event.meta) &&
+						<ng-container *ngIf="!eventsService.isSignedUp(modalData.event.meta) &&
 												!eventsService.isPending(modalData.event.meta)">
 							<button 
 									type="button" class="btn btn-outline-primary"
 									(click)="userPending()">Sign Up</button>
-					</ng-container>
+						</ng-container>
 
-				<ng-container *ngIf="!eventsService.isSignedUp(modalData.event.meta) &&
+					<ng-container *ngIf="!eventsService.isSignedUp(modalData.event.meta) &&
 														eventsService.isPending(modalData.event.meta)">
 						<button 
 								type="button" class="btn btn-outline-primary"
 								(click)="unregister()">Pending</button>
+					</ng-container>
 				</ng-container>
 
+				<ng-container *ngIf="modalData.event.meta.isClose &&
+														!eventsService.isSpotsLeft(modalData.event.meta)">
+					<pre>(No Signups)</pre>
+				</ng-container>
+
+				<ng-container *ngIf="eventsService.isSpotsLeft(modalData.event.meta) &&
+														modalData.event.meta.isClose">
+					<pre>(Signups Full)</pre>
 				</ng-container>
 
 			</h5>

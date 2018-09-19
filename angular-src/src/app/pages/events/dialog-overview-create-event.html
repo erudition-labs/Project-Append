@@ -44,25 +44,29 @@
 				</mat-list-item>
 			</ng-container>
 
-		<mat-list-item>
-			<mat-form-field>
+		<ng-container *ngIf="isAdmin && !isClosed">
+			<mat-list-item>
+				<ng-container *ngIf="ishiddenSpots">
+					<mat-form-field>
+						<mat-label>Spots Available</mat-label>
+						<input matInput type="number" min="0"
+							[formControl]="data.get('spots')"
+							placeholder="Spots Available"
+							[attr.disabled]="isCapDisabled ? '' : null">
 
-				<mat-label>Spots Available</mat-label>
-				<input matInput type="number"
-						[formControl]="data.get('spots')"
-						placeholder="Spots Available"
-						[attr.disabled]="isCapDisabled ? '' : null">
-
-				<mat-error *ngIf="data.get('spots').hasError('validateNumber') || data.get('spots').dirty">
-					Must be a number
-				</mat-error>
-			</mat-form-field>
-			<mat-checkbox [(ngModel)]="isCapDisabled"
-							[ngModelOptions]="{standalone: true}"
-							(click)="disableCap()">
-			No limit
-		</mat-checkbox>
-		</mat-list-item>
+						<mat-error *ngIf="data.get('spots').hasError('validateNumber') || 
+											data.get('spots').dirty ||
+											data.get('spots').hasError('required')">
+							Number <strong>Required</strong>
+						</mat-error>
+					</mat-form-field>
+				</ng-container>
+				<mat-checkbox [(ngModel)]="isCapDisabled"
+								[ngModelOptions]="{standalone: true}"
+								(click)="toggleCap()">
+					No limit</mat-checkbox>
+			</mat-list-item>
+		</ng-container>
 
 			<mat-list-item>
 				<input placeholder="Select a date range"
@@ -147,7 +151,8 @@
 			<button mat-button (click)="onNoClick()">Cancel</button>
 			<button mat-button [mat-dialog-close]="data" 
 					[disabled]="data.get('name').invalid || 
-								data.get('date').invalid">
+								data.get('date').invalid ||
+								data.get('spots').invalid">
 			Submit</button>
 		</div>
 	</mat-card>
