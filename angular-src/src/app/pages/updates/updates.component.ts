@@ -177,8 +177,26 @@ export class UpdatesComponent implements OnInit {
     }
   }
 
-  private delete() {
-    alert(this.update.title);
+  delete(update) {
+
+    if (window.confirm('Are you sure you want to delete?')) {
+      this.updatesService.deleteUpdate(update._id).subscribe((result) => {
+        
+        if(result.success) {
+          this.singleUpdate = false;
+          this.success('Post Deleted');
+
+          const index = this.updates.findIndex(update => update._id === result.result._id);
+          this.updates.splice(index, 1);
+
+        } else {
+          this.error("Did not delete post :(");
+        }
+      });
+      
+    } else {
+      this.error("Did not delete post :(");
+    }
   }
   
   private error(msg : string) : void {

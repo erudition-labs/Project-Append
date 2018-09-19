@@ -33,8 +33,19 @@ const editUpdate = async (request, response) => {
 	}
 };
 
+const deleteUpdate = async (request, response) => {
+	try {
+        const updateId = request.params.id;
+		const deletedUpdate = await queries.deleteUpdate(updateId);
+		response.json({success: true, message: 'Update deleted', result: deletedUpdate});
+	} catch(error) {
+		return error;
+	}
+}
+
 module.exports = {
     getUpdates,
     createUpdate,
-    editUpdate
+    editUpdate,
+    deleteUpdate,
 };

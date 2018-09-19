@@ -47,7 +47,7 @@
             <span style="float:right;" *ngIf="authService.isAdmin()">
                 <button class="btn btn-outline-success btn-icon btn-tn" style="font-size: 2em; padding: 1px 3px;" (click)="edit()"><i class="nb-edit"></i></button>
                 <span style="margin: 0 2px;"></span>
-                <button class="btn btn-outline-danger btn-icon btn-tn" style="font-size: 2em; padding: 1px 3px;" (click)="delete()"><i class="nb-trash"></i></button>
+                <button class="btn btn-outline-danger btn-icon btn-tn" style="font-size: 2em; padding: 1px 3px;" (click)="delete(update)"><i class="nb-trash"></i></button>
             </span>
           </nb-card-footer>
       </nb-card>

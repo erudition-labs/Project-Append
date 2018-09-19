@@ -27,4 +27,8 @@ export class UpdatesService {
 	public editUpdate(update : Update) : Observable<any> {
 		return this.http.put(this.url + '/', { data: update });	
 	}
+
+	public deleteUpdate(id : string) : Observable<any> {
+		return this.http.delete(this.url + '/' + id);
+	}
 }

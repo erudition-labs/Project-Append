@@ -27,9 +27,18 @@ const editUpdate = async (id, update) => {
 	}
 };
 
+const deleteUpdate = async (id) => {
+	try {
+		return await Update.findByIdAndRemove(id);
+	} catch(error) {
+		return error;
+	}
+};
+
 
 module.exports = {
     getUpdates,
     createUpdate,
-    editUpdate
+	editUpdate,
+	deleteUpdate,
 };
