@@ -5,7 +5,9 @@ import {
 	ViewChild,
 	TemplateRef,
 	OnInit,
-	Inject
+	Inject,
+	Input,
+	Directive
 } from '@angular/core';
 
 import {
@@ -123,7 +125,8 @@ export class EventsComponent implements OnInit {
 				private eventsService		: EventsService,
 				public authService			: AuthService,
 				private toast				: ToastrService,
-				private userService			: UserService) { }
+				private userService			: UserService,
+				private changeDetectorRef	: ChangeDetectorRef) { }
 
 	ngOnInit() {
 		this.eventsService.getEvents().subscribe((result) => {
@@ -221,6 +224,7 @@ export class EventsComponent implements OnInit {
 			signedUp				: new FormControl([], { }),
 			pending					: new FormControl([], { }),
 			author					: new FormControl('', { }),
+			spots					: new FormControl('', { validators: [this.validateNumber.bind(this), Validators.required] }),
 			additionalDetails		: this.formBuilder.array([ this.initDetailField() ])
 		});
 	}
@@ -246,6 +250,8 @@ export class EventsComponent implements OnInit {
 		this.newEventForm.get('signedUp').setValue(data.signedUp);
 		this.newEventForm.get('pending').setValue(data.pending);
 		this.newEventForm.get('author').setValue(data.author);
+		this.newEventForm.get('spots').setValue(data.spots);
+
 		
 		data.additionalDetails.forEach(function(obj) {  //populate formArray
 			const control = <FormArray> this.newEventForm.controls['additionalDetails'];
@@ -281,6 +287,7 @@ export class EventsComponent implements OnInit {
 				signedUp,
 				pending,
 				author,
+				spots,
 				additionalDetails
 			} = result.value;
 
@@ -296,6 +303,7 @@ export class EventsComponent implements OnInit {
 			signedUp,
 			pending,
 			author,
+			spots,
 			additionalDetails
 		};	
 
@@ -379,6 +387,12 @@ export class EventsComponent implements OnInit {
 					newEvent.date = this.modalData.event.meta.date;
 				}
 
+				if(this.eventsService.isSpotsLeft(newEvent)) {
+					newEvent.isClosed = false;
+				} else {
+					newEvent.isClosed = true;
+				}
+
 					this.eventsService.updateEvent(newEvent).subscribe(
 						httpResult => {
 							if(httpResult.success) {
@@ -391,8 +405,7 @@ export class EventsComponent implements OnInit {
 									end		: new Date(httpResult.result.date[1]),
 									color	: colors.red,
 									meta	: httpResult.result
-								};
-								console.log(httpResult.result);
+								};								
 								
 							updatedCalendarEvent.meta.additionalDetails = JSON.parse(updatedCalendarEvent.meta.additionalDetails);
 
@@ -415,7 +428,8 @@ export class EventsComponent implements OnInit {
 		}
 	}
 	private signupUser() : void {
-		if(!this.eventsService.isSignedUp(this.modalData.event.meta)) {
+		if(!this.eventsService.isSignedUp(this.modalData.event.meta) &&
+			this.eventsService.isSpotsLeft(this.modalData.event.meta)) {
 			let event = Object.assign({}, this.modalData.event.meta);
 
 			this.eventsService.signupUser(event)
@@ -487,7 +501,8 @@ export class EventsComponent implements OnInit {
 
 	private userPending() : void {
 		if(!this.eventsService.isSignedUp(this.modalData.event.meta) &&
-		!this.eventsService.isPending(this.modalData.event.meta)) 
+			!this.eventsService.isPending(this.modalData.event.meta) &&
+			this.eventsService.isSpotsLeft(this.modalData.event.meta)) 
 		{
 			let event = Object.assign({}, this.modalData.event.meta);
 
@@ -516,14 +531,15 @@ export class EventsComponent implements OnInit {
 			});
 		} else {
 			//nothing to be
-			this.error('Nothing to be done');
+			this.error('Signups Closed');
 		}
 	}
 
 
 	private acceptPending(id : string) : void {
 		if(!this.eventsService.isSignedUp(this.modalData.event.meta, id) &&
-		this.eventsService.isPending(this.modalData.event.meta, id)) 
+			this.eventsService.isPending(this.modalData.event.meta, id) &&
+			this.eventsService.isSpotsLeft(this.modalData.event.meta)) 
 		{ 
 			let index = this.modalData.event.meta.pending.findIndex(x => x._id === id);
 		
@@ -531,6 +547,10 @@ export class EventsComponent implements OnInit {
 				let tmpUser = Object.assign({}, this.modalData.event.meta.pending[index]);
 				this.modalData.event.meta.pending.splice(index, 1);
 				let event = Object.assign({}, this.modalData.event.meta); //deep copy to get rid of reference
+
+				if(!this.eventsService.willSpotsBeLeft(event)) {
+					event.isClosed = true;
+				}
 
 				this.eventsService.signupUser(event)
 				.subscribe(httpResult => {
@@ -560,7 +580,7 @@ export class EventsComponent implements OnInit {
 			} //otherwise something is terribly terribly worng lol
 		} else {
 			//user already signed up or is not pending
-			this.error('Nothing to be done');
+			this.error('Signups Full');
 		}
 	}
 
@@ -592,6 +612,38 @@ export class EventsComponent implements OnInit {
 		}
 	}
 
+	public removeSignedUp(id: string) : void {
+		if(this.eventsService.isSignedUp(this.modalData.event.meta, id) &&
+			!this.eventsService.isPending(this.modalData.event.meta, id)) {
+				let index = this.modalData.event.meta.signedUp.findIndex(x => x._id === id);
+				if(index > -1) { //if we find an index
+					this.modalData.event.meta.signedUp.splice(index, 1);
+					let event = Object.assign({}, this.modalData.event.meta);
+					this.eventsService.unregisterUser(event)
+					.subscribe(httpResult => {
+						if(httpResult.success) {
+							this.modalData.event.meta = httpResult.result;
+							this.modalData.event.meta.additionalDetails = JSON.parse(this.modalData.event.meta.additionalDetails);
+
+							this.changeDetectorRef.markForCheck();
+							//success
+						} else {
+							console.log('RIPPP' + httpResult);
+						//faileddddd
+						this.error('API Error');
+					}
+				}, error => {
+					console.log(error);
+					this.error('API Error');
+				});
+			} //otherwise something is terribly terribly worng lol
+		} else {
+			//Nothing to reject
+			this.error('Nothing to be done');
+		}
+			
+	}
+
 	private error(msg : string) : void {
 		this.toast.error(msg, 'Error!', {
 			timeOut: 5000,
@@ -621,8 +673,14 @@ export class EventsComponent implements OnInit {
 	public applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	  }
-}
 
+
+	private validateNumber(control: FormControl): { [s: string]: boolean } {
+		//if (control.value === null) return null;
+  		if (isNaN(control.value)) return { 'NaN': true };
+		return null; 
+	}
+}
 
 @Component({
 	providers: [EventsComponent],
@@ -637,6 +695,7 @@ export class DialogOverviewEventComponent implements OnInit {
 	selectedUsers = [];
 	signupText : string;
 	isClosed : boolean;
+	isCapDisabled : boolean;
 
 	constructor( 
 		public dialogRef: MatDialogRef<DialogOverviewEventComponent>,
@@ -647,12 +706,33 @@ export class DialogOverviewEventComponent implements OnInit {
 			public authService		: AuthService) {}
 
 		 isAdmin : boolean = false;
+		 ishiddenSpots : boolean;
 
 
 	ngOnInit() {
 		this.users = this.userService.getUsers();
 		this.isAdmin = this.authService.isAdmin();
 		this.isClosed = this.data.get('isClosed').value;
+
+		if(this.data.get('spots').value === -1) {
+			this.isCapDisabled = true;
+			this.ishiddenSpots = false;
+		} else {
+			this.isCapDisabled = false;
+			this.ishiddenSpots = true;
+		}
+	}
+
+	toggleCap() : void {
+		if(!this.isCapDisabled) {
+			this.data.get('spots').setValue(-1);
+			this.ishiddenSpots = false;
+		} 
+
+		if(this.isCapDisabled) {
+			this.data.get('spots').setValue(null);
+			this.ishiddenSpots = true;
+		}
 	}
 
 	onNoClick(): void {
@@ -661,12 +741,15 @@ export class DialogOverviewEventComponent implements OnInit {
 
 	enableSignups() : void {
 		this.data.get('isClosed').setValue(false);
-		this.isClosed = false;		
+		this.data.get('spots').setValue(null);
+		this.isClosed = false;	
 	}
 
 	disableSignups() : void {
 		this.data.get('isClosed').setValue(true);
+		this.data.get('spots').setValue(0);
 		this.isClosed = true;		
+		console.log(this.data);
 	}
 
 	public addDetailField() : void {

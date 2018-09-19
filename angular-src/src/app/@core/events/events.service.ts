@@ -60,22 +60,18 @@ export class EventsService {
 			}
 	
 			event.signedUp = Array.from(singupSet);
-
-			if(event.isClosed) {
-				event.signedUp = [];
-				event.pending = [];
-			}
-
 			return this.http.put(this.url + '/', { data: event, user:  this.authService.parseToken().sub });
 		});
 	}
 
-	public isOIC(event: Event) : boolean {
-		let currUserId = this.authService.parseToken().sub
+	public isOIC(event: Event, id?: string) : boolean {
+		let userId = this.authService.parseToken().sub
+		if(id) userId = id;
+		
 		if(!event.OIC) return false;
 
 		for(let user of event.OIC) {
-			if(user._id === currUserId) {
+			if(user._id === userId) {
 				return true;
 			}
 		}
@@ -124,6 +120,22 @@ export class EventsService {
 		}
 	}
 
+	public isSpotsLeft(event: Event) : boolean {
+		let totalSpots = event.spots;
+		if(totalSpots === -1) return true;
+		let signedUp = event.signedUp.length;
+
+		return totalSpots > signedUp;
+	}
+
+	public willSpotsBeLeft(event: Event) : boolean {
+		let spots = event.spots;
+		if(spots === -1) return true;
+		spots++;
+
+		return spots <= event.spots;
+	}
+
 	public signupUser(event: Event) : Observable<any> {
 		event.additionalDetails = JSON.stringify(event.additionalDetails);
 		let submitter = this.authService.parseToken().sub;
@@ -165,6 +177,8 @@ export class EventsService {
 			pendingIds.splice(index, 1); //if found remove it
 		}
 		event.pending = pendingIds;
+
+		if(this.isSpotsLeft(event)) event.isClosed = false;
 
 		return this.http.put(this.url + '/', { data: event, user: this.authService.parseToken().sub, signup: true });
 	}
