@@ -12,7 +12,7 @@ const postEvent = async (request, response) => {
 		console.log(error);
 		return error;
 	}
-}
+};
 
 const getEvent = async (request, response) => {
 	try {
