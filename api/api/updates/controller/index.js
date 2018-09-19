@@ -27,7 +27,7 @@ const editUpdate = async (request, response) => {
         const updateData = request.body.data;
 
 		const edittedUpdate = await queries.editUpdate(updateId, updateData);
-		response.json({ success: true, message: 'Successfully editted', result: edittedUpdate });
+		response.json({ success: true, message: 'Successfully edited', result: edittedUpdate });
 	} catch(error) {
 		return error;
 	}

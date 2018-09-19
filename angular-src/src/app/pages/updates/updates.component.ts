@@ -91,6 +91,12 @@ export class UpdatesComponent implements OnInit {
       result.result.date = new Date(result.result.date);
 
       this.updates.splice(0, 0, result.result);
+
+      if(result.success) {
+        this.success('Posted!');
+      } else {
+        this.error('Something went wrong');
+      }
       
     });
   }
