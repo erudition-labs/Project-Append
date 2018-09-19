@@ -64,12 +64,14 @@ export class EventsService {
 		});
 	}
 
-	public isOIC(event: Event) : boolean {
-		let currUserId = this.authService.parseToken().sub
+	public isOIC(event: Event, id?: string) : boolean {
+		let userId = this.authService.parseToken().sub
+		if(id) userId = id;
+		
 		if(!event.OIC) return false;
 
 		for(let user of event.OIC) {
-			if(user._id === currUserId) {
+			if(user._id === userId) {
 				return true;
 			}
 		}
@@ -175,6 +177,8 @@ export class EventsService {
 			pendingIds.splice(index, 1); //if found remove it
 		}
 		event.pending = pendingIds;
+
+		if(this.isSpotsLeft(event)) event.isClosed = false;
 
 		return this.http.put(this.url + '/', { data: event, user: this.authService.parseToken().sub, signup: true });
 	}

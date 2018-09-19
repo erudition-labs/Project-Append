@@ -2,7 +2,7 @@
 	<ng-template #modalContent let-close="close">
 		<div class="modal-header">
 			<h5 class="modal-title">{{ modalData?.event?.title }}
-				<ng-container *ngIf="!modalData.event.meta.isClosed">
+				
 					<ng-container *ngIf="authService.isAuthenticated() && 
 														!eventsService.isOIC(modalData.event.meta)">
 							<ng-container *ngIf="eventsService.isSignedUp(modalData.event.meta)">
@@ -11,6 +11,7 @@
 										(click)="unregister()">Unregister</button>
 							</ng-container>
 
+							<ng-container *ngIf="!modalData.event.meta.isClosed">
 							<ng-container *ngIf="!eventsService.isSignedUp(modalData.event.meta) &&
 													!eventsService.isPending(modalData.event.meta)">
 								<button 
@@ -85,9 +86,9 @@
 											<nb-user [name]="user?.lastName + ', ' + user?.firstName"
 													[title]="user?.rank">
 											</nb-user>
-											<ng-container>
+											<ng-container *ngIf="!eventsService.isOIC(modalData.event.meta, user._id)">
 													<button type="button" class="btn btn-outline-primary">
-												<i class="nb-trash" (click)="rejectPending(user._id)"></i>
+												<i class="nb-trash" (click)="removeSignedUp(user._id)"></i>
 										</button>
 											</ng-container>
 										</mat-list-item>

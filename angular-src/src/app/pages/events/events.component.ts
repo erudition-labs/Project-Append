@@ -125,7 +125,8 @@ export class EventsComponent implements OnInit {
 				private eventsService		: EventsService,
 				public authService			: AuthService,
 				private toast				: ToastrService,
-				private userService			: UserService) { }
+				private userService			: UserService,
+				private changeDetectorRef	: ChangeDetectorRef) { }
 
 	ngOnInit() {
 		this.eventsService.getEvents().subscribe((result) => {
@@ -405,7 +406,6 @@ export class EventsComponent implements OnInit {
 									color	: colors.red,
 									meta	: httpResult.result
 								};								
-								console.log(httpResult.result);
 								
 							updatedCalendarEvent.meta.additionalDetails = JSON.parse(updatedCalendarEvent.meta.additionalDetails);
 
@@ -531,7 +531,7 @@ export class EventsComponent implements OnInit {
 			});
 		} else {
 			//nothing to be
-			this.error('Nothing to be done');
+			this.error('Signups Closed');
 		}
 	}
 
@@ -610,6 +610,38 @@ export class EventsComponent implements OnInit {
 			//Nothing to reject
 			this.error('Nothing to be done');
 		}
+	}
+
+	public removeSignedUp(id: string) : void {
+		if(this.eventsService.isSignedUp(this.modalData.event.meta, id) &&
+			!this.eventsService.isPending(this.modalData.event.meta, id)) {
+				let index = this.modalData.event.meta.signedUp.findIndex(x => x._id === id);
+				if(index > -1) { //if we find an index
+					this.modalData.event.meta.signedUp.splice(index, 1);
+					let event = Object.assign({}, this.modalData.event.meta);
+					this.eventsService.unregisterUser(event)
+					.subscribe(httpResult => {
+						if(httpResult.success) {
+							this.modalData.event.meta = httpResult.result;
+							this.modalData.event.meta.additionalDetails = JSON.parse(this.modalData.event.meta.additionalDetails);
+
+							this.changeDetectorRef.markForCheck();
+							//success
+						} else {
+							console.log('RIPPP' + httpResult);
+						//faileddddd
+						this.error('API Error');
+					}
+				}, error => {
+					console.log(error);
+					this.error('API Error');
+				});
+			} //otherwise something is terribly terribly worng lol
+		} else {
+			//Nothing to reject
+			this.error('Nothing to be done');
+		}
+			
 	}
 
 	private error(msg : string) : void {
