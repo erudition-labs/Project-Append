@@ -78,14 +78,15 @@ export class UpdatesComponent implements OnInit {
 
     
     this.updatesService.createUpdate(update).subscribe((result) => {
-      console.log(result.message);
+      console.log(result);
     });
     location.reload();
   }
 
   public onClickEdit() : void {
-    this.singleUpdate = false;
+    this.singleUpdate = true;
     this.addUpdateClicked = false;
+    this.editButtonClicked = false;
 		this.editForm.controls.title.markAsDirty();
 		this.editForm.controls.content.markAsDirty();
 
@@ -105,10 +106,15 @@ export class UpdatesComponent implements OnInit {
 
     this.updatesService.editUpdate(edittedUpdate).subscribe((result) => {
       this.success(result.message)
+      this.update = result.result;
+      this.update.date = new Date(result.result.date);
 
+      const index = this.updates.findIndex(update => result.result._id === update._id);
+
+      this.updates[index] = result.result;
+      this.updates[index].date = new Date(result.result.date);
+      
     });
-
-    location.reload();
   }
 
   private populateForm() : void {
