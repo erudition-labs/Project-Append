@@ -10,9 +10,8 @@ router.route('/').post([
 	body('email').exists().isEmail().withMessage('Valid Email Required').normalizeEmail(),
 	body('firstName').exists().withMessage('First Name Required').trim().escape(),
 	body('lastName').exists().withMessage('Last Name Required').trim().escape(),
-	body('rank').exists().withMessage('Rank Required').trim().escape(),
 	body('flight').exists().withMessage('Flight Required').trim().escape(),
-	body('team').exists().withMessage('Team Required').trim().escape(),
+	body('phone').exists().withMessage('User Phone Required').trim().escape(),
 	body('role').exists().withMessage('User Role Required').trim().escape(),
 	body('password').exists().withMessage('Password Required').trim().escape()
 ], controller.postUser);

@@ -18,7 +18,7 @@
 				</mat-form-field>
 			</mat-list-item>
 
-
+<!---
 			<mat-list-item *ngIf="isAdmin">
 					<mat-slide-toggle
 						[formControl]="data.get('isVerificationRequired')"
@@ -27,15 +27,22 @@
 						Require Verification
 					</mat-slide-toggle>
 			</mat-list-item>
+--->
+			<ng-container *ngIf="isAdmin && isClosed">
+				<mat-list-item>
+					<button 
+						type="button" class="btn btn-outline-primary"
+						(click)="enableSignups()">Enable Signups</button>
+				</mat-list-item>
+			</ng-container>
 
-			<mat-list-item *ngIf="isAdmin">
-					<mat-slide-toggle
-						[formControl]="data.get('isSignupRequired')"
-						[color]="primary"
-						[checked]="checked">
-						Require user to Signup
-					</mat-slide-toggle>
-			</mat-list-item>
+			<ng-container *ngIf="isAdmin && !isClosed">
+				<mat-list-item>
+					<button 
+						type="button" class="btn btn-outline-primary"
+						(click)="disableSignups()">Disable Signups</button>
+				</mat-list-item>
+			</ng-container>
 
 			<mat-list-item>
 				<input placeholder="Select a date range"

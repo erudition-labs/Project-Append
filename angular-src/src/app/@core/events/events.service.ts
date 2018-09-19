@@ -60,6 +60,12 @@ export class EventsService {
 			}
 	
 			event.signedUp = Array.from(singupSet);
+
+			if(event.isClosed) {
+				event.signedUp = [];
+				event.pending = [];
+			}
+
 			return this.http.put(this.url + '/', { data: event, user:  this.authService.parseToken().sub });
 		});
 	}
@@ -67,7 +73,7 @@ export class EventsService {
 	public isOIC(event: Event) : boolean {
 		let currUserId = this.authService.parseToken().sub
 		if(!event.OIC) return false;
-		
+
 		for(let user of event.OIC) {
 			if(user._id === currUserId) {
 				return true;
