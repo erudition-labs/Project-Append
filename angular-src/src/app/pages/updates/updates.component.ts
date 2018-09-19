@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UpdatesService } from '../../@core/updates/updates.service';
 import { Update } from '../../@core/updates/update.model';
 import { AuthService } from '../../@core/auth/auth.service';
+import { UserService } from '../../@core/user/user.service';
+
 import { ToastrService } from 'ngx-toastr';
 import {
 	FormGroup,
@@ -18,7 +20,12 @@ import {
 })
 export class UpdatesComponent implements OnInit {
 
-  constructor(private updatesService : UpdatesService, public authService : AuthService, private toast : ToastrService, private formBuilder : FormBuilder,) { }
+  constructor(private updatesService : UpdatesService, 
+              public authService : AuthService, 
+              private toast : ToastrService, 
+              private formBuilder : FormBuilder,
+              private userService : UserService,
+              ) { }
 
   updates : Update[] = [];
   singleUpdate : Boolean = false;
@@ -75,10 +82,16 @@ export class UpdatesComponent implements OnInit {
 
     this.addUpdateClicked = false;
     this.editButtonClicked = false;
-
     
+
     this.updatesService.createUpdate(update).subscribe((result) => {
-      console.log(result);
+      this.userService.getUser(result.result.author).subscribe((user) => {
+        result.result.author = user.result;
+      });
+      result.result.date = new Date(result.result.date);
+
+      this.updates.splice(0, 0, result.result);
+      
     });
   }
 
@@ -145,6 +158,7 @@ export class UpdatesComponent implements OnInit {
   }
 
   public createUpdate(): void {
+    this.createForm();
 		if(this.authService.isAuthenticated() && this.authService.isAdmin()) {
       this.addUpdateClicked = true;
       this.singleUpdate = false;
