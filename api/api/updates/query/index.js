@@ -21,7 +21,7 @@ const createUpdate = async (updateData) => {
 
 const editUpdate = async (id, update) => {
 	try {
-		return await Update.findByIdAndUpdate(id, update, { new: true });
+		return await Update.findByIdAndUpdate(id, update, { new: true }).populate('author', {password: 0});
 	} catch(error) {
 		return error;
 	}

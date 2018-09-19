@@ -80,7 +80,6 @@ export class UpdatesComponent implements OnInit {
     this.updatesService.createUpdate(update).subscribe((result) => {
       console.log(result);
     });
-    location.reload();
   }
 
   public onClickEdit() : void {
@@ -108,6 +107,7 @@ export class UpdatesComponent implements OnInit {
       this.success(result.message)
       this.update = result.result;
       this.update.date = new Date(result.result.date);
+      
 
       const index = this.updates.findIndex(update => result.result._id === update._id);
 
@@ -148,7 +148,6 @@ export class UpdatesComponent implements OnInit {
 		if(this.authService.isAuthenticated() && this.authService.isAdmin()) {
       this.addUpdateClicked = true;
       this.singleUpdate = false;
-      console.log(this.addUpdateClicked);
       
 		} else {
 			//tell them they no have access
