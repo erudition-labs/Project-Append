@@ -387,6 +387,12 @@ export class EventsComponent implements OnInit {
 					newEvent.date = this.modalData.event.meta.date;
 				}
 
+				if(this.eventsService.isSpotsLeft(newEvent)) {
+					newEvent.isClosed = false;
+				} else {
+					newEvent.isClosed = true;
+				}
+
 					this.eventsService.updateEvent(newEvent).subscribe(
 						httpResult => {
 							if(httpResult.success) {
@@ -399,7 +405,7 @@ export class EventsComponent implements OnInit {
 									end		: new Date(httpResult.result.date[1]),
 									color	: colors.red,
 									meta	: httpResult.result
-								};
+								};								
 								
 							updatedCalendarEvent.meta.additionalDetails = JSON.parse(updatedCalendarEvent.meta.additionalDetails);
 
@@ -542,6 +548,10 @@ export class EventsComponent implements OnInit {
 				this.modalData.event.meta.pending.splice(index, 1);
 				let event = Object.assign({}, this.modalData.event.meta); //deep copy to get rid of reference
 
+				if(!this.eventsService.willSpotsBeLeft(event)) {
+					event.isClosed = true;
+				}
+
 				this.eventsService.signupUser(event)
 				.subscribe(httpResult => {
 					if(httpResult.success) {
@@ -570,7 +580,7 @@ export class EventsComponent implements OnInit {
 			} //otherwise something is terribly terribly worng lol
 		} else {
 			//user already signed up or is not pending
-			this.error('Nothing to be done');
+			this.error('Signups Full');
 		}
 	}
 
@@ -699,6 +709,7 @@ export class DialogOverviewEventComponent implements OnInit {
 
 	enableSignups() : void {
 		this.data.get('isClosed').setValue(false);
+		this.data.get('spots').setValue(null);
 		this.isClosed = false;		
 	}
 

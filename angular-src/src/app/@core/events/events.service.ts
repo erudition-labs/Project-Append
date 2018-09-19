@@ -129,7 +129,15 @@ export class EventsService {
 		if(totalSpots === -1) return true;
 		let signedUp = event.signedUp.length;
 
-		return totalSpots >= signedUp;
+		return totalSpots > signedUp;
+	}
+
+	public willSpotsBeLeft(event: Event) : boolean {
+		let spots = event.spots;
+		if(spots === -1) return true;
+		spots++;
+
+		return spots <= event.spots;
 	}
 
 	public signupUser(event: Event) : Observable<any> {
