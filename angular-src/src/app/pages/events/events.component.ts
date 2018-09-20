@@ -477,6 +477,9 @@ export class EventsComponent implements OnInit {
 
 								this.events[index].meta.pending = httpResult.result.pending;
 								this.modalData.event.meta.pending = httpResult.result.pending;
+
+								this.events[index].meta.isClosed = httpResult.result.isClosed;
+								this.modalData.event.meta.isClosed = httpResult.result.isClosed;
 							} else {
 								this.error('Something went wrong. API Error');
 							}
