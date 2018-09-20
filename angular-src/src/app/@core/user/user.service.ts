@@ -86,5 +86,16 @@ export class UserService {
 	public deleteUser(id : string) : Observable<any> {
 		return this.http.delete(this.url + '/' + id);
 	}
-
+	public markChangesViewed() : void {
+		this.getUser(this.authService.parseToken().sub).subscribe(httpResult => {
+			if(httpResult.success) {
+				let user = httpResult.result;
+				user.isChangelogViewed = true;
+				this.updateUser(user._id, user).subscribe(result => {
+					if(result.success) {
+					}
+				});
+			}
+		});		
+	}
 }

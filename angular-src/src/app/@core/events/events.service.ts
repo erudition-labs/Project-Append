@@ -201,4 +201,5 @@ export class EventsService {
 
 		return this.http.put(this.url + '/', { data: event, user:  this.authService.parseToken().sub });	
 	}
+
 }
