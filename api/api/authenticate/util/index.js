@@ -6,9 +6,9 @@ const createToken = user => {
 		throw new Error('No user role specified');
 	}
 	return jwt.sign({
-		sub			: user._id,
-		email		: user.email,
-		role		: user.role,
+		sub					: user._id,
+		email				: user.email,
+		role				: user.role,
 		iss			: 'api.euriditionlabs.com',
 		aud			: 'api.euriditionlabs.com'
 	},

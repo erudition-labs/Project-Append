@@ -3,6 +3,8 @@ import { Component, OnDestroy,	ViewChild, TemplateRef, Input} from '@angular/cor
 import { NbThemeService } from '@nebular/theme';
 import { takeWhile } from 'rxjs/operators/takeWhile' ;
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AuthService } from './../../@core/auth/auth.service';
+import { UserService } from './../../@core/user/user.service';
 
 
 interface CardSettings {
@@ -26,14 +28,18 @@ interface CardSettings {
 
     </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-outline-primary" (click)="activeModal.close('Close click')">Close</button>
+  <button type="button" class="btn btn-outline-primary" (click)="activeModal.close('Close click');markViewed();">blah blah blah, I don't care</button>
 </div>
   `
 })
 export class NgbdModalContent {
- // @Input() name;
 
-  constructor(public activeModal: NgbActiveModal) {}
+  constructor(public activeModal: NgbActiveModal,
+              private userService : UserService) {}
+
+  markViewed() : void {
+    this.userService.markChangesViewed();
+  }
 }
 
 @Component({
@@ -41,11 +47,6 @@ export class NgbdModalContent {
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent implements OnDestroy {
-  @ViewChild('modalContent') modalContent: TemplateRef<any>;
-  modalData: {
-    data : string
-	}
-
 
   private alive = true;
 
@@ -106,19 +107,24 @@ export class DashboardComponent implements OnDestroy {
     ],
   };
 
-  constructor(private themeService: NbThemeService, private modalService: NgbModal) {
+  constructor(private themeService: NbThemeService, 
+              private modalService: NgbModal,
+              private authService : AuthService,
+              private userService : UserService) {
     this.themeService.getJsTheme()
       .pipe(takeWhile(() => this.alive))
       .subscribe(theme => {
         this.statusCards = this.statusCardsByThemes[theme.name];
     });
 
-   const modalRef = this.modalService.open(NgbdModalContent);
-    //modalRef.componentInstance.name = 'World';
+    this.userService.getUser(this.authService.parseToken().sub).subscribe(httpResult => {
+      if(httpResult.success) {
+        if(!httpResult.result.isChangelogViewed) {
+          const modalRef = this.modalService.open(NgbdModalContent);
+        }
+      }
+    });
   }
-
-  onLoad(event){}
-  onError(event){}
 
   ngOnDestroy() {
     this.alive = false;
