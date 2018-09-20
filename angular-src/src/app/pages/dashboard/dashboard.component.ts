@@ -1,6 +1,9 @@
-import {Component, OnDestroy} from '@angular/core';
+
+import { Component, OnDestroy,	ViewChild, TemplateRef, Input} from '@angular/core';
 import { NbThemeService } from '@nebular/theme';
 import { takeWhile } from 'rxjs/operators/takeWhile' ;
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 
 interface CardSettings {
   title: string;
@@ -9,10 +12,40 @@ interface CardSettings {
 }
 
 @Component({
+  selector: 'ngbd-modal-content',
+  template: `
+    <div class="modal-header">
+      <h2 class="modal-title">New Release!</h2>
+        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+    <div markdown [src]="'http://ca782.org/changelog.md'"  (error)="onError($event)"></div>
+
+    </div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-primary" (click)="activeModal.close('Close click')">Close</button>
+</div>
+  `
+})
+export class NgbdModalContent {
+ // @Input() name;
+
+  constructor(public activeModal: NgbActiveModal) {}
+}
+
+@Component({
   selector: 'ngx-dashboard',
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent implements OnDestroy {
+  @ViewChild('modalContent') modalContent: TemplateRef<any>;
+  modalData: {
+    data : string
+	}
+
 
   private alive = true;
 
@@ -73,13 +106,19 @@ export class DashboardComponent implements OnDestroy {
     ],
   };
 
-  constructor(private themeService: NbThemeService) {
+  constructor(private themeService: NbThemeService, private modalService: NgbModal) {
     this.themeService.getJsTheme()
       .pipe(takeWhile(() => this.alive))
       .subscribe(theme => {
         this.statusCards = this.statusCardsByThemes[theme.name];
     });
+
+   const modalRef = this.modalService.open(NgbdModalContent);
+    //modalRef.componentInstance.name = 'World';
   }
+
+  onLoad(event){}
+  onError(event){}
 
   ngOnDestroy() {
     this.alive = false;

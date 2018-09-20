@@ -18,6 +18,8 @@ import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';
 
 import { ToastrModule } from 'ngx-toastr';
+//import { MarkdownModule, MarkedOptions } from 'ngx-markdown';
+
 
 
 @NgModule({
@@ -34,6 +36,7 @@ import { ToastrModule } from 'ngx-toastr';
     ThemeModule.forRoot(),
     CoreModule.forRoot(),
     ToastrModule.forRoot(),
+   // MarkdownModule.forRoot(),
   ],
   bootstrap: [AppComponent],
   providers: [
