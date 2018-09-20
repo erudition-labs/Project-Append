@@ -92,8 +92,24 @@
 					<mat-list-item>
 						<mat-form-field appearance="outline">
 							<mat-label>Rank</mat-label>
-							<input matInput placeholder="Rank"
+							<mat-select placeholder="Rank"
 											[formControl]="signupForm.get('rank')">
+								<mat-option value="C/Ab">C/Ab</mat-option>
+								<mat-option value="C/Amn">C/Amn</mat-option>	
+								<mat-option value="C/A1C">C/A1C</mat-option>	
+								<mat-option value="C/SrA">C/SrA</mat-option>	
+								<mat-option value="C/SSgt">C/SSgt</mat-option>	
+								<mat-option value="C/TSgt">C/TSgt</mat-option>	
+								<mat-option value="C/MSgt">C/MSgt</mat-option>	
+								<mat-option value="C/SMSgt">C/SMSgt</mat-option>	
+								<mat-option value="C/CMSgt">C/CMSgt</mat-option>	
+								<mat-option value="C/2LT">C/2LT</mat-option>	
+								<mat-option value="C/1LT">C/1LT</mat-option>	
+								<mat-option value="C/Capt">C/Capt</mat-option>	
+								<mat-option value="C/Maj">C/Maj</mat-option>	
+								<mat-option value="C/Lt Col">C/Lt Col</mat-option>	
+								<mat-option value="C/Col">C/Col</mat-option>	
+							</mat-select>
 
 							<mat-error
 								*ngIf="signupForm.get('rank').hasError('required') ||
@@ -106,8 +122,13 @@
 					<mat-list-item>
 						<mat-form-field appearance="outline">
 							<mat-label>Flight*</mat-label>
-							<input matInput placeholder="Flight"
+							<mat-select placeholder="Flight"
 											[formControl]="signupForm.get('flight')">
+								<mat-option value="Alpha">Alpha</mat-option>	
+								<mat-option value="Bravo">Bravo</mat-option>			
+								<mat-option value="Charlie">Charlie</mat-option>			
+								<mat-option value="Delta">Delta</mat-option>			
+							</mat-select>
 
 							<mat-error
 								*ngIf="signupForm.get('flight').hasError('required') ||
@@ -120,8 +141,13 @@
 					<mat-list-item>
 						<mat-form-field appearance="outline">
 							<mat-label>Team</mat-label>
-							<input matInput placeholder="Team"
+							<mat-select placeholder="Team"
 											[formControl]="signupForm.get('team')">
+								<mat-option value="Rifle">Rifle</mat-option>
+								<mat-option value="Sword">Sword</mat-option>
+								<mat-option value="Color Guard">Color Guard</mat-option>
+								<mat-option value="Drill">Drill</mat-option>
+							</mat-select>
 
 							<mat-error
 								*ngIf="signupForm.get('team').hasError('required') ||
@@ -135,7 +161,7 @@
 					<mat-list-item>
 						<mat-form-field appearance="outline">
 							<mat-label>Phone Number*</mat-label>
-							<input matInput placeholder="Phone Number"
+							<input matInput placeholder="661-XXX-XXXX"
 											[formControl]="signupForm.get('phone')">
 
 							<mat-error

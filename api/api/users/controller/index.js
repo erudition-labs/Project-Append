@@ -4,6 +4,7 @@ const { createToken } 		= require('./../../authenticate/util');
 const jwtDecode 			= require('jwt-decode');
 const { validationResult }	= require('express-validator/check');
 const User					= models.user;
+const util 					= require('../util');
 
 const postUser = async (request, response) => {
 	const errors = validationResult(request);
