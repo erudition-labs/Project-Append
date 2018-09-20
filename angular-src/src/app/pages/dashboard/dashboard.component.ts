@@ -40,6 +40,8 @@ export class NgbdModalContent {
   markViewed() : void {
     this.userService.markChangesViewed();
   }
+
+  onError(event) : void {}
 }
 
 @Component({
