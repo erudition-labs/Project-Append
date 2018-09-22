@@ -551,26 +551,23 @@ export class EventsComponent implements OnInit {
 				this.modalData.event.meta.pending.splice(index, 1);
 				let event = Object.assign({}, this.modalData.event.meta); //deep copy to get rid of reference
 
-				if(!this.eventsService.willSpotsBeLeft(event)) {
-					event.isClosed = true;
-				}
-
 				this.eventsService.signupUser(event)
 				.subscribe(httpResult => {
 					if(httpResult.success) {
 						this.userService.eventSignup(event, tmpUser._id) //update user db to show they signed up
 						.subscribe(result => {
 							if(result.success) {
-								this.modalData.event.meta.signedUp.push(result.result);
+
+								this.modalData.event.meta = httpResult.result;
+								this.modalData.event.meta.additionalDetails = JSON.parse(this.modalData.event.meta.additionalDetails);
+								
 								//give success msg
 								this.success('User accepted');
 							} else {
 								this.error('Something went wrong: API Error');
 							}
 						});
-						//this.modalData.event.meta.signedUp.push(tmpUser);
-						//give success msg
-						//this.success('User accepted');
+
 					} else {
 						//failed
 						console.log('RIPPP' + httpResult);

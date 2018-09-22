@@ -145,6 +145,12 @@ export class EventsService {
 		idsSet.add(submitter);
 		event.signedUp = Array.from(idsSet);
 
+		if(this.isSpotsLeft(event)) {
+			event.isClosed = false;
+		} else {
+			event.isClosed = true;
+		}
+
 		return this.http.put(this.url + '/', { data: event, user: submitter, signup: true });
 	}
 
@@ -155,6 +161,13 @@ export class EventsService {
 
 		idsSet.add(submitter);
 		event.pending = Array.from(idsSet);
+
+		if(this.isSpotsLeft(event)) {
+			event.isClosed = false;
+		} else {
+			event.isClosed = true;
+		}
+
 		return this.http.put(this.url + '/', { data: event, user: submitter, signup: true });
 	}
 
@@ -178,7 +191,11 @@ export class EventsService {
 		}
 		event.pending = pendingIds;
 
-		if(this.isSpotsLeft(event)) event.isClosed = false;
+		if(this.isSpotsLeft(event)) {
+			event.isClosed = false;
+		} else {
+			event.isClosed = true;
+		}
 
 		return this.http.put(this.url + '/', { data: event, user: this.authService.parseToken().sub, signup: true });
 	}
@@ -198,6 +215,13 @@ export class EventsService {
 
 		event.signedUp = Array.from(idsSet);
 		event.pending = pendingIds;
+
+		if(this.isSpotsLeft(event)) {
+			event.isClosed = false;
+		} else {
+			event.isClosed = true;
+		}
+
 
 		return this.http.put(this.url + '/', { data: event, user:  this.authService.parseToken().sub });	
 	}
