@@ -75,7 +75,7 @@
 						</div>
 					</ng-container>
 
-					<ng-container *ngIf="(eventsService.isOIC(modalData.event.meta.OIC) ||
+					<ng-container *ngIf="(eventsService.isOIC(modalData.event.meta) ||
 															authService.isAdmin())">
 						<div>Signed Up 
 							<ng-container *ngIf="modalData.event.meta.signedUp.length> 0; 
