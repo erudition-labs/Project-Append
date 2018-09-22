@@ -24,7 +24,7 @@ interface CardSettings {
     </div>
 
     <div class="modal-body">
-    <div markdown [src]="'http://ca782.org/changelog.md'"  (error)="onError($event)"></div>
+    <div markdown [src]="'http://cadet.ca782.org/changelog.md'"  (error)="onError($event)"></div>
 
     </div>
 <div class="modal-footer">
