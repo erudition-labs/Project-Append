@@ -161,7 +161,6 @@ export class EventsService {
 
 		idsSet.add(submitter);
 		event.pending = Array.from(idsSet);
-		console.log(event.pending);
 
 		if(this.isSpotsLeft(event)) {
 			event.isClosed = false;
@@ -208,10 +207,6 @@ export class EventsService {
 
 		let idsSet = new Set(this.utils.getIds(event.signedUp));
 		let index = pendingIds.indexOf(id); //look for id in pending
-
-		console.log(event.pending);
-		console.log(event.signedUp);
-		
 		
 		if(index > -1) {
 			pendingIds.splice(index, 1); //if found remove it
@@ -228,7 +223,6 @@ export class EventsService {
 			event.isClosed = true;
 		}
 
-		console.log(event);
 		return this.http.put(this.url + '/', { data: event, user: this.authService.parseToken().sub, signup: true });	
 	}
 
