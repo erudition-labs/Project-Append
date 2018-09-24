@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ## [1.1.2] - NOT YET
 ### Bug Fixes
 - OIC can view signed up users
+- Fixed events randomly closing
 
 
 ## [1.1.1] - 2018-09-19
