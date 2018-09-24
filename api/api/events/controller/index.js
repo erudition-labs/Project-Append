@@ -32,6 +32,7 @@ const putEvent = async (request, response) => {
 
 		if(request.body.signup && submitter) {
 			const updatedEvent = await queries.updateEvent(request.body.data);
+			console.log(updatedEvent);
 			response.json({ success: true, result: updatedEvent });			
 		}
 

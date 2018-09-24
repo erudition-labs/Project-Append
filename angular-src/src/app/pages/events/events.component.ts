@@ -117,7 +117,6 @@ export class EventsComponent implements OnInit {
 	 activeDayIsOpen: boolean = true;
 	 newEventForm : FormGroup;
 	 settings : any;
-
 	 dataSource : any;
 
 	constructor(private modal				: NgbModal,
@@ -201,7 +200,6 @@ export class EventsComponent implements OnInit {
 	}: CalendarEventTimesChangedEvent): void {
 		event.start = newStart;
 		event.end = newEnd;
-		//this.handleEvent('Dropped or resized', event);
 		this.refresh.next();
 	}
 
@@ -520,7 +518,7 @@ export class EventsComponent implements OnInit {
 						this.modalData.event.meta.pending = httpResult.result.pending;
 						this.modalData.event.color = colors.yellow;
 						this.refresh.next();
-						this.success('User pending acceptance');
+						this.success('User pending acceptance');						
 					} else {
 						//no event exists in frontend
 						this.error('Something went wrong. This event doesn\' exist!');
@@ -545,44 +543,41 @@ export class EventsComponent implements OnInit {
 			this.eventsService.isPending(this.modalData.event.meta, id) &&
 			this.eventsService.isSpotsLeft(this.modalData.event.meta)) 
 		{ 
-			let index = this.modalData.event.meta.pending.findIndex(x => x._id === id);
-		
-			if(index > -1) { //if we find an index
-				let tmpUser = Object.assign({}, this.modalData.event.meta.pending[index]);
-				this.modalData.event.meta.pending.splice(index, 1);
-				let event = Object.assign({}, this.modalData.event.meta); //deep copy to get rid of reference
+			let event = Object.assign({}, this.modalData.event.meta);
 
-				this.eventsService.signupUser(event)
-				.subscribe(httpResult => {
-					if(httpResult.success) {
-						this.userService.eventSignup(event, tmpUser._id) //update user db to show they signed up
-						.subscribe(result => {
-							if(result.success) {
+			this.eventsService.acceptPending(event, id)
+			.subscribe(httpResult => {
+				if(httpResult.success) {
+					let index = this.events.findIndex(x => x.meta._id === this.modalData.event.meta._id);
 
-								this.modalData.event.meta = httpResult.result;
-								this.modalData.event.meta.additionalDetails = JSON.parse(this.modalData.event.meta.additionalDetails);
-								
-								//give success msg
-								this.success('User accepted');
-							} else {
-								this.error('Something went wrong: API Error');
-							}
-						});
+					if(index > -1) {
+						this.events[index].meta.pending = httpResult.result.pending;
+						this.modalData.event.meta.pending = httpResult.result.pending;
 
+						this.events[index].meta.signedUp = httpResult.result.signedUp;
+						this.modalData.event.meta.signedUp = httpResult.result.signedUp;
+
+
+						this.events[index].meta.isClosed = httpResult.result.isClosed;
+						this.modalData.event.meta.isClosed = httpResult.result.isClosed;
+						//this.refresh.next();
 					} else {
-						//failed
-						console.log('RIPPP' + httpResult);
-						this.error('API Error');
+						//no event exists in frontend
+						this.error('Something went wrong. This event doesn\' exist!');
 					}
-				}, error => {
-					console.log(error);
+				} else {
+					console.log('RIP ' + httpResult);
 					this.error('API Error');
-				});
-			} //otherwise something is terribly terribly worng lol
+				}
+			}, error => {
+				console.log(error);
+				this.error('API Error');
+			});
 		} else {
-			//user already signed up or is not pending
-			this.error('Signups Full');
+			//nothing to be
+			this.error('Signups Closed');
 		}
+
 	}
 
 	private rejectPending(id : string) : void {
