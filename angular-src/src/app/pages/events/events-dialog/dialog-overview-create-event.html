@@ -28,7 +28,7 @@
 					</mat-slide-toggle>
 			</mat-list-item>
 --->
-			<ng-container *ngIf="isAdmin && isClosed">
+			<ng-container *ngIf="isClosed">
 				<mat-list-item>
 					<button 
 						type="button" class="btn btn-outline-primary"
@@ -36,7 +36,7 @@
 				</mat-list-item>
 			</ng-container>
 
-			<ng-container *ngIf="isAdmin && !isClosed">
+			<ng-container *ngIf="!isClosed">
 				<mat-list-item>
 					<button 
 						type="button" class="btn btn-outline-primary"
@@ -44,7 +44,7 @@
 				</mat-list-item>
 			</ng-container>
 
-		<ng-container *ngIf="isAdmin && !isClosed">
+		<ng-container *ngIf="!isClosed">
 			<mat-list-item>
 				<ng-container *ngIf="ishiddenSpots">
 					<mat-form-field>

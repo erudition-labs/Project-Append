@@ -200,17 +200,18 @@ export class EventsService {
 		return this.http.put(this.url + '/', { data: event, user: this.authService.parseToken().sub, signup: true });
 	}
 
-	public acceptPending(event: Event) : Observable<any> {
-		let submitter = this.authService.parseToken().sub;
+	public acceptPending(event: Event, id: string) : Observable<any> {
+		event.additionalDetails = JSON.stringify(event.additionalDetails);
+		//let submitter = this.authService.parseToken().sub;
 		let pendingIds = this.utils.getIds(event.pending);
 
 		let idsSet = new Set(this.utils.getIds(event.signedUp));
-		let index = pendingIds.indexOf(submitter); //look for id in pending
+		let index = pendingIds.indexOf(id); //look for id in pending
 		
-		if(index !==  -1) {
+		if(index > -1) {
 			pendingIds.splice(index, 1); //if found remove it
 			//add to approved signed up array
-			idsSet.add(submitter);
+			idsSet.add(id);
 		}
 
 		event.signedUp = Array.from(idsSet);
@@ -222,8 +223,7 @@ export class EventsService {
 			event.isClosed = true;
 		}
 
-
-		return this.http.put(this.url + '/', { data: event, user:  this.authService.parseToken().sub });	
+		return this.http.put(this.url + '/', { data: event, user: this.authService.parseToken().sub, signup: true });	
 	}
 
 }
