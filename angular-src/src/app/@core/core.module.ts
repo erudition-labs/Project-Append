@@ -12,7 +12,10 @@ import { AuthService } from './auth/auth.service';
 import { UserService } from './user/user.service';
 import { EventsService } from './events/events.service';
 import { TokenInterceptorService as TokenInterceptor } from './utils/token-interceptor.service';
-import { AuthGuardService } from './auth/auth-guard.service'
+import { AuthGuardService } from './auth/auth-guard.service';
+import { HttpErrorHandler } from './utils/http-error-handler.service';
+import { ErrorService } from './utils/error.service';
+
 
 const socialLinks = [
  {
@@ -81,6 +84,8 @@ export const NB_CORE_PROVIDERS = [
   UserService,
   EventsService,
   AuthGuardService,
+  HttpErrorHandler,
+  ErrorService,
   {
   	provide: HTTP_INTERCEPTORS,
 	useClass: TokenInterceptor,
