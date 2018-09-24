@@ -35,14 +35,17 @@ const putEvent = async (request, response) => {
 			response.json({ success: true, result: updatedEvent });			
 		}
 
-		if(oldEvent.OIC.indexOf(request.body.user) === -1 &&
+	/*	if(oldEvent.OIC.indexOf(request.body.user) === -1 &&
 			submitter.role !== 'admin') 
 		{
 			return response.json({ success: false, message:"User not Authorized" });
-		}
-
+		}*/
 		const updatedEvent = await queries.updateEvent(request.body.data);
-		response.json({ success: true, result: updatedEvent });
+		response.json({ success: true, result: updatedEvent });	
+		//return response.json({ success: false, message:"User not Authorized" });
+
+		//const updatedEvent = await queries.updateEvent(request.body.data);
+		//response.json({ success: true, result: updatedEvent });
 	} catch(error) {
 		return error;
 	}
