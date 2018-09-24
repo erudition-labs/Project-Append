@@ -1,10 +1,9 @@
 <div class="row">
-  
       
   <ng-container *ngIf="!singleUpdate && !addUpdateClicked">
     <div *ngFor="let update of updates" class="col-xxxl-3 col-md-6 box">
       <nb-card accent="active" size="small">
-        <nb-card-header>{{update.title}} <span style="float: right;"><i>{{update.date.toDateString()}}</i></span></nb-card-header>
+        <nb-card-header>{{update.title}}</nb-card-header>
         <nb-card-body>
           {{update.content}}
           <span class="divLink" (click)="singleUpdateSet(update)">UPDATE URL</span>
@@ -17,7 +16,7 @@
           badgeStatus="success"
           badgePosition="bottom right">
           </nb-user>
-          
+          <span style="float: right;"><b>Posted: </b>{{update.date.toDateString()}}</span>
         </nb-card-footer>
       </nb-card>
     </div>
@@ -37,9 +36,9 @@
                       <span class="font-w-light">{{update.date.toDateString()}}</span>
                     </div>
                 </div>
-                <p>
-                  {{update.content}}
-                </p>
+
+                <markdown [data]="markdown"></markdown>
+
               </div>  
           </nb-card-body>
           <nb-card-footer>
@@ -138,7 +137,7 @@
     </ng-container>
 
   <ng-container *ngIf="addUpdateClicked && !singleUpdate && authService.isAdmin()">
-      <div class="col-md-12">
+      <div class="col-md-8">
         <nb-card size="xxlarge" accent="active">
           <ng-container [formGroup]="updateForm">
             <nb-card-header>

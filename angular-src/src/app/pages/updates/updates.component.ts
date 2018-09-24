@@ -36,6 +36,7 @@ export class UpdatesComponent implements OnInit {
   editButtonClicked : Boolean = false;
   updateForm: FormGroup;
   editForm: FormGroup;
+  markdown : any = "";
 
 
   ngOnInit() {
@@ -152,8 +153,9 @@ export class UpdatesComponent implements OnInit {
   private singleUpdateSet(update : Update) {
     this.singleUpdate = true;
     this.update = update;
-    this.editButtonClicked = false;
+    this.markdown = this.update.content;
 
+    this.editButtonClicked = false;
   }
 
   private back() {
