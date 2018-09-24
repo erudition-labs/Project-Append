@@ -412,8 +412,7 @@ export class EventsComponent implements OnInit {
 							this.refresh.next();
 							this.success('Update Successful');
 							} else {
-								console.log(httpResult);
-								this.error('API Error');
+								this.error('API Error' + httpResult);
 							}
 						}, error => {
 							console.log(error);
