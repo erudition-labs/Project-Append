@@ -86,7 +86,7 @@ export class UpdatesComponent implements OnInit {
 
     this.updatesService.createUpdate(update).subscribe((result) => {
       this.userService.getUser(result.result.author).subscribe((user) => {
-        result.result.author = user.result;
+        result.result.author = user;
       });
       result.result.date = new Date(result.result.date);
 
