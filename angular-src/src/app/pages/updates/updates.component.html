@@ -5,7 +5,8 @@
       <nb-card accent="active" size="small">
         <nb-card-header>{{update.title}}</nb-card-header>
         <nb-card-body>
-          {{update.content}}
+          {{update.content.replace(expression, '')}}
+          <span class='read-more'><button class="btn btn-outline-success btn-tn btn-semi-round" style="position: absolute; bottom: 4px; right: 4px; font-size: 10px; padding: 3px">Read More</button></span>
           <span class="divLink" (click)="singleUpdateSet(update)">UPDATE URL</span>
         </nb-card-body>
         <nb-card-footer>
@@ -98,6 +99,7 @@
                   <p>
                       <textarea [formControl]="editForm.get('content')" rows="30" placeholder="Content of Post" class="form-textarea"></textarea>
                   </p>
+                  <!-- <tui-editor [options] = "options" ></tui-editor> -->
                 </div>  
             </nb-card-body>
             <nb-card-footer>

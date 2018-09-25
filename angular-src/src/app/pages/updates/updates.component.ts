@@ -45,9 +45,9 @@ export class UpdatesComponent implements OnInit {
     initialEditType: 'markdown',
     previewStyle: 'vertical',
     height: 'auto',
-    minHeight: '498px'
+    minHeight: '498px' 
   };
-
+  expression : any = /[>|#*_]/gi;
 
   ngOnInit() {
     this.updatesService.getUpdates().subscribe((result) => {
@@ -157,7 +157,7 @@ export class UpdatesComponent implements OnInit {
 		//populate formControls
 		this.editForm.get('title').setValue(data.title);
 		this.editForm.get('content').setValue(data.content);
-	
+
 	}
 
 
