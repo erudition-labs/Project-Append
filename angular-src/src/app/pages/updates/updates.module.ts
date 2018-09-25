@@ -4,7 +4,7 @@ import { UpdatesRoutingModule, routedComponents } from './updates-routing.module
 import { ThemeModule 								} from '../../@theme/theme.module';
 import { SharedModule } from '../../shared/shared.module';
 import { MarkdownModule, MarkedOptions } from 'ngx-markdown';
-
+import { TuiModule } from 'ngx-tui-editor';
 
 @NgModule({
   imports: [
@@ -13,6 +13,7 @@ import { MarkdownModule, MarkedOptions } from 'ngx-markdown';
     UpdatesRoutingModule,
     SharedModule,
     MarkdownModule.forRoot(),
+    TuiModule,
 
   ],
   declarations: [

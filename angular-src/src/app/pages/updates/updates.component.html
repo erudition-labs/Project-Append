@@ -137,7 +137,7 @@
     </ng-container>
 
   <ng-container *ngIf="addUpdateClicked && !singleUpdate && authService.isAdmin()">
-      <div class="col-md-8">
+      <div class="col-md-12">
         <nb-card size="xxlarge" accent="active">
           <ng-container [formGroup]="updateForm">
             <nb-card-header>
@@ -150,9 +150,10 @@
                       <input [formControl]="updateForm.get('title')" type="text" placeholder="Title of Post" class="form-textbox">
                     </div>  
                   </div>
-                  <p>
+                  <!-- <p>
                     <textarea [formControl]="updateForm.get('content')" rows="30" placeholder="Content of Post" class="form-textarea"></textarea>
-                  </p>
+                  </p> -->
+                  <tui-editor [options] = "options" ></tui-editor> 
                 </div>  
             </nb-card-body>
             <nb-card-footer>
