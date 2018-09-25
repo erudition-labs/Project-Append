@@ -113,6 +113,7 @@ const getUser = async (request, response) => {
 		return response.json({success: true, result: user});
 	} catch(error) {
 		console.log(error);
+		response.json({success: false, message: "Failed to get User"});
 		return error;
 	}
 };
@@ -120,9 +121,10 @@ const getUser = async (request, response) => {
 const getUsers = async (request, response) => {
 	try {
 		const users = await queries.getUsers();
-		response.json(users);
+		response.json({ success: true, result: users});
 	} catch(error) {
 		console.log(error);
+		response.json({ success: false, message: "Failed to get Users" });
 		return error;
 	}
 };
@@ -134,8 +136,9 @@ const putUser = async (request, response) => {
 		const userData = request.body.userData;
 
 		const updatedUser = await queries.updateUser(userId, userData);
-		response.json({ success: true, result: updatedUser });
+		response.json({ success: true, result: updatedUser, message: "Successfully Updated User" });
 	} catch(error) {
+		response.json({ success: false, message: "Unsuccessfully Updated User" });
 		return error;
 	}
 };
@@ -146,6 +149,7 @@ const deleteUser = async (request, response) => {
 		await queries.deleteUser(userId);
 		response.json({success: true, message: 'User deleted'});
 	} catch(error) {
+		response.json({success: false, message: 'Failed to delete user'});
 		return error;
 	}
 }
