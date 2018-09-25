@@ -124,15 +124,7 @@ export class UserManagementComponent implements OnInit {
 
       event.confirm.resolve(event.newData);
       this.userService.updateUser(event.newData._id, event.newData).subscribe((result) => {
-        if(result.success) {
-          this.toastr.success(event.newData.firstName + '\'s acount has been updated.', 'Success!', {
-            timeOut: 5000,
-            closeButton: true,
-            progressBar: true,
-            progressAnimation: 'decreasing',
-            positionClass: 'toast-bottom-right',
-
-          });
+        if(result) {
         }
         
       });
@@ -144,19 +136,7 @@ export class UserManagementComponent implements OnInit {
    onDeleteConfirm(event) {
     if (window.confirm('Are you sure you want to delete?')) {
       event.confirm.resolve();
-      this.userService.deleteUser(event.data._id).subscribe((result) => {
-        console.log(result.message);
-        if(result.success) {
-          this.toastr.error(event.data.firstName + '\'s acount has been deleted', 'Deleted!', {
-            timeOut: 5000,
-            closeButton: true,
-            progressBar: true,
-            progressAnimation: 'decreasing',
-            positionClass: 'toast-bottom-right',
-    
-          });
-        }
-      });
+      this.userService.deleteUser(event.data._id).subscribe();
     } else {
       event.confirm.reject();
     }
