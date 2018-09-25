@@ -5,9 +5,7 @@ import {
 	ViewChild,
 	TemplateRef,
 	OnInit,
-	Inject,
-	Input,
-	Directive
+
 } from '@angular/core';
 
 import {
@@ -20,17 +18,11 @@ import {
 
 
 import {
-	startOfDay,
-	endOfDay,
-	subDays,
-	addDays,
-	endOfMonth,
 	isSameDay,
 	isSameMonth,
-	addHours
 } from 'date-fns';
 
-import { Subject, Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal/modal.module';
 
 import {
@@ -41,8 +33,6 @@ import {
 
 import { 
 	MatDialog, 
-	MatDialogRef, 
-	MAT_DIALOG_DATA
 } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 
@@ -116,7 +106,6 @@ export class EventsComponent implements OnInit {
 	 events: CalendarEvent[] = [];
 	 activeDayIsOpen: boolean = true;
 	 newEventForm : FormGroup;
-	 settings : any;
 	 dataSource : any;
 
 	constructor(private modal				: NgbModal,
@@ -130,52 +119,41 @@ export class EventsComponent implements OnInit {
 
 	ngOnInit() {
 		this.eventsService.getEvents().subscribe((result) => {
-			for(let e of result.result) {
-				let color = colors.red;
-				if(this.eventsService.isPending(e)) {
-					color = colors.yellow;
-				} else if(this.eventsService.isSignedUp(e)) {
-					color = colors.green;
-				} else {
-					color = colors.red;
+			if(result) {
+				for(let e of result) {
+					let color = colors.red;
+					if(this.eventsService.isPending(e)) {
+						color = colors.yellow;
+					} else if(this.eventsService.isSignedUp(e)) {
+						color = colors.green;
+					} else {
+						color = colors.red;
+					}
+
+					if(this.authService.isAdmin() && !e.isVerified) {
+						color = colors.blue;
+					}
+
+					//create calendar event
+					const calendarEvent : CalendarEvent = {
+						start		: new Date(e.date[0]),
+						end			: new Date(e.date[1]),
+						title		: e.name,
+						color		: color,
+						actions		: this.actions,
+						draggable	: false,
+						meta		: e, //append our event object to it
+					};
+					calendarEvent.meta.additionalDetails = JSON.parse(calendarEvent.meta.additionalDetails);
+					this.events.push(calendarEvent); //put it on the calendar
 				}
 
-				if(this.authService.isAdmin() && !e.isVerified) {
-					color = colors.blue;
-				}
-
-				//create calendar event
-				const calendarEvent : CalendarEvent = {
-					start		: new Date(e.date[0]),
-					end			: new Date(e.date[1]),
-					title		: e.name,
-					color		: color,
-					actions		: this.actions,
-					draggable	: false,
-					meta		: e, //append our event object to it
-				};
-				calendarEvent.meta.additionalDetails = JSON.parse(calendarEvent.meta.additionalDetails);
-				this.events.push(calendarEvent); //put it on the calendar
 			}
 			this.refresh.next();
 			this.dataSource = new MatTableDataSource<CalendarEvent>(this.events);
 			this.dataSource.paginator = this.paginator;
 		});	
-		this.settings = {
-			actions: {
-			  add: false,
-			  edit: false,
-			  delete: false
-			},
-			columns: {
-			  title: {
-				title: 'Event Name'
-			  },
-			  start: {
-				title: 'Start Date/Time'
-			  },
-			}
-		  };
+
 		 // this.changeDetectorRef.markForCheck();
 	}
 
@@ -333,9 +311,9 @@ export class EventsComponent implements OnInit {
 					//In the case of creating event for OIC to edit, automatically sign them up
 					newEvent.signedUp = newEvent.OIC;
 					this.eventsService.createEvent(newEvent).subscribe(
-						httpResult => {
-							if(httpResult.success) {
-								newEvent._id = httpResult.result._id;
+						result => {
+							if(result) {
+								newEvent._id = result._id;
 								newEvent.additionalDetails = JSON.parse(newEvent.additionalDetails);
 
 								this.events.push({
@@ -346,16 +324,9 @@ export class EventsComponent implements OnInit {
 									meta	: newEvent
 								});
 								this.refresh.next();
-								this.success('Event added');
-							} else {
-								console.log('nope ' + httpResult);
-								this.error('API Error');
 							}
-						}, error => {
-							console.log(error);	
-							this.error('API Error');
-					}); 
-				}
+						}); 
+					}
 			});
 		} else {
 			//tell them they no have access
@@ -393,66 +364,30 @@ export class EventsComponent implements OnInit {
 				}
 
 					this.eventsService.updateEvent(newEvent).subscribe(
-						httpResult => {
-							if(httpResult.success) {
+						result => {
+							if(result) {
 								let index = this.events.findIndex(x => x.meta._id === newEvent._id);
 								if(index === -1) return; //no event to update	
 
 								let updatedCalendarEvent : CalendarEvent = {
-									title	: httpResult.result.name,
-									start	: new Date(httpResult.result.date[0]),
-									end		: new Date(httpResult.result.date[1]),
+									title	: result.name,
+									start	: new Date(result.date[0]),
+									end		: new Date(result.date[1]),
 									color	: colors.red,
-									meta	: httpResult.result
+									meta	: result
 								};								
 								
 							updatedCalendarEvent.meta.additionalDetails = JSON.parse(updatedCalendarEvent.meta.additionalDetails);
 
 							this.events[index] = updatedCalendarEvent;
 							this.refresh.next();
-							this.success('Update Successful');
-							} else {
-								this.error('API Error' + httpResult);
-							}
-						}, error => {
-							console.log(error);
-							this.error('API Error');
-						});
+							} 
+					});
 				}
 			});
 		} else {
 			//toast they dont have access
 			this.error('You are not authorized');
-		}
-	}
-	private signupUser() : void {
-		if(!this.eventsService.isSignedUp(this.modalData.event.meta) &&
-			this.eventsService.isSpotsLeft(this.modalData.event.meta)) {
-			let event = Object.assign({}, this.modalData.event.meta);
-
-			this.eventsService.signupUser(event)
-			.subscribe(httpResult => {
-				if(httpResult.success) {
-					let index = this.events.findIndex(x => x.meta._id === this.modalData.event.meta._id);
-
-					if(index > -1) {
-						this.events[index].meta.signedUp = httpResult.result.signedUp;
-						this.modalData.event.meta.signedUp = httpResult.result.signedUp;
-					} else {
-						//event doesnt exist
-						this.error('Something went wrong. This event doesn\' exist!');
-					}
-				} else {
-					console.log('RIP ' + httpResult);
-					this.error('API Error');
-				}
-			}, error => {
-				console.log(error);
-				this.error('API Error');
-			});
-		} else {
-			//nothing to be
-			this.error('User already signed up');
 		}
 	}
 
@@ -463,36 +398,28 @@ export class EventsComponent implements OnInit {
 			let event = Object.assign({}, this.modalData.event.meta);
 
 			this.eventsService.unregisterUser(event)
-			.subscribe(httpResult => {
-				if(httpResult.success) {
+			.subscribe(result => {
+				if(result) {
 					let index = this.events.findIndex(x => x.meta._id === this.modalData.event.meta._id);
 
 					if(index > -1) {
-						this.userService.eventUnregister(httpResult.result).subscribe(result => {
-							if(result.success) {
-								this.events[index].meta.signedUp = httpResult.result.signedUp;
-								this.modalData.event.meta.signedUp = httpResult.result.signedUp;
+						this.userService.eventUnregister(result).subscribe(httpresult => {
+							if(httpresult.success) {
+								this.events[index].meta.signedUp = result.signedUp;
+								this.modalData.event.meta.signedUp = result.signedUp;
 
-								this.events[index].meta.pending = httpResult.result.pending;
-								this.modalData.event.meta.pending = httpResult.result.pending;
+								this.events[index].meta.pending = result.pending;
+								this.modalData.event.meta.pending = result.pending;
 
-								this.events[index].meta.isClosed = httpResult.result.isClosed;
-								this.modalData.event.meta.isClosed = httpResult.result.isClosed;
-							} else {
-								this.error('Something went wrong. API Error');
+								this.events[index].meta.isClosed = result.isClosed;
+								this.modalData.event.meta.isClosed = result.isClosed;
 							}
 						});
 					} else {
 						//event doesnt exist
 						this.error('Something went wrong. This event doesn\'t exist!');
 					}
-				} else {
-					console.log('RIP ' + httpResult);
-					this.error('API Error');
 				}
-			}, error => {
-				console.log(error);
-				this.error('API Error');
 			});
 		} else {
 				//Nothing to be done, some error
@@ -508,23 +435,19 @@ export class EventsComponent implements OnInit {
 			let event = Object.assign({}, this.modalData.event.meta);
 
 			this.eventsService.userPending(event)
-			.subscribe(httpResult => {
-				if(httpResult.success) {
+			.subscribe(result => {
+				if(result) {
 					let index = this.events.findIndex(x => x.meta._id === this.modalData.event.meta._id);
 
 					if(index > -1) {
-						this.events[index].meta.pending = httpResult.result.pending;
-						this.modalData.event.meta.pending = httpResult.result.pending;
+						this.events[index].meta.pending = result.pending;
+						this.modalData.event.meta.pending = result.pending;
 						this.modalData.event.color = colors.yellow;
 						this.refresh.next();
-						this.success('User pending acceptance');						
 					} else {
 						//no event exists in frontend
 						this.error('Something went wrong. This event doesn\' exist!');
 					}
-				} else {
-					console.log('RIP ' + httpResult);
-					this.error('API Error');
 				}
 			}, error => {
 				console.log(error);
@@ -545,29 +468,26 @@ export class EventsComponent implements OnInit {
 			let event = Object.assign({}, this.modalData.event.meta);
 
 			this.eventsService.acceptPending(event, id)
-			.subscribe(httpResult => {
-				if(httpResult.success) {
+			.subscribe(result => {
+				if(result) {
 					let index = this.events.findIndex(x => x.meta._id === this.modalData.event.meta._id);
 
 					if(index > -1) {
-						this.events[index].meta.pending = httpResult.result.pending;
-						this.modalData.event.meta.pending = httpResult.result.pending;
+						this.events[index].meta.pending = result.pending;
+						this.modalData.event.meta.pending = result.pending;
 
-						this.events[index].meta.signedUp = httpResult.result.signedUp;
-						this.modalData.event.meta.signedUp = httpResult.result.signedUp;
+						this.events[index].meta.signedUp = result.signedUp;
+						this.modalData.event.meta.signedUp = result.signedUp;
 
 
-						this.events[index].meta.isClosed = httpResult.result.isClosed;
-						this.modalData.event.meta.isClosed = httpResult.result.isClosed;
+						this.events[index].meta.isClosed = result.isClosed;
+						this.modalData.event.meta.isClosed = result.isClosed;
 						//this.refresh.next();
 					} else {
 						//no event exists in frontend
 						this.error('Something went wrong. This event doesn\' exist!');
 					}
-				} else {
-					console.log('RIP ' + httpResult);
-					this.error('API Error');
-				}
+				} 
 			}, error => {
 				console.log(error);
 				this.error('API Error');
@@ -588,13 +508,12 @@ export class EventsComponent implements OnInit {
 				this.modalData.event.meta.pending.splice(index, 1);
 				let event = Object.assign({}, this.modalData.event.meta);
 				this.eventsService.unregisterUser(event)
-				.subscribe(httpResult => {
-					if(httpResult.success) {
+				.subscribe(result => {
+					if(result) {
 						//successsss
 					} else {
-						console.log('RIPPP' + httpResult);
+						console.log('RIPPP' + result);
 						//faileddddd
-						this.error('API Error');
 					}
 				}, error => {
 					console.log(error);
@@ -614,19 +533,16 @@ export class EventsComponent implements OnInit {
 				if(index > -1) { //if we find an index
 					this.modalData.event.meta.signedUp.splice(index, 1);
 					let event = Object.assign({}, this.modalData.event.meta);
+
 					this.eventsService.unregisterUser(event)
-					.subscribe(httpResult => {
-						if(httpResult.success) {
-							this.modalData.event.meta = httpResult.result;
+					.subscribe(result => {
+						if(result) {
+							this.modalData.event.meta = result;
 							this.modalData.event.meta.additionalDetails = JSON.parse(this.modalData.event.meta.additionalDetails);
 
 							this.changeDetectorRef.markForCheck();
 							//success
-						} else {
-							console.log('RIPPP' + httpResult);
-						//faileddddd
-						this.error('API Error');
-					}
+						} 
 				}, error => {
 					console.log(error);
 					this.error('API Error');

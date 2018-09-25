@@ -9,8 +9,8 @@ const postEvent = async (request, response) => {
 		const newEvent = await queries.createEvent(request.body.data);
 		response.json({ success: true, message: 'Event Created', result: newEvent });
 	} catch(error) {
-		console.log(error);
-		return error;
+		response.json({ success: false, message: 'Failed to Create Event' });
+		//return error;
 	}
 };
 
@@ -19,7 +19,7 @@ const getEvent = async (request, response) => {
 		const fetchedEvent = await queries.getEvent(request.params.id);	
 		response.json({ success: true, result: fetchedEvent });
 	} catch(error) {
-		return error;
+		//return error;
 	}
 };
 
@@ -32,7 +32,8 @@ const putEvent = async (request, response) => {
 
 		if(request.body.signup && submitter) {
 			const updatedEvent = await queries.updateEvent(request.body.data);
-			response.json({ success: true, result: updatedEvent });			
+			return response.json({ success: true, result: updatedEvent });		
+		//	response.end();	
 		}
 
 	/*	if(oldEvent.OIC.indexOf(request.body.user) === -1 &&
@@ -41,13 +42,14 @@ const putEvent = async (request, response) => {
 			return response.json({ success: false, message:"User not Authorized" });
 		}*/
 		const updatedEvent = await queries.updateEvent(request.body.data);
-		response.json({ success: true, result: updatedEvent });	
+		response.json({ success: true, result: updatedEvent, message: 'Update Successful' });	
 		//return response.json({ success: false, message:"User not Authorized" });
 
 		//const updatedEvent = await queries.updateEvent(request.body.data);
 		//response.json({ success: true, result: updatedEvent });
 	} catch(error) {
-		return error;
+		response.json({ success: false, message: 'Update Unsuccessful' });
+		//return error;
 	}
 }
 
@@ -56,7 +58,8 @@ const getEvents = async (request, response) => {
 		const events = await queries.getEvents();
 		response.json({ success: true, result: events });
 	} catch(error) {
-		return error;
+		response.json({success: false, error: error, message: "Unable to get Events"});
+		//return error;
 	}
 };
 

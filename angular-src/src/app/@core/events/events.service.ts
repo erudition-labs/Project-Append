@@ -6,9 +6,11 @@ import { User } from '../user/user.model';
 import { AuthService } from '../auth/auth.service';
 import { UtilsService } from '../utils/utils.service';
 import { environment } from '../../../environments/environment';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError, retry, map } from 'rxjs/operators';
 import { HttpErrorHandler, HandleError } from './../utils/http-error-handler.service';
 import 'rxjs/add/operator/mergeMap';
+import { ToastrService } from 'ngx-toastr';
+
 
 
 @Injectable({
@@ -23,30 +25,52 @@ export class EventsService {
 	constructor(private http				: HttpClient,
 				private authService			: AuthService,
 				private utils				: UtilsService,
-				private httpErrorHandler	: HttpErrorHandler) 
+				private httpErrorHandler	: HttpErrorHandler,
+				private toast				: ToastrService) 
 	{
 		this.handleError = httpErrorHandler.createHandleError('EventsService');
 	}
 
-	public getEvents() : Observable<any> {
+	public getEvents() : Observable<Event[]> {
 		return this.http.get<any>(this.url + '/')
-		.pipe(retry(3), 
+		.pipe(retry(3), map((response) => {
+			if(response.success) {
+				return Object.values(response.result) as Event[];
+			} else {
+				this.error(response.message);
+				return null;
+			}
+		  }),
 		catchError(this.handleError('getEvents', [])));	
 	}
 
-	public getEvent(id: string) : Observable<any> {
-		return this.http.get(this.url + '/' + id)
-		.pipe(retry(3), 
+	public getEvent(id: string) : Observable<Event> {
+		return this.http.get<any>(this.url + '/' + id)
+		.pipe(retry(3), map((response) => {
+			if(response.success) {
+				return response.result as Event;
+			} else {
+				return null;
+			}
+		}),
 		catchError(this.handleError('getEvent', null)));
 	}
 
-	public createEvent(event: Event) : Observable<any> {
-		return this.http.post(this.url + '/', { data: event })
-		.pipe(retry(3), 
+	public createEvent(event: Event) : Observable<Event> {
+		return this.http.post<any>(this.url + '/', { data: event })
+		.pipe(retry(3), map((response) => {
+			if(response.success) {
+				this.success(response.message);
+				return response.result as Event;
+			} else {
+				this.error(response.message);
+				return null;
+			}
+		}),
 		catchError(this.handleError('CreateEvent', null)));	
 	}
 
-	public updateEvent(event: Event) : Observable<any> {
+	public updateEvent(event: Event) : Observable<Event> {
 		let OICids 		= this.utils.getIds(event.OIC);
 		let signedUpIds = this.utils.getIds(event.signedUp);
 
@@ -54,9 +78,9 @@ export class EventsService {
 		event.pending = this.utils.getIds(event.pending);
 		let singupSet = new Set();
 
-		return this.getEvent(event._id).flatMap(httpResult => {
-			if(httpResult.success) {
-				let oldOICids = this.utils.getIds(httpResult.result.OIC);
+		return this.getEvent(event._id).flatMap(result => {
+			if(result) {
+				let oldOICids = this.utils.getIds(result.OIC);
 
 				for(let id of oldOICids) {
 					let index = signedUpIds.indexOf(id);
@@ -74,8 +98,16 @@ export class EventsService {
 			}
 	
 			event.signedUp = Array.from(singupSet);
-			return this.http.put(this.url + '/', { data: event, user:  this.authService.parseToken().sub })
-			.pipe(retry(3), 
+			return this.http.put<any>(this.url + '/', { data: event, user:  this.authService.parseToken().sub })
+			.pipe(retry(3), map((response) => {
+				if(response.success) {
+					this.success(response.message);
+					return response.result as Event;
+				} else {
+					this.error(response.message);
+					return null;
+				}
+			}),
 				catchError(this.handleError('UpdateEvent', null)));
 		});
 	}
@@ -152,27 +184,7 @@ export class EventsService {
 		return spots <= event.spots;
 	}
 
-	public signupUser(event: Event) : Observable<any> {
-		event.additionalDetails = JSON.stringify(event.additionalDetails);
-		let submitter = this.authService.parseToken().sub;
-
-		//to ensure the ids are unique 
-		let idsSet = new Set(this.utils.getIds(event.signedUp));
-		idsSet.add(submitter);
-		event.signedUp = Array.from(idsSet);
-
-		if(this.isSpotsLeft(event)) {
-			event.isClosed = false;
-		} else {
-			event.isClosed = true;
-		}
-
-		return this.http.put(this.url + '/', { data: event, user: submitter, signup: true })
-		.pipe(retry(3), 
-		catchError(this.handleError('signupUser', null)));
-	}
-
-	public userPending(event : Event) : Observable<any> {
+	public userPending(event : Event) : Observable<Event> {
 		event.additionalDetails = JSON.stringify(event.additionalDetails);
 		let submitter = this.authService.parseToken().sub;
 		let idsSet = new Set(this.utils.getIds(event.pending));
@@ -186,12 +198,21 @@ export class EventsService {
 			event.isClosed = true;
 		}
 
-		return this.http.put(this.url + '/', { data: event, user: submitter, signup: true })
+		return this.http.put<any>(this.url + '/', { data: event, user: submitter, signup: true })
 		.pipe(retry(3), 
+		map((response) => {
+			if(response.success) {
+				this.success("User pending acceptance");
+				return response.result as Event;
+			} else {
+				this.error("");
+				return null;
+			}		
+		}),
 		catchError(this.handleError('userPending', null)));
 	}
 
-	public unregisterUser(event: Event) : Observable<any> {
+	public unregisterUser(event: Event) : Observable<Event> {
 		event.additionalDetails = JSON.stringify(event.additionalDetails);
 		let submitter = this.authService.parseToken().sub;
 		
@@ -217,12 +238,22 @@ export class EventsService {
 			event.isClosed = true;
 		}
 
-		return this.http.put(this.url + '/', { data: event, user: this.authService.parseToken().sub, signup: true })
-		.pipe(retry(3), 
+		return this.http.put<any>(this.url + '/', { data: event, user: this.authService.parseToken().sub, signup: true })
+		.pipe(retry(3), map((response) => {
+			if(response.success) {
+				return response.result as Event;
+			} else {
+				this.error("Failed to unregister");
+				return null;
+			}		
+		}),
 		catchError(this.handleError('unregisterUser', null)));
 	}
 
-	public acceptPending(event: Event, id: string) : Observable<any> {
+
+
+
+	public acceptPending(event: Event, id: string) : Observable<Event> {
 		event.additionalDetails = JSON.stringify(event.additionalDetails);
 		//let submitter = this.authService.parseToken().sub;
 		let pendingIds = this.utils.getIds(event.pending);
@@ -245,9 +276,36 @@ export class EventsService {
 			event.isClosed = true;
 		}
 
-		return this.http.put(this.url + '/', { data: event, user: this.authService.parseToken().sub, signup: true })
-		.pipe(retry(3), 
+		return this.http.put<any>(this.url + '/', { data: event, user: this.authService.parseToken().sub, signup: true })
+		.pipe(retry(3),  map((response) => {
+			if(response.success) {
+				return response.result as Event;
+			} else {
+				this.error("Something went wrong");
+				return null;
+			}		
+		}),
 		catchError(this.handleError('acceptPending', null)));	
+	}
+
+	private error(msg : string) : void {
+		this.toast.error(msg, 'Error!', {
+			timeOut: 5000,
+			closeButton: true,
+			progressBar: true,
+			progressAnimation: 'decreasing',
+			positionClass: 'toast-top-right',
+		  });
+	}
+
+	private success(msg: string) : void {
+		this.toast.success(msg, 'Success!', {
+			timeOut: 5000,
+			closeButton: true,
+			progressBar: true,
+			progressAnimation: 'decreasing',
+			positionClass: 'toast-top-right',
+		  });
 	}
 
 }
