@@ -119,9 +119,9 @@ export class DashboardComponent implements OnDestroy {
         this.statusCards = this.statusCardsByThemes[theme.name];
     });
 
-    this.userService.getUser(this.authService.parseToken().sub).subscribe(httpResult => {
-      if(httpResult.success) {
-        if(!httpResult.result.isChangelogViewed) {
+    this.userService.getUser(this.authService.parseToken().sub).subscribe(result => {
+      if(result) {
+        if(!result.isChangelogViewed) {
           const modalRef = this.modalService.open(NgbdModalContent);
         }
       }

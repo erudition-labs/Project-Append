@@ -403,8 +403,8 @@ export class EventsComponent implements OnInit {
 					let index = this.events.findIndex(x => x.meta._id === this.modalData.event.meta._id);
 
 					if(index > -1) {
-						this.userService.eventUnregister(result).subscribe(httpresult => {
-							if(httpresult.success) {
+						this.userService.eventUnregister(result).subscribe(user => {
+							if(result) {
 								this.events[index].meta.signedUp = result.signedUp;
 								this.modalData.event.meta.signedUp = result.signedUp;
 

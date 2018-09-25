@@ -140,8 +140,8 @@ export class UserService {
 		
 	}
 
-	public deleteUser(id : string) : void {
-		this.http.delete<any>(this.url + '/' + id)
+	public deleteUser(id : string) : Observable<any> {
+		return this.http.delete<any>(this.url + '/' + id)
 		.pipe(retry(3), map((response) => {
 			if(response.success) {
 				this.success(response.message);
