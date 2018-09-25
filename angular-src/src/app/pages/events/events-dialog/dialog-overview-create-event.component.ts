@@ -1,24 +1,15 @@
 import { 
 	Component, 
-	ChangeDetectionStrategy,
-	ChangeDetectorRef,
-	ViewChild,
-	TemplateRef,
 	OnInit,
 	Inject,
-	Input,
-	Directive
 } from '@angular/core';
 import {
 	FormGroup,
 	FormArray,
 	FormBuilder,
-	FormControl,
-	Validators
 } from '@angular/forms';
 import { Subject, Observable } from 'rxjs';
 import { 
-	MatDialog, 
 	MatDialogRef, 
 	MAT_DIALOG_DATA
 } from '@angular/material';
@@ -26,15 +17,12 @@ import {
 
 import { User } from './../../../@core/user/user.model';
 
-import { EventsService } from './../../../@core/events/events.service';
 import { AuthService } from './../../../@core/auth/auth.service';
 import { UserService } from './../../../@core/user/user.service';
 
 
 @Component({
-	//providers: [EventsComponent],
 	selector: 'dialog-overview-create-event',
-	//changeDetection: ChangeDetectionStrategy.OnPush,
 	templateUrl: './dialog-overview-create-event.html',
 	styleUrls: ['./dialog-overview-create-event.scss']
 })
@@ -97,7 +85,6 @@ export class DialogOverviewEventComponent implements OnInit {
 		this.data.get('isClosed').setValue(true);
 		this.data.get('spots').setValue(0);
 		this.isClosed = true;		
-		console.log(this.data);
 	}
 
 	public addDetailField() : void {
