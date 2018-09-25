@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changes
 - Http request to API retries up to 3 times in case of weak or bad internet connections
+- Summary text wraps instead of scrolling forever
 
 ### Bug Fixes
 - OIC can view signed up users
