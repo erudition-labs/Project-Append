@@ -1,15 +1,38 @@
-const queries 				= require('./../query');
-const models				= require('./../model');
-const { createToken } 		= require('./../../authenticate/util');
-const jwtDecode 			= require('jwt-decode');
+const queries 							= require('./../query');
+const models								= require('./../model');
+const { createToken } 			= require('./../../authenticate/util');
+const jwtDecode 						= require('jwt-decode');
 const { validationResult }	= require('express-validator/check');
 const User					= models.user;
 const util 					= require('../util');
-var nodemailer = require('nodemailer');
 
-const bcrypt 	= require('bcryptjs');
-var async = require('async');
-var crypto = require('crypto');
+const bcrypt 			= require('bcryptjs');
+var async					= require('async');
+var crypto 				= require('crypto');
+
+
+var  hbs = require('nodemailer-express-handlebars'),
+email = process.env.MAILER_EMAIL_ID || 'eruditionlabs@gmail.com@gmail.com',
+pass = process.env.MAILER_PASSWORD || 'M0nk3ylabs'
+nodemailer = require('nodemailer');
+
+var smtpTransport = nodemailer.createTransport({
+service: process.env.MAILER_SERVICE_PROVIDER || 'Gmail',
+auth: {
+	user: email,
+	pass: pass
+}
+});
+
+var handlebarsOptions = {
+viewEngine: 'handlebars',
+viewPath: path.resolve('./api/templates/'),
+extName: '.html'
+};
+
+smtpTransport.use('compile', hbs(handlebarsOptions));
+
+
 
 const postUser = async (request, response) => {
 	const errors = validationResult(request);
@@ -162,8 +185,6 @@ const deleteUser = async (request, response) => {
 };
 
 
-
-
 const passwordResetRequest = async (request, response, next) => {
 	async.waterfall([
 		function(done) {
@@ -187,27 +208,26 @@ const passwordResetRequest = async (request, response, next) => {
 		  });
 		},
 		function(token, user, done) {
-		  var smtpTransport = nodemailer.createTransport('SMTP', {
-			service: 'SendGrid',
-			auth: {
-			  user: '!!! YOUR SENDGRID USERNAME !!!',
-			  pass: '!!! YOUR SENDGRID PASSWORD !!!'
+
+			var data = {
+        to: user.email,
+        from: email,
+        template: 'forgot-password-email',
+        subject: 'Password help has arrived!',
+        context: {
+          url: 'http://localhost:3000/auth/reset-password/' + token,
+          name: user.firstName
+        }
+      };
+
+			smtpTransport.sendMail(data, function(err) {
+        if (!err) {
+          return response.json({ success: true, message: 'Recovery email has been sent to you.' });
+        } else {
+          return done(err);
+        }
+     	 });
 			}
-		  });
-		  var mailOptions = {
-			to: user.email,
-			from: 'passwordreset@demo.com',
-			subject: 'Node.js Password Reset',
-			text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-			  'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-			  'http://' + request.headers.host + '/reset/' + token + '\n\n' +
-			  'If you did not request this, please ignore this email and your password will remain unchanged.\n'
-		  };
-		  smtpTransport.sendMail(mailOptions, function(err) {
-			  response.json({ success: true, message: "An Email has been sent" });
-			done(err, 'done');
-		  });
-		}
 	  ], function(err) {
 		if (err) return next(err);
 	  });
@@ -234,25 +254,24 @@ const passwordReset = async (request, response, next) => {
 		});
 	},
 		function(user, done) {
-		  var smtpTransport = nodemailer.createTransport('SMTP', {
-			service: 'SendGrid',
-			auth: {
-			  user: '!!! YOUR SENDGRID USERNAME !!!',
-			  pass: '!!! YOUR SENDGRID PASSWORD !!!'
+		  var data = {
+				to: user.email,
+				from: email,
+				template: 'reset-password-email',
+				subject: 'Password Reset Confirmation',
+				context: {
+					name: user.firstName
+				}
+			};
+
+			smtpTransport.sendMail(data, function(err) {
+				if (!err) {
+					return response.json({ success: true, message: 'Password reset' });
+				} else {
+					return done(err);
+				}
+			});
 			}
-		  });
-		  var mailOptions = {
-			to: user.email,
-			from: 'passwordreset@demo.com',
-			subject: 'Your password has been changed',
-			text: 'Hello,\n\n' +
-			  'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
-		  };
-		  smtpTransport.sendMail(mailOptions, function(err) {
-			  response.json({ success:true, message: "Password has been reset" });
-			done(err);
-		  });
-		}
 	  ], function(err) {
 		response.json({ success: false, message: "Something went worng" });
 	  });

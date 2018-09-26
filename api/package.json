@@ -29,6 +29,7 @@
     "mongoose": "*",
     "mongoose-token": "^1.0.3",
     "mongoose-unique-validator": "*",
+    "nodemailer-express-handlebars": "^3.0.0",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "validator": "^10.7.1"
