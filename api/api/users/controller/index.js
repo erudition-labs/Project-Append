@@ -14,8 +14,8 @@ var crypto 				= require('crypto');
 
 
 var  hbs = require('nodemailer-express-handlebars'),
-email = process.env.MAILER_EMAIL_ID || 'eruditionlabs@gmail.com@gmail.com',
-pass = process.env.MAILER_PASSWORD || 'M0nk3ylabs'
+email = process.env.MAILER_EMAIL_ID || 'erudition.testing@gmail.com',
+pass = process.env.MAILER_PASSWORD || 'jb313327'
 nodemailer = require('nodemailer');
 
 var smtpTransport = nodemailer.createTransport({
@@ -28,7 +28,7 @@ auth: {
 
 var handlebarsOptions = {
 viewEngine: 'handlebars',
-viewPath: path.resolve('./../api/templates/'),
+viewPath: path.resolve('api/templates'),
 extName: '.html'
 };
 
@@ -217,7 +217,7 @@ const passwordResetRequest = async (request, response, next) => {
         template: 'forgot-password-email',
         subject: 'Password help has arrived!',
         context: {
-          url: 'http://localhost:3000/auth/reset-password/' + token,
+          url: 'http://cadet.ca782.org/#/auth/reset-password/' + token,
           name: user.firstName
         }
       };
