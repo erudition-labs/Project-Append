@@ -29,7 +29,7 @@ router.route('/:id').get(passport.authenticate('jwt', { session: false }), contr
 router.route('/:id').put(passport.authenticate('jwt', { session: false }), controller.putUser);
 router.route('/:id').delete(passport.authenticate('jwt', { session: false }), controller.deleteUser);
 router.route('/forgot-password').post(controller.passwordResetRequest);
-router.route('/reset-password').post(controller.passwordReset);
+router.route('/reset-password/:token').post(controller.passwordReset);
 
 
 

@@ -218,7 +218,45 @@ const passwordResetRequest = async (request, response, next) => {
 };
 
 const passwordReset = async (request, response, next) => {
-
+	async.waterfall([
+		function(done) {
+		  User.findOne({ resetPasswordToken: request.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
+			if (!user) {
+				//token invalid
+			}
+	
+			user.password = request.body.password;
+			user.resetPasswordToken = undefined;
+			user.resetPasswordExpires = undefined;
+	
+			user.save(function(err) {
+				done(err, user);
+			});
+		  });
+		},
+		function(user, done) {
+		  var smtpTransport = nodemailer.createTransport('SMTP', {
+			service: 'SendGrid',
+			auth: {
+			  user: '!!! YOUR SENDGRID USERNAME !!!',
+			  pass: '!!! YOUR SENDGRID PASSWORD !!!'
+			}
+		  });
+		  var mailOptions = {
+			to: user.email,
+			from: 'passwordreset@demo.com',
+			subject: 'Your password has been changed',
+			text: 'Hello,\n\n' +
+			  'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
+		  };
+		  smtpTransport.sendMail(mailOptions, function(err) {
+			  response.json({success:true});
+			done(err);
+		  });
+		}
+	  ], function(err) {
+		response.json({success: false, error:err});
+	  });
 };
 
 module.exports = {
