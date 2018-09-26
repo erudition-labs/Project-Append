@@ -8,6 +8,8 @@ import { LoginFormComponent } from './login-form/login-form.component';
 import { SignupFormComponent } from './signup-form/signup-form.component';
 import { EmailVerificationComponent } from './email-verification/email-verification.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { PasswordResetComponent } from './reset-password/reset-password.component';
+
 
 
 
@@ -25,6 +27,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     SignupFormComponent,
     EmailVerificationComponent,
     ForgotPasswordComponent,
+    PasswordResetComponent,
 ]
 })
 export class AuthModule { }

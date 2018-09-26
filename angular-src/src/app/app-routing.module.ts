@@ -11,6 +11,7 @@ import {
 import { LoginComponent } from './auth/login/login.component';
 import { EmailVerificationComponent } from './auth/email-verification/email-verification.component';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
+import { PasswordResetComponent } from './auth/reset-password/reset-password.component';
 
 
 const routes: Routes = [
@@ -40,8 +41,8 @@ const routes: Routes = [
         component: ForgotPasswordComponent,
       },
       {
-        path: 'reset-password',
-        component: NbResetPasswordComponent,
+        path: 'reset-password/:token',
+        component: PasswordResetComponent,
       },
       {
         path: 'email-verification/:code',

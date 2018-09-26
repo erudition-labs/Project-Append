@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { UserService } from '../../@core/user/user.service';
 
 import {
 	FormGroup,
-	FormArray,
 	FormBuilder,
 	FormControl,
 	Validators
