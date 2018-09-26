@@ -5,6 +5,8 @@ const jwtDecode 						= require('jwt-decode');
 const { validationResult }	= require('express-validator/check');
 const User					= models.user;
 const util 					= require('../util');
+const path = require("path");
+
 
 const bcrypt 			= require('bcryptjs');
 var async					= require('async');
@@ -26,7 +28,7 @@ auth: {
 
 var handlebarsOptions = {
 viewEngine: 'handlebars',
-viewPath: path.resolve('./api/templates/'),
+viewPath: path.resolve('./../api/templates/'),
 extName: '.html'
 };
 
