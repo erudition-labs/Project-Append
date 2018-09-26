@@ -10,6 +10,9 @@ import {
 } from '@nebular/auth';
 import { LoginComponent } from './auth/login/login.component';
 import { EmailVerificationComponent } from './auth/email-verification/email-verification.component';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
+
+
 const routes: Routes = [
   { path: 'pages', loadChildren: 'app/pages/pages.module#PagesModule' },
   {
@@ -33,8 +36,8 @@ const routes: Routes = [
         component: NbLogoutComponent,
       },
       {
-        path: 'request-password',
-        component: NbRequestPasswordComponent,
+        path: 'forgot-password',
+        component: ForgotPasswordComponent,
       },
       {
         path: 'reset-password',
