@@ -175,14 +175,11 @@ const passwordResetRequest = async (request, response, next) => {
 		function(token, done) {
 		  User.findOne({ email: request.body.email }, function(err, user) {
 			if (!user) {
-				response.json({success:false});
-					//no account
+				response.json({ success:false, message: "Email doesn't exist"});
 			}
 	
 			user.resetPasswordToken = token;
 			user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-			//user.password = util.hashPassword(user.password);
-			console.log(user);
 	
 			user.save(function(err) {
 			  done(err, token, user);
@@ -207,7 +204,7 @@ const passwordResetRequest = async (request, response, next) => {
 			  'If you did not request this, please ignore this email and your password will remain unchanged.\n'
 		  };
 		  smtpTransport.sendMail(mailOptions, function(err) {
-			  response.json({success:true});
+			  response.json({ success: true, message: "An Email has been sent" });
 			done(err, 'done');
 		  });
 		}
@@ -222,18 +219,20 @@ const passwordReset = async (request, response, next) => {
 		function(done) {
 		  User.findOne({ resetPasswordToken: request.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
 			if (!user) {
-				//token invalid
+				return response.json({ success: false, message: "Invalid Token" });
 			}
 	
-			user.password = request.body.password;
-			user.resetPasswordToken = undefined;
-			user.resetPasswordExpires = undefined;
-	
-			user.save(function(err) {
-				done(err, user);
+			util.hashPassword(request.body.password).then( hash => {
+				user.resetPasswordToken = undefined;
+				user.resetPasswordExpires = undefined;
+				user.password = hash;
+		
+				user.save(function(err) {
+					done(err, user);
+				});
 			});
-		  });
-		},
+		});
+	},
 		function(user, done) {
 		  var smtpTransport = nodemailer.createTransport('SMTP', {
 			service: 'SendGrid',
@@ -250,12 +249,12 @@ const passwordReset = async (request, response, next) => {
 			  'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
 		  };
 		  smtpTransport.sendMail(mailOptions, function(err) {
-			  response.json({success:true});
+			  response.json({ success:true, message: "Password has been reset" });
 			done(err);
 		  });
 		}
 	  ], function(err) {
-		response.json({success: false, error:err});
+		response.json({ success: false, message: "Something went worng" });
 	  });
 };
 
