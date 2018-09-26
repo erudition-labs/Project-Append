@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AuthService } from '../../@core/auth/auth.service';
+import { UserService } from '../../@core/user/user.service';
 
 import {
 	FormGroup,
@@ -23,30 +23,12 @@ export class ForgotPasswordComponent implements OnInit {
 	emailForm		: FormGroup;
 
 	constructor(private router				: Router,
-				private route 				: ActivatedRoute,
-				private authService 		: AuthService,
+				private userService 		: UserService,
 				private formBuilder 		: FormBuilder,
 				) { }
 
 	ngOnInit() {
 		this.createForm();
-		/*this.route.params.subscribe((params) => {
-			this.authService.verify(params.code).subscribe((result) => {
-				if(result !== undefined && result.success) {
-					this.messages.push(result.msg);
-					this.messages.push("You will be automatically redirected");
-					setTimeout(() => {
-						return this.router.navigateByUrl("dashboard");
-					}, 5000);
-				} else {
-          	this.errors.push("Confirmation Failed");
-          setTimeout(() => {
-            return this.router.navigateByUrl("dashboard");
-          }, 2000);
-				}
-			});
-		});*/
-
 	}
 
 	private createForm(): void {
@@ -56,7 +38,13 @@ export class ForgotPasswordComponent implements OnInit {
 	}
 
 	onSubmit() : void {
-
+		if(this.emailForm.valid) {
+			this.userService.requestNewPassword(this.emailForm.get('email').value).subscribe( result => {
+				setTimeout(() => {
+					return this.router.navigateByUrl("auth");
+				  }, 3000);
+			});
+		}
 	}
 
 }

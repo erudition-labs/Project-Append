@@ -52,6 +52,18 @@ export class UserService {
 		catchError(this.handleError('getUsers', [])));
 	}
 
+	public requestNewPassword(submittedEmail: string) : Observable<any> {
+		return this.http.post<any>(this.url + '/forgot-password', {email: submittedEmail })
+		.pipe(retry(3), map((response) => {
+			if(response.success) {
+				this.success(response.message);
+			} else {
+				this.error(response.message);
+			}
+		}), 
+		catchError(this.handleError('requestNewPassword', null)));
+	}
+
 
 
 	public getUser(id : string) : Observable<User> {
