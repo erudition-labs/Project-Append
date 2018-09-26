@@ -10,7 +10,7 @@ const User		= models.user;
 
 const hashPassword = password => {
 	return new Promise((resolve, reject) => {
-		bcryt.genSalt(12, (error, salt) => {
+		bcrypt.genSalt(10, (error, salt) => {
 			if(error) {
 				reject(error);
 			}

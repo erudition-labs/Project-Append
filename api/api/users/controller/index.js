@@ -5,6 +5,11 @@ const jwtDecode 			= require('jwt-decode');
 const { validationResult }	= require('express-validator/check');
 const User					= models.user;
 const util 					= require('../util');
+var nodemailer = require('nodemailer');
+
+const bcrypt 	= require('bcryptjs');
+var async = require('async');
+var crypto = require('crypto');
 
 const postUser = async (request, response) => {
 	const errors = validationResult(request);
@@ -79,6 +84,8 @@ const postVerifyResend = async (request, response) => {
 	});
 };
 
+
+
 const postEmailVerification = async (request, response) => {
 	util.NEV.confirmTempUser(request.params.token, function(error, user) { // Nev takes care of url being empty
 		if(user) {
@@ -152,7 +159,68 @@ const deleteUser = async (request, response) => {
 		response.json({success: false, message: 'Failed to delete user'});
 		return error;
 	}
-}
+};
+
+
+
+
+const passwordResetRequest = async (request, response, next) => {
+	async.waterfall([
+		function(done) {
+		  crypto.randomBytes(20, function(err, buf) {
+			var token = buf.toString('hex');
+			done(err, token);
+		  });
+		},
+		function(token, done) {
+		  User.findOne({ email: request.body.email }, function(err, user) {
+			if (!user) {
+				response.json({success:false});
+					//no account
+			}
+	
+			user.resetPasswordToken = token;
+			user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+			//user.password = util.hashPassword(user.password);
+			console.log(user);
+	
+			user.save(function(err) {
+			  done(err, token, user);
+			});
+		  });
+		},
+		function(token, user, done) {
+		  var smtpTransport = nodemailer.createTransport('SMTP', {
+			service: 'SendGrid',
+			auth: {
+			  user: '!!! YOUR SENDGRID USERNAME !!!',
+			  pass: '!!! YOUR SENDGRID PASSWORD !!!'
+			}
+		  });
+		  var mailOptions = {
+			to: user.email,
+			from: 'passwordreset@demo.com',
+			subject: 'Node.js Password Reset',
+			text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+			  'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+			  'http://' + request.headers.host + '/reset/' + token + '\n\n' +
+			  'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+		  };
+		  smtpTransport.sendMail(mailOptions, function(err) {
+			  response.json({success:true});
+			done(err, 'done');
+		  });
+		}
+	  ], function(err) {
+		if (err) return next(err);
+	  });
+
+};
+
+const passwordReset = async (request, response, next) => {
+
+};
+
 module.exports = {
 	postUser,
 	postVerifyResend,
@@ -162,4 +230,6 @@ module.exports = {
 	getUsers,
 	putUser,
 	deleteUser,
+	passwordResetRequest,
+	passwordReset
 };
