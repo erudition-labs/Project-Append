@@ -64,6 +64,30 @@ export class UserService {
 		catchError(this.handleError('requestNewPassword', null)));
 	}
 
+	public resetPassword(pass: string, token?: string) : Observable<any> {
+		if(!this.authService.isAuthenticated()) {
+			return this.http.post<any>(this.url + '/reset-password/' + token, {password :pass})
+			.pipe(retry(3), map((response) => {
+				if(response.success) {
+					this.success(response.message);
+				} else {
+					this.error(response.message);
+				}
+			}), 
+			catchError(this.handleError('resetPassword', null)));
+		} else {
+			return this.http.post<any>(this.url + '/reset-password', {password :pass})
+			.pipe(retry(3), map((response) => {
+				if(response.success) {
+					this.success(response.message);
+				} else {
+					this.error(response.message);
+				}
+			}), 
+			catchError(this.handleError('resetPassword', null)));
+		}
+	}
+
 
 
 	public getUser(id : string) : Observable<User> {

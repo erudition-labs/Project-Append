@@ -29,25 +29,6 @@ export class PasswordResetComponent implements OnInit {
 
 	ngOnInit() {
 		this.createForm();
-		console.log('asdfasdfasddsafasdfs');
-		/*
-		this.route.params.subscribe((params) => {
-			this.authService.verify(params.code).subscribe((result) => {
-				if(result !== undefined && result.success) {
-					this.messages.push(result.msg);
-					this.messages.push("You will be automatically redirected");
-					setTimeout(() => {
-						return this.router.navigateByUrl("dashboard");
-					}, 5000);
-				} else {
-          	this.errors.push("Confirmation Failed");
-          setTimeout(() => {
-            return this.router.navigateByUrl("dashboard");
-          }, 2000);
-				}
-			});
-		});
-*/
 	}
 
 	private createForm(): void {
@@ -60,7 +41,11 @@ export class PasswordResetComponent implements OnInit {
 	onSubmit() : void {
 		if(this.newPassForm.valid) {
 			this.route.params.subscribe((params) => {
-				//params.token
+				this.userService.resetPassword(this.newPassForm.get('password').value, params.token).subscribe(result => {
+					setTimeout(() => {
+						return this.router.navigateByUrl("auth");
+					  }, 3000);
+				});
 			});
 		}
 	}

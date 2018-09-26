@@ -45,9 +45,14 @@ const routes: Routes = [
         component: PasswordResetComponent,
       },
       {
+        path: 'reset-password',
+        component: PasswordResetComponent,
+      },
+      {
         path: 'email-verification/:code',
         component: EmailVerificationComponent,
       },
+      
     ],
   },
   { path: '', redirectTo: 'pages', pathMatch: 'full' },
