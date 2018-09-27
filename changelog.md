@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 - Forgot password/ Reset Password
 
 ### Changes
+- OIC selection displays user by "lastName, firstName"
 - Http request to API retries up to 3 times in case of weak or bad internet connections
 - Summary text wraps instead of scrolling forever
 - Using regular expressions to make viewing news posts in small size better
