@@ -1,0 +1,32 @@
+<div id="search" class="page-layout simple tabbed">
+
+    <!-- HEADER -->
+    <div class="header accent p-24" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+         fxLayoutAlign.gt-sm="space-between end">
+
+        <mat-form-field class="w-100-p">
+            <input matInput name="search" placeholder="Search...">
+        </mat-form-field>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <mat-tab-group dynamicHeight="true">
+
+            <mat-tab label="Classic">
+                <search-classic></search-classic>
+            </mat-tab>
+
+            <mat-tab label="Table">
+                <search-table></search-table>
+            </mat-tab>
+
+        </mat-tab-group>
+
+    </div>
+    <!-- / CONTENT -->
+
+</div>

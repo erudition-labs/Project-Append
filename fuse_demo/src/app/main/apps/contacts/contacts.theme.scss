@@ -1,0 +1,21 @@
+@mixin contacts-theme($theme) {
+
+    $background: map-get($theme, background);
+    $is-dark: map-get($theme, is-dark);
+
+    #contacts {
+
+        .content {
+
+            .sidebar {
+
+                .sidebar-content {
+
+                    .card {
+                        background: map-get($background, card);
+                    }
+                }
+            }
+        }
+    }
+}
