@@ -12,7 +12,7 @@ import { AuthService } from '../../@core/auth/auth.service';
 import { UserService } from '../../@core/user/user.service';
 import { NewUser } from '../../@core/user/user.model';
 import { Router } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { map, first } from 'rxjs/operators';
 
 
 @Component({
@@ -51,6 +51,7 @@ export class SignupFormComponent implements OnInit {
 			password			: new FormControl('', { validators: [Validators.required] }),
 			firstName			: new FormControl('', { validators: [Validators.required] }),
 			lastName			: new FormControl('', { validators: [Validators.required] }),
+			fullName			: new FormControl('', { }),
 			rank				: new FormControl('', { }),
 			flight				: new FormControl('', { validators: [Validators.required] }),
 			team				: new FormControl('', { }),
@@ -95,6 +96,7 @@ export class SignupFormComponent implements OnInit {
 		this.signupForm.controls.role.markAsDirty();
 		this.signupForm.controls.phone.markAsDirty();
 		this.signupForm.controls.events.markAsDirty();
+		this.signupForm.controls.fullName.markAsDirty();
 
 		if(this.signupForm.valid) {
 			this.signupLoading = true;
@@ -108,6 +110,7 @@ export class SignupFormComponent implements OnInit {
 				team,
 				role,
 				phone,
+				fullName,
 				isChangelogViewed,
 				events
 			} = this.signupForm.value;
@@ -122,9 +125,12 @@ export class SignupFormComponent implements OnInit {
 				team,
 				role,
 				phone,
+				fullName,
 				isChangelogViewed,
 				events
 			};
+
+			newUser.fullName = newUser.lastName + ', ' + newUser.firstName;
 			
 			this.authService.signup(newUser).subscribe(
 				result => {

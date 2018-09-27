@@ -5,6 +5,7 @@ const uniqueValidator 	= require('mongoose-unique-validator');
 const userModel = new Schema({
 	firstName			: { type: String, required: true },
 	lastName			: { type: String, required: true },
+	fullName			: { type: String, required: true },
 	email				: { type: String, index: true, unique: true, required: true },
 	rank				: { type: String, required: false },
 	flight 				: { type: String, required: true },
@@ -13,8 +14,8 @@ const userModel = new Schema({
 	phone				: { type: String, required: true},
 	role				: { type: String, required: true },
 	isChangelogViewed	: { type: Boolean, default: false },
-	resetPasswordToken: String,
-	resetPasswordExpires: Date,
+	resetPasswordToken		: String,
+	resetPasswordExpires	: Date,
 	events		: [{
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'event',
@@ -27,6 +28,7 @@ const userModel = new Schema({
 const tempUserModel = new Schema({
 	firstName			: { type: String, required: true },
 	lastName			: { type: String, required: true },
+	fullName			: { type: String, required: true },
 	email				: { type: String, index: true, unique: true, required: true },
 	rank				: { type: String, required: false },
 	flight 				: { type: String, required: true },

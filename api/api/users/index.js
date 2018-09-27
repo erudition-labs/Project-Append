@@ -13,7 +13,8 @@ router.route('/').post([
 	body('flight').exists().withMessage('Flight Required').trim().escape(),
 	body('phone').exists().withMessage('User Phone Required').trim().escape(),
 	body('role').exists().withMessage('User Role Required').trim().escape(),
-	body('password').exists().withMessage('Password Required').trim().escape()
+	body('password').exists().withMessage('Password Required').trim().escape(),
+	body('fullName').exists().withMessage('Full Name Required').trim().escape()
 ], controller.postUser);
 
 router.route('/verify-resend').post([

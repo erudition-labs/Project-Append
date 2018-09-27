@@ -65,6 +65,7 @@
     "ng2-smart-table": "^1.3.5",
     "ngx-markdown": "^6.2.0",
     "ngx-toastr": "^9.0.2",
+    "ngx-tui-editor": "^0.3.0",
     "normalize.css": "6.0.0",
     "pace-js": "1.0.2",
     "roboto-fontface": "0.8.0",
