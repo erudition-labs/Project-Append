@@ -51,7 +51,8 @@ const postUser = async (request, response) => {
 		team		: request.body.team,
 		role		: request.body.role,
 		password	: request.body.password,
-		phone	: request.body.phone
+		phone		: request.body.phone,
+		fullName	: request.body.fullName
 	});
 
 	util.NEV.createTempUser(userData, function(error, existingPersistentUser, newTempUser) {
