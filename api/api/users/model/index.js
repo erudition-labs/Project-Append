@@ -13,12 +13,16 @@ const userModel = new Schema({
 	phone				: { type: String, required: true},
 	role				: { type: String, required: true },
 	isChangelogViewed	: { type: Boolean, default: false },
+	resetPasswordToken: String,
+	resetPasswordExpires: Date,
 	events		: [{
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'event',
 		required: false
 	}],
 }).plugin(uniqueValidator);
+
+
 
 const tempUserModel = new Schema({
 	firstName			: { type: String, required: true },
@@ -31,6 +35,8 @@ const tempUserModel = new Schema({
 	phone				: { type: String, required: true },
 	role				: { type: String, required: true },
 	isChangelogViewed	: { type: Boolean, default: false },
+	resetPasswordToken: String,
+	resetPasswordExpires: Date,
 	events		: [{
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'event',
@@ -42,4 +48,5 @@ const tempUserModel = new Schema({
 
 module.exports.user 	= mongoose.model('user', userModel);
 module.exports.tmpUser 	= mongoose.model('tempUser', tempUserModel);
+module.exports.UserSchema = userModel;
 

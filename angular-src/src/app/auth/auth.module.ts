@@ -7,6 +7,10 @@ import { LoginComponent } from './login/login.component';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { SignupFormComponent } from './signup-form/signup-form.component';
 import { EmailVerificationComponent } from './email-verification/email-verification.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { PasswordResetComponent } from './reset-password/reset-password.component';
+
+
 
 
 @NgModule({
@@ -22,8 +26,8 @@ import { EmailVerificationComponent } from './email-verification/email-verificat
     LoginFormComponent,
     SignupFormComponent,
     EmailVerificationComponent,
-
-
+    ForgotPasswordComponent,
+    PasswordResetComponent,
 ]
 })
 export class AuthModule { }
