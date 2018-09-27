@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.1.2] - NOT YET
+## [1.2.2] - NOT YET
 ### Added
 - Markdown abilities to post news
 - Forgot password/ Reset Password
