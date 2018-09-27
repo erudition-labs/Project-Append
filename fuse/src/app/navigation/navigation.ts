@@ -20,7 +20,22 @@ export const navigation: FuseNavigation[] = [
                     bg       : '#F44336',
                     fg       : '#FFFFFF'
                 }
-            }
+            },
+            {
+                id       : 'dashboard',
+                title    : 'Dashboard',
+                translate: 'NAV.DASHBOARD.TITLE',
+                type     : 'item',
+                icon     : 'email',
+                url      : '/dashboard',
+                badge    : {
+                    title    : '99',
+                    translate: 'NAV.DASHBOARD.BADGE',
+                    bg       : '#F44336',
+                    fg       : '#FFFFFF'
+                }
+            },
+
         ]
     }
 ];
