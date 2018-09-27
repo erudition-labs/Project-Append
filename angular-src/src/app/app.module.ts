@@ -19,6 +19,7 @@ import { AuthModule } from './auth/auth.module';
 
 import { ToastrModule } from 'ngx-toastr';
 //import { MarkdownModule, MarkedOptions } from 'ngx-markdown';
+//import { TuiModule } from 'ngx-tui-editor';
 
 
 

@@ -1,12 +1,12 @@
 <div class="row">
-  
       
   <ng-container *ngIf="!singleUpdate && !addUpdateClicked">
     <div *ngFor="let update of updates" class="col-xxxl-3 col-md-6 box">
       <nb-card accent="active" size="small">
-        <nb-card-header>{{update.title}} <span style="float: right;"><i>{{update.date.toDateString()}}</i></span></nb-card-header>
+        <nb-card-header>{{update.title}}</nb-card-header>
         <nb-card-body>
-          {{update.content}}
+          {{update.content.replace(expression, '')}}
+          <span class='read-more'><button class="btn btn-outline-success btn-tn btn-semi-round" style="position: absolute; bottom: 4px; right: 4px; font-size: 10px; padding: 3px">Read More</button></span>
           <span class="divLink" (click)="singleUpdateSet(update)">UPDATE URL</span>
         </nb-card-body>
         <nb-card-footer>
@@ -17,7 +17,7 @@
           badgeStatus="success"
           badgePosition="bottom right">
           </nb-user>
-          
+          <span style="float: right;"><b>Posted: </b>{{update.date.toDateString()}}</span>
         </nb-card-footer>
       </nb-card>
     </div>
@@ -37,9 +37,9 @@
                       <span class="font-w-light">{{update.date.toDateString()}}</span>
                     </div>
                 </div>
-                <p>
-                  {{update.content}}
-                </p>
+
+                <markdown [data]="markdown"></markdown>
+
               </div>  
           </nb-card-body>
           <nb-card-footer>
@@ -99,6 +99,7 @@
                   <p>
                       <textarea [formControl]="editForm.get('content')" rows="30" placeholder="Content of Post" class="form-textarea"></textarea>
                   </p>
+                  <!-- <tui-editor [options] = "options" ></tui-editor> -->
                 </div>  
             </nb-card-body>
             <nb-card-footer>
@@ -151,9 +152,10 @@
                       <input [formControl]="updateForm.get('title')" type="text" placeholder="Title of Post" class="form-textbox">
                     </div>  
                   </div>
-                  <p>
+                  <!-- <p>
                     <textarea [formControl]="updateForm.get('content')" rows="30" placeholder="Content of Post" class="form-textarea"></textarea>
-                  </p>
+                  </p> -->
+                  <tui-editor [options] = "options" ></tui-editor> 
                 </div>  
             </nb-card-body>
             <nb-card-footer>
