@@ -18,12 +18,25 @@ import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
 import { SampleModule } from 'app/main/sample/sample.module';
 import { DashboardModule } from './main/dashboard/dashboard.module';
+import { Login2Module } from './main/authentication/login-2/login-2.module';
+import { Register2Module } from './main/authentication/register-2/register-2.module';
+import { ResetPassword2Module } from './main/authentication/reset-password-2/reset-password-2.module';
+import { ForgotPassword2Module } from './main/authentication/forgot-password-2/forgot-password-2.module';
+import { MailConfirmModule } from './main/authentication/mail-confirm/mail-confirm.module';
+import { LockModule } from './main/authentication/lock/lock.module';
+import { Login2Component } from './main/authentication/login-2/login-2.component';
+
+
 
 const appRoutes: Routes = [
     {
         path      : '**',
         redirectTo: 'dashboard',
         
+    },
+    {
+        path    : 'login',
+        component: Login2Component
     }
 ];
 
@@ -56,7 +69,13 @@ const appRoutes: Routes = [
         // App modules
         LayoutModule,
         SampleModule,
-        DashboardModule
+        DashboardModule,
+        Login2Module,
+        Register2Module,
+        ResetPassword2Module,
+        MailConfirmModule,
+        ForgotPassword2Module,
+        LockModule
     ],
     bootstrap   : [
         AppComponent

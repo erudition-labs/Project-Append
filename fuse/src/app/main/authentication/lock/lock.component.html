@@ -1,0 +1,52 @@
+<div id="lock" fxLayout="column">
+
+    <div id="lock-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
+
+        <div id="lock-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
+
+            <div class="lock-form-header" fxLayout="column" fxLayoutAlign="center center"
+                 fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="start center">
+
+                <div class="avatar-container">
+                    <img class="avatar big" src="assets/images/avatars/katherine.jpg">
+                    <mat-icon class="s-32">lock</mat-icon>
+                </div>
+
+                <div>
+                    <div class="title">YOUR SESSION IS LOCKED</div>
+                    <div class="subtitle">
+                        Due to inactivity, your session is locked. Enter your password to continue.
+                    </div>
+                </div>
+
+            </div>
+
+            <form name="lockForm" [formGroup]="lockForm" novalidate>
+
+                <mat-form-field>
+                    <input matInput placeholder="Username" formControlName="username">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput placeholder="Password" formControlName="password">
+                    <mat-error>
+                        Password is required
+                    </mat-error>
+                </mat-form-field>
+
+                <button mat-raised-button class="submit-button" color="accent"
+                        aria-label="UNLOCK" [disabled]="lockForm.invalid">
+                    UNLOCK
+                </button>
+
+            </form>
+
+            <div class="message">
+                <a class="link" [routerLink]="'../login'">Are you not Katherine?</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
