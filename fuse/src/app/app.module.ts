@@ -25,6 +25,8 @@ import { ForgotPassword2Module } from './main/authentication/forgot-password-2/f
 import { MailConfirmModule } from './main/authentication/mail-confirm/mail-confirm.module';
 import { LockModule } from './main/authentication/lock/lock.module';
 import { Login2Component } from './main/authentication/login-2/login-2.component';
+import { ToastrModule } from 'ngx-toastr';
+
 
 
 
@@ -65,6 +67,9 @@ const appRoutes: Routes = [
         FuseSharedModule,
         FuseSidebarModule,
         FuseThemeOptionsModule,
+
+        //npm installs
+        ToastrModule.forRoot(),
 
         // App modules
         LayoutModule,

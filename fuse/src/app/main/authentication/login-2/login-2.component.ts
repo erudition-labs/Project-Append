@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-
 import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../@core/auth/auth.service';
 import { Credentials } from '../../../../@core/user/credentials.model';
+import { ToastrService } from 'ngx-toastr';
+import { ErrorService } from '@core/utils/error.service';
 
 @Component({
     selector     : 'login-2',
@@ -35,7 +36,8 @@ export class Login2Component implements OnInit
         private _fuseConfigService: FuseConfigService,
         private formBuilder: FormBuilder,
         private authService	: AuthService,
-		private router		: Router
+        private router		: Router,
+        private toast : ToastrService, 
 
     )
     {
@@ -99,7 +101,6 @@ export class Login2Component implements OnInit
 			this.authService.login(credentials).subscribe(
 				result => {
 					if(result.success) {
-						this.loginLoading = false;
 						this.username = result.userInfo.firstName;
 						this.messages.push(result.message);
 
@@ -110,9 +111,15 @@ export class Login2Component implements OnInit
 						);
 						setTimeout(() => {
 							this.router.navigate(['dashboard']);
-						}, 2000);
+                        }, 500);
+                        
+                        this.success(result.message,"Welcome, " + this.username + "!");
 					} else {
-						this.errors.push(result.message);
+                        this.errors.push(result.message);
+                        for(let error in this.errors){
+                            this.error(error,"Error!");
+    
+                        }
 					}
 				}, error => {
 					this.loginResult = {
@@ -120,9 +127,30 @@ export class Login2Component implements OnInit
 						state: 'error'
 					};
 					this.errors.push(error.error.message);
-					this.loginLoading = false;
+                    
 				}
 			);
 		}
+    }
+    
+    private error(msg : string, title: string) : void {
+		this.toast.error(msg, title, {
+			timeOut: 5000,
+			closeButton: true,
+			progressBar: true,
+			progressAnimation: 'decreasing',
+			positionClass: 'toast-top-right',
+		  });
 	}
+
+	private success(msg: string, title: string) : void {
+		this.toast.success(msg, title, {
+			timeOut: 5000,
+			closeButton: true,
+			progressBar: true,
+			progressAnimation: 'decreasing',
+			positionClass: 'toast-top-right',
+		  });
+  }
+    
 }
