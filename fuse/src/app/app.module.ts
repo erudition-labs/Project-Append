@@ -22,7 +22,6 @@ import { DashboardModule } from './main/dashboard/dashboard.module';
 import { ToastrModule } from 'ngx-toastr';
 import { CoreModule } from '@core/core.module';
 import { AuthModule } from './main/authentication/auth.module';
-import { AppRoutingModule } from './app-routing.module';
 
 
 
@@ -43,7 +42,6 @@ const appRoutes: Routes = [ //see auth midule below
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
-        AppRoutingModule,
         RouterModule.forRoot(appRoutes),
 
         TranslateModule.forRoot(),
