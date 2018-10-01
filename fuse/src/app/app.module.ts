@@ -18,28 +18,19 @@ import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
 import { SampleModule } from 'app/main/sample/sample.module';
 import { DashboardModule } from './main/dashboard/dashboard.module';
-import { Login2Module } from './main/authentication/login-2/login-2.module';
-import { Register2Module } from './main/authentication/register-2/register-2.module';
-import { ResetPassword2Module } from './main/authentication/reset-password-2/reset-password-2.module';
-import { ForgotPassword2Module } from './main/authentication/forgot-password-2/forgot-password-2.module';
-import { MailConfirmModule } from './main/authentication/mail-confirm/mail-confirm.module';
-import { LockModule } from './main/authentication/lock/lock.module';
-import { Login2Component } from './main/authentication/login-2/login-2.component';
+
 import { ToastrModule } from 'ngx-toastr';
-// import { AuthModule } from './main/authentication/auth.module';
+import { CoreModule } from '@core/core.module';
+import { AuthModule } from './main/authentication/auth.module';
 
 
 
 
-const appRoutes: Routes = [
+const appRoutes: Routes = [ //see auth midule below
     {
         path      : '**',
         redirectTo: 'dashboard',
         
-    },
-    {
-        path    : 'login',
-        component: Login2Component
     }
 ];
 
@@ -76,13 +67,10 @@ const appRoutes: Routes = [
         LayoutModule,
         SampleModule,
         DashboardModule,
-        Login2Module,
-        Register2Module,
-        ResetPassword2Module,
-        MailConfirmModule,
-        ForgotPassword2Module,
-        LockModule,
-        // AuthModule
+        CoreModule.forRoot(),
+        AuthModule, //since I have this..each of those modules handle their own routing
+        //so i dont need it in thte app routing
+
     ],
     bootstrap   : [
         AppComponent
