@@ -52,25 +52,33 @@
                     </mat-form-field></td>
                   </tr></table>
 
+                  <mat-form-field>
+                        <mat-select placeholder="Rank">
+                            <mat-option *ngFor="let rank of ranks" [value]="rank.value">
+                            {{rank.viewValue}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
                 <table cellspacing="0"><tr>
                     <td>
                         <mat-form-field class="half-width">
-                            <mat-select placeholder="Rank">
-                                <mat-option *ngFor="let rank of ranks" [value]="rank.value">
-                                {{rank.viewValue}}
+                            <mat-select placeholder="Flight">
+                                <mat-option *ngFor="let flight of flights" [value]="flight.value">
+                                {{flight.viewValue}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
                     </td>
                     <td>
-                            <mat-form-field class="half-width">
-                                <mat-select placeholder="Team">
-                                    <mat-option *ngFor="let team of teams" [value]="team.value">
-                                    {{team.viewValue}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
+                        <mat-form-field class="half-width">
+                            <mat-select placeholder="Team">
+                                <mat-option *ngFor="let team of teams" [value]="team.value">
+                                {{team.viewValue}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
                 </tr></table>
 
                 <mat-form-field>

@@ -42,6 +42,13 @@ export class Register2Component implements OnInit, OnDestroy
         {value: 'Drill', viewValue: 'Drill Team'}
       ];
 
+      flights: Select[] = [
+        {value: 'Alpha', viewValue: 'Alpha Flight'},
+        {value: 'Bravo', viewValue: 'Bravo Flight'},
+        {value: 'Charlie', viewValue: 'Charlie Flight'},
+        {value: 'Delta', viewValue: 'Delta Flight'}
+      ];
+
     private _unsubscribeAll: Subject<any>;
     public signupForm : FormGroup;
 	private signupLoading = false;
