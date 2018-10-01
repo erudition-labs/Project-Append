@@ -30,12 +30,27 @@
 
             <form name="registerForm" [formGroup]="registerForm" novalidate>
 
-                <mat-form-field>
+                <!-- <mat-form-field>
                     <input matInput placeholder="Name" formControlName="name">
                     <mat-error>
                         Name is required
                     </mat-error>
-                </mat-form-field>
+                </mat-form-field> -->
+
+                <table cellspacing="0"><tr>
+                    <td><mat-form-field class="half-width">
+                      <input matInput placeholder="First name" formControlName="firstName">
+                      <mat-error>
+                        First name is required
+                    </mat-error>
+                    </mat-form-field></td>
+                    <td><mat-form-field class="half-width">
+                      <input matInput placeholder="Last name" formControlName="lastName">
+                      <mat-error>
+                        Last name is required
+                    </mat-error>
+                    </mat-form-field></td>
+                  </tr></table>
 
                 <mat-form-field>
                     <input matInput placeholder="Email" formControlName="email">

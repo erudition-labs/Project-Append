@@ -26,6 +26,7 @@ import { MailConfirmModule } from './main/authentication/mail-confirm/mail-confi
 import { LockModule } from './main/authentication/lock/lock.module';
 import { Login2Component } from './main/authentication/login-2/login-2.component';
 import { ToastrModule } from 'ngx-toastr';
+// import { AuthModule } from './main/authentication/auth.module';
 
 
 
@@ -80,7 +81,8 @@ const appRoutes: Routes = [
         ResetPassword2Module,
         MailConfirmModule,
         ForgotPassword2Module,
-        LockModule
+        LockModule,
+        // AuthModule
     ],
     bootstrap   : [
         AppComponent
