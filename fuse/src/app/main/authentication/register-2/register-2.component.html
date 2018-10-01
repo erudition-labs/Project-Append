@@ -92,6 +92,14 @@
                 </mat-form-field>
 
                 <mat-form-field>
+                        <input matInput placeholder="Phone Number" formControlName="phone">
+                        <mat-error *ngIf="registerForm.get('phone').hasError('required')">
+                            Phone is required
+                        </mat-error>
+
+                    </mat-form-field>
+
+                <mat-form-field>
                     <input matInput type="password" placeholder="Password" formControlName="password">
                     <mat-error>
                         Password is required

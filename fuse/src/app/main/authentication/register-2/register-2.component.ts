@@ -29,25 +29,23 @@ export class Register2Component implements OnInit, OnDestroy
 {
     registerForm: FormGroup;
 
-    ranks: Select[] = [
+    public ranks: Select[] = [
         {value: 'C/Ab', viewValue: 'Airman Basic'},
         {value: 'C/Amn', viewValue: 'Airman'},
         {value: 'C/A1C', viewValue: 'Airman First Class'}
       ];
-
-      teams: Select[] = [
-        {value: 'Rifle', viewValue: 'Rifle Team'},
-        {value: 'Sword', viewValue: 'Sword Team'},
-        {value: 'Color Guard', viewValue: 'Color Gaurd'},
-        {value: 'Drill', viewValue: 'Drill Team'}
-      ];
-
-      flights: Select[] = [
-        {value: 'Alpha', viewValue: 'Alpha Flight'},
-        {value: 'Bravo', viewValue: 'Bravo Flight'},
-        {value: 'Charlie', viewValue: 'Charlie Flight'},
-        {value: 'Delta', viewValue: 'Delta Flight'}
-      ];
+    public teams: Select[] = [
+    {value: 'Rifle', viewValue: 'Rifle Team'},
+    {value: 'Sword', viewValue: 'Sword Team'},
+    {value: 'Color Guard', viewValue: 'Color Gaurd'},
+    {value: 'Drill', viewValue: 'Drill Team'}
+    ];
+    public flights: Select[] = [
+    {value: 'Alpha', viewValue: 'Alpha Flight'},
+    {value: 'Bravo', viewValue: 'Bravo Flight'},
+    {value: 'Charlie', viewValue: 'Charlie Flight'},
+    {value: 'Delta', viewValue: 'Delta Flight'}
+    ];
 
     private _unsubscribeAll: Subject<any>;
     public signupForm : FormGroup;
@@ -119,8 +117,7 @@ export class Register2Component implements OnInit, OnDestroy
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
