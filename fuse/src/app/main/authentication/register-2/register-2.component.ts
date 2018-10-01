@@ -13,6 +13,11 @@ import { NewUser } from '../../../../@core/user/user.model';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 
+export interface Select {
+    value: string;
+    viewValue: string;
+  }
+
 @Component({
     selector     : 'register-2',
     templateUrl  : './register-2.component.html',
@@ -23,6 +28,19 @@ import { map } from 'rxjs/operators';
 export class Register2Component implements OnInit, OnDestroy
 {
     registerForm: FormGroup;
+
+    ranks: Select[] = [
+        {value: 'C/Ab', viewValue: 'Airman Basic'},
+        {value: 'C/Amn', viewValue: 'Airman'},
+        {value: 'C/A1C', viewValue: 'Airman First Class'}
+      ];
+
+      teams: Select[] = [
+        {value: 'Rifle', viewValue: 'Rifle Team'},
+        {value: 'Sword', viewValue: 'Sword Team'},
+        {value: 'Color Guard', viewValue: 'Color Gaurd'},
+        {value: 'Drill', viewValue: 'Drill Team'}
+      ];
 
     private _unsubscribeAll: Subject<any>;
     public signupForm : FormGroup;
@@ -109,7 +127,7 @@ export class Register2Component implements OnInit, OnDestroy
                 updateOn: 'blur'
             }),
             password			: new FormControl('', { validators: [Validators.required] }),
-            passwordConfirm     : ['', [Validators.required, confirmPasswordValidator]],
+            passwordConfirm     : new FormControl('', { validators: [Validators.required, confirmPasswordValidator]}),
             firstName			: new FormControl('', { validators: [Validators.required] }),
             lastName			: new FormControl('', { validators: [Validators.required] }),
             rank				: new FormControl('', { }),
