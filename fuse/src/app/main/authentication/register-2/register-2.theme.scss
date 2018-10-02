@@ -36,5 +36,23 @@
                 }
             }
         }
+
+        #mail-confirm {
+
+            #mail-confirm-form-wrapper {
+
+                #mail-confirm-form {
+                    @if ($is-dark) {
+                        background: mat-color($fuse-navy, 600);
+                    } @else {
+                        background: map-get($background, card);
+                    }
+
+                    .subtitle {
+                        color: map-get($foreground, secondary-text);
+                    }
+                }
+            }
+        }
     }
 }

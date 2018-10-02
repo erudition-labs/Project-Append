@@ -48,9 +48,10 @@ export class Register2Component implements OnInit, OnDestroy
     ];
 
     private _unsubscribeAll: Subject<any>;
-	private signupLoading = false;
+	public signupSuccess = false;
 	private emailValidating = false;
-	private signupResult : any;
+    private signupResult : any;
+    public tempEmail : String;
 
 	public errors: string[] = [];
 	public messages: string[] = [];
@@ -141,6 +142,8 @@ export class Register2Component implements OnInit, OnDestroy
             isChangelogViewed 	: new FormControl(false, { }),
             events				: new FormControl([], { })
         });
+
+        this.signupSuccess = false;
     }
 
     private checkEmail(control: FormControl) : any {
@@ -179,7 +182,6 @@ export class Register2Component implements OnInit, OnDestroy
 		this.registerForm.controls.events.markAsDirty();
 
 		if(this.registerForm.valid) {
-			this.signupLoading = true;
 			const {
 				email, 
 				password,
@@ -216,12 +218,13 @@ export class Register2Component implements OnInit, OnDestroy
 							state: 'success'
 						};
 
-						this.messages.push(result.message);
-						this.signupLoading = false;
+                        this.messages.push(result.message);
+                        this.tempEmail = newUser.email;
+						this.signupSuccess = true;
 
 						setTimeout(() => {
-							this.router.navigate(['dashboard']);
-						}, 2000);
+							this.router.navigate(['login']);
+						}, 4000);
 					} else {
                         this.errors.push(result.message);                        
 					}
@@ -230,7 +233,7 @@ export class Register2Component implements OnInit, OnDestroy
 						message: error.error.message,
 						state: 'error'
 					};
-					this.signupLoading = false;
+					this.signupSuccess = false;
 				}
 			);
 		} else {
