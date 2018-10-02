@@ -48,7 +48,6 @@ export class Register2Component implements OnInit, OnDestroy
     ];
 
     private _unsubscribeAll: Subject<any>;
-    public signupForm : FormGroup;
 	private signupLoading = false;
 	private emailValidating = false;
 	private signupResult : any;
@@ -168,18 +167,18 @@ export class Register2Component implements OnInit, OnDestroy
 		this.messages = [];
 		this.errors = [];
 
-		this.signupForm.controls.email.markAsDirty();
-		this.signupForm.controls.password.markAsDirty();
-		this.signupForm.controls.firstName.markAsDirty();
-		this.signupForm.controls.lastName.markAsDirty();
-		this.signupForm.controls.rank.markAsDirty();
-		this.signupForm.controls.flight.markAsDirty();
-		this.signupForm.controls.team.markAsDirty();
-		this.signupForm.controls.role.markAsDirty();
-		this.signupForm.controls.phone.markAsDirty();
-		this.signupForm.controls.events.markAsDirty();
+		this.registerForm.controls.email.markAsDirty();
+		this.registerForm.controls.password.markAsDirty();
+		this.registerForm.controls.firstName.markAsDirty();
+		this.registerForm.controls.lastName.markAsDirty();
+		this.registerForm.controls.rank.markAsDirty();
+		this.registerForm.controls.flight.markAsDirty();
+		this.registerForm.controls.team.markAsDirty();
+		this.registerForm.controls.role.markAsDirty();
+		this.registerForm.controls.phone.markAsDirty();
+		this.registerForm.controls.events.markAsDirty();
 
-		if(this.signupForm.valid) {
+		if(this.registerForm.valid) {
 			this.signupLoading = true;
 			const {
 				email, 
@@ -193,7 +192,7 @@ export class Register2Component implements OnInit, OnDestroy
 				phone,
 				isChangelogViewed,
 				events
-			} = this.signupForm.value;
+			} = this.registerForm.value;
 
 			const newUser : NewUser = {
 				email,
@@ -224,7 +223,7 @@ export class Register2Component implements OnInit, OnDestroy
 							this.router.navigate(['dashboard']);
 						}, 2000);
 					} else {
-						this.errors.push(result.message);
+                        this.errors.push(result.message);                        
 					}
 				}, error => {
 					this.signupResult = {
@@ -234,7 +233,10 @@ export class Register2Component implements OnInit, OnDestroy
 					this.signupLoading = false;
 				}
 			);
-		}
+		} else {
+            console.log("Not Valid");
+            
+        }
 	}
 }
 
