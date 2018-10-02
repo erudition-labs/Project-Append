@@ -59,13 +59,13 @@ export class MailConfirmComponent implements OnInit{
                     this.confirmed = true;
 					setTimeout(() => {
 						return this.router.navigateByUrl("login");
-					}, 5000);
+					}, 4000);
 				} else {
               this.errors.push("Confirmation Failed");
               this.confirmed = false;
           setTimeout(() => {
             return this.router.navigateByUrl("login");
-          }, 2000);
+          }, 4000);
 				}
 			});
 		});

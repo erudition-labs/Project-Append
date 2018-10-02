@@ -69,7 +69,7 @@ var hashFunction = function(password, tempUserData, insertTempUser, callback) {
 };
 
 nev.configure({
-	verificationURL: 'http://cadet.ca782.org/#/auth/email-verification/${URL}', // set this when we make the front end for it	
+	verificationURL: 'http://cadet.ca782.org/mail-confirm/${URL}', // set this when we make the front end for it	
 	persistentUserModel: User,
 	tempUserCollection: 'TempUsers',
 	URLFieldName: 'GENERATED_VERIFYING_URL',
