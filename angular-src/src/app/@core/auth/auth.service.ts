@@ -90,6 +90,7 @@ export class AuthService {
 	}
 
 	public verify(token: string) : any {
+		
 		 const params = new HttpParams({
 		 	fromObject: { token }
 		 });

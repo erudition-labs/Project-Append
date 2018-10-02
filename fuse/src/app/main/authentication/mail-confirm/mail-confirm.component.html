@@ -7,18 +7,25 @@
             <div class="logo">
                 <mat-icon class="mat-accent s-96">email</mat-icon>
             </div>
+            <ng-container *ngIf="confirmed">
+                <div class="title">Email Successfully Confirmed!</div>
 
-            <div class="title">Confirm your email address!</div>
-
-            <div class="subtitle">
-                <p>
-                    A confirmation e-mail has been sent to <b>example@mymail.com</b>.
-                </p>
-                <p>
-                    Check your inbox and click on the "Confirm my email" link to confirm your email address.
-                </p>
-            </div>
-
+                <div class="subtitle">
+                    <p>
+                        Your email has been successfully confirmed. <br> You will be automatically directed to login.
+                    </p>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="!confirmed">
+                    <div class="title">Email Was Not Confirmed!</div>
+    
+                    <div class="subtitle">
+                        <p>
+                            Your email has NOT been confirmed. <br> You will be automatically directed to login.
+                        </p>
+                        <div *ngFor="let error of errors">{{ error }}</div>
+                    </div>
+                </ng-container>
             <div class="message">
                 <a class="link" [routerLink]="'../login'">Go back to login page</a>
             </div>

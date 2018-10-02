@@ -1,7 +1,9 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 
 import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
+import { Router, ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../../../@core/auth/auth.service';
 
 @Component({
     selector     : 'mail-confirm',
@@ -10,15 +12,21 @@ import { fuseAnimations } from '@fuse/animations';
     encapsulation: ViewEncapsulation.None,
     animations   : fuseAnimations
 })
-export class MailConfirmComponent
-{
+export class MailConfirmComponent implements OnInit{
+
+    messages		: string[] = [];
+    errors			: string[] = [];
+    confirmed       : boolean = false;
     /**
      * Constructor
      *
      * @param {FuseConfigService} _fuseConfigService
      */
     constructor(
-        private _fuseConfigService: FuseConfigService
+        private _fuseConfigService: FuseConfigService,
+        private router				: Router,
+		private route 				: ActivatedRoute,
+		private authService 		: AuthService
     )
     {
         // Configure the layout
@@ -39,4 +47,28 @@ export class MailConfirmComponent
             }
         };
     }
+
+    ngOnInit() {
+		this.route.params.subscribe((params) => {
+			this.authService.verify(params.code).subscribe((result) => {
+				if(result !== undefined && result.success) {
+                    this.messages.push(result.msg);
+                    console.log(result.msg);
+                    
+                    this.messages.push("You will be automatically redirected");
+                    this.confirmed = true;
+					setTimeout(() => {
+						return this.router.navigateByUrl("login");
+					}, 5000);
+				} else {
+              this.errors.push("Confirmation Failed");
+              this.confirmed = false;
+          setTimeout(() => {
+            return this.router.navigateByUrl("login");
+          }, 2000);
+				}
+			});
+		});
+
+	}
 }

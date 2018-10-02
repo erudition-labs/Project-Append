@@ -8,7 +8,7 @@ import { MailConfirmComponent } from './mail-confirm.component';
 
 const routes = [
     {
-        path     : 'mail-confirm',
+        path     : 'mail-confirm/:code',
         component: MailConfirmComponent
     }
 ];
