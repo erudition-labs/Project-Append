@@ -118,11 +118,14 @@ export class ToolbarComponent implements OnInit, OnDestroy
         this.selectedLanguage = _.find(this.languages, {'id': this._translateService.currentLang});
 
         //user info
-        let decodedToken = this.authService.getUserInfo();
-        this.userService.getUser(decodedToken.sub).subscribe(httpResult  => {
+        if(this.authService.isAuthenticated()) {
+            let decodedToken = this.authService.getUserInfo();
+            this.userService.getUser(decodedToken.sub).subscribe(httpResult  => {
             this.isAuthenticated = true;
             this.userInfo = httpResult;
         });
+        }
+        
     }
 
     /**
