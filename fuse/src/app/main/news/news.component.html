@@ -45,7 +45,7 @@
         <!-- ADD EVENT BUTTON -->
         <button mat-fab class="fab-container mat-accent" aria-label="Add event"
             [@animate]="{value:'*',params:{delay:'300ms',scale:'0.2'}}"
-            *ngIf="authService.isAdmin()">
+            *ngIf="authService.isAdmin()" (click)="openDialog()">
             <mat-icon>add</mat-icon>
         </button>
         <!-- / ADD EVENT BUTTON -->

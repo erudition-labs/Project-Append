@@ -247,6 +247,10 @@ export class NewsComponent
         }
       }
       
+      private openDialog() {
+          
+      }
+
       private error(msg : string) : void {
             this.toast.error(msg, 'Error!', {
                 timeOut: 5000,
