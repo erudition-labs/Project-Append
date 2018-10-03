@@ -6,32 +6,13 @@
         <!-- SIDEBAR CONTENT -->
         <div class="content p-24">
             <div class="demo-sidebar">
-                <mat-list>
-                    <h3 matSubheader>Sidebar Demo</h3>
-            
-                    <mat-list-item>
-                        <span>Sidebar Item 1</span>
-                    </mat-list-item>
-            
-                    <mat-divider></mat-divider>
-            
-                    <mat-list-item>
-                        <span>Sidebar Item 2</span>
-                    </mat-list-item>
-            
-                    <mat-divider></mat-divider>
-            
-                    <mat-list-item>
-                        <span>Sidebar Item 3</span>
-                    </mat-list-item>
-            
-                    <mat-divider></mat-divider>
-            
-                    <mat-list-item>
-                        <span>Sidebar Item 4</span>
-                    </mat-list-item>
-            
-                </mat-list>
+                <mat-nav-list>
+                    <h3 matSubheader>Recent News Posts</h3>
+                    <ng-container *ngFor="let update of updates">
+                        <a mat-list-item (click)="singleUpdateSet(update)"> {{ update.title }} </a>
+                        <mat-divider></mat-divider>
+                    </ng-container>
+                </mat-nav-list>
             </div>
             
         </div>
