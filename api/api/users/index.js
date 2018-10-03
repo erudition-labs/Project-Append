@@ -13,7 +13,8 @@ router.route('/').post([
 	body('flight').exists().withMessage('Flight Required').trim().escape(),
 	body('phone').exists().withMessage('User Phone Required').trim().escape(),
 	body('role').exists().withMessage('User Role Required').trim().escape(),
-	body('password').exists().withMessage('Password Required').trim().escape()
+	body('password').exists().withMessage('Password Required').trim().escape(),
+	body('fullName').exists().withMessage('Full Name Required').trim().escape()
 ], controller.postUser);
 
 router.route('/verify-resend').post([
@@ -28,5 +29,9 @@ router.route('/users').get(passport.authenticate('jwt', { session: false }), con
 router.route('/:id').get(passport.authenticate('jwt', { session: false }), controller.getUser);
 router.route('/:id').put(passport.authenticate('jwt', { session: false }), controller.putUser);
 router.route('/:id').delete(passport.authenticate('jwt', { session: false }), controller.deleteUser);
+router.route('/forgot-password').post(controller.passwordResetRequest);
+router.route('/reset-password/:token').post(controller.passwordReset);
+
+
 
 module.exports = router;

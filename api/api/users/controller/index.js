@@ -1,10 +1,40 @@
-const queries 				= require('./../query');
-const models				= require('./../model');
-const { createToken } 		= require('./../../authenticate/util');
-const jwtDecode 			= require('jwt-decode');
+const queries 							= require('./../query');
+const models								= require('./../model');
+const { createToken } 			= require('./../../authenticate/util');
+const jwtDecode 						= require('jwt-decode');
 const { validationResult }	= require('express-validator/check');
 const User					= models.user;
 const util 					= require('../util');
+const path = require("path");
+
+
+const bcrypt 			= require('bcryptjs');
+var async					= require('async');
+var crypto 				= require('crypto');
+
+
+var  hbs = require('nodemailer-express-handlebars'),
+email = process.env.MAILER_EMAIL_ID || 'erudition.testing@gmail.com',
+pass = process.env.MAILER_PASSWORD || 'jb313327'
+nodemailer = require('nodemailer');
+
+var smtpTransport = nodemailer.createTransport({
+service: process.env.MAILER_SERVICE_PROVIDER || 'Gmail',
+auth: {
+	user: email,
+	pass: pass
+}
+});
+
+var handlebarsOptions = {
+viewEngine: 'handlebars',
+viewPath: path.resolve('api/templates'),
+extName: '.html'
+};
+
+smtpTransport.use('compile', hbs(handlebarsOptions));
+
+
 
 const postUser = async (request, response) => {
 	const errors = validationResult(request);
@@ -21,7 +51,8 @@ const postUser = async (request, response) => {
 		team		: request.body.team,
 		role		: request.body.role,
 		password	: request.body.password,
-		phone	: request.body.phone
+		phone		: request.body.phone,
+		fullName	: request.body.fullName
 	});
 
 	util.NEV.createTempUser(userData, function(error, existingPersistentUser, newTempUser) {
@@ -78,6 +109,8 @@ const postVerifyResend = async (request, response) => {
 		}
 	});
 };
+
+
 
 const postEmailVerification = async (request, response) => {
 	util.NEV.confirmTempUser(request.params.token, function(error, user) { // Nev takes care of url being empty
@@ -152,7 +185,101 @@ const deleteUser = async (request, response) => {
 		response.json({success: false, message: 'Failed to delete user'});
 		return error;
 	}
-}
+};
+
+
+const passwordResetRequest = async (request, response, next) => {
+	async.waterfall([
+		function(done) {
+		  crypto.randomBytes(20, function(err, buf) {
+			var token = buf.toString('hex');
+			done(err, token);
+		  });
+		},
+		function(token, done) {
+		  User.findOne({ email: request.body.email }, function(err, user) {
+			if (!user) {
+				response.json({ success:false, message: "Email doesn't exist"});
+			}
+	
+			user.resetPasswordToken = token;
+			user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+	
+			user.save(function(err) {
+			  done(err, token, user);
+			});
+		  });
+		},
+		function(token, user, done) {
+
+			var data = {
+        to: user.email,
+        from: email,
+        template: 'forgot-password-email',
+        subject: 'Password help has arrived!',
+        context: {
+          url: 'http://cadet.ca782.org/#/auth/reset-password/' + token,
+          name: user.firstName
+        }
+      };
+
+			smtpTransport.sendMail(data, function(err) {
+        if (!err) {
+          return response.json({ success: true, message: 'Recovery email has been sent to you.' });
+        } else {
+          return done(err);
+        }
+     	 });
+			}
+	  ], function(err) {
+		if (err) return next(err);
+	  });
+
+};
+
+const passwordReset = async (request, response, next) => {
+	async.waterfall([
+		function(done) {
+		  User.findOne({ resetPasswordToken: request.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
+			if (!user) {
+				return response.json({ success: false, message: "Invalid Token" });
+			}
+	
+			util.hashPassword(request.body.password).then( hash => {
+				user.resetPasswordToken = undefined;
+				user.resetPasswordExpires = undefined;
+				user.password = hash;
+		
+				user.save(function(err) {
+					done(err, user);
+				});
+			});
+		});
+	},
+		function(user, done) {
+		  var data = {
+				to: user.email,
+				from: email,
+				template: 'reset-password-email',
+				subject: 'Password Reset Confirmation',
+				context: {
+					name: user.firstName
+				}
+			};
+
+			smtpTransport.sendMail(data, function(err) {
+				if (!err) {
+					return response.json({ success: true, message: 'Password reset' });
+				} else {
+					return done(err);
+				}
+			});
+			}
+	  ], function(err) {
+		response.json({ success: false, message: "Something went worng" });
+	  });
+};
+
 module.exports = {
 	postUser,
 	postVerifyResend,
@@ -162,4 +289,6 @@ module.exports = {
 	getUsers,
 	putUser,
 	deleteUser,
+	passwordResetRequest,
+	passwordReset
 };

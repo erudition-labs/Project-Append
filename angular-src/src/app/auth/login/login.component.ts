@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Router,  RouterModule } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -9,7 +9,7 @@ export class LoginComponent implements OnInit {
 	public showingLogin 	= true;
 	public showingSignup	= false;
 
-	constructor() { }
+	constructor(public router : Router) { }
 
 	ngOnInit() {
 	}

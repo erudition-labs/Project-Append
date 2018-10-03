@@ -10,6 +10,10 @@ import {
 } from '@nebular/auth';
 import { LoginComponent } from './auth/login/login.component';
 import { EmailVerificationComponent } from './auth/email-verification/email-verification.component';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
+import { PasswordResetComponent } from './auth/reset-password/reset-password.component';
+
+
 const routes: Routes = [
   { path: 'pages', loadChildren: 'app/pages/pages.module#PagesModule' },
   {
@@ -33,17 +37,22 @@ const routes: Routes = [
         component: NbLogoutComponent,
       },
       {
-        path: 'request-password',
-        component: NbRequestPasswordComponent,
+        path: 'forgot-password',
+        component: ForgotPasswordComponent,
+      },
+      {
+        path: 'reset-password/:token',
+        component: PasswordResetComponent,
       },
       {
         path: 'reset-password',
-        component: NbResetPasswordComponent,
+        component: PasswordResetComponent,
       },
       {
         path: 'email-verification/:code',
         component: EmailVerificationComponent,
       },
+      
     ],
   },
   { path: '', redirectTo: 'pages', pathMatch: 'full' },

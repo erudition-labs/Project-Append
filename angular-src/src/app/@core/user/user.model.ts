@@ -3,13 +3,14 @@ export interface NewUser {
 	password			: string;
 	firstName			: string;
 	lastName			: string;
+	fullName			: string;
 	rank				: string;
 	flight				: string;
 	team				: string;
 	role				: string;
 	phone				: string;
 	events				: any[];
-	isChangelogViewed	: boolean
+	isChangelogViewed	: boolean;
 }
 
 export interface User {
@@ -17,6 +18,7 @@ export interface User {
 	email 				: string;
 	firstName 			: string;
 	lastName 			: string;
+	fullName			: string;
 	rank 				: string;
 	flight 				: string;
 	team 				: string;

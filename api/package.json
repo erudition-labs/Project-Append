@@ -14,6 +14,7 @@
     "body-parser": "*",
     "cookie-parser": "*",
     "cors": "*",
+    "crypto": "^1.0.1",
     "csurf": "*",
     "dotenv": "*",
     "email-verification": "^0.4.6",
@@ -26,7 +27,9 @@
     "jsonwebtoken": "*",
     "jwt-decode": "*",
     "mongoose": "*",
+    "mongoose-token": "^1.0.3",
     "mongoose-unique-validator": "*",
+    "nodemailer-express-handlebars": "^3.0.0",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "validator": "^10.7.1"

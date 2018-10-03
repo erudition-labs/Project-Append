@@ -2,15 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.1.2] - NOT YET
+## [1.2.2] -  2018-10-02
+### Added
+- Markdown abilities to post news
+- Forgot password/ Reset Password
 
 ### Changes
+- OIC selection displays user by "lastName, firstName"
 - Http request to API retries up to 3 times in case of weak or bad internet connections
 - Summary text wraps instead of scrolling forever
+- Using regular expressions to make viewing news posts in small size better
 
 ### Bug Fixes
 - OIC can view signed up users
 - Fixed events randomly closing
+- Moved date from top to bottom of a news post
 
 
 ## [1.1.1] - 2018-09-19

@@ -3,6 +3,8 @@ import { UpdatesService } from '../../@core/updates/updates.service';
 import { Update } from '../../@core/updates/update.model';
 import { AuthService } from '../../@core/auth/auth.service';
 import { UserService } from '../../@core/user/user.service';
+import { TuiService } from 'ngx-tui-editor';
+
 
 import { ToastrService } from 'ngx-toastr';
 import {
@@ -25,6 +27,7 @@ export class UpdatesComponent implements OnInit {
               private toast : ToastrService, 
               private formBuilder : FormBuilder,
               private userService : UserService,
+              private editorService: TuiService,
               ) { }
 
   updates : Update[] = [];
@@ -36,7 +39,15 @@ export class UpdatesComponent implements OnInit {
   editButtonClicked : Boolean = false;
   updateForm: FormGroup;
   editForm: FormGroup;
-
+  markdown : any = "";
+  options : any = {
+    initialValue: `# Title of Project` ,
+    initialEditType: 'markdown',
+    previewStyle: 'vertical',
+    height: 'auto',
+    minHeight: '498px' 
+  };
+  expression : any = /[>|#*_]/gi;
 
   ngOnInit() {
     this.updatesService.getUpdates().subscribe((result) => {
@@ -67,7 +78,6 @@ export class UpdatesComponent implements OnInit {
   public onClick() : void {
 
 		this.updateForm.controls.title.markAsDirty();
-		this.updateForm.controls.content.markAsDirty();
 
 		const { title, content, author, date } = this.updateForm.value;
 		const update : Update = {
@@ -76,6 +86,8 @@ export class UpdatesComponent implements OnInit {
       author,
       date
     };
+
+    update.content = this.editorService.getMarkdown();
 
     update.date = new Date();
     update.author = this.authService.parseToken().sub;
@@ -145,15 +157,16 @@ export class UpdatesComponent implements OnInit {
 		//populate formControls
 		this.editForm.get('title').setValue(data.title);
 		this.editForm.get('content').setValue(data.content);
-	
+
 	}
 
 
   private singleUpdateSet(update : Update) {
     this.singleUpdate = true;
     this.update = update;
-    this.editButtonClicked = false;
+    this.markdown = this.update.content;
 
+    this.editButtonClicked = false;
   }
 
   private back() {
