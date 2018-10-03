@@ -33,7 +33,7 @@ export const fuseConfig: FuseConfig = {
             customBackgroundColor: true,
             background           : 'fuse-navy-900',
             hidden               : false,
-            position             : 'below-fixed'
+            position             : 'below-static'
         },
         sidepanel: {
             hidden  : false,

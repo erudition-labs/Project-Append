@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatIconModule, MatList, MatListModule } from '@angular/material';
+
 
 import { FuseSharedModule } from '@fuse/shared.module';
-
 import { SampleComponent } from './sample.component';
+import { FuseSidebarModule } from '@fuse/components';
 
 const routes = [
     {
@@ -22,7 +24,12 @@ const routes = [
 
         TranslateModule,
 
-        FuseSharedModule
+        FuseSharedModule,
+        FuseSidebarModule,
+
+
+        MatIconModule,
+        MatListModule,
     ],
     exports     : [
         SampleComponent

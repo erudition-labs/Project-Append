@@ -1,37 +1,68 @@
-<div class="page-layout carded fullwidth">
+<div class="page-layout simple left-sidebar">
 
-    <!-- TOP BACKGROUND -->
-    <div class="top-bg accent"></div>
-    <!-- / TOP BACKGROUND -->
+    <!-- SIDEBAR -->
+    <fuse-sidebar class="sidebar" name="simple-left-sidebar-1" position="left" lockedOpen="gt-md">
+
+        <!-- SIDEBAR CONTENT -->
+        <div class="content p-24">
+            <div class="demo-sidebar">
+                <mat-list>
+                    <h3 matSubheader>Sidebar Demo</h3>
+            
+                    <mat-list-item>
+                        <span>Sidebar Item 1</span>
+                    </mat-list-item>
+            
+                    <mat-divider></mat-divider>
+            
+                    <mat-list-item>
+                        <span>Sidebar Item 2</span>
+                    </mat-list-item>
+            
+                    <mat-divider></mat-divider>
+            
+                    <mat-list-item>
+                        <span>Sidebar Item 3</span>
+                    </mat-list-item>
+            
+                    <mat-divider></mat-divider>
+            
+                    <mat-list-item>
+                        <span>Sidebar Item 4</span>
+                    </mat-list-item>
+            
+                </mat-list>
+            </div>
+            
+        </div>
+        <!-- / SIDEBAR CONTENT -->
+
+    </fuse-sidebar>
+    <!-- / SIDEBAR -->
 
     <!-- CENTER -->
     <div class="center">
 
-        <!-- CONTENT HEADER -->
+        <!-- HEADER -->
         <div class="header accent p-24" fxLayout="row" fxLayoutAlign="start center">
-            <h2 class="m-0">Full width with content scroll</h2>
-        </div>
-        <!-- / CONTENT HEADER -->
 
-        <!-- CONTENT CARD -->
-        <div class="content-card">
+            <button mat-icon-button class="sidebar-toggle mr-8" fxHide.gt-md
+                    (click)="toggleSidebar('simple-left-sidebar-1')">
+                <mat-icon>menu</mat-icon>
+            </button>
 
-            <!-- CONTENT TOOLBAR -->
-            <div class="toolbar px-24 py-8">
-                <span>Content toolbar</span>
-            </div>
-            <!-- / CONTENT TOOLBAR -->
+            <!-- <h2 class="m-0">CA-782 News</h2> -->
+            <span class="mat-display-3 m-0">News</span>
 
-            <!-- CONTENT -->
-            <div class="content p-24">
-
-                hello
-
-            </div>
-            <!-- / CONTENT -->
 
         </div>
-        <!-- / CONTENT CARD -->
+        <!-- / HEADER -->
+
+        <!-- CONTENT -->
+        <div class="content p-24">
+            Hello
+        </div>
+        <!-- / CONTENT -->
 
     </div>
     <!-- / CENTER -->
