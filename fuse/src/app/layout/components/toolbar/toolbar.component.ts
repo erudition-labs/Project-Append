@@ -123,7 +123,7 @@ export class ToolbarComponent implements OnInit, OnDestroy
             this.userService.getUser(decodedToken.sub).subscribe(httpResult  => {
             this.isAuthenticated = true;
             this.userInfo = httpResult;
-        });
+            });
         }
         
     }

@@ -8,6 +8,10 @@ import { FuseNavigationService } from '@fuse/components/navigation/navigation.se
 import { FusePerfectScrollbarDirective } from '@fuse/directives/fuse-perfect-scrollbar/fuse-perfect-scrollbar.directive';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
+import { AuthService } from '@core/auth/auth.service';
+import { UserService } from '@core/user/user.service';
+import { User } from '@core/user/user.model';
+
 @Component({
     selector     : 'navbar-vertical-style-1',
     templateUrl  : './style-1.component.html',
@@ -23,6 +27,8 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
     private _fusePerfectScrollbar: FusePerfectScrollbarDirective;
     private _unsubscribeAll: Subject<any>;
 
+    userInfo : any;
+    isAuthenticated : boolean = false;
     /**
      * Constructor
      *
@@ -35,7 +41,9 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
         private _fuseConfigService: FuseConfigService,
         private _fuseNavigationService: FuseNavigationService,
         private _fuseSidebarService: FuseSidebarService,
-        private _router: Router
+        private _router: Router,
+        private authService : AuthService,
+        private userService : UserService,
     )
     {
         // Set the private defaults
@@ -128,6 +136,15 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
             .subscribe(() => {
                 this.navigation = this._fuseNavigationService.getCurrentNavigation();
             });
+
+            //user info
+            if(this.authService.isAuthenticated()) {
+                let decodedToken = this.authService.getUserInfo();
+                this.userService.getUser(decodedToken.sub).subscribe(httpResult  => {
+                this.isAuthenticated = true;
+                this.userInfo = httpResult;
+                });
+            }
     }
 
     /**
