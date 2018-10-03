@@ -16,7 +16,7 @@ import { fuseConfig } from 'app/fuse-config';
 
 import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
-import { SampleModule } from 'app/main/sample/sample.module';
+import { NewsModule } from 'app/main/news/news.module';
 import { DashboardModule } from './main/dashboard/dashboard.module';
 
 import { ToastrModule } from 'ngx-toastr';
@@ -65,7 +65,7 @@ const appRoutes: Routes = [ //see auth midule below
 
         // App modules
         LayoutModule,
-        SampleModule,
+        NewsModule,
         DashboardModule,
         CoreModule.forRoot(),
         AuthModule, //since I have this..each of those modules handle their own routing

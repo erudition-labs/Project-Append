@@ -5,19 +5,19 @@ import { MatIconModule, MatList, MatListModule } from '@angular/material';
 
 
 import { FuseSharedModule } from '@fuse/shared.module';
-import { SampleComponent } from './sample.component';
+import { NewsComponent } from './news.component';
 import { FuseSidebarModule } from '@fuse/components';
 
 const routes = [
     {
-        path     : 'sample',
-        component: SampleComponent
+        path     : 'news',
+        component: NewsComponent
     }
 ];
 
 @NgModule({
     declarations: [
-        SampleComponent
+        NewsComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -32,10 +32,10 @@ const routes = [
         MatListModule,
     ],
     exports     : [
-        SampleComponent
+        NewsComponent
     ]
 })
 
-export class SampleModule
+export class NewsModule
 {
 }
