@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatIconModule, MatList, MatListModule } from '@angular/material';
-
-
+import { MatIconModule, MatList, MatListModule, MatButtonModule } from '@angular/material';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { NewsComponent } from './news.component';
 import { FuseSidebarModule } from '@fuse/components';
@@ -33,6 +31,7 @@ const routes = [
 
         MatIconModule,
         MatListModule,
+        MatButtonModule,
         TuiModule,
         MarkdownModule.forRoot(),
     ],

@@ -59,6 +59,7 @@ export class NewsComponent
     updates : Update[] = [];
     updateFilled : Boolean = false;
     update : Update;
+    newestUpdate : Update;
     edittedUpdate : Update;
     closeResult: string;
     addUpdateClicked : Boolean = false;
@@ -81,6 +82,8 @@ export class NewsComponent
           for(let update of this.updates) {
             update.date = new Date(update.date);
           }
+          this.newestUpdate = this.updates[0];
+          this.markdown = this.updates[0].content;
         });
         this.createForm();
       }

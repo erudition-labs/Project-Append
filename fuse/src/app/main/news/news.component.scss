@@ -1,0 +1,15 @@
+@import "src/@fuse/scss/fuse";
+
+.fab-container {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+  
+  .btn-icon {
+    display: inline-block;
+  }

@@ -23,7 +23,6 @@
 
     <!-- CENTER -->
     <div class="center">
-
         <!-- HEADER -->
         <div class="header accent p-24" fxLayout="row" fxLayoutAlign="start center">
 
@@ -33,21 +32,43 @@
             </button>
 
             <!-- <h2 class="m-0">CA-782 News</h2> -->
-            <span class="mat-display-3 m-0">News</span>
-
+            <ng-container *ngIf="updateFilled">
+                <span class="mat-display-3 m-0">News</span>
+            </ng-container>
+            
+            <ng-container *ngIf="!updateFilled">
+                <span class="mat-display-3 m-0">Latest News Post</span>
+            </ng-container>
 
         </div>
         <!-- / HEADER -->
-
+        <!-- ADD EVENT BUTTON -->
+        <button mat-fab class="fab-container mat-accent" aria-label="Add event"
+            [@animate]="{value:'*',params:{delay:'300ms',scale:'0.2'}}"
+            *ngIf="authService.isAdmin()">
+            <mat-icon>add</mat-icon>
+        </button>
+        <!-- / ADD EVENT BUTTON -->
         <!-- CONTENT -->
         <div class="content p-24">
-            <span class="mat-display-2">{{update.title}}</span>
-            <span class="mat-subheading-1" style="float: right">
-                <b>Posted: </b>{{update.date.toDateString()}}<br>
-                <b>Author: </b>{{update.author.firstName + ' ' + update.author.lastName}}
-            </span>
-            <mat-divider></mat-divider>
-            <markdown [data]="markdown"></markdown>
+            <ng-container *ngIf="updateFilled">
+                <span class="mat-display-2">{{update.title}}</span>
+                <span class="mat-subheading-1" style="float: right">
+                    <b>Posted: </b>{{update.date.toDateString()}}<br>
+                    <b>Author: </b>{{update.author.firstName + ' ' + update.author.lastName}}
+                </span>
+                <mat-divider></mat-divider>
+                <markdown [data]="markdown"></markdown>
+            </ng-container>
+            <ng-container *ngIf="!updateFilled">
+                <span class="mat-display-2">{{newestUpdate.title}}</span>
+                <span class="mat-subheading-1" style="float: right">
+                    <b>Posted: </b>{{newestUpdate.date.toDateString()}}<br>
+                    <b>Author: </b>{{newestUpdate.author.firstName + ' ' + newestUpdate.author.lastName}}
+                </span>
+                <mat-divider></mat-divider>
+                <markdown [data]="markdown"></markdown>
+            </ng-container>
         </div>
         <!-- / CONTENT -->
 
