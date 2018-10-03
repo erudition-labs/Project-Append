@@ -8,6 +8,9 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { NewsComponent } from './news.component';
 import { FuseSidebarModule } from '@fuse/components';
 
+import { MarkdownModule, MarkedOptions } from 'ngx-markdown';
+import { TuiModule } from 'ngx-tui-editor';
+
 const routes = [
     {
         path     : 'news',
@@ -30,6 +33,8 @@ const routes = [
 
         MatIconModule,
         MatListModule,
+        TuiModule,
+        MarkdownModule.forRoot(),
     ],
     exports     : [
         NewsComponent

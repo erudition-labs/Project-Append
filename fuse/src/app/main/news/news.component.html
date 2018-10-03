@@ -9,7 +9,7 @@
                 <mat-nav-list>
                     <h3 matSubheader>Recent News Posts</h3>
                     <ng-container *ngFor="let update of updates">
-                        <a mat-list-item (click)="singleUpdateSet(update)"> {{ update.title }} </a>
+                        <a mat-list-item (click)="updateFill(update)"> {{ update.title }} </a>
                         <mat-divider></mat-divider>
                     </ng-container>
                 </mat-nav-list>
@@ -41,7 +41,13 @@
 
         <!-- CONTENT -->
         <div class="content p-24">
-            Hello
+            <span class="mat-display-2">{{update.title}}</span>
+            <span class="mat-subheading-1" style="float: right">
+                <b>Posted: </b>{{update.date.toDateString()}}<br>
+                <b>Author: </b>{{update.author.firstName + ' ' + update.author.lastName}}
+            </span>
+            <mat-divider></mat-divider>
+            <markdown [data]="markdown"></markdown>
         </div>
         <!-- / CONTENT -->
 

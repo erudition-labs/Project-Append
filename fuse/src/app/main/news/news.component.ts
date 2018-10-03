@@ -6,7 +6,7 @@ import { UpdatesService } from '../../../@core/updates/updates.service';
 import { Update } from '../../../@core/updates/update.model';
 import { AuthService } from '../../../@core/auth/auth.service';
 import { UserService } from '../../../@core/user/user.service';
-
+import { TuiService } from 'ngx-tui-editor';
 import { ToastrService } from 'ngx-toastr';
 import {
 	FormGroup,
@@ -39,6 +39,8 @@ export class NewsComponent
         private toast : ToastrService, 
         private formBuilder : FormBuilder,
         private userService : UserService,
+        private editorService: TuiService,
+
 
     ) {
         this._fuseTranslationLoaderService.loadTranslations(english, turkish);
@@ -55,7 +57,7 @@ export class NewsComponent
     }
 
     updates : Update[] = [];
-    singleUpdate : Boolean = false;
+    updateFilled : Boolean = false;
     update : Update;
     edittedUpdate : Update;
     closeResult: string;
@@ -63,6 +65,15 @@ export class NewsComponent
     editButtonClicked : Boolean = false;
     updateForm: FormGroup;
     editForm: FormGroup;
+    markdown : any = "";
+    options : any = {
+      initialValue: `# Title of Project` ,
+      initialEditType: 'markdown',
+      previewStyle: 'vertical',
+      height: 'auto',
+      minHeight: '498px' 
+    };
+    expression : any = /[>|#*_]/gi;
 
     ngOnInit() {
         this.updatesService.getUpdates().subscribe((result) => {
@@ -93,7 +104,6 @@ export class NewsComponent
       public onClick() : void {
     
             this.updateForm.controls.title.markAsDirty();
-            this.updateForm.controls.content.markAsDirty();
     
             const { title, content, author, date } = this.updateForm.value;
             const update : Update = {
@@ -102,6 +112,8 @@ export class NewsComponent
           author,
           date
         };
+    
+        update.content = this.editorService.getMarkdown();
     
         update.date = new Date();
         update.author = this.authService.parseToken().sub;
@@ -128,7 +140,7 @@ export class NewsComponent
       }
     
       public onClickEdit() : void {
-        this.singleUpdate = true;
+        this.updateFilled = true;
         this.addUpdateClicked = false;
         this.editButtonClicked = false;
             this.editForm.controls.title.markAsDirty();
@@ -171,19 +183,20 @@ export class NewsComponent
             //populate formControls
             this.editForm.get('title').setValue(data.title);
             this.editForm.get('content').setValue(data.content);
-        
+    
         }
     
     
-      private singleUpdateSet(update : Update) {
-        this.singleUpdate = true;
+      private updateFill(update : Update) {
+        this.updateFilled = true;
         this.update = update;
-        this.editButtonClicked = false;
+        this.markdown = this.update.content;
     
+        this.editButtonClicked = false;
       }
     
       private back() {
-        this.singleUpdate = false; 
+        this.updateFilled = false; 
         this.addUpdateClicked = false;
         this.editButtonClicked = false;
     
@@ -193,7 +206,7 @@ export class NewsComponent
         this.createForm();
             if(this.authService.isAuthenticated() && this.authService.isAdmin()) {
           this.addUpdateClicked = true;
-          this.singleUpdate = false;
+          this.updateFilled = false;
           
             } else {
                 //tell them they no have access
@@ -215,7 +228,7 @@ export class NewsComponent
           this.updatesService.deleteUpdate(update._id).subscribe((result) => {
             
             if(result.success) {
-              this.singleUpdate = false;
+              this.updateFilled = false;
               this.success('Post Deleted');
     
               const index = this.updates.findIndex(update => update._id === result.result._id);
@@ -250,4 +263,5 @@ export class NewsComponent
                 positionClass: 'toast-top-right',
               });
       }
+    
 }
