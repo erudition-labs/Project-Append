@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { MatButtonModule, MatIconModule } from '@angular/material';
+import { MatButtonModule, MatIconModule, MatDialogModule } from '@angular/material';
 import { TranslateModule } from '@ngx-translate/core';
 import 'hammerjs';
 
@@ -22,6 +22,7 @@ import { DashboardModule } from './main/dashboard/dashboard.module';
 import { ToastrModule } from 'ngx-toastr';
 import { CoreModule } from '@core/core.module';
 import { AuthModule } from './main/authentication/auth.module';
+import { NewsDialogComponent } from './main/news/news-dialog/news-dialog.component';
 
 
 
@@ -52,6 +53,7 @@ const appRoutes: Routes = [ //see auth midule below
         // Material
         MatButtonModule,
         MatIconModule,
+        MatDialogModule,
 
         // Fuse modules
         FuseModule.forRoot(fuseConfig),
@@ -74,6 +76,9 @@ const appRoutes: Routes = [ //see auth midule below
     ],
     bootstrap   : [
         AppComponent
+    ],
+    entryComponents: [
+        NewsDialogComponent
     ]
 })
 export class AppModule

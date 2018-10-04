@@ -8,6 +8,7 @@ import { FuseSidebarModule } from '@fuse/components';
 
 import { MarkdownModule, MarkedOptions } from 'ngx-markdown';
 import { TuiModule } from 'ngx-tui-editor';
+import { NewsDialogComponent } from './news-dialog/news-dialog.component';
 
 const routes = [
     {
@@ -18,7 +19,8 @@ const routes = [
 
 @NgModule({
     declarations: [
-        NewsComponent
+        NewsComponent,
+        NewsDialogComponent
     ],
     imports     : [
         RouterModule.forChild(routes),

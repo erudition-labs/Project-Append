@@ -14,9 +14,11 @@ import {
 	FormControl,
 	Validators
 } from '@angular/forms'
+import { MatDialog } from '@angular/material';
 
 import { locale as english } from './i18n/en';
 import { locale as turkish } from './i18n/tr';
+import { NewsDialogComponent } from './news-dialog/news-dialog.component';
 
 @Component({
     selector   : 'news',
@@ -40,6 +42,7 @@ export class NewsComponent
         private formBuilder : FormBuilder,
         private userService : UserService,
         private editorService: TuiService,
+        private dialog  : MatDialog
 
 
     ) {
@@ -247,8 +250,15 @@ export class NewsComponent
         }
       }
       
-      private openDialog() {
-          
+      private openDialog() : void{
+        let dialogRef = this.dialog.open(NewsDialogComponent, {
+
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('closed');
+        });
+        
       }
 
       private error(msg : string) : void {
