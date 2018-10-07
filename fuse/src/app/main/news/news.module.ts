@@ -9,6 +9,8 @@ import { FuseSidebarModule } from '@fuse/components';
 import { MarkdownModule, MarkedOptions } from 'ngx-markdown';
 import { TuiModule } from 'ngx-tui-editor';
 import { NewsDialogComponent } from './news-dialog/news-dialog.component';
+import { MatDialogModule } from '@angular/material';
+import {MatStepperModule} from '@angular/material/stepper';
 
 const routes = [
     {
@@ -34,11 +36,16 @@ const routes = [
         MatIconModule,
         MatListModule,
         MatButtonModule,
+        MatDialogModule,
+        MatStepperModule,
         TuiModule,
         MarkdownModule.forRoot(),
     ],
     exports     : [
-        NewsComponent
+        NewsComponent,
+        ],
+    entryComponents : [
+        NewsDialogComponent
     ]
 })
 

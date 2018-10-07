@@ -1,3 +1,17 @@
-<p>
-  news-dialog works!
-</p>
+<form [formGroup]="updateForm">
+  <mat-horizontal-stepper>
+    <mat-step formGroupName="0" [stepControl]="updateForm.get([0])">
+      <input matInput [formControl]="updateForm.get('title')" placeholder="Title of Post" required>
+      <div>
+        <button mat-button matStepperNext type="button">Next</button>
+      </div>
+      <tui-editor [options]="options" ></tui-editor> 
+    </mat-step>
+    <mat-step formGroupName="1" [stepControl]="updateForm.get([1])">
+      <div>
+        <button mat-button matStepperPrevious type="button">Back</button>
+        <button mat-button matStepperNext type="button">Next</button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</form>

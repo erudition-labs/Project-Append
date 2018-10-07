@@ -92,13 +92,6 @@ export class NewsComponent
       }
     
       private createForm() : void {
-            this.updateForm = this.formBuilder.group({
-                title 		: new FormControl('', {}),
-          content 	: new FormControl('', {}),
-          author    : new FormControl('', {}),
-          date      : new FormControl('', {}),
-        });
-        
         this.editForm = this.formBuilder.group({
                 title 		: new FormControl('', {}),
           content 	: new FormControl('', {}),
@@ -252,11 +245,15 @@ export class NewsComponent
       
       private openDialog() : void{
         let dialogRef = this.dialog.open(NewsDialogComponent, {
-
+          data: {
+            myVar: "testVar"
+          }
         });
 
         dialogRef.afterClosed().subscribe(result => {
           console.log('closed');
+          console.log(result);
+          
         });
         
       }
