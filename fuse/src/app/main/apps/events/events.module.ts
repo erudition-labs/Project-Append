@@ -9,24 +9,26 @@ import { CalendarModule as AngularCalendarModule } from 'angular-calendar';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { CalendarComponent } from 'app/main/apps/calendar/calendar.component';
-import { CalendarService } from 'app/main/apps/calendar/calendar.service';
+import { EventsComponent } from 'app/main/apps/events/events.component';
+import { EventService } from 'app/main/apps/events/events.service';
 import { CalendarEventFormDialogComponent } from 'app/main/apps/calendar/event-form/event-form.component';
+import { NgxsModule } from '@ngxs/store';
+import { CalendarEventState } from './_store/events.state';
 
 const routes: Routes = [
     {
         path     : '**',
-        component: CalendarComponent,
+        component: EventsComponent,
         children : [],
         resolve  : {
-            chat: CalendarService
+           // chat: CalendarService
         }
     }
 ];
 
 @NgModule({
     declarations   : [
-        CalendarComponent,
+        EventsComponent,
         CalendarEventFormDialogComponent
     ],
     imports        : [
@@ -46,15 +48,16 @@ const routes: Routes = [
         ColorPickerModule,
 
         FuseSharedModule,
-        FuseConfirmDialogModule
+        FuseConfirmDialogModule, 
+        NgxsModule.forFeature([CalendarEventState])
     ],
     providers      : [
-        CalendarService
+        EventService
     ],
     entryComponents: [
         CalendarEventFormDialogComponent
     ]
 })
-export class CalendarModule
+export class EventsModule
 {
 }

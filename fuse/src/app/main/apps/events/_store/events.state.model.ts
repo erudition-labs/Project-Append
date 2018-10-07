@@ -1,5 +1,4 @@
 import { CalendarEventAction } from 'angular-calendar';
-import { startOfDay, endOfDay } from 'date-fns';
 
 export interface Event {
 	_id							?: string;
@@ -17,54 +16,73 @@ export interface Event {
 	author						: any;
 }
 
+export interface CalendarEventModel {
+    start   : Date;
+    end     : Date;
+    title   : string;
 
-
-export class CalendarEventModel
-{
-    start: Date;
-    end?: Date;
-    title: string;
     color: {
-        primary: string;
-        secondary: string;
+        primary     : string;
+        secondary   : string;
     };
+
     actions?: CalendarEventAction[];
-    allDay?: boolean;
-    cssClass?: string;
     resizable?: {
         beforeStart?: boolean;
         afterEnd?: boolean;
     };
     draggable?: boolean;
-    meta?: {
-        event : Event
+    cssClass?: any;
+    meta?: { event: Event };
+};
+
+export interface CalendarEventStateModel {
+    events:  CalendarEventModel[];
+    loaded: boolean;
+    loading: boolean;
+    selectedEventId: string;
+};
+
+export class CalendarEvent implements CalendarEventModel {
+    start   : Date;
+    end     : Date;
+    title   : string;
+
+    color: {
+        primary     : string;
+        secondary   : string;
     };
 
-    /**
-     * Constructor
-     *
-     * @param data
-     */
-    constructor(data?: Event, opts?: any)
+    actions?: CalendarEventAction[];
+    resizable?: {
+        beforeStart?: boolean;
+        afterEnd?: boolean;
+    };
+    draggable?: boolean;
+    cssClass?: any;
+    meta?: { event: Event };
+
+    constructor(event: Event, opts?: any)
     {
-        data = data || null;
-        this.start = new Date(data.date[0]) || startOfDay(new Date());
-        this.end = new Date(data.date[1]) || endOfDay(new Date());
-        this.title = data.name || '';
+        event = event || null;
+        opts = opts || {};
+        this.start = new Date(event.date[0]);
+        this.end = new Date(event.date[1]);
+        this.title = event.name || '';
         this.color = {
             primary  : opts.color && opts.color.primary || '#1e90ff',
             secondary: opts.color && opts.color.secondary || '#D1E8FF'
         };
-        this.draggable = opts.draggable || true;
+        this.draggable = opts.draggable || false;
         this.resizable = {
             beforeStart: opts.resizable && opts.resizable.beforeStart || true,
             afterEnd   : opts.resizable && opts.resizable.afterEnd || true
         };
         this.actions = opts.actions || [];
-        this.allDay = opts.allDay || false;
         this.cssClass = opts.cssClass || '';
         this.meta = {
-            event : data
+            event : event
         };
     }
+
 }
