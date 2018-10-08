@@ -6,7 +6,11 @@ import {
 	FormControl,
 	Validators
 } from '@angular/forms';
+import { UpdatesService } from '../../../../@core/updates/updates.service';
+import { Update } from '../../../../@core/updates/update.model';
 import { TuiService } from 'ngx-tui-editor';
+import { AuthService } from '@core/auth/auth.service';
+import { UserService } from '@core/user/user.service';
 
 @Component({
   selector: 'app-news-dialog',
@@ -19,18 +23,22 @@ export class NewsDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public formBuilder : FormBuilder,
     private editorService: TuiService,
+    private authService : AuthService,
+    private userService : UserService,
+    private updatesService : UpdatesService,
 
     ) { }
 
 
     updateForm: FormGroup;
+    update : Update;
     markdown : any = "";
     options : any = {
-      initialValue: `# Title of Project` ,
-      initialEditType: 'markdown',
+      initialValue: `# Example Header!` ,
+      initialEditType: 'wysiwyg',
       previewStyle: 'vertical',
       height: 'auto',
-      minHeight: '498px' 
+      minHeight: '500px' 
     };
 
 
@@ -49,7 +57,35 @@ export class NewsDialogComponent implements OnInit {
     });
   }
 
+  
+
   public save() {
     this.dialogRef.close("SAVEDDDD");
+    this.updateForm.controls.title.markAsDirty();
+    
+    const { title, content, author, date } = this.updateForm.value;
+    const update : Update = {
+      title,
+      content,
+      author,
+      date
+    };
+
+    update.content = this.editorService.getMarkdown();
+    update.date = new Date();
+    update.author = this.authService.parseToken().sub;
+
+    this.updatesService.createUpdate(update).subscribe((result) => {
+      this.userService.getUser(result.result.author).subscribe((user) => {
+        result.result.author = user;
+      });
+      result.result.date = new Date(result.result.date);
+      if(result.success) {
+        //return the result to news component to put in array
+        this.dialogRef.close(result.result);
+      } else {
+        //error
+      }  
+    });
   }
 }

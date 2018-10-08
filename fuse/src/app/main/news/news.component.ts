@@ -99,44 +99,6 @@ export class NewsComponent
           date      : new FormControl('', {}),
             });
       }
-      
-      public onClick() : void {
-    
-            this.updateForm.controls.title.markAsDirty();
-    
-            const { title, content, author, date } = this.updateForm.value;
-            const update : Update = {
-                title,
-          content,
-          author,
-          date
-        };
-    
-        update.content = this.editorService.getMarkdown();
-    
-        update.date = new Date();
-        update.author = this.authService.parseToken().sub;
-    
-        this.addUpdateClicked = false;
-        this.editButtonClicked = false;
-        
-    
-        this.updatesService.createUpdate(update).subscribe((result) => {
-          this.userService.getUser(result.result.author).subscribe((user) => {
-            result.result.author = user;
-          });
-          result.result.date = new Date(result.result.date);
-    
-          this.updates.splice(0, 0, result.result);
-    
-          if(result.success) {
-            this.success('Posted!');
-          } else {
-            this.error('Something went wrong');
-          }
-          
-        });
-      }
     
       public onClickEdit() : void {
         this.updateFilled = true;
@@ -245,17 +207,14 @@ export class NewsComponent
       
       private openDialog() : void{
         let dialogRef = this.dialog.open(NewsDialogComponent, {
-          data: {
-            myVar: "testVar"
-          }
+
         });
 
         dialogRef.afterClosed().subscribe(result => {
-          console.log('closed');
           console.log(result);
-          
+          this.updates.splice(0, 0, result);
+
         });
-        
       }
 
       private error(msg : string) : void {
