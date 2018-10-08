@@ -53,6 +53,13 @@
         <div class="content p-24">
             <ng-container *ngIf="updateFilled">
                 <span class="mat-display-2">{{update.title}}</span>
+                <ng-container *ngIf="authService.isAdmin()">
+                    <span style="float: right">
+                        <button mat-icon-button color="warn" (click)="delete(update)">
+                            <mat-icon aria-label="Delete">delete</mat-icon>
+                        </button>
+                    </span>
+                </ng-container>
                 <span class="mat-subheading-1" style="float: right">
                     <b>Posted: </b>{{update.date.toDateString()}}<br>
                     <b>Author: </b>{{update.author.firstName + ' ' + update.author.lastName}}
@@ -62,6 +69,13 @@
             </ng-container>
             <ng-container *ngIf="!updateFilled">
                 <span class="mat-display-2">{{newestUpdate.title}}</span>
+                <ng-container *ngIf="authService.isAdmin()">
+                    <span style="float: right">
+                        <button mat-icon-button color="warn" (click)="delete(newestUpdate)">
+                            <mat-icon aria-label="Delete">delete</mat-icon>
+                        </button>
+                    </span>
+                </ng-container>
                 <span class="mat-subheading-1" style="float: right">
                     <b>Posted: </b>{{newestUpdate.date.toDateString()}}<br>
                     <b>Author: </b>{{newestUpdate.author.firstName + ' ' + newestUpdate.author.lastName}}

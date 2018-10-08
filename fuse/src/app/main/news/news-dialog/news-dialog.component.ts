@@ -26,7 +26,6 @@ export class NewsDialogComponent implements OnInit {
     private authService : AuthService,
     private userService : UserService,
     private updatesService : UpdatesService,
-
     ) { }
 
 
@@ -45,7 +44,6 @@ export class NewsDialogComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
-
   }
 
   public createForm() : void {
@@ -56,8 +54,6 @@ export class NewsDialogComponent implements OnInit {
       date      : new FormControl('', {}),
     });
   }
-
-  
 
   public save() {
     this.updateForm.controls.title.markAsDirty();

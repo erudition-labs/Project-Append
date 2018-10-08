@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { UpdatesService } from '../../../@core/updates/updates.service';
@@ -8,14 +7,8 @@ import { AuthService } from '../../../@core/auth/auth.service';
 import { UserService } from '../../../@core/user/user.service';
 import { TuiService } from 'ngx-tui-editor';
 import { ToastrService } from 'ngx-toastr';
-import {
-	FormGroup,
-	FormBuilder,
-	FormControl,
-	Validators
-} from '@angular/forms'
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { MatDialog } from '@angular/material';
-
 import { locale as english } from './i18n/en';
 import { locale as turkish } from './i18n/tr';
 import { NewsDialogComponent } from './news-dialog/news-dialog.component';
@@ -164,18 +157,17 @@ export class NewsComponent
         }
       }
     
-      delete(update) {
-    
+      delete(update) : void {
         if (window.confirm('Are you sure you want to delete?')) {
           this.updatesService.deleteUpdate(update._id).subscribe((result) => {
-            
             if(result.success) {
               this.updateFilled = false;
               this.success('Post Deleted');
     
               const index = this.updates.findIndex(update => update._id === result.result._id);
               this.updates.splice(index, 1);
-    
+              this.newestUpdate = this.updates[0];
+              this.markdown = this.newestUpdate.content;
             } else {
               this.error("Did not delete post :(");
             }
@@ -186,7 +178,7 @@ export class NewsComponent
         }
       }
       
-      private openDialog() : void{
+      private openDialog() : void {
         let dialogRef = this.dialog.open(NewsDialogComponent, {
 
         });
@@ -209,9 +201,9 @@ export class NewsComponent
                 progressAnimation: 'decreasing',
                 positionClass: 'toast-top-right',
               });
-        }
+      }
     
-        private success(msg: string) : void {
+      private success(msg: string) : void {
             this.toast.success(msg, 'Success!', {
                 timeOut: 5000,
                 closeButton: true,
