@@ -60,7 +60,6 @@ export class NewsDialogComponent implements OnInit {
   
 
   public save() {
-    this.dialogRef.close("SAVEDDDD");
     this.updateForm.controls.title.markAsDirty();
     
     const { title, content, author, date } = this.updateForm.value;

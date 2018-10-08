@@ -65,8 +65,6 @@ export class NewsComponent
     newestUpdate : Update;
     edittedUpdate : Update;
     closeResult: string;
-    addUpdateClicked : Boolean = false;
-    editButtonClicked : Boolean = false;
     updateForm: FormGroup;
     editForm: FormGroup;
     markdown : any = "";
@@ -102,8 +100,6 @@ export class NewsComponent
     
       public onClickEdit() : void {
         this.updateFilled = true;
-        this.addUpdateClicked = false;
-        this.editButtonClicked = false;
             this.editForm.controls.title.markAsDirty();
             this.editForm.controls.content.markAsDirty();
     
@@ -118,9 +114,7 @@ export class NewsComponent
         edittedUpdate.author = this.update.author;
         edittedUpdate.date = this.update.date;
         edittedUpdate._id = this.update._id;
-        this.addUpdateClicked = false;
-        this.editButtonClicked = false;
-    
+
         this.updatesService.editUpdate(edittedUpdate).subscribe((result) => {
           this.success(result.message)
           this.update = result.result;
@@ -152,32 +146,19 @@ export class NewsComponent
         this.updateFilled = true;
         this.update = update;
         this.markdown = this.update.content;
-    
-        this.editButtonClicked = false;
       }
-    
-      private back() {
-        this.updateFilled = false; 
-        this.addUpdateClicked = false;
-        this.editButtonClicked = false;
-    
-      }
-    
+
       public createUpdate(): void {
         this.createForm();
-            if(this.authService.isAuthenticated() && this.authService.isAdmin()) {
-          this.addUpdateClicked = true;
-          this.updateFilled = false;
-          
-            } else {
-                //tell them they no have access
-          this.error('You are not authorized');
-          this.addUpdateClicked = false;
-            }
+          if(this.authService.isAuthenticated() && this.authService.isAdmin()) {
+            this.updateFilled = false;
+          } else {
+            //tell them they no have access
+            this.error('You are not authorized');
+          }
       }
     
       private edit() {
-        this.editButtonClicked = true;
         if(this.authService.isAuthenticated() && this.authService.isAdmin()) {
           this.populateForm();
         }
@@ -211,9 +192,12 @@ export class NewsComponent
         });
 
         dialogRef.afterClosed().subscribe(result => {
+         if(result != null) {
           console.log(result);
           this.updates.splice(0, 0, result);
-
+         } else {
+           //do nothing 
+         }
         });
       }
 
