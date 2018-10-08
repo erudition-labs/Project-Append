@@ -33,7 +33,7 @@ export class NewsDialogComponent implements OnInit {
     update : Update;
     markdown : any = "";
     options : any = {
-      initialValue: `# Example Header!` ,
+      initialValue: `# Edit Me!` ,
       initialEditType: 'wysiwyg',
       previewStyle: 'vertical',
       height: 'auto',
@@ -48,8 +48,8 @@ export class NewsDialogComponent implements OnInit {
 
   public createForm() : void {
     this.updateForm = this.formBuilder.group({
-      title 		: new FormControl('', {}),
-      content 	: new FormControl('', {}),
+      title 		: new FormControl('', { validators: [Validators.required] }),
+      content 	: new FormControl('', { }),
       author    : new FormControl('', {}),
       date      : new FormControl('', {}),
     });
@@ -80,6 +80,7 @@ export class NewsDialogComponent implements OnInit {
         this.dialogRef.close(result.result);
       } else {
         //error
+        console.log("ERROR");
       }  
     });
   }

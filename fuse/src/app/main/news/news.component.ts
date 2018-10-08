@@ -184,9 +184,11 @@ export class NewsComponent
         });
 
         dialogRef.afterClosed().subscribe(result => {
-         if(result != null) {
+         if(result != null || result != undefined) {
           console.log(result);
           this.updates.splice(0, 0, result);
+          this.newestUpdate = this.updates[0];
+          this.markdown = this.newestUpdate.content;
          } else {
            //do nothing 
          }

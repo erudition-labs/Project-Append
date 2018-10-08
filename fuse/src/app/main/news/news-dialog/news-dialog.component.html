@@ -1,9 +1,14 @@
-<form [formGroup]="updateForm">
-  <mat-form-field>
-  <input matInput [formControl]="updateForm.get('title')" placeholder="Title of Post" style="width: 100%">
-  </mat-form-field>
-  <tui-editor [options]="options" ></tui-editor>
-    <span style="float:right; margin-top: 10px">
-        <button mat-raised-button color="primary" (click)="save()">Post</button>
-    </span>
-</form>
+<h2 mat-dialog-title>Post</h2>
+<mat-dialog-content>
+  <form [formGroup]="updateForm">
+    <mat-form-field>
+    <input matInput [formControl]="updateForm.get('title')" placeholder="Title of Post" style="width: 100%">
+    </mat-form-field>
+    <tui-editor [options]="options" ></tui-editor>
+    <mat-dialog-actions>
+      <span style="float:right; margin-top: 10px">
+          <button mat-raised-button color="primary" (click)="save()" [disabled]="updateForm.invalid">Post</button>
+      </span>
+    </mat-dialog-actions>
+  </form>
+</mat-dialog-content>
