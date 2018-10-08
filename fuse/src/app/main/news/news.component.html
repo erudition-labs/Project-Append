@@ -1,7 +1,16 @@
-<div class="page-layout simple left-sidebar">
+<div class="page-layout carded left-sidebar">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
 
     <!-- SIDEBAR -->
-    <fuse-sidebar class="sidebar" name="simple-left-sidebar-1" position="left" lockedOpen="gt-md">
+    <fuse-sidebar class="sidebar" name="carded-left-sidebar-1" position="left" lockedOpen="gt-md">
+
+        <!-- SIDEBAR HEADER -->
+        <div class="header p-24 accent">
+            <!-- <h2 class="m-0">Recent News Posts</h2> -->
+        </div>
+        <!-- / SIDEBAR HEADER -->
 
         <!-- SIDEBAR CONTENT -->
         <div class="content p-24">
@@ -14,7 +23,7 @@
                     </ng-container>
                 </mat-nav-list>
             </div>
-            
+
         </div>
         <!-- / SIDEBAR CONTENT -->
 
@@ -23,68 +32,79 @@
 
     <!-- CENTER -->
     <div class="center">
-        <!-- HEADER -->
-        <div class="header accent p-24" fxLayout="row" fxLayoutAlign="start center">
 
-            <button mat-icon-button class="sidebar-toggle mr-8" fxHide.gt-md
-                    (click)="toggleSidebar('simple-left-sidebar-1')">
-                <mat-icon>menu</mat-icon>
-            </button>
-
-            <!-- <h2 class="m-0">CA-782 News</h2> -->
+        <!-- CONTENT HEADER -->
+        <div class="header accent p-24">
             <ng-container *ngIf="updateFilled">
                 <span class="mat-display-3 m-0">News</span>
             </ng-container>
-            
+
             <ng-container *ngIf="!updateFilled">
                 <span class="mat-display-3 m-0">Latest News Post</span>
             </ng-container>
-
         </div>
-        <!-- / HEADER -->
+        <!-- / CONTENT HEADER -->
         <!-- ADD EVENT BUTTON -->
-        <button mat-fab class="fab-container mat-accent" aria-label="Add event"
-            [@animate]="{value:'*',params:{delay:'300ms',scale:'0.2'}}"
+        <button mat-fab class="fab-container mat-accent" aria-label="Add event" [@animate]="{value:'*',params:{delay:'300ms',scale:'0.2'}}"
             *ngIf="authService.isAdmin()" (click)="openDialog()">
             <mat-icon>add</mat-icon>
         </button>
         <!-- / ADD EVENT BUTTON -->
-        <!-- CONTENT -->
-        <div class="content p-24">
-            <ng-container *ngIf="updateFilled">
-                <span class="mat-display-2">{{update.title}}</span>
-                <ng-container *ngIf="authService.isAdmin()">
-                    <span style="float: right">
-                        <button mat-icon-button color="warn" (click)="delete(update)">
-                            <mat-icon aria-label="Delete">delete</mat-icon>
-                        </button>
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT TOOLBAR -->
+            <div class="toolbar px-24 py-8" fxHide.gt-md>
+
+                <button mat-icon-button class="sidebar-toggle" fxHide.gt-md (click)="toggleSidebar('carded-left-sidebar-1')">
+                    <mat-icon>menu</mat-icon>
+                </button>
+
+                <span>Select A Post</span>
+
+            </div>
+            <!-- / CONTENT TOOLBAR -->
+
+            <!-- CONTENT -->
+            <div class="content p-24">
+                <ng-container *ngIf="updateFilled">
+                    <span class="mat-display-2">{{update.title}}</span>
+                    <ng-container *ngIf="authService.isAdmin()">
+                        <span style="float: right">
+                            <button mat-icon-button color="warn" (click)="delete(update)">
+                                <mat-icon aria-label="Delete">delete</mat-icon>
+                            </button>
+                        </span>
+                    </ng-container>
+                    <span class="mat-subheading-1" style="float: right">
+                        <b>Posted: </b>{{update.date.toDateString()}}<br>
+                        <b>Author: </b>{{update.author.firstName + ' ' + update.author.lastName}}
                     </span>
+                    <mat-divider></mat-divider>
+                    <markdown [data]="markdown"></markdown>
                 </ng-container>
-                <span class="mat-subheading-1" style="float: right">
-                    <b>Posted: </b>{{update.date.toDateString()}}<br>
-                    <b>Author: </b>{{update.author.firstName + ' ' + update.author.lastName}}
-                </span>
-                <mat-divider></mat-divider>
-                <markdown [data]="markdown"></markdown>
-            </ng-container>
-            <ng-container *ngIf="!updateFilled">
-                <span class="mat-display-2">{{newestUpdate.title}}</span>
-                <ng-container *ngIf="authService.isAdmin()">
-                    <span style="float: right">
-                        <button mat-icon-button color="warn" (click)="delete(newestUpdate)">
-                            <mat-icon aria-label="Delete">delete</mat-icon>
-                        </button>
-                    </span>
+                <ng-container *ngIf="!updateFilled">
+                    <span class="mat-display-2">{{newestUpdate.title}}</span>
+                    <ng-container *ngIf="authService.isAdmin()">
+                        <span style="float: right">
+                            <button mat-icon-button color="warn" (click)="delete(newestUpdate)">
+                                <mat-icon aria-label="Delete">delete</mat-icon>
+                            </button>
+                        </span>
+
+                        <span class="mat-subheading-1" style="float: right">
+                            <b>Posted: </b>{{newestUpdate.date.toDateString()}}<br>
+                            <b>Author: </b>{{newestUpdate.author.firstName + ' ' + newestUpdate.author.lastName}}
+                        </span>
+                    </ng-container>
+                    <mat-divider></mat-divider>
+                    <markdown [data]="markdown"></markdown>
                 </ng-container>
-                <span class="mat-subheading-1" style="float: right">
-                    <b>Posted: </b>{{newestUpdate.date.toDateString()}}<br>
-                    <b>Author: </b>{{newestUpdate.author.firstName + ' ' + newestUpdate.author.lastName}}
-                </span>
-                <mat-divider></mat-divider>
-                <markdown [data]="markdown"></markdown>
-            </ng-container>
+            </div>
+            <!-- / CONTENT -->
+
         </div>
-        <!-- / CONTENT -->
+        <!-- / CONTENT CARD -->
 
     </div>
     <!-- / CENTER -->
