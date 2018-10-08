@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { UpdatesService } from '../../../@core/updates/updates.service';
@@ -12,14 +12,15 @@ import { MatDialog } from '@angular/material';
 import { locale as english } from './i18n/en';
 import { locale as turkish } from './i18n/tr';
 import { NewsDialogComponent } from './news-dialog/news-dialog.component';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
     selector   : 'news',
     templateUrl: './news.component.html',
-    styleUrls  : ['./news.component.scss']
+    styleUrls  : ['./news.component.scss'],
+    animations : fuseAnimations
 })
-export class NewsComponent
-{
+export class NewsComponent implements OnInit {
     /**
      * Constructor
      *
@@ -77,6 +78,8 @@ export class NewsComponent
             update.date = new Date(update.date);
           }
           this.newestUpdate = this.updates[0];
+          console.log(this.newestUpdate);
+          
           this.markdown = this.updates[0].content;
         });
         this.createForm();
