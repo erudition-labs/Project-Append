@@ -79,7 +79,6 @@ export class NewsComponent implements OnInit {
           }
           this.newestUpdate = this.updates[0];
           console.log(this.newestUpdate);
-          
           this.markdown = this.updates[0].content;
         });
         this.createForm();
