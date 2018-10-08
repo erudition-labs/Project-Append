@@ -23,22 +23,85 @@ import { tap } from 'rxjs/operators';
     animations   : fuseAnimations
 })
 export class EventsComponent implements OnInit {
-    @Select(CalendarEventState.calendarEvents)
-    $events : Observable<CalendarEventModel[]>
+    @Select(CalendarEventState.calendarEvents) $events : Observable<CalendarEventModel[]>
+
+    actions             : CalendarEventAction[];
+    activeDayIsOpen     : boolean;
+    confirmDialogRef    : MatDialogRef<FuseConfirmDialogComponent>;
+    dialogRef           : any;
+    events              : CalendarEvent[];
+    refresh             : Subject<any> = new Subject();
+    selectedDay         : any;
+    view                : string;
+    viewDate            : Date;
 
     constructor(
-        private _matDialog: MatDialog,
-        private store: Store,
-        private actions$: Actions
+        private _matDialog  : MatDialog,
+        private store       : Store,
+        private actions$    : Actions
        
-    ) {}
+    ) {
+         // Set the defaults
+         this.view = 'month';
+         this.viewDate = new Date();
+         this.activeDayIsOpen = true;
+         this.selectedDay = {date: startOfDay(new Date())};
+ 
+        /* this.actions = [
+             {
+                 label  : '<i class="material-icons s-16">edit</i>',
+                 onClick: ({event}: { event: CalendarEvent }): void => {
+                    // this.editEvent('edit', event);
+                 }
+             },
+             {
+                 label  : '<i class="material-icons s-16">delete</i>',
+                 onClick: ({event}: { event: CalendarEvent }): void => {
+                    // this.deleteEvent(event);
+                 }
+             }
+         ];*/ //maybe some day lol
+ 
+    }
 
     ngOnInit() {
-       /* this.$events = this.store.select(CalendarEventState.calendarEvents).pipe(
-            tap((event: CalendarEventModel) => { console.log(event)})
-        );*/
-        this.$events.subscribe(e =>  console.log(e));
-        //console.log(this.$events);
+        this.$events.subscribe(e => this.events = e);
+        this.refresh.next();
+    }
+
+    beforeMonthViewRender({header, body}): void {
+        // console.info('beforeMonthViewRender');
+        /**
+         * Get the selected day
+         */
+        const _selectedDay = body.find((_day) => {
+            return _day.date.getTime() === this.selectedDay.date.getTime();
+        });
+
+        if (_selectedDay){
+            /**
+             * Set selectedday style
+             * @type {string}
+             */
+            _selectedDay.cssClass = 'mat-elevation-z3';
+        }
+
+    }
+
+    dayClicked(day: CalendarMonthViewDay): void {
+        const date: Date = day.date;
+        const events: CalendarEvent[] = day.events;
+
+        if(isSameMonth(date, this.viewDate)){
+            if((isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) || events.length === 0){
+                this.activeDayIsOpen = false;
+            } else {
+                this.activeDayIsOpen = true;
+                this.viewDate = date;
+            }
+        }
+        this.selectedDay = day;
+        this.refresh.next();
     }
 
 
