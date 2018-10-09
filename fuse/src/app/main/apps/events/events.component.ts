@@ -9,7 +9,7 @@ import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/conf
 import { fuseAnimations } from '@fuse/animations';
 
 import { CalendarEventModel, Event } from 'app/main/apps/events/_store/events.state.model';
-import { CalendarEventFormDialogComponent } from 'app/main/apps/calendar/event-form/event-form.component';
+import { CalendarEventFormDialogComponent } from 'app/main/apps/events/event-form/event-form.component';
 import { CalendarEventActions } from './_store/events.actions';
 import { CalendarEventState } from './_store/events.state';
 import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
@@ -104,5 +104,55 @@ export class EventsComponent implements OnInit {
         this.refresh.next();
     }
 
+    addEvent(): void {
+        this.dialogRef = this._matDialog.open(CalendarEventFormDialogComponent, {
+            panelClass: 'event-form-dialog',
+            data      : {
+                action: 'new',
+                date  : this.selectedDay.date
+            }
+        });
+        this.dialogRef.afterClosed()
+            .subscribe((response: FormGroup) => {
+                if (!response) return;
+        
+                const newEvent = response.getRawValue();
+                newEvent.actions = this.actions;
+                //this.events.push(newEvent);
+                this.refresh.next(true);
+        });
+    }
+    
+    editEvent(action: string, event: CalendarEvent): void
+    {
+        const eventIndex = this.events.indexOf(event);
+       // console.log(event.meta.event);
 
+        this.dialogRef = this._matDialog.open(CalendarEventFormDialogComponent, {
+            panelClass: 'event-form-dialog',
+            data      : {
+                event : event.meta.event,
+                action: action
+            }
+        });
+
+        this.dialogRef.afterClosed()
+            .subscribe(response => {
+                if (!response) return;
+                
+                const actionType: string = response[0];
+                const formData: FormGroup = response[1];
+                switch(actionType) {
+                    case 'save':
+                        this.events[eventIndex] = Object.assign(this.events[eventIndex], formData.getRawValue());
+                        this.refresh.next(true);
+                        break;
+
+                    case 'delete':
+                       // this.deleteEvent(event);
+
+                        break;
+                }
+        });
+    }
 }

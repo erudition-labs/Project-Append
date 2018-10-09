@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {
-    MatButtonModule, MatDatepickerModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSlideToggleModule, MatToolbarModule, MatTooltipModule
+    MatButtonModule, MatDatepickerModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSlideToggleModule, MatToolbarModule, MatListModule, MatTooltipModule
 } from '@angular/material';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { CalendarModule as AngularCalendarModule } from 'angular-calendar';
@@ -11,9 +11,12 @@ import { FuseConfirmDialogModule } from '@fuse/components';
 
 import { EventsComponent } from 'app/main/apps/events/events.component';
 import { EventService } from 'app/main/apps/events/events.service';
-import { CalendarEventFormDialogComponent } from 'app/main/apps/calendar/event-form/event-form.component';
+import { CalendarEventFormDialogComponent } from 'app/main/apps/events/event-form/event-form.component';
 import { NgxsModule } from '@ngxs/store';
 import { CalendarEventState } from './_store/events.state';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { NgSelectModule } from '@ng-select/ng-select';
+
 
 const routes: Routes = [
     {
@@ -39,10 +42,14 @@ const routes: Routes = [
         MatDialogModule,
         MatFormFieldModule,
         MatIconModule,
+        MatListModule,
         MatInputModule,
         MatSlideToggleModule,
         MatToolbarModule,
         MatTooltipModule,
+        OwlDateTimeModule,
+        OwlNativeDateTimeModule,
+        NgSelectModule,
 
         AngularCalendarModule.forRoot(),
         ColorPickerModule,
