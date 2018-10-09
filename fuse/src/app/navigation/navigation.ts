@@ -35,6 +35,20 @@ export const navigation: FuseNavigation[] = [
                     fg       : '#FFFFFF'
                 }
             },
+            {
+                id       : 'usermang',
+                title    : 'User Management',
+                translate: 'NAV.USERMANG.TITLE',
+                type     : 'item',
+                icon     : 'person',
+                url      : '/usermang',
+                badge    : {
+                    title    : '25',
+                    translate: 'NAV.USERMANG.BADGE',
+                    bg       : '#F44336',
+                    fg       : '#FFFFFF'
+                }
+            },
             
 
         ]

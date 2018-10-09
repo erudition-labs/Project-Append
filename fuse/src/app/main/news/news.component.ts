@@ -62,13 +62,6 @@ export class NewsComponent implements OnInit {
     updateForm: FormGroup;
     editForm: FormGroup;
     markdown : any = "";
-    options : any = {
-      initialValue: `# Title of Project` ,
-      initialEditType: 'markdown',
-      previewStyle: 'vertical',
-      height: 'auto',
-      minHeight: '498px' 
-    };
     expression : any = /[>|#*_]/gi;
 
     ngOnInit() {

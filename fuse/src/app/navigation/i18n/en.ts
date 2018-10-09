@@ -11,6 +11,10 @@ export const locale = {
                 'TITLE': 'News',
                 'BADGE': '25'
             },
+            'USERMANG'        : {
+                'TITLE': 'User Management',
+                'BADGE': '100'
+            },
 
         }
     }

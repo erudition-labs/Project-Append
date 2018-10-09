@@ -18,6 +18,7 @@ import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
 import { NewsModule } from 'app/main/news/news.module';
 import { DashboardModule } from './main/dashboard/dashboard.module';
+import { UserMangModule } from 'app/main/usermang/usermang.module';
 
 import { ToastrModule } from 'ngx-toastr';
 import { CoreModule } from '@core/core.module';
@@ -69,6 +70,7 @@ const appRoutes: Routes = [ //see auth midule below
         LayoutModule,
         NewsModule,
         DashboardModule,
+        UserMangModule,
         CoreModule.forRoot(),
         AuthModule, //since I have this..each of those modules handle their own routing
         //so i dont need it in thte app routing
