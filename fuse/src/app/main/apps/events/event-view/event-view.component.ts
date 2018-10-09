@@ -19,6 +19,8 @@ export class CalendarEventViewDialogComponent implements OnInit{
     ) {
         _data.date[0] = new Date(_data.date[0]);
         _data.date[1] = new Date(_data.date[1]);
+        _data.additionalDetails = JSON.parse(_data.additionalDetails);
         this.dialogTitle = _data.name;
+        console.log(_data);
     }
 }

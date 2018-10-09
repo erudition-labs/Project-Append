@@ -65,8 +65,30 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
 
         </div>
+                <div class="fuse-card" class="p-24 m-0" style="flex-direction: row;display: flex;justify-content: space-between;">
+            <div class="fuse-card"
+                style="flex-direction: row;">
+                <div class="p-16">
+                    <div class="h1">Summary</div>
+                </div>
+                <div class="p-16 pt-0 line-height-1.75">
+                    <p style="word-wrap: break-word">{{ _data.summary }}</p>
+                </div>
+            </div>
+
+            <div class="fuse-card"
+            style="flex-direction: row;" *ngIf="_data.additionalDetails[0].title !== '' && _data.additionalDetails[0].details !== ''">
+                    <div class="p-16">
+                        <div class="h1">Additional Details</div>
+                    </div>
+                    <div *ngFor="let detail of _data.additionalDetails">
+                        <div class="p-16 pt-0 line-height-1.75">
+                                <p style="word-wrap: break-word" *ngIf="detail?.title !== '' ">{{ detail?.title }}</p>
+                                <p style="word-wrap: break-word" *ngIf="detail?.details !== '' ">{{ detail?.details}}</p>
+                        </div>
+                    </div>
+            </div>
+                </div>
 </div>
