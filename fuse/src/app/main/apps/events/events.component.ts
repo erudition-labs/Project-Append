@@ -10,6 +10,7 @@ import { fuseAnimations } from '@fuse/animations';
 
 import { CalendarEventModel, Event } from 'app/main/apps/events/_store/events.state.model';
 import { CalendarEventFormDialogComponent } from 'app/main/apps/events/event-form/event-form.component';
+import { CalendarEventViewDialogComponent } from 'app/main/apps/events/event-view/event-view.component';
 import { CalendarEventActions } from './_store/events.actions';
 import { CalendarEventState } from './_store/events.state';
 import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
@@ -123,8 +124,7 @@ export class EventsComponent implements OnInit {
         });
     }
     
-    editEvent(action: string, event: CalendarEvent): void
-    {
+    editEvent(action: string, event: CalendarEvent): void {
         const eventIndex = this.events.indexOf(event);
        // console.log(event.meta.event);
 
@@ -153,6 +153,13 @@ export class EventsComponent implements OnInit {
 
                         break;
                 }
+        });
+    }
+
+    viewEvent(event: CalendarEvent) {
+        this.dialogRef = this._matDialog.open(CalendarEventViewDialogComponent, {
+            panelClass: 'event-form-dialog',
+            data: event.meta.event
         });
     }
 }

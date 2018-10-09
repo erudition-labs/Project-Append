@@ -94,7 +94,7 @@
                 [refresh]="refresh"
                 [activeDayIsOpen]="activeDayIsOpen"
                 (dayClicked)="dayClicked($event.day)"
-                (eventClicked)="editEvent('edit', $event.event)"
+                (eventClicked)="viewEvent($event.event)"
                 (eventTimesChanged)="eventTimesChanged($event)"
                 (beforeViewRender)="beforeMonthViewRender($event)">
             </mwl-calendar-month-view>
@@ -105,7 +105,7 @@
                 [events]="events"
                 [refresh]="refresh"
                 (dayClicked)="dayClicked($event.day)"
-                (eventClicked)="editEvent('edit', $event.event)"
+                (eventClicked)="viewEvent($event.event)"
                 (eventTimesChanged)="eventTimesChanged($event)">
             </mwl-calendar-week-view>
             <mwl-calendar-day-view
@@ -115,7 +115,7 @@
                 [events]="events"
                 [refresh]="refresh"
                 (dayClicked)="dayClicked($event.day)"
-                (eventClicked)="editEvent('edit', $event.event)"
+                (eventClicked)="viewEvent($event.event)"
                 (eventTimesChanged)="eventTimesChanged($event)">
             </mwl-calendar-day-view>
         </div>

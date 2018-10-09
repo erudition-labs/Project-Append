@@ -1,0 +1,72 @@
+<div class="dialog-content-wrapper">
+        <mat-toolbar class="mat-accent m-0">
+            <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+                <span class="title dialog-title">{{dialogTitle}}</span>
+                <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <div class="fuse-card" class="p-24 m-0" style="flex-direction: row;display: flex;justify-content: space-between;">
+            <div class="fuse-card">
+            <div class="p-16">
+                <div class="h1">Start Date</div>
+            </div>
+                <div class="p-16 pb-24" fxlayout="row"
+                fxlayoutalign="center center"
+                style="flex-direction: column;
+                    box-sizing: border-box;
+                    display: flex; 
+                    max-width: 100%;
+                    align-items: center;
+                    justify-content: space-between;">
+                    <div class="h1 secondary-text">
+                        <span class="ng-tns-c56-51">
+                            {{ utils.getMonthString(_data.date[0].getMonth()) }}
+                        </span>
+                    </div>
+                    <div class="font-size-72 line-height-88 secondary-text font-weight-400">
+                       {{ _data.date[0].getDay() }}
+                    </div>
+                    <div class="h1 secondary-text">
+                        <span class="ng-tns-c56-51">
+                                {{ _data.date[0].getFullYear() }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fuse-card">
+                    <div class="p-16">
+                        <div class="h1">End Date</div>
+                    </div>
+                    <div class="p-16 pb-24" fxlayout="row"
+                        fxlayoutalign="center center"
+                        style="flex-direction: column;
+                            box-sizing: border-box;
+                            display: flex; 
+                             max-width: 100%;
+                            align-items: center;
+                            justify-content: space-between;">
+                        <div class="h1 secondary-text">
+                            <span class="ng-tns-c56-51">
+                                    {{ utils.getMonthString(_data.date[1].getMonth()) }}
+                            </span>
+                        </div>
+                        <div class="font-size-72 line-height-88 secondary-text font-weight-400">
+                                {{ _data.date[1].getDay() }}
+                        </div>
+                        <div class="h1 secondary-text">
+                            <span class="ng-tns-c56-51">
+                                    {{ _data.date[1].getFullYear() }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+</div>
