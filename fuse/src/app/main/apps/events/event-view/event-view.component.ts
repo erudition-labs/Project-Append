@@ -37,9 +37,37 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
                     (this.authService.isAuthenticated() && this.eventService.isOIC(_data)));
         });
 
+        this.permissionsService.addPermission('SIGNUP', () => {
+            return (this.authService.isAuthenticated() && 
+                    !this.eventService.isSignedUp(_data) &&
+                    !this.eventService.isPending(_data));
+        });
+
+        this.permissionsService.addPermission('UNREGISTER', () => {
+            return (this.authService.isAuthenticated() && 
+                    this.eventService.isSignedUp(_data));
+        });
+
+        this.permissionsService.addPermission('PENDING', () => {
+            return (this.authService.isAuthenticated() && 
+                    this.eventService.isPending(_data));
+        });
+
     }
+
+    eventRequestSignup() : void {
+        console.log('signup');
+    }
+    eventUnregister() : void {
+        console.log('unregister');
+        
+    }
+
     ngOnDestroy() {
         this.permissionsService.removePermission('EDIT');
+        this.permissionsService.removePermission('SIGNUP');
+        this.permissionsService.removePermission('UNREGISTER');
+        this.permissionsService.removePermission('PENDING');
     }
 
 }

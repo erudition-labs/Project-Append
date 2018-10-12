@@ -43,5 +43,55 @@ export class EventService {
 		}
 		return false;
 	}
+
+	public isSignedUp(event: Event, id?: string) : boolean {
+		let currUserId = this.authService.parseToken().sub;
+
+		if(!id) {
+			for(let user of event.signedUp) {
+				if(user && currUserId && (user._id === currUserId)) {
+					return true;
+				}
+			}
+			return false;
+		} else {
+
+			for(let user of event.signedUp) {
+				if(user && (user._id === id)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	public isPending(event: Event, id?: string) : boolean {
+		let currUserId = this.authService.parseToken().sub;
+
+		if(!id) {
+			for(let user of event.pending) {
+				if(user && currUserId && (user._id === currUserId)) {
+					return true;
+				}
+			}
+			return false;
+		} else {
+
+			for(let user of event.pending) {
+				if(user && (user._id === id)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	public isSpotsLeft(event: Event) : boolean {
+		let totalSpots = event.spots;
+		if(totalSpots === -1) return true;
+		let signedUp = event.signedUp.length;
+
+		return totalSpots > signedUp;
+	}
     
 }

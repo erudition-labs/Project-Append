@@ -1,7 +1,19 @@
 <div class="dialog-content-wrapper">
         <mat-toolbar class="mat-accent m-0">
             <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-                <span class="title dialog-title">{{dialogTitle}}</span>
+                <span class="title dialog-title">{{dialogTitle}}
+                    <ng-template ngxPermissionsOnly="SIGNUP">
+                            <button mat-button (click)="eventRequestSignup()">Sign Up</button>
+                    </ng-template>
+                    
+                    <ng-template ngxPermissionsOnly="PENDING">
+                            <button mat-button (click)="eventUnregister()">Pending</button>
+                    </ng-template>
+                    
+                    <ng-template ngxPermissionsOnly="UNREGISTER">
+                            <button mat-button (click)="eventUnregister()">Unregister</button>
+                    </ng-template> 
+                </span>
                 <span class="title dialog-title">{{_data.signedUp.length}} / {{_data.spots}}</span>
                 <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
                     <mat-icon>close</mat-icon>
@@ -89,10 +101,10 @@
                     </div>
                     <div *ngFor="let detail of _data.additionalDetails">
                         <div class="p-16 pt-0 line-height-1.75">
-                                <p style="word-wrap: break-word" *ngIf="detail?.title !== '' ">{{ detail?.title }}</p>
-                                <p style="word-wrap: break-word" *ngIf="detail?.details !== '' ">{{ detail?.details}}</p>
-                                <p *ngIf="_data.additionalDetails[0].title !== '' 
-                                        && _data.additionalDetails[0].details !== ''
+                                <p style="word-wrap: break-word" *ngIf="detail?.title.trim() !== '' ">{{ detail?.title }}</p>
+                                <p style="word-wrap: break-word" *ngIf="detail?.details.trim() !== '' ">{{ detail?.details}}</p>
+                                <p *ngIf="_data.additionalDetails[0].title.trim() === '' 
+                                        && _data.additionalDetails[0].details.trim() === ''
                                         && _data.additionalDetails.length <= 1"> No Additional Details</p>
                         </div>
                     </div>
