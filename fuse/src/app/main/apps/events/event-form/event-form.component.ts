@@ -20,7 +20,6 @@ export class CalendarEventFormDialogComponent
     event: Event;
     eventForm: FormGroup;
     dialogTitle: string;
-    presetColors = MatColors.presets;
 
     /**
      * Constructor

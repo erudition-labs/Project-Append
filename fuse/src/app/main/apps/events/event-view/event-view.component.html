@@ -2,6 +2,7 @@
         <mat-toolbar class="mat-accent m-0">
             <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
                 <span class="title dialog-title">{{dialogTitle}}</span>
+                <span class="title dialog-title">{{_data.signedUp.length}} / {{_data.spots}}</span>
                 <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
                     <mat-icon>close</mat-icon>
                 </button>
@@ -67,9 +68,12 @@
                 </div>
 
         </div>
-                <div class="fuse-card" class="p-24 m-0" style="flex-direction: row;display: flex;justify-content: space-between;">
-            <div class="fuse-card"
-                style="flex-direction: row;">
+
+        <div class="fuse-card" class="p-24 m-0"  
+            [ngClass]="{'flex-direction: row' : _data.additionalDetails.length <= 1}"
+            style=" display: flex;justify-content: space-between;">
+
+            <div class="fuse-card" style="flex-direction: column;">
                 <div class="p-16">
                     <div class="h1">Summary</div>
                 </div>
@@ -79,7 +83,7 @@
             </div>
 
             <div class="fuse-card"
-            style="flex-direction: row;" *ngIf="_data.additionalDetails[0].title !== '' && _data.additionalDetails[0].details !== ''">
+            style="flex-direction: column;">
                     <div class="p-16">
                         <div class="h1">Additional Details</div>
                     </div>
@@ -87,8 +91,47 @@
                         <div class="p-16 pt-0 line-height-1.75">
                                 <p style="word-wrap: break-word" *ngIf="detail?.title !== '' ">{{ detail?.title }}</p>
                                 <p style="word-wrap: break-word" *ngIf="detail?.details !== '' ">{{ detail?.details}}</p>
+                                <p *ngIf="_data.additionalDetails[0].title !== '' 
+                                        && _data.additionalDetails[0].details !== ''
+                                        && _data.additionalDetails.length <= 1"> No Additional Details</p>
                         </div>
                     </div>
             </div>
-                </div>
+        </div>
+
+        <ng-template ngxPermissionsOnly="EDIT">
+            <div class="fuse-card" class="p-24 m-0" style="flex-direction: column; display: flex;justify-content: space-between;">
+                <mat-accordion>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <p matBadge={{_data.pending.length}} matBadgeOverlap="false">Pending Users</p>
+                        </mat-expansion-panel-header>
+                            <mat-list>
+                                <mat-list-item *ngFor="let user of _data.pending">
+                                    <p>User Name</p>
+                                    <button mat-button>Click me</button>
+
+                                </mat-list-item>
+                            </mat-list>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+        
+
+            <div class="fuse-card" class="p-24 m-0" style="flex-direction: column; display: flex;justify-content: space-between;">
+                <mat-accordion>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <p matBadge={{_data.signedUp.length}} matBadgeOverlap="false">Signed Up Users</p>
+                        </mat-expansion-panel-header>
+                            <mat-list>
+                                <mat-list-item *ngFor="let user of _data.signedUp">
+                                    <p>User Name</p>
+                                    <button mat-button>Click me</button>
+                                </mat-list-item>
+                            </mat-list>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+        </ng-template>
 </div>

@@ -9,6 +9,7 @@ export interface NewUser {
 	role				: string;
 	phone				: string;
 	events				: any[];
+	fullName			: string;
 	isChangelogViewed	: boolean
 }
 
@@ -23,5 +24,6 @@ export interface User {
 	phone 				: string;
 	role				: string;
 	events				: any[];
+	fullName			: string;
 	isChangelogViewed	: boolean;
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { Subject, Observable } from 'rxjs';
@@ -14,7 +14,7 @@ import { CalendarEventViewDialogComponent } from 'app/main/apps/events/event-vie
 import { CalendarEventActions } from './_store/events.actions';
 import { CalendarEventState } from './_store/events.state';
 import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
-import { tap } from 'rxjs/operators';
+import { tap, takeUntil } from 'rxjs/operators';
 
 @Component({
     selector     : 'events',
@@ -23,7 +23,7 @@ import { tap } from 'rxjs/operators';
     encapsulation: ViewEncapsulation.None,
     animations   : fuseAnimations
 })
-export class EventsComponent implements OnInit {
+export class EventsComponent implements OnInit, OnDestroy {
     @Select(CalendarEventState.calendarEvents) $events : Observable<CalendarEventModel[]>
 
     actions             : CalendarEventAction[];
@@ -35,10 +35,11 @@ export class EventsComponent implements OnInit {
     selectedDay         : any;
     view                : string;
     viewDate            : Date;
+    private ngUnsubscribe = new Subject();
 
     constructor(
         private _matDialog  : MatDialog,
-        private store       : Store,
+        private _store      : Store,
         private actions$    : Actions
        
     ) {
@@ -66,7 +67,8 @@ export class EventsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.$events.subscribe(e => this.events = e);
+        this.$events.pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(e => this.events = e);
         this.refresh.next();
     }
 
@@ -161,5 +163,10 @@ export class EventsComponent implements OnInit {
             panelClass: 'event-form-dialog',
             data: event.meta.event
         });
+    }
+
+    ngOnDestroy(): void {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 }

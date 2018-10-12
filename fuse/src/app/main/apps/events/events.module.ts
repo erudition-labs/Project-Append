@@ -1,7 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {
-    MatButtonModule, MatDatepickerModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSlideToggleModule, MatToolbarModule, MatListModule, MatTooltipModule, MatCardModule
+    MatButtonModule, 
+    MatDatepickerModule, 
+    MatDialogModule, 
+    MatFormFieldModule, 
+    MatIconModule, 
+    MatInputModule, 
+    MatSlideToggleModule,
+    MatToolbarModule, 
+    MatListModule, 
+    MatTooltipModule,
+    MatCardModule,
+    MatExpansionModule,
+    MatBadgeModule,
 } from '@angular/material';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { CalendarModule as AngularCalendarModule } from 'angular-calendar';
@@ -17,6 +29,7 @@ import { NgxsModule } from '@ngxs/store';
 import { CalendarEventState } from './_store/events.state';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 
 const routes: Routes = [
@@ -53,9 +66,12 @@ const routes: Routes = [
         OwlDateTimeModule,
         OwlNativeDateTimeModule,
         NgSelectModule,
+        MatExpansionModule,
+        MatBadgeModule,
 
         AngularCalendarModule.forRoot(),
         ColorPickerModule,
+        NgxPermissionsModule.forChild({ permissionsIsolate: true }),
 
         FuseSharedModule,
         FuseConfirmDialogModule, 

@@ -140,7 +140,8 @@ export class Register2Component implements OnInit, OnDestroy
             role				: new FormControl('user', { }),
             phone				: new FormControl('', { validators: [Validators.required] }),
             isChangelogViewed 	: new FormControl(false, { }),
-            events				: new FormControl([], { })
+            events				: new FormControl([], { }),
+            fullName			: new FormControl('', { })
         });
 
         this.signupSuccess = false;
@@ -179,7 +180,9 @@ export class Register2Component implements OnInit, OnDestroy
 		this.registerForm.controls.team.markAsDirty();
 		this.registerForm.controls.role.markAsDirty();
 		this.registerForm.controls.phone.markAsDirty();
-		this.registerForm.controls.events.markAsDirty();
+        this.registerForm.controls.events.markAsDirty();
+        this.registerForm.controls.fullName.markAsDirty();
+
 
 		if(this.registerForm.valid) {
 			const {
@@ -193,7 +196,8 @@ export class Register2Component implements OnInit, OnDestroy
 				role,
 				phone,
 				isChangelogViewed,
-				events
+                events,
+                fullName
 			} = this.registerForm.value;
 
 			const newUser : NewUser = {
@@ -207,8 +211,11 @@ export class Register2Component implements OnInit, OnDestroy
 				role,
 				phone,
 				isChangelogViewed,
-				events
-			};
+                events,
+                fullName
+            };
+            
+            newUser.fullName = newUser.lastName + ', ' + newUser.firstName;
 			
 			this.authService.signup(newUser).subscribe(
 				result => {
