@@ -14,7 +14,25 @@ export class LoadEventsSuccess {
     constructor(public readonly payload?: any) {}
   }
 
+  //UPDATE
+  export class UpdateEvent {
+    static readonly type = '[Events] Update Event';
+  }
+
+  export class UpdateEventSuccess {
+    static readonly type = '[Events] Load Events Success';
+    constructor(public readonly payload: CalendarEventModel[]) {}
+  }
+
+  export class UpdateEventFail {
+    static readonly type = '[Events] Load Events Fail';
+    constructor(public readonly payload?: any) {}
+  }
+
 export type CalendarEventActions = 
     | LoadEvents
     | LoadEventsSuccess
-    | LoadEventsFail;
+    | LoadEventsFail
+    | UpdateEvent
+    | UpdateEventSuccess
+    | UpdateEventFail;
