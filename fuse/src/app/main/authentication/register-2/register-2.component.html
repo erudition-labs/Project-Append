@@ -18,8 +18,7 @@
 
         </div>
 
-        <div id="register-form-wrapper" fusePerfectScrollbar
-            [@animate]="{value:'*',params:{delay:'300ms',x:'100%'}}">
+        <div id="register-form-wrapper" fusePerfectScrollbar [@animate]="{value:'*',params:{delay:'300ms',x:'100%'}}">
 
             <div id="register-form">
 
@@ -38,49 +37,57 @@
                         </mat-error>
                     </mat-form-field> -->
 
-                    <table cellspacing="0"><tr>
-                        <td><mat-form-field class="half-width">
-                        <input matInput placeholder="First name" formControlName="firstName">
-                        <mat-error>
-                            First name is required
-                        </mat-error>
-                        </mat-form-field></td>
-                        <td><mat-form-field class="half-width">
-                        <input matInput placeholder="Last name" formControlName="lastName">
-                        <mat-error>
-                            Last name is required
-                        </mat-error>
-                        </mat-form-field></td>
-                    </tr></table>
+                    <table cellspacing="0">
+                        <tr>
+                            <td>
+                                <mat-form-field class="half-width">
+                                    <input matInput placeholder="First name" formControlName="firstName">
+                                    <mat-error>
+                                        First name is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field class="half-width">
+                                    <input matInput placeholder="Last name" formControlName="lastName">
+                                    <mat-error>
+                                        Last name is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                    </table>
 
                     <mat-form-field>
-                            <mat-select placeholder="Rank" formControlName="rank">
-                                <mat-option *ngFor="let rank of ranks" [value]="rank.value">
+                        <mat-select placeholder="Rank" formControlName="rank">
+                            <mat-option *ngFor="let rank of ranks" [value]="rank.value">
                                 {{rank.viewValue}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
 
-                    <table cellspacing="0"><tr>
-                        <td>
-                            <mat-form-field class="half-width">
-                                <mat-select placeholder="Flight" formControlName="flight">
-                                    <mat-option *ngFor="let flight of flights" [value]="flight.value">
-                                    {{flight.viewValue}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                        <td>
-                            <mat-form-field class="half-width">
-                                <mat-select placeholder="Team" formControlName="team">
-                                    <mat-option *ngFor="let team of teams" [value]="team.value">
-                                    {{team.viewValue}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </td>
-                    </tr></table>
+                    <table cellspacing="0">
+                        <tr>
+                            <td>
+                                <mat-form-field class="half-width">
+                                    <mat-select placeholder="Flight" formControlName="flight">
+                                        <mat-option *ngFor="let flight of flights" [value]="flight.value">
+                                            {{flight.viewValue}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field class="half-width">
+                                    <mat-select placeholder="Team" formControlName="team">
+                                        <mat-option *ngFor="let team of teams" [value]="team.value">
+                                            {{team.viewValue}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                    </table>
 
                     <mat-form-field>
                         <input matInput placeholder="Email" formControlName="email">
@@ -93,12 +100,12 @@
                     </mat-form-field>
 
                     <mat-form-field>
-                            <input matInput placeholder="Phone Number" formControlName="phone">
-                            <mat-error *ngIf="registerForm.get('phone').hasError('required')">
-                                Phone is required
-                            </mat-error>
+                        <input matInput placeholder="Phone Number" formControlName="phone">
+                        <mat-error *ngIf="registerForm.get('phone').hasError('required')">
+                            Phone is required
+                        </mat-error>
 
-                        </mat-form-field>
+                    </mat-form-field>
 
                     <mat-form-field>
                         <input matInput type="password" placeholder="Password" formControlName="password">
@@ -126,7 +133,7 @@
                     </div>
 
                     <button mat-raised-button color="accent" class="submit-button" aria-label="CREATE AN ACCOUNT"
-                            [disabled]="registerForm.invalid" (click)="onSubmit()">
+                        [disabled]="registerForm.invalid" (click)="onSubmit()">
                         CREATE AN ACCOUNT
                     </button>
 
@@ -143,32 +150,32 @@
 <ng-container *ngIf="signupSuccess">
     <div id="mail-confirm" fxLayout="column">
 
-            <div id="mail-confirm-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
-        
-                <div id="mail-confirm-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
-        
-                    <div class="logo">
-                        <mat-icon class="mat-accent s-96">email</mat-icon>
-                    </div>
-        
-                    <div class="title">Confirm your email address!</div>
-        
-                    <div class="subtitle">
-                        <p>
-                            A confirmation e-mail has been sent to <b>{{tempEmail}}</b>.
-                        </p>
-                        <p>
-                            Check your inbox and click on the "Confirm my email" link to confirm your email address.
-                        </p>
-                    </div>
-        
-                    <div class="message">
-                        <a class="link" [routerLink]="'../login'">Go back to login page</a>
-                    </div>
-        
+        <div id="mail-confirm-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
+
+            <div id="mail-confirm-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
+
+                <div class="logo">
+                    <mat-icon class="mat-accent s-96">email</mat-icon>
                 </div>
-        
+
+                <div class="title">Confirm your email address!</div>
+
+                <div class="subtitle">
+                    <p>
+                        A confirmation e-mail has been sent to <b>{{tempEmail}}</b>.
+                    </p>
+                    <p>
+                        Check your inbox and click on the "Confirm my email" link to confirm your email address.
+                    </p>
+                </div>
+
+                <div class="message">
+                    <a class="link" [routerLink]="'../login'">Go back to login page</a>
+                </div>
+
             </div>
-        
-        </div>       
+
+        </div>
+
+    </div>
 </ng-container>
