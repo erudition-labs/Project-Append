@@ -76,4 +76,12 @@ import { asapScheduler, of } from 'rxjs';
     ) {
         dispatch({ loaded: false, loading: false });
     }
+
+    @Action(eventActions.AddEvent)
+    addEvent({ getState, patchState, dispatch }: StateContext<CalendarEventStateModel>, { payload }: eventActions.AddEvent) {
+        const state = getState();
+        patchState({
+            events: [...state.events, payload]
+        });
+    }
 }

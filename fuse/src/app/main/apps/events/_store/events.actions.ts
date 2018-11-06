@@ -29,10 +29,30 @@ export class LoadEventsSuccess {
     constructor(public readonly payload?: any) {}
   }
 
+  //ADD EVENT
+
+  export class AddEvent {
+    static readonly type = '[Events] Add Event';
+    constructor(public readonly payload: CalendarEventModel) {}
+  }
+
+  export class AddEventSuccess {
+    static readonly type = '[Events] Add Events Success';
+    constructor(public readonly payload: CalendarEventModel[]) {}
+  }
+
+  export class AddEventFail {
+    static readonly type = '[Events] Add Events Fail';
+    constructor(public readonly payload?: any) {}
+  }
+
 export type CalendarEventActions = 
     | LoadEvents
     | LoadEventsSuccess
     | LoadEventsFail
     | UpdateEvent
     | UpdateEventSuccess
-    | UpdateEventFail;
+    | UpdateEventFail
+    | AddEvent
+    | AddEventFail
+    | AddEventSuccess;
