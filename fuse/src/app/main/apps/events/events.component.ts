@@ -3,15 +3,16 @@ import { FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { Subject, Observable } from 'rxjs';
 import { startOfDay, isSameDay, isSameMonth } from 'date-fns';
-import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarMonthViewDay } from 'angular-calendar';
+import { CalendarEventAction, CalendarEventTimesChangedEvent, CalendarMonthViewDay } from 'angular-calendar';
+import { CalendarEvent  as AngularCalendarEvent } from 'angular-calendar';
 
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { fuseAnimations } from '@fuse/animations';
 
-import { CalendarEventModel, Event } from 'app/main/apps/events/_store/events.state.model';
+import { CalendarEventModel, Event, CalendarEvent } from 'app/main/apps/events/_store/events.state.model';
 import { CalendarEventFormDialogComponent } from 'app/main/apps/events/event-form/event-form.component';
 import { CalendarEventViewDialogComponent } from 'app/main/apps/events/event-view/event-view.component';
-import { CalendarEventActions } from './_store/events.actions';
+import { CalendarEventActions, AddEvent } from './_store/events.actions';
 import { CalendarEventState } from './_store/events.state';
 import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
 import { tap, takeUntil } from 'rxjs/operators';
@@ -68,7 +69,7 @@ export class EventsComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.$events.pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe(e => this.events = e);
+            .subscribe(e => {this.events = e; console.log(this.events)});
         this.refresh.next();
     }
 
@@ -93,7 +94,7 @@ export class EventsComponent implements OnInit, OnDestroy {
 
     dayClicked(day: CalendarMonthViewDay): void {
         const date: Date = day.date;
-        const events: CalendarEvent[] = day.events;
+        const events: AngularCalendarEvent[] = day.events;
 
         if(isSameMonth(date, this.viewDate)){
             if((isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) || events.length === 0){
@@ -117,12 +118,18 @@ export class EventsComponent implements OnInit, OnDestroy {
         });
         this.dialogRef.afterClosed()
             .subscribe((response: FormGroup) => {
-                if (!response) return;
+                if(!response) return;
         
-                const newEvent = response.getRawValue();
-                newEvent.actions = this.actions;
-                //this.events.push(newEvent);
-                this.refresh.next(true);
+                const actionType: string = response[0];
+                const formData: FormGroup = response[1];
+
+                switch(actionType) {
+                    case 'new':
+                        let event = new CalendarEvent(formData.getRawValue() as Event, {actions: this.actions});
+                        this._store.dispatch(new AddEvent(event));
+                        this.refresh.next(true);
+                        break;
+                }
         });
     }
     

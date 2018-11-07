@@ -3,10 +3,11 @@ import 'rxjs/add/observable/throw';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { catchError, retry, map } from 'rxjs/operators';
+import { catchError, retry, map, shareReplay, retryWhen, tap, delayWhen } from 'rxjs/operators';
 import { Event } from './_store/events.state.model';
 import { environment } from '../../../../environments/environment';
 import { AuthService } from '@core/auth/auth.service';
+import { throwError, timer } from 'rxjs';
 
 
 @Injectable()
@@ -16,19 +17,31 @@ export class EventService {
 	constructor(private http		: HttpClient,
 				private authService : AuthService) {}
 
-    public getEvents() : Observable<Event[]> {
+    public getEvents() : Observable<any> {
         return this.http.get<any>(this.url + '/')
 		.pipe(retry(3), map((response) => {
 			if(response.success) {
 				return Object.values(response.result) as Event[];
 			} else {
-                Observable.throw(response.message.json());
+				return Observable.throw(response.message.json());
 				//this.error(response.message);
-				return null;
+				//return null;
 			}
 		  }),
-		catchError((error: any) => Observable.throw(error.json())));	
+		catchError((error: any) => {return Observable.throw(error.json())}));	
 	}
+
+	public create(event: Event) : Observable<any> {
+		return this.http.post<any>(this.url + '/', { data: event })
+		.pipe(retry(3), map((response) => {
+			if(response.success) {
+				return response.result as Event;
+			} else {
+				throw new Error(response.message);
+			}
+		}))
+	}
+
 
 	public isOIC(event: Event, id?: string) : boolean {
 		let userId = this.authService.parseToken().sub

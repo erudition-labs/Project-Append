@@ -20,6 +20,7 @@ export class CalendarEventFormDialogComponent
     event: Event;
     eventForm: FormGroup;
     dialogTitle: string;
+    noShowOptions: boolean = true;
 
     /**
      * Constructor
@@ -38,6 +39,8 @@ export class CalendarEventFormDialogComponent
 
         if(this.action === 'edit') {
             this.dialogTitle = this.event.name;
+            this.noShowOptions = this.event.isClosed;
+
         } else {
             this.dialogTitle = 'New Event';
             this.event = {} as Event;
@@ -65,7 +68,7 @@ export class CalendarEventFormDialogComponent
 			signedUp				: new FormControl(this.event.signedUp               || [],      { }),
 			pending					: new FormControl(this.event.pending                || [],      { }),
 			author					: new FormControl(this.event.author                 || '',      { }),
-			spots					: new FormControl(this.event.spots                  || '',      { validators: [this.validateNumber.bind(this), Validators.required] }),
+			spots					: new FormControl(this.event.spots                  || 0,      { validators: [this.validateNumber.bind(this), Validators.required] }),
 			additionalDetails		: this._formBuilder.array([ this.initDetailField() ])
         });
 
@@ -109,5 +112,30 @@ export class CalendarEventFormDialogComponent
 			title	: [_title],
 			details	: [_details]
 		});
-	}
+    }
+    
+    toggleOptions($event, opt) : void {
+        if(opt === 'signups') {
+            this.noShowOptions = $event.checked;
+        }
+        
+        if(opt === 'limit' && $event.checked) {
+            this.eventForm.get('spots').setValue(-1);
+            this.eventForm.get('spots').disable();
+        } else {
+            this.eventForm.get('spots').setValue(0);
+            this.eventForm.get('spots').enable();
+        }
+    }
+
+    checkDates() : void {
+        if(!this.eventForm.get('date').value[0]) this.eventForm.get('date').value[0] = this.eventForm.get('date').value[1];
+        if(!this.eventForm.get('date').value[1]) this.eventForm.get('date').value[1] = this.eventForm.get('date').value[0];
+        if(!this.eventForm.get('date').value[0] && !this.eventForm.get('date').value[1]){
+            this.eventForm.get('date').value[0] = new Date();
+            this.eventForm.get('date').value[0] = new Date();
+        }
+
+    }
+
 }

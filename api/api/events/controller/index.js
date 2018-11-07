@@ -7,6 +7,8 @@ const util		= require('../util');
 const postEvent = async (request, response) => {
 	try {
 		const newEvent = await queries.createEvent(request.body.data);
+
+		if(newEvent.errors) throw new Error('newEvent.errors');
 		response.json({ success: true, message: 'Event Created', result: newEvent });
 	} catch(error) {
 		response.json({ success: false, message: 'Failed to Create Event' });

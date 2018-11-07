@@ -71,17 +71,48 @@ import { asapScheduler, of } from 'rxjs';
 
     @Action(eventActions.LoadEventsFail)
     loadEventsFail(
-        { dispatch }: StateContext<CalendarEventStateModel>,
+        { patchState }: StateContext<CalendarEventStateModel>,
         { payload }: eventActions.LoadEventsFail
     ) {
-        dispatch({ loaded: false, loading: false });
+        patchState({ loaded: false, loading: false });
     }
 
+
     @Action(eventActions.AddEvent)
-    addEvent({ getState, patchState, dispatch }: StateContext<CalendarEventStateModel>, { payload }: eventActions.AddEvent) {
+    addEvent({ patchState, dispatch }: StateContext<CalendarEventStateModel>, { payload }: eventActions.AddEvent) {
+    patchState({ loading: true });
+       return this._eventService.create(payload.meta.event)
+            .subscribe(data => {
+                asapScheduler.schedule(() =>
+                dispatch(new eventActions.AddEventSuccess(new CalendarEvent(data)))
+            )
+            }, 
+            error => {
+                asapScheduler.schedule(() =>
+                    dispatch(new eventActions.AddEventFail(error.message))
+                ) 
+            });
+    }
+
+    @Action(eventActions.AddEventSuccess)
+    addEventSuccess(
+        { patchState, getState } : StateContext<CalendarEventStateModel>,
+        { payload }: eventActions.AddEventSuccess
+    ) {
         const state = getState();
         patchState({
-            events: [...state.events, payload]
+            events: [...state.events, payload],
+            loaded: true, 
+            loading: false
         });
+    }
+
+    @Action(eventActions.AddEventFail)
+    addEventFail(
+        { patchState }: StateContext<CalendarEventStateModel>,
+        { payload }: eventActions.AddEventFail
+    ) {
+        console.log(payload);
+        patchState({ loaded: false, loading: false });
     }
 }

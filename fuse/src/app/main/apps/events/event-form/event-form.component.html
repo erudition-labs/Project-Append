@@ -12,7 +12,7 @@
 
         <form name="eventForm" [formGroup]="eventForm" class="event-form w-100-p" fxLayout="column" fxFlex>
 
-            <mat-form-field class="w-100-p">
+            <mat-form-field class="w-100-p" appearance="outline">
                 <input matInput
                        name="name"
                        formControlName="name"
@@ -27,16 +27,78 @@
 
             <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
                 <div class="mr-sm-24" fxFlex>
-                    <input placeholder="Select a date range"
-					[style.width]="'350px'"
-					formControlName="date"
-					[selectMode]="'range'"
-					[owlDateTimeTrigger]="datePicker" 
-                    [owlDateTime]="datePicker"
-                    aria-readonly="true">
-				 <owl-date-time #datePicker aria-readonly="true"></owl-date-time>
+                    <mat-checkbox
+                    (change)="toggleOptions($event, 'signups')"
+                    formControlName="isClosed">
+                    Disable Signups</mat-checkbox>
                 </div>
             </div>
+
+            <div *ngIf="!noShowOptions" fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <div class="mr-sm-24" fxFlex> 
+                    <div>
+                        <mat-checkbox
+                        (change)="toggleOptions($event, 'limit')">
+                        No Limit</mat-checkbox>
+                    </div>
+                    <div>
+                            <mat-label>Spots Available</mat-label>
+                            <input matInput type="number" min="0"
+                                formControlName="spots"
+                                placeholder="Spots Available">
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                    <div class="mr-sm-24" fxFlex>
+                        <input placeholder="Select a date range"
+                        [style.width]="'350px'"
+                        formControlName="date"
+                        [selectMode]="'range'"
+                        [owlDateTimeTrigger]="datePicker" 
+                        [owlDateTime]="datePicker"
+                        aria-readonly="true">
+                     <owl-date-time #datePicker aria-readonly="true"></owl-date-time>
+                    </div>
+                </div>
+    
+<!-- 
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>Start date</mat-label>
+                    <input matInput [matDatepicker]="startDatePicker" name="start" formControlName="date">
+                    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #startDatePicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="50">
+                    <mat-label>Start time</mat-label>
+                    <input matInput type="time">
+                </mat-form-field>
+
+            </div>
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>End date</mat-label>
+                    <input matInput [matDatepicker]="endDatePicker" name="end" formControlName="date">
+                    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #endDatePicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="50">
+                    <mat-label>End time</mat-label>
+                    <input matInput type="time">
+                </mat-form-field>
+
+            </div>
+-->
+
 
             <mat-form-field class="w-100-p">
                 <textarea matInput
@@ -106,16 +168,16 @@
 
         <button *ngIf="action !=='edit'"
                 mat-raised-button
-                (click)="_matDialogRef.close(eventForm)"
+                (click)="checkDates(); matDialogRef.close(['new', eventForm])"
                 class="save-button mat-accent"
-                [disabled]="eventForm.invalid"
-                aria-label="SAVE">
-            SAVE
+                aria-label="SAVE"
+                [disabled]="eventForm.invalid">
+            Create
         </button>
 
         <button *ngIf="action ==='edit'"
                 mat-raised-button
-                (click)="_matDialogRef.close(['save',eventForm])"
+                (click)="_matDialogRef.close(['save', eventForm])"
                 class="save-button mat-accent"
                 [disabled]="eventForm.invalid"
                 aria-label="SAVE">
@@ -124,7 +186,7 @@
 
         <button *ngIf="action ==='edit'"
                 mat-icon-button
-                (click)="_matDialogRef.close(['delete',eventForm])"
+                (click)="_matDialogRef.close(['delete', eventForm])"
                 aria-label="Delete"
                 matTooltip="Delete">
             <mat-icon>delete</mat-icon>
