@@ -137,25 +137,18 @@ export class Register2Component implements OnInit, OnDestroy {
                 asyncValidators: [this.checkEmail.bind(this)],
                 updateOn: 'blur'
             }),
-            password: new FormControl('', {
-                validators: [Validators.required]
-            }),
-            passwordConfirm: new FormControl('', {
-                validators: [Validators.required, confirmPasswordValidator]
-            }),
-            firstName: new FormControl('', {
-                validators: [Validators.required]
-            }),
-            lastName: new FormControl('', {
-                validators: [Validators.required]
-            }),
-            rank: new FormControl('', {}),
-            flight: new FormControl('', { validators: [Validators.required] }),
-            team: new FormControl('', {}),
-            role: new FormControl('user', {}),
-            phone: new FormControl('', { validators: [Validators.required] }),
-            isChangelogViewed: new FormControl(false, {}),
-            events: new FormControl([], {})
+            password			: new FormControl('', { validators: [Validators.required] }),
+            passwordConfirm     : new FormControl('', { validators: [Validators.required, confirmPasswordValidator]}),
+            firstName			: new FormControl('', { validators: [Validators.required] }),
+            lastName			: new FormControl('', { validators: [Validators.required] }),
+            rank				: new FormControl('', { }),
+            flight				: new FormControl('', { validators: [Validators.required] }),
+            team				: new FormControl('', { }),
+            role				: new FormControl('user', { }),
+            phone				: new FormControl('', { validators: [Validators.required] }),
+            isChangelogViewed 	: new FormControl(false, { }),
+            events				: new FormControl([], { }),
+            fullName			: new FormControl('', { })
         });
 
         this.signupSuccess = false;
@@ -203,6 +196,7 @@ export class Register2Component implements OnInit, OnDestroy {
                 password,
                 firstName,
                 lastName,
+                fullName,
                 rank,
                 flight,
                 team,
@@ -217,6 +211,7 @@ export class Register2Component implements OnInit, OnDestroy {
                 password,
                 firstName,
                 lastName,
+                fullName,
                 rank,
                 flight,
                 team,

@@ -4,6 +4,20 @@ import { Injectable } from '@angular/core';
 })
 
 export class UtilsService {
+    MONTHS = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+    ];
     constructor() {}
 
     public getIds(data : any[]) : string[] {
@@ -18,5 +32,9 @@ export class UtilsService {
             }
         }
 		return ids;
-	}
+    }
+    
+    public getMonthString(x: number) : string {
+        return this.MONTHS[x];
+    }
 }

@@ -9,7 +9,7 @@ const path = require("path");
 
 
 const bcrypt 			= require('bcryptjs');
-var async					= require('async');
+var async				= require('async');
 var crypto 				= require('crypto');
 
 

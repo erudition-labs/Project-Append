@@ -24,6 +24,14 @@ import { ToastrModule } from 'ngx-toastr';
 import { CoreModule } from '@core/core.module';
 import { AuthModule } from './main/authentication/auth.module';
 import { NewsDialogComponent } from './main/news/news-dialog/news-dialog.component';
+import { AppsModule } from './main/apps/apps.module';
+import { NgxsModule } from '@ngxs/store';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
+import { NgxPermissionsModule } from 'ngx-permissions';
+
+
+
 
 
 
@@ -74,6 +82,11 @@ const appRoutes: Routes = [ //see auth midule below
         CoreModule.forRoot(),
         AuthModule, //since I have this..each of those modules handle their own routing
         //so i dont need it in thte app routing
+        AppsModule,
+        NgxsModule.forRoot([]),
+        NgxsReduxDevtoolsPluginModule.forRoot(),
+        NgxsLoggerPluginModule,
+        NgxPermissionsModule.forRoot()
 
     ],
     bootstrap   : [
