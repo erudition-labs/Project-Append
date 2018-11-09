@@ -6,6 +6,8 @@ import { NewUser } from '../user/user.model';
 import { Credentials } from '../user/credentials.model';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from '../../environments/environment';
+import { retry, map } from 'rxjs/operators';
+
 
 @Injectable({
 	providedIn: 'root'
@@ -27,10 +29,17 @@ export class AuthService {
 		return new Date().getTime() < parseInt(expiresAt);
 	}
 
-	public login(credentials: Credentials) : Observable<any> {
+	public login(credentials: Credentials) : Observable<string> {
 		//use spread to get individual properties off the supplied user object
 		//to a new object
-		return this.http.post(this.url + `/authenticate`, { ...credentials });
+		return this.http.post<any>(this.url + `/authenticate`, { ...credentials })
+			.pipe(retry(3), map((response) => {
+				if(response.success) {
+					return response.token as string;
+				} else {
+					throw new Error(response.message)
+				}
+			}))
 	}
 
 	private setToken(token: string) : void {
@@ -51,6 +60,7 @@ export class AuthService {
 			return false;
 		}
 	}
+
 
 	private setUserInfo(userInfo: any) : void {
 		localStorage.setItem('userInfo', JSON.stringify(userInfo));
@@ -78,8 +88,8 @@ export class AuthService {
 
 	public logout() : void {
 		localStorage.removeItem('token');
-		localStorage.removeItem('userInfo');
-		localStorage.removeItem('expiresAt');
+		//localStorage.removeItem('userInfo');
+		//localStorage.removeItem('expiresAt');
 		this.router.navigate(['login']);
 	}
 
@@ -95,9 +105,9 @@ export class AuthService {
 		 });
 		return this.http.post(this.url + '/users/email-verification/' + token, { params });
 	}
-
+/*
 	public userHasRole(expectedRole: string) : boolean {
 		const userInfo = this.getUserInfo();
 		return expectedRole === userInfo.role;
-	}
+	}*/
 }

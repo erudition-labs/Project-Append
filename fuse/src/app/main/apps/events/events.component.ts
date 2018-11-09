@@ -69,7 +69,7 @@ export class EventsComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.$events.pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe(e => {this.events = e; console.log(this.events)});
+            .subscribe(e => this.events = e);
         this.refresh.next();
     }
 
@@ -135,7 +135,6 @@ export class EventsComponent implements OnInit, OnDestroy {
     
     editEvent(action: string, event: CalendarEvent): void {
         const eventIndex = this.events.indexOf(event);
-       // console.log(event.meta.event);
 
         this.dialogRef = this._matDialog.open(CalendarEventFormDialogComponent, {
             panelClass: 'event-form-dialog',
