@@ -13,8 +13,8 @@ import { CalendarEventModel, Event, CalendarEvent } from 'app/main/apps/events/_
 import { CalendarEventFormDialogComponent } from 'app/main/apps/events/event-form/event-form.component';
 import { CalendarEventViewDialogComponent } from 'app/main/apps/events/event-view/event-view.component';
 import { CalendarEventActions, 
-    AddEvent, 
-    AddEventSuccess } from './_store/events.actions';
+        AddEvent, 
+        AddEventSuccess } from './_store/events.actions';
 import { CalendarEventState } from './_store/events.state';
 import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
 import { tap, takeUntil } from 'rxjs/operators';
@@ -70,6 +70,7 @@ export class EventsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this._actions$.pipe(takeUntil(this.ngUnsubscribe));
         this.$events.pipe(takeUntil(this.ngUnsubscribe))
             .subscribe(e => this.events = e);
         this.refresh.next();

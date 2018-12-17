@@ -1,12 +1,15 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { Subject, Observable } from 'rxjs';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
 import { Router } from '@angular/router';
 import { Credentials } from '../../../../@core/user/credentials.model';
 import { ToastrService } from 'ngx-toastr';
 import { Actions, ofActionDispatched, Store } from '@ngxs/store';
-import { Login, LoginSuccess } from '@core/store/auth/auth.actions';
+import { Login, LoginSuccess, LoginFail } from '@core/store/auth/auth.actions';
+import { tap, takeUntil } from 'rxjs/operators';
+
 
 
 @Component({
@@ -16,9 +19,11 @@ import { Login, LoginSuccess } from '@core/store/auth/auth.actions';
     encapsulation: ViewEncapsulation.None,
     animations   : fuseAnimations
 })
-export class Login2Component implements OnInit
+export class Login2Component implements OnInit, OnDestroy
 {
     public loginForm: FormGroup;
+    private ngUnsubscribe = new Subject();
+
 
     constructor(
         private _fuseConfigService: FuseConfigService,
@@ -51,6 +56,7 @@ export class Login2Component implements OnInit
 
     ngOnInit(): void {
         this.createForm();
+        this._actions$.pipe(takeUntil(this.ngUnsubscribe));
     }
 
     private createForm() : void {
@@ -75,9 +81,21 @@ export class Login2Component implements OnInit
             this._actions$.pipe(ofActionDispatched(LoginSuccess))
                 .subscribe(() => {
                     setTimeout(() => {
-                        this._router.navigate(['dashboard']);
+                        this._router.navigate(['/dashboard']);
+                    });
+                });
+
+            this._actions$.pipe(ofActionDispatched(LoginFail))
+                .subscribe(() => {
+                    setTimeout(() => {
+                        this._router.navigate(['/login']);
                     });
                 });
 		}
+    }
+
+    ngOnDestroy(): void {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 }
