@@ -58,15 +58,15 @@ import { Router } from '@angular/router';
         { payload }    : actions.LoginFail
     ) {
         patchState({ loaded: false, loading: false, token: null });
-        console.log(payload);
     }
-  /*
+  
     @Action(actions.Logout)
-    logout({ setState, getState }: StateContext<AuthStateModel>) {
-      const { token } = getState();
-      return this._authService.logout().pipe(tap(() => {
-        setState({});
-      });
-    }*/
+    logout({ setState }: StateContext<AuthStateModel>) {
+        setState({
+            loaded : false,
+            loading: false,
+            token: null
+        });
+    }
   
   }
