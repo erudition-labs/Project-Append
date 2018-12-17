@@ -4,6 +4,8 @@ import { AuthStateModel } from './auth.state.model';
 import * as actions  from './auth.actions';
 import { AuthService } from '@core/auth/auth.service';
 import { Credentials } from '@core/user/credentials.model';
+import { Router } from '@angular/router';
+
 
 @State<AuthStateModel>({
     name: 'auth',
@@ -18,7 +20,7 @@ import { Credentials } from '@core/user/credentials.model';
     @Selector()
     static token(state: AuthStateModel) { return state.token; }
   
-    constructor(private _authService: AuthService) {}
+    constructor(private _authService: AuthService, private _router: Router) {}
   
     @Action(actions.Login)
     login(
@@ -42,7 +44,7 @@ import { Credentials } from '@core/user/credentials.model';
     loginSuccess(
         { patchState }  : StateContext<AuthStateModel>,
         { payload }     : actions.LoginSuccess
-    ) {
+    ) { 
         patchState({
             loaded : true,
             loading: false,

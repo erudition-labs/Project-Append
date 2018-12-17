@@ -26,7 +26,10 @@ import { AppsModule } from './main/apps/apps.module';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
+import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxPermissionsModule } from 'ngx-permissions';
+
+import { AuthState } from '@core/store/auth/auth.state';
 
 
 
@@ -79,7 +82,10 @@ const appRoutes: Routes = [ //see auth midule below
         AuthModule, //since I have this..each of those modules handle their own routing
         //so i dont need it in thte app routing
         AppsModule,
-        NgxsModule.forRoot([]),
+        NgxsModule.forRoot([AuthState]),
+        NgxsStoragePluginModule.forRoot({
+            key: 'auth.token'
+          }),
         NgxsReduxDevtoolsPluginModule.forRoot(),
         NgxsLoggerPluginModule,
         NgxPermissionsModule.forRoot()

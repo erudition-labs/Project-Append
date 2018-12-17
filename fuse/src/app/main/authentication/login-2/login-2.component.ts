@@ -7,6 +7,9 @@ import { AuthService } from '../../../../@core/auth/auth.service';
 import { Credentials } from '../../../../@core/user/credentials.model';
 import { ToastrService } from 'ngx-toastr';
 import { ErrorService } from '@core/utils/error.service';
+import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
+import { Login, LoginSuccess } from '@core/store/auth/auth.actions';
+
 
 @Component({
     selector     : 'login-2',
@@ -18,26 +21,14 @@ import { ErrorService } from '@core/utils/error.service';
 export class Login2Component implements OnInit
 {
     public loginForm: FormGroup;
-	private loginLoading = false;
-	private loginResult: any;
 
-	public errors: string[] = [];
-	public messages: string[] = [];
-	public submitted: boolean = false;
-	private username: string;
-
-    /**
-     * Constructor
-     *
-     * @param {FuseConfigService} _fuseConfigService
-     * @param {FormBuilder} _formBuilder
-     */
     constructor(
         private _fuseConfigService: FuseConfigService,
         private formBuilder: FormBuilder,
-        private authService	: AuthService,
         private router		: Router,
         private toast : ToastrService, 
+        private _store : Store,
+        private _actions : Actions
 
     )
     {
@@ -60,19 +51,7 @@ export class Login2Component implements OnInit
         };
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * On init
-     */
-    ngOnInit(): void
-    {
-        // this.loginForm = this._formBuilder.group({
-        //     email   : ['', [Validators.required, Validators.email]],
-        //     password: ['', Validators.required]
-        // });
+    ngOnInit(): void {
         this.createForm();
     }
 
@@ -84,8 +63,6 @@ export class Login2Component implements OnInit
 	}
 
 	public onSubmit() : void {
-		this.errors = [];
-		this.messages = [];
 
 		this.loginForm.controls.email.markAsDirty();
 		this.loginForm.controls.password.markAsDirty();
@@ -97,60 +74,14 @@ export class Login2Component implements OnInit
 		};
 
 		if(this.loginForm.valid) {
-			this.loginLoading = true;
-			this.authService.login(credentials).subscribe(
-				result => {
-					if(result.success) {
-						this.username = result.userInfo.firstName;
-						this.messages.push(result.message);
-
-						this.authService.setUser(
-							result.token,
-							result.userInfo,
-							result.expiresAt
-						);
-						setTimeout(() => {
-							this.router.navigate(['dashboard']);
-                        }, 500);
-                        
-                        this.success(result.message,"Welcome, " + this.username + "!");
-					} else {
-                        this.errors.push(result.message);
-                        for(let error in this.errors){
-                            this.error(error,"Error!");
-    
-                        }
-					}
-				}, error => {
-					this.loginResult = {
-						message: error.error.message,
-						state: 'error'
-					};
-					this.errors.push(error.error.message);
-                    
-				}
-			);
+	
+            this._store.dispatch(new Login(credentials));
+            this._actions.pipe(ofActionDispatched(LoginSuccess))
+                .subscribe(() => {
+                    setTimeout(() => {
+                        this.router.navigate(['dashboard']);
+                    });
+                });
 		}
     }
-    
-    private error(msg : string, title: string) : void {
-		this.toast.error(msg, title, {
-			timeOut: 5000,
-			closeButton: true,
-			progressBar: true,
-			progressAnimation: 'decreasing',
-			positionClass: 'toast-top-right',
-		  });
-	}
-
-	private success(msg: string, title: string) : void {
-		this.toast.success(msg, title, {
-			timeOut: 5000,
-			closeButton: true,
-			progressBar: true,
-			progressAnimation: 'decreasing',
-			positionClass: 'toast-top-right',
-		  });
-  }
-    
 }
