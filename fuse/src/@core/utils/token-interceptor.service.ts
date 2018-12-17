@@ -1,22 +1,23 @@
 import { Injectable } from '@angular/core';
 import {
   HttpRequest,
-  HttpResponse,
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
   HttpErrorResponse
 } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { AuthService } from '../auth/auth.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { tap } from 'rxjs/operators';
+import { Store } from '@ngxs/store';
+import { AuthState } from '../store/auth/auth.state';
+import { Logout } from '../store/auth/auth.actions';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenInterceptorService implements HttpInterceptor {
-  constructor(public authService: AuthService, public router: Router) {}
+  constructor(private _store: Store) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -24,7 +25,7 @@ export class TokenInterceptorService implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     request = request.clone({
       setHeaders: {
-        Authorization: `Bearer ${this.authService.getToken()}`
+        Authorization: `Bearer ${this._store.selectSnapshot(AuthState)}`
       }
     });
     // next.handle returns an observable
@@ -39,7 +40,7 @@ export class TokenInterceptorService implements HttpInterceptor {
             if (err.status === 401) {
               // if the request is unauthorized,
               // make the user log in again
-              this.authService.logout();
+              this._store.dispatch(new Logout); //should get caught in main app component and redirected 
             }
           }
         }

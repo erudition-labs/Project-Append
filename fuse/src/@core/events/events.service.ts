@@ -37,13 +37,13 @@ export class EventsService {
 			if(response.success) {
 				return Object.values(response.result) as Event[];
 			} else {
-				this.error(response.message);
+				//this.error(response.message);
 				return null;
 			}
 		  }),
 		catchError(this.handleError('getEvents', [])));	
 	}
-
+/*
 	public getEvent(id: string) : Observable<Event> {
 		return this.http.get<any>(this.url + '/' + id)
 		.pipe(retry(3), map((response) => {
@@ -307,5 +307,5 @@ export class EventsService {
 			positionClass: 'toast-top-right',
 		  });
 	}
-
+*/
 }
