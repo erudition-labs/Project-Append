@@ -25,7 +25,7 @@ export class TokenInterceptorService implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     request = request.clone({
       setHeaders: {
-        Authorization: `Bearer ${this._store.selectSnapshot(AuthState)}`
+        Authorization: `Bearer ${this._store.selectSnapshot(AuthState.token)}`
       }
     });
     // next.handle returns an observable
