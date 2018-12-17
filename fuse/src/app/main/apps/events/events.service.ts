@@ -42,7 +42,7 @@ export class EventService {
 		}))
 	}
 
-
+/*
 	public isOIC(event: Event, id?: string) : boolean {
 		let userId = this.authService.parseToken().sub
 		if(id) userId = id;
@@ -105,6 +105,6 @@ export class EventService {
 		let signedUp = event.signedUp.length;
 
 		return totalSpots > signedUp;
-	}
+	}*/
     
 }

@@ -45,7 +45,7 @@ export class UserService {
 			if(response.success) {
 				return Object.values(response.result) as User[];
 			} else {
-				this.error(response.message);
+				//this.error(response.message);
 				return null;
 			}
 		  }),
@@ -60,13 +60,13 @@ export class UserService {
 			if(response.success) {
 				return response.result as User;
 			} else {
-				this.error(response.message);
+				//this.error(response.message);
 				return null;
 			}
 		  }),
 		catchError(this.handleError('getUser', null)));
 	}
-
+/*
 	public updateUser(id : string, user: User) : Observable<User> {
 		//convert Users Objects back to user ids
 		let idSet = new Set(this.utils.getIds(user.events));
@@ -184,5 +184,5 @@ export class UserService {
 			progressAnimation: 'decreasing',
 			positionClass: 'toast-top-right',
 		  });
-	}
+	}*/
 }

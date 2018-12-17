@@ -31,7 +31,7 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
             _data.additionalDetails = JSON.parse(_data.additionalDetails);
         }
         this.dialogTitle = _data.name;
-
+/*
         this.permissionsService.addPermission('EDIT', () => {
             return ((this.authService.isAuthenticated() && this.authService.isAdmin()) ||
                     (this.authService.isAuthenticated() && this.eventService.isOIC(_data)));
@@ -52,7 +52,7 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
             return (this.authService.isAuthenticated() && 
                     this.eventService.isPending(_data));
         });
-
+*/
     }
 
     eventRequestSignup() : void {

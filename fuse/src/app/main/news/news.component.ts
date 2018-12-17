@@ -18,6 +18,9 @@ import {
 import { locale as english } from './i18n/en';
 import { locale as turkish } from './i18n/tr';
 
+import { Store } from '@ngxs/store';
+import { AuthState } from '@core/store/auth/auth.state';
+
 @Component({
     selector   : 'news',
     templateUrl: './news.component.html',
@@ -35,11 +38,12 @@ export class NewsComponent
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private _fuseSidebarService: FuseSidebarService,
         private updatesService : UpdatesService, 
-        public authService : AuthService, 
+        public _authService : AuthService, 
         private toast : ToastrService, 
         private formBuilder : FormBuilder,
         private userService : UserService,
         private editorService: TuiService,
+        private _store : Store
 
 
     ) {
@@ -119,7 +123,7 @@ export class NewsComponent
         update.content = this.editorService.getMarkdown();
     
         update.date = new Date();
-        update.author = this.authService.parseToken().sub;
+        this._authService.parseToken(this._store.selectSnapshot(AuthState.token)).sub
     
         this.addUpdateClicked = false;
         this.editButtonClicked = false;
@@ -204,7 +208,7 @@ export class NewsComponent
         this.editButtonClicked = false;
     
       }
-    
+    /*
       public createUpdate(): void {
         this.createForm();
             if(this.authService.isAuthenticated() && this.authService.isAdmin()) {
@@ -216,14 +220,14 @@ export class NewsComponent
           this.error('You are not authorized');
           this.addUpdateClicked = false;
             }
-      }
+      }*/
     
-      private edit() {
+    /*  private edit() {
         this.editButtonClicked = true;
         if(this.authService.isAuthenticated() && this.authService.isAdmin()) {
           this.populateForm();
         }
-      }
+      }*/
     
       delete(update) {
     
