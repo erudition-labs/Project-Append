@@ -12,7 +12,9 @@ import { fuseAnimations } from '@fuse/animations';
 import { CalendarEventModel, Event, CalendarEvent } from 'app/main/apps/events/_store/events.state.model';
 import { CalendarEventFormDialogComponent } from 'app/main/apps/events/event-form/event-form.component';
 import { CalendarEventViewDialogComponent } from 'app/main/apps/events/event-view/event-view.component';
-import { CalendarEventActions, AddEvent } from './_store/events.actions';
+import { CalendarEventActions, 
+    AddEvent, 
+    AddEventSuccess } from './_store/events.actions';
 import { CalendarEventState } from './_store/events.state';
 import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
 import { tap, takeUntil } from 'rxjs/operators';
@@ -41,7 +43,7 @@ export class EventsComponent implements OnInit, OnDestroy {
     constructor(
         private _matDialog  : MatDialog,
         private _store      : Store,
-        private actions$    : Actions
+        private _actions$    : Actions
        
     ) {
          // Set the defaults
@@ -127,7 +129,8 @@ export class EventsComponent implements OnInit, OnDestroy {
                     case 'new':
                         let event = new CalendarEvent(formData.getRawValue() as Event, {actions: this.actions});
                         this._store.dispatch(new AddEvent(event));
-                        this.refresh.next(true);
+                        this._actions$.pipe(ofActionDispatched(AddEventSuccess))
+                            .subscribe(() => { this.refresh.next(true); });
                         break;
                 }
         });

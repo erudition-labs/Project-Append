@@ -3,11 +3,9 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../../@core/auth/auth.service';
 import { Credentials } from '../../../../@core/user/credentials.model';
 import { ToastrService } from 'ngx-toastr';
-import { ErrorService } from '@core/utils/error.service';
-import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
+import { Actions, ofActionDispatched, Store } from '@ngxs/store';
 import { Login, LoginSuccess } from '@core/store/auth/auth.actions';
 
 
@@ -24,11 +22,11 @@ export class Login2Component implements OnInit
 
     constructor(
         private _fuseConfigService: FuseConfigService,
-        private formBuilder: FormBuilder,
-        private router		: Router,
-        private toast : ToastrService, 
-        private _store : Store,
-        private _actions : Actions
+        private _formBuilder: FormBuilder,
+        private _router: Router,
+        private toast: ToastrService, 
+        private _store: Store,
+        private _actions$: Actions
 
     )
     {
@@ -56,14 +54,13 @@ export class Login2Component implements OnInit
     }
 
     private createForm() : void {
-		this.loginForm = this.formBuilder.group({
+		this.loginForm = this._formBuilder.group({
 			email 		: new FormControl('', { validators: [Validators.required, Validators.email] }),
 			password	: new FormControl('', { validators: [Validators.required] })
 		});
 	}
 
 	public onSubmit() : void {
-
 		this.loginForm.controls.email.markAsDirty();
 		this.loginForm.controls.password.markAsDirty();
 
@@ -74,12 +71,11 @@ export class Login2Component implements OnInit
 		};
 
 		if(this.loginForm.valid) {
-	
             this._store.dispatch(new Login(credentials));
-            this._actions.pipe(ofActionDispatched(LoginSuccess))
+            this._actions$.pipe(ofActionDispatched(LoginSuccess))
                 .subscribe(() => {
                     setTimeout(() => {
-                        this.router.navigate(['dashboard']);
+                        this._router.navigate(['dashboard']);
                     });
                 });
 		}
