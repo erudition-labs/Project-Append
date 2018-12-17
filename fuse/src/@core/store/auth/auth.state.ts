@@ -4,7 +4,6 @@ import { AuthStateModel } from './auth.state.model';
 import * as actions  from './auth.actions';
 import { AuthService } from '@core/auth/auth.service';
 import { Credentials } from '@core/user/credentials.model';
-import { Router } from '@angular/router';
 
 
 @State<AuthStateModel>({
@@ -20,7 +19,7 @@ import { Router } from '@angular/router';
     @Selector()
     static token(state: AuthStateModel) { return state.token; }
   
-    constructor(private _authService: AuthService, private _router: Router) {}
+    constructor(private _authService: AuthService) {}
   
     @Action(actions.Login)
     login(

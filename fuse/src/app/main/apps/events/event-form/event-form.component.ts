@@ -4,8 +4,12 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 //import { CalendarEvent } from 'angular-calendar';
 
 import { MatColors } from '@fuse/mat-colors';
+import { Store } from '@ngxs/store';
+
 
 import { CalendarEvent, Event } from 'app/main/apps/events/_store/events.state.model';
+import { AuthService } from '@core/auth/auth.service';
+import { AuthState } from '@core/store/auth/auth.state';
 
 @Component({
     selector     : 'calendar-event-form-dialog',
@@ -32,7 +36,9 @@ export class CalendarEventFormDialogComponent
     constructor(
         public matDialogRef: MatDialogRef<CalendarEventFormDialogComponent>,
         @Inject(MAT_DIALOG_DATA) private _data: any,
-        private _formBuilder: FormBuilder
+        private _formBuilder: FormBuilder,
+        private _authService: AuthService,
+        private _store: Store
     ) {
         this.event = _data.event;
         this.action = _data.action;
@@ -67,7 +73,7 @@ export class CalendarEventFormDialogComponent
 			OIC						: new FormControl(this.event.OIC                    || [],      { }),
 			signedUp				: new FormControl(this.event.signedUp               || [],      { }),
 			pending					: new FormControl(this.event.pending                || [],      { }),
-			author					: new FormControl(this.event.author                 || '',      { }),
+			author					: new FormControl(this._authService.parseToken(this._store.selectSnapshot(AuthState.token)).sub || '',      { }),
 			spots					: new FormControl(this.event.spots                  || 0,      { validators: [this.validateNumber.bind(this), Validators.required] }),
 			additionalDetails		: this._formBuilder.array([ this.initDetailField() ])
         });

@@ -19,7 +19,7 @@ export class AuthService {
 
 	readonly url : string = environment.API_URL + "/api/v1";
 
-	public isAuthenticated(): boolean {
+	/*public isAuthenticated(): boolean {
 		//const helper = new JwtHelperService();
 		//return helper.isTokenExpired(this.getToken());
 		const expiresAt = localStorage.getItem('expiresAt');
@@ -27,7 +27,7 @@ export class AuthService {
 			return false;
 		}
 		return new Date().getTime() < parseInt(expiresAt);
-	}
+	}*/
 
 	public login(credentials: Credentials) : Observable<string> {
 		//use spread to get individual properties off the supplied user object
@@ -42,19 +42,19 @@ export class AuthService {
 			}))
 	}
 
-	private setToken(token: string) : void {
+	/*private setToken(token: string) : void {
 		localStorage.setItem('token', token);
-	}
+	}*/
 
-	public getToken() : string {
+	/*public getToken() : string {
 		return localStorage.getItem('token');
-	}
+	}*/
 
-	public parseToken() : any {
+	public parseToken(t: string) : any {
 		const helper = new JwtHelperService();
-		const decodedToken = helper.decodeToken(this.getToken());
+		const decodedToken = helper.decodeToken(t);
 		//if there is a token, return the token, if not return false
-		if(!helper.isTokenExpired(this.getToken())) {
+		if(!helper.isTokenExpired(t)) {
 			return decodedToken;
 		} else {
 			return false;
@@ -62,42 +62,43 @@ export class AuthService {
 	}
 
 
-	private setUserInfo(userInfo: any) : void {
-		localStorage.setItem('userInfo', JSON.stringify(userInfo));
-	}
 
-	private setExpiresAt(expiresAt: number) : void {
+	/*private setUserInfo(userInfo: any) : void {
+		localStorage.setItem('userInfo', JSON.stringify(userInfo));
+	}*/
+
+	/*private setExpiresAt(expiresAt: number) : void {
 		//javascript Date() handles time differently than our tokens do
 		localStorage.setItem('expiresAt', JSON.stringify(expiresAt * 1000));
-	}
+	}*/
 
-	public getUserInfo() : any {
+	/*public getUserInfo() : any {
 		//either a token or false
 		return this.parseToken();
-	}
+	}*/
 
-	public setUser(token: string, userInfo: string, expiresAt: number) : void {
+	/*public setUser(token: string, userInfo: string, expiresAt: number) : void {
 		this.setToken(token);
 		this.setUserInfo(userInfo);
 		this.setExpiresAt(expiresAt);
-	}
+	}*/
 
 	public signup(user: NewUser) : Observable<any> {
 		return this.http.post(this.url + `/users`, { ...user });
 	}
 
-	public logout() : void {
+	/*public logout() : void {
 		localStorage.removeItem('token');
 		//localStorage.removeItem('userInfo');
 		//localStorage.removeItem('expiresAt');
 		this.router.navigate(['login']);
-	}
+	}*/
 
-	public isAdmin() : boolean {
+	/*public isAdmin() : boolean {
 		//either false from there being no token, or true or false from comparing the token
 		const userInfo = this.getUserInfo();
 		return userInfo.role === 'admin';
-	}
+	}*/
 
 	public verify(token: string) : any {
 		 const params = new HttpParams({

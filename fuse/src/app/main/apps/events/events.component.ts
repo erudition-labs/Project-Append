@@ -43,7 +43,7 @@ export class EventsComponent implements OnInit, OnDestroy {
     constructor(
         private _matDialog  : MatDialog,
         private _store      : Store,
-        private _actions$    : Actions
+        private _actions$   : Actions,
        
     ) {
          // Set the defaults
