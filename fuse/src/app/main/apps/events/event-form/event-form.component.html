@@ -111,6 +111,7 @@
 
             <div class="w-100-p">
                 <ng-select
+                    [items]="users$ | async"
                     [multiple]="true"
                     [closeOnSelect]="true"
                     [hideSelected]="true"

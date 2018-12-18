@@ -30,6 +30,7 @@ import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxPermissionsModule } from 'ngx-permissions';
 
 import { AuthState } from '@core/store/auth/auth.state';
+import { UsersState } from '@core/store/users/user.state';
 
 
 
@@ -82,7 +83,7 @@ const appRoutes: Routes = [ //see auth midule below
         AuthModule, //since I have this..each of those modules handle their own routing
         //so i dont need it in thte app routing
         AppsModule,
-        NgxsModule.forRoot([AuthState]),
+        NgxsModule.forRoot([AuthState, UsersState]),
         NgxsStoragePluginModule.forRoot({
             key: 'auth.token'
           }),

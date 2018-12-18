@@ -1,15 +1,22 @@
-import { Component, Inject, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, ViewEncapsulation, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 //import { CalendarEvent } from 'angular-calendar';
 
 import { MatColors } from '@fuse/mat-colors';
-import { Store } from '@ngxs/store';
+import { Store, Select } from '@ngxs/store';
+import { User } from '@core/user/user.model';
 
 
 import { CalendarEvent, Event } from 'app/main/apps/events/_store/events.state.model';
 import { TokenAuthService } from '@core/auth/tokenAuth.service';
 import { AuthState } from '@core/store/auth/auth.state';
+import { UsersState } from '@core/store/users/user.state';
+import { Subject, Observable } from 'rxjs';
+import { tap, takeUntil } from 'rxjs/operators';
+import { LoadUsers } from '@core/store/users/users.actions';
+
+
 
 @Component({
     selector     : 'calendar-event-form-dialog',
@@ -18,21 +25,17 @@ import { AuthState } from '@core/store/auth/auth.state';
     encapsulation: ViewEncapsulation.None
 })
 
-export class CalendarEventFormDialogComponent
+export class CalendarEventFormDialogComponent implements OnDestroy, OnInit
 {
+    @Select(UsersState.allUsers) users$ : Observable<User[]>
     action: string;
     event: Event;
     eventForm: FormGroup;
     dialogTitle: string;
     noShowOptions: boolean = true;
+    private ngUnsubscribe = new Subject();
 
-    /**
-     * Constructor
-     *
-     * @param {MatDialogRef<CalendarEventFormDialogComponent>} matDialogRef
-     * @param _data
-     * @param {FormBuilder} _formBuilder
-     */
+
     constructor(
         public matDialogRef: MatDialogRef<CalendarEventFormDialogComponent>,
         @Inject(MAT_DIALOG_DATA) private _data: any,
@@ -40,6 +43,7 @@ export class CalendarEventFormDialogComponent
         private _tokenAuthService: TokenAuthService,
         private _store: Store
     ) {
+
         this.event = _data.event;
         this.action = _data.action;
 
@@ -55,12 +59,10 @@ export class CalendarEventFormDialogComponent
         this.eventForm = this.createEventForm();
     }
 
+    ngOnInit() : void {
+        this.users$.pipe(takeUntil(this.ngUnsubscribe));
+    }
 
-    /**
-     * Create the event form
-     *
-     * @returns {FormGroup}
-     */
     createEventForm(): FormGroup {
 
        let form = this._formBuilder.group({
@@ -142,6 +144,11 @@ export class CalendarEventFormDialogComponent
             this.eventForm.get('date').value[0] = new Date();
         }
 
+    }
+
+    ngOnDestroy(): void {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 
 }

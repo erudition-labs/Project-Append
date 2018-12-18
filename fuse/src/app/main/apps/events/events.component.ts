@@ -27,7 +27,7 @@ import { tap, takeUntil } from 'rxjs/operators';
     animations   : fuseAnimations
 })
 export class EventsComponent implements OnInit, OnDestroy {
-    @Select(CalendarEventState.calendarEvents) $events : Observable<CalendarEventModel[]>
+    @Select(CalendarEventState.calendarEvents) events$ : Observable<CalendarEventModel[]>
 
     actions             : CalendarEventAction[];
     activeDayIsOpen     : boolean;
@@ -71,7 +71,7 @@ export class EventsComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this._actions$.pipe(takeUntil(this.ngUnsubscribe));
-        this.$events.pipe(takeUntil(this.ngUnsubscribe))
+        this.events$.pipe(takeUntil(this.ngUnsubscribe))
             .subscribe(e => this.events = e);
         this.refresh.next();
     }
