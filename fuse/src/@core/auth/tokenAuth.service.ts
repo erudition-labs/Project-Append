@@ -36,7 +36,7 @@ export class TokenAuthService {
 
 	public isAuthenticated() : boolean {
 		const token = this._store.selectSnapshot(AuthState.token);
-		if(token!) return false;
+		if(!token) return false;
 
 		const helper = new JwtHelperService();
 		return helper.isTokenExpired(token);

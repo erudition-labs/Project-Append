@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { catchError, retry, map, shareReplay, retryWhen, tap, delayWhen } from 'rxjs/operators';
 import { Event } from './_store/events.state.model';
 import { environment } from '../../../../environments/environment';
-import { AuthService } from '@core/auth/auth.service';
+import { TokenAuthService } from '@core/auth/tokenAuth.service';
 import { throwError, timer } from 'rxjs';
 
 
@@ -14,11 +14,11 @@ import { throwError, timer } from 'rxjs';
 export class EventService {
     readonly url : string = environment.API_URL + "/api/v1/events";
 
-	constructor(private http		: HttpClient,
-				private authService : AuthService) {}
+	constructor(private _http		: HttpClient,
+				private _tokenAuthService : TokenAuthService) {}
 
     public getEvents() : Observable<any> {
-        return this.http.get<any>(this.url + '/')
+        return this._http.get<any>(this.url + '/')
 		.pipe(retry(3), map((response) => {
 			if(response.success) {
 				return Object.values(response.result) as Event[];
@@ -32,7 +32,7 @@ export class EventService {
 	}
 
 	public create(event: Event) : Observable<any> {
-		return this.http.post<any>(this.url + '/', { data: event })
+		return this._http.post<any>(this.url + '/', { data: event })
 		.pipe(retry(3), map((response) => {
 			if(response.success) {
 				return response.result as Event;
@@ -42,9 +42,11 @@ export class EventService {
 		}))
 	}
 
-/*
+
 	public isOIC(event: Event, id?: string) : boolean {
-		let userId = this.authService.parseToken().sub
+		let userId = this._tokenAuthService.getCurrUserId();
+		if(!userId) return false;
+
 		if(id) userId = id;
 		
 		if(!event.OIC) return false;
@@ -58,7 +60,8 @@ export class EventService {
 	}
 
 	public isSignedUp(event: Event, id?: string) : boolean {
-		let currUserId = this.authService.parseToken().sub;
+		let currUserId = this._tokenAuthService.getCurrUserId();
+		if(!currUserId) return false;
 
 		if(!id) {
 			for(let user of event.signedUp) {
@@ -79,7 +82,8 @@ export class EventService {
 	}
 
 	public isPending(event: Event, id?: string) : boolean {
-		let currUserId = this.authService.parseToken().sub;
+		let currUserId = this._tokenAuthService.getCurrUserId();
+		if(!currUserId) return false;
 
 		if(!id) {
 			for(let user of event.pending) {
@@ -105,6 +109,6 @@ export class EventService {
 		let signedUp = event.signedUp.length;
 
 		return totalSpots > signedUp;
-	}*/
+	}
     
 }

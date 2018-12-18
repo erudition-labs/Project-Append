@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { CalendarEvent, Event } from 'app/main/apps/events/_store/events.state.model';
 import { UtilsService } from '@core/utils/utils.service';
 import { NgxPermissionsService } from 'ngx-permissions';
-import { AuthService } from '@core/auth/auth.service';
+import { TokenAuthService } from '@core/auth/tokenAuth.service';
 import { EventService } from '../events.service';
 
 @Component({
@@ -18,11 +18,11 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
     ngOnInit() {}
     constructor(
         public matDialogRef: MatDialogRef<CalendarEventViewDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) private _data  : Event,
-        public utils                            : UtilsService,
-        private permissionsService              : NgxPermissionsService,
-        private authService                     : AuthService,
-        private eventService                    : EventService
+        @Inject(MAT_DIALOG_DATA) private _data: Event,
+        public  _utils: UtilsService,
+        private _permissionsService: NgxPermissionsService,
+        private _tokenAuthService: TokenAuthService,
+        private _eventService: EventService
     ) {
         
         _data.date[0] = new Date(_data.date[0]);
@@ -32,28 +32,28 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
             _data.additionalDetails = JSON.parse(_data.additionalDetails);
         }
         this.dialogTitle = _data.name;
-/*
-        this.permissionsService.addPermission('EDIT', () => {
-            return ((this.authService.isAuthenticated() && this.authService.isAdmin()) ||
-                    (this.authService.isAuthenticated() && this.eventService.isOIC(_data)));
+
+        this._permissionsService.addPermission('EDIT', () => {
+            return ((this._tokenAuthService.isAuthenticated() && this._tokenAuthService.isAdmin()) ||
+                    (this._tokenAuthService.isAuthenticated() && this._eventService.isOIC(_data)));
         });
 
-        this.permissionsService.addPermission('SIGNUP', () => {
-            return (this.authService.isAuthenticated() && 
-                    !this.eventService.isSignedUp(_data) &&
-                    !this.eventService.isPending(_data));
+        this._permissionsService.addPermission('SIGNUP', () => {
+            return (this._tokenAuthService.isAuthenticated() && 
+                    !this._eventService.isSignedUp(_data) &&
+                    !this._eventService.isPending(_data));
         });
 
-        this.permissionsService.addPermission('UNREGISTER', () => {
-            return (this.authService.isAuthenticated() && 
-                    this.eventService.isSignedUp(_data));
+        this._permissionsService.addPermission('UNREGISTER', () => {
+            return (this._tokenAuthService.isAuthenticated() && 
+                    this._eventService.isSignedUp(_data));
         });
 
-        this.permissionsService.addPermission('PENDING', () => {
-            return (this.authService.isAuthenticated() && 
-                    this.eventService.isPending(_data));
+        this._permissionsService.addPermission('PENDING', () => {
+            return (this._tokenAuthService.isAuthenticated() && 
+                    this._eventService.isPending(_data));
         });
-*/
+
     }
 
     eventRequestSignup() : void {
@@ -65,10 +65,10 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.permissionsService.removePermission('EDIT');
-        this.permissionsService.removePermission('SIGNUP');
-        this.permissionsService.removePermission('UNREGISTER');
-        this.permissionsService.removePermission('PENDING');
+        this._permissionsService.removePermission('EDIT');
+        this._permissionsService.removePermission('SIGNUP');
+        this._permissionsService.removePermission('UNREGISTER');
+        this._permissionsService.removePermission('PENDING');
     }
 
 }
