@@ -5,6 +5,7 @@ import { UtilsService } from '@core/utils/utils.service';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { TokenAuthService } from '@core/auth/tokenAuth.service';
 import { EventService } from '../events.service';
+import { Store } from '@ngxs/store';
 
 @Component({
     selector     : 'calendar-event-view-dialog',
@@ -22,7 +23,8 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
         public  _utils: UtilsService,
         private _permissionsService: NgxPermissionsService,
         private _tokenAuthService: TokenAuthService,
-        private _eventService: EventService
+        private _eventService: EventService,
+        private _store: Store
     ) {
         
         _data.date[0] = new Date(_data.date[0]);
@@ -31,9 +33,7 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
         if (_data.additionalDetails && typeof _data.additionalDetails !== "object") {
             _data.additionalDetails = JSON.parse(_data.additionalDetails);
         }
-        this.dialogTitle = _data.name;
-        console.log(this._tokenAuthService.isAuthenticated());
-        
+        this.dialogTitle = _data.name;        
 
         this._permissionsService.addPermission('EDIT', () => {
             return ((this._tokenAuthService.isAuthenticated() && this._tokenAuthService.isAdmin()) ||

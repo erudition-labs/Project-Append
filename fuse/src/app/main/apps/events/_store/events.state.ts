@@ -115,4 +115,11 @@ import { asapScheduler, of } from 'rxjs';
         console.log(payload);
         patchState({ loaded: false, loading: false });
     }
+
+    @Action(eventActions.EventRequestRegister)
+    eventRequestRegister(
+        { patchState, dispatch }: StateContext<CalendarEventStateModel>   
+    ) {
+        
+    }
 }
