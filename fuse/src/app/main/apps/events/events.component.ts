@@ -129,10 +129,11 @@ export class EventsComponent implements OnInit, OnDestroy {
                 switch(actionType) {
                     case 'new':
                         let event = new CalendarEvent(formData.getRawValue() as Event, {actions: this.actions});
+                        event.meta.event.additionalDetails = JSON.stringify(event.meta.event.additionalDetails);
                         this._store.dispatch(new AddEvent(event));
                         this._actions$.pipe(ofActionDispatched(AddEventSuccess))
-                            .subscribe(() => { this.refresh.next(true); console.log('DDEDDD');
-                            });
+                            .subscribe(() => { this.refresh.next(true);
+                        });
                         break;
                 }
         });

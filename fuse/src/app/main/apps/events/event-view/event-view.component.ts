@@ -24,6 +24,7 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
         private authService                     : AuthService,
         private eventService                    : EventService
     ) {
+        
         _data.date[0] = new Date(_data.date[0]);
         _data.date[1] = new Date(_data.date[1]);
 
