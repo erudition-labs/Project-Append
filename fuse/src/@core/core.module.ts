@@ -9,6 +9,7 @@ import { TokenInterceptorService as TokenInterceptor } from './utils/token-inter
 import { AuthGuardService } from './auth/auth-guard.service';
 import { HttpErrorHandler } from './utils/http-error-handler.service';
 import { ErrorService } from './utils/error.service';
+import { TokenAuthService } from './auth/tokenAuth.service';
 
 
 
@@ -18,6 +19,7 @@ export const CORE_PROVIDERS = [
     AuthGuardService,
     HttpErrorHandler,
     ErrorService,
+    TokenAuthService,
   {
   	provide: HTTP_INTERCEPTORS,
 	useClass: TokenInterceptor,

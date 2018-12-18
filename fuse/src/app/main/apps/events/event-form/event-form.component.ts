@@ -8,7 +8,7 @@ import { Store } from '@ngxs/store';
 
 
 import { CalendarEvent, Event } from 'app/main/apps/events/_store/events.state.model';
-import { AuthService } from '@core/auth/auth.service';
+import { TokenAuthService } from '@core/auth/tokenAuth.service';
 import { AuthState } from '@core/store/auth/auth.state';
 
 @Component({
@@ -37,7 +37,7 @@ export class CalendarEventFormDialogComponent
         public matDialogRef: MatDialogRef<CalendarEventFormDialogComponent>,
         @Inject(MAT_DIALOG_DATA) private _data: any,
         private _formBuilder: FormBuilder,
-        private _authService: AuthService,
+        private _tokenAuthService: TokenAuthService,
         private _store: Store
     ) {
         this.event = _data.event;
@@ -73,7 +73,7 @@ export class CalendarEventFormDialogComponent
 			OIC						: new FormControl(this.event.OIC                    || [],      { }),
 			signedUp				: new FormControl(this.event.signedUp               || [],      { }),
 			pending					: new FormControl(this.event.pending                || [],      { }),
-			author					: new FormControl(this._authService.parseToken(this._store.selectSnapshot(AuthState.token)).sub || '',      { }),
+			author					: new FormControl(this._tokenAuthService.getCurrUserId() || '',      { }),
 			spots					: new FormControl(this.event.spots                  || 0,      { validators: [this.validateNumber.bind(this), Validators.required] }),
 			additionalDetails		: this._formBuilder.array([ this.initDetailField() ])
         });

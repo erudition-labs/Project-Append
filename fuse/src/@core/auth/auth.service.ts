@@ -50,17 +50,6 @@ export class AuthService {
 		return localStorage.getItem('token');
 	}*/
 
-	public parseToken(t: string) : any {
-		const helper = new JwtHelperService();
-		const decodedToken = helper.decodeToken(t);
-		//if there is a token, return the token, if not return false
-		if(!helper.isTokenExpired(t)) {
-			return decodedToken;
-		} else {
-			return false;
-		}
-	}
-
 
 
 	/*private setUserInfo(userInfo: any) : void {

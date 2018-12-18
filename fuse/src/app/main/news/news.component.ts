@@ -4,7 +4,7 @@ import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { UpdatesService } from '../../../@core/updates/updates.service';
 import { Update } from '../../../@core/updates/update.model';
-import { AuthService } from '../../../@core/auth/auth.service';
+import { TokenAuthService } from '@core/auth/tokenAuth.service';
 import { UserService } from '../../../@core/user/user.service';
 import { TuiService } from 'ngx-tui-editor';
 import { ToastrService } from 'ngx-toastr';
@@ -38,7 +38,7 @@ export class NewsComponent
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private _fuseSidebarService: FuseSidebarService,
         private updatesService : UpdatesService, 
-        public _authService : AuthService, 
+        public _tokenAuthService : TokenAuthService, 
         private toast : ToastrService, 
         private formBuilder : FormBuilder,
         private userService : UserService,
@@ -123,7 +123,7 @@ export class NewsComponent
         update.content = this.editorService.getMarkdown();
     
         update.date = new Date();
-        this._authService.parseToken(this._store.selectSnapshot(AuthState.token)).sub
+        this._tokenAuthService.getCurrUserId();
     
         this.addUpdateClicked = false;
         this.editButtonClicked = false;
