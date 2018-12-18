@@ -29,7 +29,6 @@ export class UsersState implements NgxsOnInit {
     @Action(usersActions.LoadUsers)
     loadUsers({ patchState, dispatch }: StateContext<UsersStateModel>) {
         patchState({ loading: true });
-        console.log('helllooo');
         
         return this._userService.getUsers()
             .map((users: User[]) => {

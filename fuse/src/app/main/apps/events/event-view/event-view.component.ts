@@ -32,6 +32,8 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
             _data.additionalDetails = JSON.parse(_data.additionalDetails);
         }
         this.dialogTitle = _data.name;
+        console.log(this._tokenAuthService.isAuthenticated());
+        
 
         this._permissionsService.addPermission('EDIT', () => {
             return ((this._tokenAuthService.isAuthenticated() && this._tokenAuthService.isAdmin()) ||
