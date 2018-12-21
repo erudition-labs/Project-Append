@@ -124,7 +124,9 @@ import { asapScheduler, of } from 'rxjs';
         { payload } : eventActions.EventRequestRegister   
     ) {
         if(!this._tokenService.isAuthenticated()) { //maybe some other checks here too
-            //dispatch fail
+            asapScheduler.schedule(() =>
+            dispatch(new eventActions.EventRequestRegisterFail("Must be Authenticated"))
+        )
             return;
         }
 
@@ -132,8 +134,12 @@ import { asapScheduler, of } from 'rxjs';
         let event = this._eventService.preProcessEvent(payload);
 
         //To ensure we aren't adding any duplicates
-        if(event.pending.indexOf(this._tokenService.getCurrUserId()) !== -1) {
+        if(event.pending.indexOf(this._tokenService.getCurrUserId()) !== -1 &&
+            event.signedUp.indexOf(this._tokenService.getCurrUserId()) !== -1) {
             //dispatch fail, already requested signup
+            asapScheduler.schedule(() =>
+            dispatch(new eventActions.EventRequestRegisterFail("Already Pending or Signed Up"))
+        )
             return;
         }
         //otherwise add the event
@@ -153,7 +159,7 @@ import { asapScheduler, of } from 'rxjs';
 
     @Action(eventActions.EventRequestRegisterSuccess)
     eventRequestRegisterSuccess(
-        { patchState, getState } : StateContext<CalendarEventStateModel>,
+        { patchState, getState, dispatch } : StateContext<CalendarEventStateModel>,
         { payload }: eventActions.EventRequestRegisterSuccess
     ) {
         const state = getState();
@@ -169,7 +175,19 @@ import { asapScheduler, of } from 'rxjs';
             });
         } else {
             //dispatch fail
+            asapScheduler.schedule(() =>
+            dispatch(new eventActions.EventRequestRegisterFail("Failed to update"))
+        )
             return;
         }
+    }
+
+    @Action(eventActions.EventRequestRegisterFail)
+    eventRequestRegisterFail(
+        { patchState }: StateContext<CalendarEventStateModel>,
+        { payload }: eventActions.EventRequestRegisterSuccess
+    ) {
+        console.log(payload);
+        patchState({ loaded: false, loading: false });
     }
 }
