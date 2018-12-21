@@ -8,14 +8,16 @@ import { Event } from './_store/events.state.model';
 import { environment } from '../../../../environments/environment';
 import { TokenAuthService } from '@core/auth/tokenAuth.service';
 import { throwError, timer } from 'rxjs';
+import { UtilsService } from '@core/utils/utils.service';
 
 
 @Injectable()
 export class EventService {
     readonly url : string = environment.API_URL + "/api/v1/events";
 
-	constructor(private _http		: HttpClient,
-				private _tokenAuthService : TokenAuthService) {}
+	constructor(private _http: HttpClient,
+				private _tokenAuthService: TokenAuthService,
+				private _utilsService: UtilsService) {}
 
     public getEvents() : Observable<any> {
         return this._http.get<any>(this.url + '/')
@@ -110,5 +112,17 @@ export class EventService {
 
 		return totalSpots > signedUp;
 	}
-    
+	
+	public preProcessEvent(event: Event) : Event {
+		event.OIC = this._utilsService.getIds(event.OIC);
+		event.signedUp = this._utilsService.getIds(event.signedUp);
+		event.pending = this._utilsService.getIds(event.pending);
+		if(event.author._id) event.author = event.author._id;
+
+		if (event.additionalDetails && typeof event.additionalDetails === "object") {
+            event.additionalDetails = JSON.stringify(event.additionalDetails);
+        }
+
+		return event;
+	}
 }

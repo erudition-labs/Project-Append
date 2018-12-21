@@ -1,4 +1,4 @@
-import { CalendarEventModel } from './events.state.model';
+import { CalendarEventModel, Event } from './events.state.model';
 // load Events actions
 export class LoadEvents {
     static readonly type = '[Events] Load Events';
@@ -48,7 +48,7 @@ export class LoadEventsSuccess {
   //USER REGISTER FOR EVENT
   export class EventRequestRegister {
     static readonly type = '[Events] Event Request Register';
-    constructor() {}
+    constructor(public readonly payload: Event) {}
   }
 
   export class EventRequestRegisterSuccess {

@@ -3,6 +3,7 @@ import { Action, Selector, State, StateContext, NgxsOnInit } from '@ngxs/store';
 import { tap, catchError, map } from 'rxjs/operators';
 import { CalendarEventStateModel, CalendarEventModel, Event, CalendarEvent } from './events.state.model';
 import { EventService } from '../events.service';
+import { TokenAuthService } from '@core/auth/tokenAuth.service';
 import * as eventActions from './events.actions';
 import { asapScheduler, of } from 'rxjs';
 
@@ -16,7 +17,8 @@ import { asapScheduler, of } from 'rxjs';
     }
   })
   export class CalendarEventState implements NgxsOnInit {
-    constructor (private _eventService: EventService) {}
+    constructor (private _eventService: EventService,
+                 private _tokenService: TokenAuthService) {}
 
     ngxsOnInit(ctx: StateContext<CalendarEventStateModel>) {
         ctx.dispatch(new eventActions.LoadEvents());
@@ -118,8 +120,16 @@ import { asapScheduler, of } from 'rxjs';
 
     @Action(eventActions.EventRequestRegister)
     eventRequestRegister(
-        { patchState, dispatch }: StateContext<CalendarEventStateModel>   
+        { patchState, dispatch }: StateContext<CalendarEventStateModel>,
+        { payload } : eventActions.EventRequestRegister   
     ) {
-        
+        if(!this._tokenService.isAuthenticated()) {
+            //dispatch fail
+            return;
+        }
+
+        patchState({ loaded: false, loading: true });
+        let event = this._eventService.preProcessEvent(payload);
+        event.pending.push(this._tokenService.getCurrUserId());
     }
 }
