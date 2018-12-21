@@ -86,8 +86,8 @@ import { asapScheduler, of } from 'rxjs';
        return this._eventService.create(payload.meta.event)
             .subscribe(data => {
                 asapScheduler.schedule(() =>
-                dispatch(new eventActions.AddEventSuccess(new CalendarEvent(data)))
-            )
+                    dispatch(new eventActions.AddEventSuccess(new CalendarEvent(data)))
+                )
             }, 
             error => {
                 asapScheduler.schedule(() =>
@@ -123,13 +123,53 @@ import { asapScheduler, of } from 'rxjs';
         { patchState, dispatch }: StateContext<CalendarEventStateModel>,
         { payload } : eventActions.EventRequestRegister   
     ) {
-        if(!this._tokenService.isAuthenticated()) {
+        if(!this._tokenService.isAuthenticated()) { //maybe some other checks here too
             //dispatch fail
             return;
         }
 
         patchState({ loaded: false, loading: true });
         let event = this._eventService.preProcessEvent(payload);
+
+        //To ensure we aren't adding any duplicates
+        if(event.pending.indexOf(this._tokenService.getCurrUserId()) !== -1) {
+            //dispatch fail, already requested signup
+            return;
+        }
+        //otherwise add the event
         event.pending.push(this._tokenService.getCurrUserId());
+        return this._eventService.update(event, true)
+            .subscribe(data => {
+                asapScheduler.schedule(() =>
+                    dispatch(new eventActions.EventRequestRegisterSuccess((data)))
+                )
+            },
+            error => {
+                asapScheduler.schedule(() =>
+                    dispatch(new eventActions.EventRequestRegisterFail(error.message))
+                )    
+            });
+    }
+
+    @Action(eventActions.EventRequestRegisterSuccess)
+    eventRequestRegisterSuccess(
+        { patchState, getState } : StateContext<CalendarEventStateModel>,
+        { payload }: eventActions.EventRequestRegisterSuccess
+    ) {
+        const state = getState();
+        let index = state.events.findIndex(x => x.meta.event._id === payload._id);
+
+        if(index > -1) {
+            patchState({
+                events: [...state.events.slice(0, index), 
+                        new CalendarEvent(payload), 
+                        ...state.events.slice(index)],
+                loaded: true, 
+                loading: false
+            });
+        } else {
+            //dispatch fail
+            return;
+        }
     }
 }

@@ -44,6 +44,60 @@ export class EventService {
 		}))
 	}
 
+	public update(event: Event, preProcessed: boolean) : Observable<any> {
+		if(!preProcessed) event = this.preProcessEvent(event);
+
+		return this._http.put<any>(this.url + '/', { data: event, user: this._tokenAuthService.getCurrUserId() })
+		.pipe(retry(3), map((response) => {
+			if(response.success) {
+				return response.result as Event;
+			} else {
+				return Observable.throw(response.message.json());
+			}
+		}))
+	}
+/*
+	public updateEvent(event: Event) : Observable<Event> {
+		let OICids 		= this.utils.getIds(event.OIC);
+		let signedUpIds = this.utils.getIds(event.signedUp);
+
+		event.OIC = OICids;
+		event.pending = this.utils.getIds(event.pending);
+		let singupSet = new Set();
+
+		return this.getEvent(event._id).flatMap(result => {
+			if(result) {
+				let oldOICids = this.utils.getIds(result.OIC);
+
+				for(let id of oldOICids) {
+					let index = signedUpIds.indexOf(id);
+					if(index > -1) {
+						signedUpIds.splice(index, 1);
+					}
+				}
+			}
+			for(let id of OICids) {
+				singupSet.add(id);
+			}
+	
+			for(let id of signedUpIds) {
+				singupSet.add(id);
+			}
+	
+			event.signedUp = Array.from(singupSet);
+			return this.http.put<any>(this.url + '/', { data: event, user:  this.authService.parseToken().sub })
+			.pipe(retry(3), map((response) => {
+				if(response.success) {
+					this.success(response.message);
+					return response.result as Event;
+				} else {
+					this.error(response.message);
+					return null;
+				}
+			}),
+				catchError(this.handleError('UpdateEvent', null)));
+		});
+	}*/
 
 	public isOIC(event: Event, id?: string) : boolean {
 		let userId = this._tokenAuthService.getCurrUserId();
