@@ -44,7 +44,7 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
         this._permissionsService.flushPermissions();
         this._permissionsService.addPermission('EDIT', () => {
             return ((this._tokenAuthService.isAuthenticated() && this._tokenAuthService.isAdmin()) ||
-                    (this._tokenAuthService.isAuthenticated() && this._eventService.isOIC(_data)));
+                    (this._tokenAuthService.isAuthenticated() && this._eventService.isOIC(this._data)));
         });
 
         this._permissionsService.addPermission('SIGNUP', () => {

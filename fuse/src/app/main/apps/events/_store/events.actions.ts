@@ -45,7 +45,7 @@ export class LoadEventsSuccess {
     constructor(public readonly payload?: any) {}
   }
 
-  //USER REGISTER FOR EVENT
+  //USER REQUEST REGISTER FOR EVENT
   export class EventRequestRegister {
     static readonly type = '[Events] Event Request Register';
     constructor(public readonly payload: Event) {}
@@ -61,6 +61,23 @@ export class LoadEventsSuccess {
     constructor(public readonly payload?: any) {}
   }
 
+  //OIC OR ADMIN ACCEPT REQUEST FOR REGISTER
+
+  export class EventAcceptRegisterRequest {
+    static readonly type = '[Events] Event Accept Register Request';
+    constructor(public readonly payload: any) {}
+  }
+
+  export class EventAcceptRegisterRequestSuccess {
+    static readonly type ='[Events] Event Accept Register Request Success';
+    constructor(public readonly payload: Event) {}
+  }
+
+  export class EventAcceptRegisterRequestFail {
+    static readonly type ='[Events] Event Accept Register Request Fail';
+    constructor(public readonly payload?: any) {}
+  } 
+
 
 
 export type CalendarEventActions = 
@@ -75,4 +92,7 @@ export type CalendarEventActions =
     | AddEventSuccess
     | EventRequestRegister
     | EventRequestRegisterSuccess
-    | EventRequestRegisterFail;
+    | EventRequestRegisterFail
+    | EventAcceptRegisterRequest
+    | EventAcceptRegisterRequestSuccess
+    | EventAcceptRegisterRequestFail;
