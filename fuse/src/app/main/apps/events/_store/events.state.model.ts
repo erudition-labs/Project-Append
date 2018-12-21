@@ -67,7 +67,11 @@ export class CalendarEvent implements CalendarEventModel {
         event = event || null;
         opts = opts || {};
         this.start = new Date(event.date[0]);
-        this.end = new Date(event.date[1]);
+        this.end  = new Date(event.date[1]);
+
+        event.date[0] = new Date(event.date[0]);
+        event.date[1]  = new Date(event.date[1]);
+
         this.title = event.name || '';
         this.color = {
             primary  : opts.color && opts.color.primary || '#1e90ff',
@@ -80,6 +84,11 @@ export class CalendarEvent implements CalendarEventModel {
         };
         this.actions = opts.actions || [];
         this.cssClass = opts.cssClass || '';
+        
+        if (event.additionalDetails && typeof event.additionalDetails !== "object") {
+            event.additionalDetails = JSON.parse(event.additionalDetails);
+		}	
+        
         this.meta = {
             event : event
         };

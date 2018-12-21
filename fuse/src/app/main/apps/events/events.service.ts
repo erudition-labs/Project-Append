@@ -179,4 +179,11 @@ export class EventService {
 
 		return event;
 	}
+
+	public postProcessEvent(event: Event) : Event {
+		if (event.additionalDetails && typeof event.additionalDetails !== "object") {
+            event.additionalDetails = JSON.parse(event.additionalDetails);
+		}	
+		return event;
+	}
 }

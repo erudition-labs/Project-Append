@@ -5,8 +5,9 @@ import { UtilsService } from '@core/utils/utils.service';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { TokenAuthService } from '@core/auth/tokenAuth.service';
 import { EventService } from '../events.service';
-import { Store } from '@ngxs/store';
-import { EventRequestRegister } from '../_store/events.actions';
+import { Store, Actions, ofActionDispatched } from '@ngxs/store';
+import { EventRequestRegister, EventRequestRegisterFail, EventRequestRegisterSuccess } from '../_store/events.actions';
+import { CalendarEventState } from '../_store/events.state';
 
 @Component({
     selector     : 'calendar-event-view-dialog',
@@ -25,7 +26,8 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
         private _permissionsService: NgxPermissionsService,
         private _tokenAuthService: TokenAuthService,
         private _eventService: EventService,
-        private _store: Store
+        private _store: Store,
+        private _actions$: Actions
     ) {
         
         _data.date[0] = new Date(_data.date[0]);
@@ -60,8 +62,16 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
     }
 
     eventRequestSignup() : void {
-        this._store.dispatch(new EventRequestRegister(this._data));
-        //listen for success and update
+        this._store.dispatch(new EventRequestRegister(Object.assign({}, this._data)));
+        this._actions$.pipe(ofActionDispatched(EventRequestRegisterSuccess))
+            .subscribe(() => {
+                //get snapshot, set data equal
+                let events = this._store.selectSnapshot(CalendarEventState.calendarEvents);
+                let index = events.findIndex(x => x.meta.event._id === this._data._id);
+                if(index > -1) {
+                    this._data = events[index].meta.event;
+                }
+            });
     }
     eventUnregister() : void {
         console.log('unregister');
