@@ -134,8 +134,8 @@ import { asapScheduler, of } from 'rxjs';
         let event = this._eventService.preProcessEvent(payload);
 
         //To ensure we aren't adding any duplicates
-        if(event.pending.indexOf(this._tokenService.getCurrUserId()) !== -1 &&
-            event.signedUp.indexOf(this._tokenService.getCurrUserId()) !== -1) {
+        if(event.pending.indexOf(this._tokenService.getCurrUserId()) > -1 ||
+            event.signedUp.indexOf(this._tokenService.getCurrUserId()) > -1) {
             //dispatch fail, already requested signup
             asapScheduler.schedule(() =>
             dispatch(new eventActions.EventRequestRegisterFail("Already Pending or Signed Up"))
