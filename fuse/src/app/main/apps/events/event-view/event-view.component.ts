@@ -36,8 +36,12 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
         if (_data.additionalDetails && typeof _data.additionalDetails !== "object") {
             _data.additionalDetails = JSON.parse(_data.additionalDetails);
         }
-        this.dialogTitle = _data.name;        
+        this.dialogTitle = _data.name;  
+        this.loadPermissions();      
+    }
 
+    loadPermissions() : void {
+        this._permissionsService.flushPermissions();
         this._permissionsService.addPermission('EDIT', () => {
             return ((this._tokenAuthService.isAuthenticated() && this._tokenAuthService.isAdmin()) ||
                     (this._tokenAuthService.isAuthenticated() && this._eventService.isOIC(_data)));
@@ -45,20 +49,19 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
 
         this._permissionsService.addPermission('SIGNUP', () => {
             return (this._tokenAuthService.isAuthenticated() && 
-                    !this._eventService.isSignedUp(_data) &&
-                    !this._eventService.isPending(_data));
+                    !this._eventService.isSignedUp(this._data) &&
+                    !this._eventService.isPending(this._data));
         });
 
         this._permissionsService.addPermission('UNREGISTER', () => {
             return (this._tokenAuthService.isAuthenticated() && 
-                    this._eventService.isSignedUp(_data));
+                    this._eventService.isSignedUp(this._data));
         });
 
         this._permissionsService.addPermission('PENDING', () => {
             return (this._tokenAuthService.isAuthenticated() && 
-                    this._eventService.isPending(_data));
+                    this._eventService.isPending(this._data));
         });
-
     }
 
     eventRequestSignup() : void {
@@ -70,6 +73,7 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
                 let index = events.findIndex(x => x.meta.event._id === this._data._id);
                 if(index > -1) {
                     this._data = events[index].meta.event;
+                    this.loadPermissions();
                 }
             });
     }
