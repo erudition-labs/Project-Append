@@ -169,7 +169,7 @@ import { asapScheduler, of } from 'rxjs';
             patchState({
                 events: [...state.events.slice(0, index), 
                         new CalendarEvent(payload), 
-                        ...state.events.slice(index)],
+                        ...state.events.slice(index+1)],
                 loaded: true, 
                 loading: false
             });

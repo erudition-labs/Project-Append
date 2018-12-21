@@ -6,6 +6,7 @@ import { NgxPermissionsService } from 'ngx-permissions';
 import { TokenAuthService } from '@core/auth/tokenAuth.service';
 import { EventService } from '../events.service';
 import { Store } from '@ngxs/store';
+import { EventRequestRegister } from '../_store/events.actions';
 
 @Component({
     selector     : 'calendar-event-view-dialog',
@@ -59,7 +60,8 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
     }
 
     eventRequestSignup() : void {
-        console.log('signup');
+        this._store.dispatch(new EventRequestRegister(this._data));
+        //listen for success and update
     }
     eventUnregister() : void {
         console.log('unregister');
