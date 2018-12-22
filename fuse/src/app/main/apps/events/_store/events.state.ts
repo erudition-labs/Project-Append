@@ -6,6 +6,7 @@ import { EventService } from '../events.service';
 import { TokenAuthService } from '@core/auth/tokenAuth.service';
 import * as eventActions from './events.actions';
 import { asapScheduler, of } from 'rxjs';
+import { UserEventSignup } from '@core/store/users/users.actions';
 
 @State<CalendarEventStateModel>({
     name: 'calendarEvents',
@@ -231,7 +232,7 @@ import { asapScheduler, of } from 'rxjs';
             return this._eventService.update(event, true)
                 .subscribe(data => {
                     asapScheduler.schedule(() =>
-                        dispatch(new eventActions.EventAcceptRegisterRequestSuccess((data)))
+                        dispatch(new eventActions.EventAcceptRegisterRequestSuccess(({ event: data, userId: payload.userId })))
                     )
                 },
                 error => {
@@ -252,19 +253,19 @@ import { asapScheduler, of } from 'rxjs';
         { payload }: eventActions.EventAcceptRegisterRequestSuccess
     ) {
         const state = getState();
-        let index = state.events.findIndex(x => x.meta.event._id === payload._id);
+        let index = state.events.findIndex(x => x.meta.event._id === payload.event._id);
 
         if(index > -1) {
             patchState({
                 events: [...state.events.slice(0, index), 
-                        new CalendarEvent(payload), 
+                        new CalendarEvent(payload.event), 
                         ...state.events.slice(index+1)],
                 loaded: true, 
                 loading: false
             });
 
             //dispatch to make user reflect that they are signed up for event
-           //this._store.dispatch();
+           this._store.dispatch(new UserEventSignup({ eventId: payload.event._id, userId: payload.userId }));
         } else {
             //dispatch fail
             asapScheduler.schedule(() =>

@@ -70,7 +70,7 @@ export class LoadEventsSuccess {
 
   export class EventAcceptRegisterRequestSuccess {
     static readonly type ='[Events] Event Accept Register Request Success';
-    constructor(public readonly payload: Event) {}
+    constructor(public readonly payload: { event: Event, userId: string }) {}
   }
 
   export class EventAcceptRegisterRequestFail {
