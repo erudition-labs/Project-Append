@@ -17,7 +17,7 @@ export class LoadUsersFail {
 //USER GOT ACCEPTED TO SIGNUP FOR EVENT
 export class UserEventSignup {
     static readonly type = '[Users] User Event Signup';
-    constructor(public readonly payload: string) {}
+    constructor(public readonly payload: { eventId: string, userId: string }) {}
 }
 
 export class UserEventSignupSuccess {
