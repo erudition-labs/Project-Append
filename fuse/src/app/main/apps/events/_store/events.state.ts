@@ -1,5 +1,5 @@
 
-import { Action, Selector, State, StateContext, NgxsOnInit } from '@ngxs/store';
+import { Action, Selector, State, StateContext, NgxsOnInit, Store } from '@ngxs/store';
 import { tap, catchError, map } from 'rxjs/operators';
 import { CalendarEventStateModel, CalendarEventModel, Event, CalendarEvent } from './events.state.model';
 import { EventService } from '../events.service';
@@ -18,7 +18,8 @@ import { asapScheduler, of } from 'rxjs';
   })
   export class CalendarEventState implements NgxsOnInit {
     constructor (private _eventService: EventService,
-                 private _tokenService: TokenAuthService) {}
+                 private _tokenService: TokenAuthService,
+                 private _store: Store) {}
 
     ngxsOnInit(ctx: StateContext<CalendarEventStateModel>) {
         ctx.dispatch(new eventActions.LoadEvents());
@@ -185,6 +186,96 @@ import { asapScheduler, of } from 'rxjs';
 
     @Action(eventActions.EventRequestRegisterFail)
     eventRequestRegisterFail(
+        { patchState }: StateContext<CalendarEventStateModel>,
+        { payload }: eventActions.EventRequestRegisterSuccess
+    ) {
+        console.log(payload);
+        patchState({ loaded: false, loading: false });
+    }
+
+    @Action(eventActions.EventAcceptRegisterRequest)
+    eventAcceptRegisterRequest(
+        { patchState, dispatch }: StateContext<CalendarEventStateModel>,
+        { payload }: eventActions.EventAcceptRegisterRequest
+    ) {
+        if(!this._tokenService.isAuthenticated()) {
+            //must be logged in
+            asapScheduler.schedule(() =>
+            dispatch(new eventActions.EventAcceptRegisterRequestFail("Must be Authenticated"))
+        )
+            return;
+        }
+
+        //must be an admin or assigned OIC to access this
+        if(!this._tokenService.isAdmin() || !this._eventService.isOIC(payload.event)) {
+            asapScheduler.schedule(() =>
+            dispatch(new eventActions.EventAcceptRegisterRequestFail("Must be Authorized"))
+        )
+            return;   
+        }
+
+        //otherwise, we can do this
+        patchState({ loaded: false, loading: true });
+        let event = this._eventService.preProcessEvent(payload.event);
+
+        //make sure the requested id is in pending
+        let index = event.pending.indexOf(payload.userId);
+        if(index > -1) {
+            //for the sake of possibility of duplicates we will use a Set
+            let idSet = new Set(event.signedUp);
+            idSet.add(payload.userId);
+            event.signedUp = Array(idSet);
+            //remove id from pending
+            event.pending.splice(index, 1);
+
+            return this._eventService.update(event, true)
+                .subscribe(data => {
+                    asapScheduler.schedule(() =>
+                        dispatch(new eventActions.EventAcceptRegisterRequestSuccess((data)))
+                    )
+                },
+                error => {
+                    asapScheduler.schedule(() =>
+                        dispatch(new eventActions.EventAcceptRegisterRequestFail(error.message))
+                    )    
+                });
+        } else {
+            asapScheduler.schedule(() =>
+                dispatch(new eventActions.EventAcceptRegisterRequestFail("Not in Pending"))
+            )   
+        }
+    }
+
+    @Action(eventActions.EventAcceptRegisterRequestSuccess)
+    EventAcceptRegisterRequestSuccess(
+        { patchState, getState, dispatch } : StateContext<CalendarEventStateModel>,
+        { payload }: eventActions.EventAcceptRegisterRequestSuccess
+    ) {
+        const state = getState();
+        let index = state.events.findIndex(x => x.meta.event._id === payload._id);
+
+        if(index > -1) {
+            patchState({
+                events: [...state.events.slice(0, index), 
+                        new CalendarEvent(payload), 
+                        ...state.events.slice(index+1)],
+                loaded: true, 
+                loading: false
+            });
+
+            //dispatch to make user reflect that they are signed up for event
+           //this._store.dispatch();
+        } else {
+            //dispatch fail
+            asapScheduler.schedule(() =>
+            dispatch(new eventActions.EventRequestRegisterFail("Failed to update"))
+        )
+            return;
+        }
+    }
+
+    @Action(eventActions.EventRequestRegisterFail)
+    EventAcceptRegisterRequestFail(
         { patchState }: StateContext<CalendarEventStateModel>,
         { payload }: eventActions.EventRequestRegisterSuccess
     ) {
