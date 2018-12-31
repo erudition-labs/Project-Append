@@ -108,8 +108,8 @@ export class UsersState implements NgxsOnInit {
         if(index > -1) {
             patchState({ 
                 users: [...state.users.slice(0, index), 
-                    payload, 
-                    ...state.users.slice(index+1)],
+                        payload, 
+                        ...state.users.slice(index+1)],
                 loaded: true, 
                 loading: false });
         }
@@ -119,6 +119,78 @@ export class UsersState implements NgxsOnInit {
     userEventSignupFail(
         { patchState } : StateContext<UsersStateModel>,
         { payload } : usersActions.UserEventSignupFail
+    ) {
+        patchState({ loaded: false, loading: false });
+        console.log(payload);
+    }
+
+
+    @Action(usersActions.UserEventRemove)
+    userEventRemove(
+        { patchState, getState, dispatch }: StateContext<UsersStateModel>,
+        { payload }: usersActions.UserEventRemove
+    ) {
+        const state = getState(); 
+        let index = state.users.findIndex(x => x._id === payload.userId);
+
+        if(index > -1) {
+            patchState({ loaded: false, loading: true });
+            let user = state.users[index];
+            user = this._userService.preProcessUser(user);
+
+            //Remove event
+            let eventIndex = user.events.findIndex(x => x._id === payload.eventId);
+            if(eventIndex <= -1) {
+                asapScheduler.schedule(() => 
+                dispatch(new usersActions.UserEventRemoveFail("No Event Found"))
+            )
+                return;            
+            }
+
+            user.events.splice(eventIndex, 1);
+
+            return this._userService.update(user, true)
+                .subscribe(data => {
+                    asapScheduler.schedule(() => 
+                       dispatch(new usersActions.UserEventRemoveSuccess(data)) 
+                    )
+                },
+                error => {
+                    asapScheduler.schedule(() => 
+                        dispatch(new usersActions.UserEventRemoveFail(error.message))
+                    )
+                });
+        } else {
+            //failed
+            asapScheduler.schedule(() => 
+                dispatch(new usersActions.UserEventRemoveFail("Failed to Update"))
+            ) 
+        }
+    }
+
+
+    @Action(usersActions.UserEventRemoveSuccess)
+    userEventRemoveSuccess(
+        { patchState, getState }: StateContext<UsersStateModel>,
+        { payload }: usersActions.UserEventRemoveSuccess 
+    ) {
+        const state = getState(); 
+        let index = state.users.findIndex(x => x._id === payload._id);
+
+        if(index > -1) {
+            patchState({ 
+                users: [...state.users.slice(0, index), 
+                        payload, 
+                        ...state.users.slice(index+1)],
+                loaded: true, 
+                loading: false });
+        }
+    }
+
+    @Action(usersActions.UserEventRemoveFail)
+    userEventRemoveFail(
+        { patchState } : StateContext<UsersStateModel>,
+        { payload } : usersActions.UserEventRemoveFail
     ) {
         patchState({ loaded: false, loading: false });
         console.log(payload);

@@ -6,7 +6,7 @@ import { EventService } from '../events.service';
 import { TokenAuthService } from '@core/auth/tokenAuth.service';
 import * as eventActions from './events.actions';
 import { asapScheduler, of } from 'rxjs';
-import { UserEventSignup } from '@core/store/users/users.actions';
+import { UserEventSignup, UserEventRemove } from '@core/store/users/users.actions';
 
 @State<CalendarEventStateModel>({
     name: 'calendarEvents',

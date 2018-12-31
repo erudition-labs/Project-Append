@@ -30,10 +30,29 @@ export class UserEventSignupFail {
     constructor(public readonly payload?: any) {}
 }
 
+//user unregistered or removed from event
+export class UserEventRemove {
+    static readonly type = '[Users] User Event Remove';
+    constructor(public readonly payload: { eventId: string, userId: string }) {}
+}
+
+export class UserEventRemoveSuccess {
+    static readonly type = '[Users] User Event Remove Success';
+    constructor(public readonly payload: User) {}
+}
+
+export class UserEventRemoveFail {
+    static readonly type = '[Users] User Event Remove Fail';
+    constructor(public readonly payload?: any) {}
+}
+
 export type UsersActions = 
     | LoadUsers
     | LoadUsersSuccess
     | LoadUsersFail
     | UserEventSignup
     | UserEventSignupSuccess
-    | UserEventSignupFail;
+    | UserEventSignupFail
+    | UserEventRemove
+    | UserEventRemoveSuccess
+    | UserEventRemoveFail;
