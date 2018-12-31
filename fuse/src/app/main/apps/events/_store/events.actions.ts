@@ -78,6 +78,23 @@ export class LoadEventsSuccess {
     constructor(public readonly payload?: any) {}
   } 
 
+  //self unregister or ADMIN/OIC remove from signedUp/pending
+  export class EventRemoveSignUpOrPending {
+    static readonly type = '[Events] Event Remove Signup Or Pending';
+    constructor(public readonly payload: { event: Event, userId: string }) {}
+  }
+
+  export class EventRemoveSignUpOrPendingSuccess {
+    static readonly type = '[Events] Event Remove Signup Or Pending Success';
+    constructor(public readonly payload: { event: Event, userId: string }) {}
+  }
+
+  export class EventRemoveSignUpOrPendingFail {
+    static readonly type = '[Events] Event Remove Signup Or Pending Fail';
+    constructor(public readonly payload?: any) {}
+  }
+
+
 
 
 export type CalendarEventActions = 
@@ -95,4 +112,7 @@ export type CalendarEventActions =
     | EventRequestRegisterFail
     | EventAcceptRegisterRequest
     | EventAcceptRegisterRequestSuccess
-    | EventAcceptRegisterRequestFail;
+    | EventAcceptRegisterRequestFail
+    | EventRemoveSignUpOrPending
+    | EventRemoveSignUpOrPendingSuccess
+    | EventRemoveSignUpOrPendingFail;

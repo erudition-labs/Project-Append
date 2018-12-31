@@ -75,6 +75,10 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
         
     }
 
+    remove(userId: string) : void {
+
+    }
+
     eventAcceptPending(user: User) : void {
         console.log(this._data);
         this._store.dispatch(new EventAcceptRegisterRequest({event: Object.assign({}, this._data), userId: user._id}));
