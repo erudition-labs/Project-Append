@@ -81,7 +81,6 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
     }
 
     eventAcceptPending(user: User) : void {
-        console.log(this._data);
         this._store.dispatch(new EventAcceptRegisterRequest({event: Object.assign({}, this._data), userId: user._id}));
         this._actions$.pipe(ofActionDispatched(EventAcceptRegisterRequestSuccess))
             .subscribe(() => this.refresh());

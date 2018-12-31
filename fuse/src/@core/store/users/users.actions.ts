@@ -38,7 +38,7 @@ export class UserEventRemove {
 
 export class UserEventRemoveSuccess {
     static readonly type = '[Users] User Event Remove Success';
-    constructor(public readonly payload: User) {}
+    constructor(public readonly payload?: User) {}
 }
 
 export class UserEventRemoveFail {

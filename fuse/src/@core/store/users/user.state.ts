@@ -104,7 +104,6 @@ export class UsersState implements NgxsOnInit {
     ) {
         const state = getState(); 
         let index = state.users.findIndex(x => x._id === payload._id);
-        console.log(index);
 
         if(index > -1) {
             patchState({ 
@@ -139,16 +138,16 @@ export class UsersState implements NgxsOnInit {
             let user = state.users[index];
             user = this._userService.preProcessUser(user);
 
-            //Remove event
+            //Remove event if signed up
             let eventIndex = user.events.findIndex(x => x._id === payload.eventId);
-            console.log(user);
+
             if(eventIndex > -1) {
                 user.events.splice(eventIndex, 1);
 
                 return this._userService.update(user, true)
                     .subscribe(data => {
                         asapScheduler.schedule(() => 
-                        dispatch(new usersActions.UserEventRemoveSuccess(data)) 
+                            dispatch(new usersActions.UserEventRemoveSuccess(data)) 
                         )
                     },
                     error => {
@@ -157,9 +156,11 @@ export class UsersState implements NgxsOnInit {
                         )
                     });
             } else {
+                //user is not signed up for that event, so he must be in a pending sate
+                //in which case we don't need to update the user model.
                 asapScheduler.schedule(() => 
-                    dispatch(new usersActions.UserEventRemoveFail("No Event Found"))
-                )                
+                    dispatch(new usersActions.UserEventRemoveSuccess(null)) 
+                )      
             }
         } else {
             //failed
@@ -175,6 +176,8 @@ export class UsersState implements NgxsOnInit {
         { patchState, getState }: StateContext<UsersStateModel>,
         { payload }: usersActions.UserEventRemoveSuccess 
     ) {
+
+        if(!payload) return;
         const state = getState(); 
         let index = state.users.findIndex(x => x._id === payload._id);
 
