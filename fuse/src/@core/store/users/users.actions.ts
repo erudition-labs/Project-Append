@@ -22,7 +22,7 @@ export class UserEventSignup {
 
 export class UserEventSignupSuccess {
     static readonly type = '[Users] User Event Signup Success';
-    constructor() {}
+    constructor(public readonly payload: User) {}
 }
 
 export class UserEventSignupFail {

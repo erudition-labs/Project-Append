@@ -75,10 +75,13 @@ export class UsersState implements NgxsOnInit {
             let user = state.users[index];
             user = this._userService.preProcessUser(user);
 
+            //add event
+            user.events.push(payload.eventId);
+
             return this._userService.update(user, true)
                 .subscribe(data => {
                     asapScheduler.schedule(() => 
-                       dispatch(new usersActions.UserEventSignupSuccess()) 
+                       dispatch(new usersActions.UserEventSignupSuccess(data)) 
                     )
                 },
                 error => {
@@ -96,10 +99,20 @@ export class UsersState implements NgxsOnInit {
 
     @Action(usersActions.UserEventSignupSuccess)
     userEventSignupSuccess(
-        { patchState }: StateContext<UsersStateModel>
-        //{ payload }: usersActions.UserEventSignupSuccess 
+        { patchState, getState }: StateContext<UsersStateModel>,
+        { payload }: usersActions.UserEventSignupSuccess 
     ) {
-        patchState({ loaded: true, loading: false });
+        const state = getState(); 
+        let index = state.users.findIndex(x => x._id === payload._id);
+
+        if(index > -1) {
+            patchState({ 
+                users: [...state.users.slice(0, index), 
+                    payload, 
+                    ...state.users.slice(index+1)],
+                loaded: true, 
+                loading: false });
+        }
     }
 
     @Action(usersActions.UserEventSignupFail)

@@ -188,7 +188,7 @@ import { UserEventSignup } from '@core/store/users/users.actions';
     @Action(eventActions.EventRequestRegisterFail)
     eventRequestRegisterFail(
         { patchState }: StateContext<CalendarEventStateModel>,
-        { payload }: eventActions.EventRequestRegisterSuccess
+        { payload }: eventActions.EventRequestRegisterFail
     ) {
         console.log(payload);
         patchState({ loaded: false, loading: false });
