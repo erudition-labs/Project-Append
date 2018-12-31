@@ -284,4 +284,94 @@ import { UserEventSignup } from '@core/store/users/users.actions';
         console.log(payload);
         patchState({ loaded: false, loading: false });
     }
+
+    @Action(eventActions.EventRemoveSignUpOrPending)
+    eventRemoveSignUpOrPending(
+        { patchState, dispatch }: StateContext<CalendarEventStateModel>,
+        { payload }: eventActions.EventRemoveSignUpOrPending
+    ) {
+        if(!this._tokenService.isAuthenticated()) {
+            //must be logged in
+            asapScheduler.schedule(() =>
+            dispatch(new eventActions.EventRemoveSignUpOrPendingFail("Must be Authenticated"))
+        )
+            return;
+        }
+
+        //must be an admin or assigned OIC to access this
+        if(!this._tokenService.isAdmin() || this._eventService.isOIC(payload.event)) {
+            asapScheduler.schedule(() =>
+            dispatch(new eventActions.EventRemoveSignUpOrPendingFail("Must be Authorized"))
+        )
+            return;   
+        }
+
+        patchState({ loaded: false, loading: true });
+        let event = this._eventService.preProcessEvent(payload.event);
+
+        let pendingIndex = event.pending.indexOf(payload.userId);
+        let signedUpIndex = event.signedUp.indexOf(payload.userId);
+       
+        if(pendingIndex > -1) {
+            event.pending.splice(pendingIndex, 1);
+        } else if(signedUpIndex > -1) {
+            event.signedUp.splice(signedUpIndex, 1);
+        } else {
+            asapScheduler.schedule(() =>
+                dispatch(new eventActions.EventRemoveSignUpOrPendingFail("Not signed up or in pending"))
+            )
+            return;
+        }
+
+        return this._eventService.update(event, true)
+            .subscribe(data => {
+                asapScheduler.schedule(() =>
+                    dispatch(new eventActions.EventRemoveSignUpOrPendingSuccess(({ event: data, userId: payload.userId })))
+                )
+            },
+            error => {
+                asapScheduler.schedule(() =>
+                    dispatch(new eventActions.EventRemoveSignUpOrPendingFail(error.message))
+                )    
+            });
+    }
+
+    @Action(eventActions.EventRemoveSignUpOrPendingSuccess)
+    eventRemoveSignUpOrPendingSuccess(
+        { patchState, getState, dispatch } : StateContext<CalendarEventStateModel>,
+        { payload }: eventActions.EventRemoveSignUpOrPendingSuccess
+    ) {
+        const state = getState();
+        let index = state.events.findIndex(x => x.meta.event._id === payload.event._id);
+
+
+        if(index > -1) {
+            patchState({
+                events: [...state.events.slice(0, index), 
+                        new CalendarEvent(payload.event), 
+                        ...state.events.slice(index+1)],
+                loaded: true, 
+                loading: false
+            });
+
+            //dispatch to make user reflect that they removed from event
+           this._store.dispatch(new UserEventRemove({ eventId: payload.event._id, userId: payload.userId }));
+        } else {
+            //dispatch fail
+            asapScheduler.schedule(() =>
+            dispatch(new eventActions.EventRemoveSignUpOrPendingFail("Failed to update"))
+        )
+            return;
+        }
+    }
+
+    @Action(eventActions.EventRemoveSignUpOrPendingFail)
+    eventRemoveSignUpOrPendingFail(
+        { patchState }: StateContext<CalendarEventStateModel>,
+        { payload }: eventActions.EventRemoveSignUpOrPendingFail
+    ) {
+        console.log(payload);
+        patchState({ loaded: false, loading: false });
+    }
+
 }
