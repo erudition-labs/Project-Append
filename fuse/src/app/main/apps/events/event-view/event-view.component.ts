@@ -6,7 +6,7 @@ import { NgxPermissionsService } from 'ngx-permissions';
 import { TokenAuthService } from '@core/auth/tokenAuth.service';
 import { EventService } from '../events.service';
 import { Store, Actions, ofActionDispatched } from '@ngxs/store';
-import { EventRequestRegister, EventRequestRegisterFail, EventRequestRegisterSuccess, EventAcceptRegisterRequest, EventAcceptRegisterRequestSuccess } from '../_store/events.actions';
+import { EventRequestRegister, EventRequestRegisterFail, EventRequestRegisterSuccess, EventAcceptRegisterRequest, EventAcceptRegisterRequestSuccess, EventRemoveSignUpOrPending, EventRemoveSignUpOrPendingSuccess } from '../_store/events.actions';
 import { CalendarEventState } from '../_store/events.state';
 import { User } from '@core/user/user.model';
 
@@ -71,12 +71,13 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
             .subscribe(() => this.refresh());
     }
     eventUnregister() : void {
-        console.log('unregister');
-        
+        this.remove(this._tokenAuthService.getCurrUserId());
     }
 
-    remove(userId: string) : void {
-
+    remove(id: string) : void {
+        this._store.dispatch(new EventRemoveSignUpOrPending({ event: Object.assign({}, this._data), userId: id }));
+        this._actions$.pipe(ofActionDispatched(EventRemoveSignUpOrPendingSuccess))
+            .subscribe(() => this.refresh());
     }
 
     eventAcceptPending(user: User) : void {

@@ -104,6 +104,7 @@ export class UsersState implements NgxsOnInit {
     ) {
         const state = getState(); 
         let index = state.users.findIndex(x => x._id === payload._id);
+        console.log(index);
 
         if(index > -1) {
             patchState({ 
@@ -140,26 +141,26 @@ export class UsersState implements NgxsOnInit {
 
             //Remove event
             let eventIndex = user.events.findIndex(x => x._id === payload.eventId);
-            if(eventIndex <= -1) {
+            console.log(user);
+            if(eventIndex > -1) {
+                user.events.splice(eventIndex, 1);
+
+                return this._userService.update(user, true)
+                    .subscribe(data => {
+                        asapScheduler.schedule(() => 
+                        dispatch(new usersActions.UserEventRemoveSuccess(data)) 
+                        )
+                    },
+                    error => {
+                        asapScheduler.schedule(() => 
+                            dispatch(new usersActions.UserEventRemoveFail(error.message))
+                        )
+                    });
+            } else {
                 asapScheduler.schedule(() => 
-                dispatch(new usersActions.UserEventRemoveFail("No Event Found"))
-            )
-                return;            
+                    dispatch(new usersActions.UserEventRemoveFail("No Event Found"))
+                )                
             }
-
-            user.events.splice(eventIndex, 1);
-
-            return this._userService.update(user, true)
-                .subscribe(data => {
-                    asapScheduler.schedule(() => 
-                       dispatch(new usersActions.UserEventRemoveSuccess(data)) 
-                    )
-                },
-                error => {
-                    asapScheduler.schedule(() => 
-                        dispatch(new usersActions.UserEventRemoveFail(error.message))
-                    )
-                });
         } else {
             //failed
             asapScheduler.schedule(() => 
