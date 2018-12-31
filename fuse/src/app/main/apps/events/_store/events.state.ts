@@ -78,6 +78,7 @@ import { UserEventSignup } from '@core/store/users/users.actions';
         { patchState }: StateContext<CalendarEventStateModel>,
         { payload }: eventActions.LoadEventsFail
     ) {
+        console.log(payload);
         patchState({ loaded: false, loading: false });
     }
 
@@ -116,7 +117,6 @@ import { UserEventSignup } from '@core/store/users/users.actions';
         { patchState }: StateContext<CalendarEventStateModel>,
         { payload }: eventActions.AddEventFail
     ) {
-        console.log(payload);
         patchState({ loaded: false, loading: false });
     }
 
@@ -208,7 +208,7 @@ import { UserEventSignup } from '@core/store/users/users.actions';
         }
 
         //must be an admin or assigned OIC to access this
-        if(!this._tokenService.isAdmin() || !this._eventService.isOIC(payload.event)) {
+        if(!this._tokenService.isAdmin() || this._eventService.isOIC(payload.event)) {
             asapScheduler.schedule(() =>
             dispatch(new eventActions.EventAcceptRegisterRequestFail("Must be Authorized"))
         )
@@ -225,7 +225,7 @@ import { UserEventSignup } from '@core/store/users/users.actions';
             //for the sake of possibility of duplicates we will use a Set
             let idSet = new Set(event.signedUp);
             idSet.add(payload.userId);
-            event.signedUp = Array(idSet);
+            event.signedUp = Array.from(idSet);
             //remove id from pending
             event.pending.splice(index, 1);
 
@@ -254,6 +254,7 @@ import { UserEventSignup } from '@core/store/users/users.actions';
     ) {
         const state = getState();
         let index = state.events.findIndex(x => x.meta.event._id === payload.event._id);
+
 
         if(index > -1) {
             patchState({

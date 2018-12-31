@@ -6,8 +6,9 @@ import { NgxPermissionsService } from 'ngx-permissions';
 import { TokenAuthService } from '@core/auth/tokenAuth.service';
 import { EventService } from '../events.service';
 import { Store, Actions, ofActionDispatched } from '@ngxs/store';
-import { EventRequestRegister, EventRequestRegisterFail, EventRequestRegisterSuccess } from '../_store/events.actions';
+import { EventRequestRegister, EventRequestRegisterFail, EventRequestRegisterSuccess, EventAcceptRegisterRequest, EventAcceptRegisterRequestSuccess } from '../_store/events.actions';
 import { CalendarEventState } from '../_store/events.state';
+import { User } from '@core/user/user.model';
 
 @Component({
     selector     : 'calendar-event-view-dialog',
@@ -67,19 +68,28 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
     eventRequestSignup() : void {
         this._store.dispatch(new EventRequestRegister(Object.assign({}, this._data)));
         this._actions$.pipe(ofActionDispatched(EventRequestRegisterSuccess))
-            .subscribe(() => {
-                //get snapshot, set data equal
-                let events = this._store.selectSnapshot(CalendarEventState.calendarEvents);
-                let index = events.findIndex(x => x.meta.event._id === this._data._id);
-                if(index > -1) {
-                    this._data = events[index].meta.event;
-                    this.loadPermissions();
-                }
-            });
+            .subscribe(() => this.refresh());
     }
     eventUnregister() : void {
         console.log('unregister');
         
+    }
+
+    eventAcceptPending(user: User) : void {
+        console.log(this._data);
+        this._store.dispatch(new EventAcceptRegisterRequest({event: Object.assign({}, this._data), userId: user._id}));
+        this._actions$.pipe(ofActionDispatched(EventAcceptRegisterRequestSuccess))
+            .subscribe(() => this.refresh());
+    }
+
+    private refresh() : void {
+        //get snapshot, set data equal
+        let events = this._store.selectSnapshot(CalendarEventState.calendarEvents);
+        let index = events.findIndex(x => x.meta.event._id === this._data._id);
+        if(index > -1) {
+            this._data = events[index].meta.event;
+            this.loadPermissions();
+        }
     }
 
     ngOnDestroy() {

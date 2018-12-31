@@ -65,7 +65,7 @@ export class LoadEventsSuccess {
 
   export class EventAcceptRegisterRequest {
     static readonly type = '[Events] Event Accept Register Request';
-    constructor(public readonly payload: any) {}
+    constructor(public readonly payload: { event: Event, userId: string }) {}
   }
 
   export class EventAcceptRegisterRequestSuccess {
