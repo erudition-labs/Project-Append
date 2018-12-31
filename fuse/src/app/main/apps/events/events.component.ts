@@ -160,7 +160,9 @@ export class EventsComponent implements OnInit, OnDestroy {
                 const formData: FormGroup = response[1];
                 switch(actionType) {
                     case 'save':
-                        this.events[index] = Object.assign(this.events[index], formData.getRawValue());
+                        let event = new CalendarEvent(formData.getRawValue() as Event, {actions: this.actions});
+                        event.meta.event.additionalDetails = JSON.stringify(event.meta.event.additionalDetails);
+                        //dispatch update
                         this.refresh.next(true);
                         break;
 
