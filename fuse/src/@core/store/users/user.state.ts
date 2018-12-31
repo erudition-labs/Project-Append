@@ -139,11 +139,10 @@ export class UsersState implements NgxsOnInit {
             user = this._userService.preProcessUser(user);
 
             //Remove event if signed up
-            let eventIndex = user.events.findIndex(x => x._id === payload.eventId);
+            let eventIndex = user.events.findIndex(x => x === payload.eventId);
 
             if(eventIndex > -1) {
                 user.events.splice(eventIndex, 1);
-
                 return this._userService.update(user, true)
                     .subscribe(data => {
                         asapScheduler.schedule(() => 

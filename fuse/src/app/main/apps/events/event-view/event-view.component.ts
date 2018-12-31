@@ -6,7 +6,7 @@ import { NgxPermissionsService } from 'ngx-permissions';
 import { TokenAuthService } from '@core/auth/tokenAuth.service';
 import { EventService } from '../events.service';
 import { Store, Actions, ofActionDispatched } from '@ngxs/store';
-import { EventRequestRegister, EventRequestRegisterFail, EventRequestRegisterSuccess, EventAcceptRegisterRequest, EventAcceptRegisterRequestSuccess, EventRemoveSignUpOrPending, EventRemoveSignUpOrPendingSuccess } from '../_store/events.actions';
+import { EventRequestRegister, EventRequestRegisterSuccess, EventAcceptRegisterRequest, EventAcceptRegisterRequestSuccess, EventRemoveSignUpOrPending, EventRemoveSignUpOrPendingSuccess } from '../_store/events.actions';
 import { CalendarEventState } from '../_store/events.state';
 import { User } from '@core/user/user.model';
 
