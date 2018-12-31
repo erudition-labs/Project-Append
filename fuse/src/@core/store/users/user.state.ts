@@ -76,7 +76,10 @@ export class UsersState implements NgxsOnInit {
             user = this._userService.preProcessUser(user);
 
             //add event
-            user.events.push(payload.eventId);
+            //to ensure there are no duplicates, we will use a Set
+            let idSet = new Set(user.events);
+            idSet.add(payload.eventId);
+            user.events = Array.from(idSet);
 
             return this._userService.update(user, true)
                 .subscribe(data => {
