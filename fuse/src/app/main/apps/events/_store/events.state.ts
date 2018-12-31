@@ -379,9 +379,6 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
         { patchState, dispatch }: StateContext<CalendarEventStateModel>,
         { payload }: eventActions.UpdateEvent
     ) {
-
-        let event = payload.meta.event;
-
         if(!this._tokenService.isAuthenticated()) {
             //must be logged in
             asapScheduler.schedule(() =>
@@ -391,7 +388,7 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
         }
 
         //must be an admin or assigned OIC to access this
-        if(!this._tokenService.isAdmin() || this._eventService.isOIC(event)) {
+        if(!this._tokenService.isAdmin() || this._eventService.isOIC(payload.event)) {
             asapScheduler.schedule(() =>
             dispatch(new eventActions.UpdateEventFail("Must be Authorized"))
         )
@@ -399,12 +396,12 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
         }
 
         patchState({ loaded: false, loading: true });
-        event = this._eventService.preProcessEvent(event);
+        let event = this._eventService.preProcessEvent(payload.event);
 
         return this._eventService.update(event, true)
         .subscribe(data => {
             asapScheduler.schedule(() =>
-                dispatch(new eventActions.UpdateEventSuccess((data as Event)))
+                dispatch(new eventActions.UpdateEventSuccess(({event: data as Event})))
             )
         },
         error => {
@@ -420,13 +417,13 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
         { payload }: eventActions.UpdateEventSuccess
     ) {
         const state = getState();        
-        let index = state.events.findIndex(x => x.meta.event._id === payload._id);
+        let index = state.events.findIndex(x => x.meta.event._id === payload.event._id);
 
-
+        console.log(payload);
         if(index > -1) {
             patchState({
                 events: [...state.events.slice(0, index), 
-                        new CalendarEvent(payload), 
+                        new CalendarEvent(payload.event), 
                         ...state.events.slice(index+1)],
                 loaded: true, 
                 loading: false

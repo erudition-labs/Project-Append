@@ -17,16 +17,16 @@ export class LoadEventsSuccess {
   //UPDATE
   export class UpdateEvent {
     static readonly type = '[Events] Update Event';
-    constructor(public readonly payload: CalendarEventModel) {}
+    constructor(public readonly payload: {event: Event}) {}
   }
 
   export class UpdateEventSuccess {
-    static readonly type = '[Events] Load Events Success';
-    constructor(public readonly payload: Event) {}
+    static readonly type = '[Events] Update Events Success';
+    constructor(public readonly payload: { event: Event }) {}
   }
 
   export class UpdateEventFail {
-    static readonly type = '[Events] Load Events Fail';
+    static readonly type = '[Events] Update Events Fail';
     constructor(public readonly payload?: any) {}
   }
 

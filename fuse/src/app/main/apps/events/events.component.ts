@@ -14,7 +14,9 @@ import { CalendarEventFormDialogComponent } from 'app/main/apps/events/event-for
 import { CalendarEventViewDialogComponent } from 'app/main/apps/events/event-view/event-view.component';
 import { CalendarEventActions, 
         AddEvent, 
-        AddEventSuccess } from './_store/events.actions';
+        AddEventSuccess, 
+        UpdateEvent,
+        UpdateEventSuccess} from './_store/events.actions';
 import { CalendarEventState } from './_store/events.state';
 import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
 import { tap, takeUntil } from 'rxjs/operators';
@@ -162,8 +164,12 @@ export class EventsComponent implements OnInit, OnDestroy {
                     case 'save':
                         let event = new CalendarEvent(formData.getRawValue() as Event, {actions: this.actions});
                         event.meta.event.additionalDetails = JSON.stringify(event.meta.event.additionalDetails);
+
                         //dispatch update
-                        this.refresh.next(true);
+                        this._store.dispatch(new UpdateEvent({ event: formData.getRawValue() as Event }));
+                        this._actions$.pipe(ofActionDispatched(UpdateEventSuccess))
+                            .subscribe(() => { this.refresh.next(true);
+                        });
                         break;
 
                     case 'delete':
