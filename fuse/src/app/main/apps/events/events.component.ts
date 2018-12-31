@@ -139,16 +139,18 @@ export class EventsComponent implements OnInit, OnDestroy {
         });
     }
     
-    editEvent(action: string, event: CalendarEvent): void {
-        const eventIndex = this.events.indexOf(event);
+    editEvent(action: string, eventId: string): void {
+       let index = this.events.findIndex(x => x.meta.event._id === eventId);
 
-        this.dialogRef = this._matDialog.open(CalendarEventFormDialogComponent, {
-            panelClass: 'event-form-dialog',
-            data      : {
-                event : event.meta.event,
-                action: action
-            }
-        });
+       if(index > -1) {
+            this.dialogRef = this._matDialog.open(CalendarEventFormDialogComponent, {
+                panelClass: 'event-form-dialog',
+                data      : {
+                    event : Object.assign({}, this.events[index].meta.event),
+                    action: 'edit'
+                }
+            });
+       }
 
         this.dialogRef.afterClosed()
             .subscribe(response => {
@@ -158,14 +160,13 @@ export class EventsComponent implements OnInit, OnDestroy {
                 const formData: FormGroup = response[1];
                 switch(actionType) {
                     case 'save':
-                        this.events[eventIndex] = Object.assign(this.events[eventIndex], formData.getRawValue());
+                        this.events[index] = Object.assign(this.events[index], formData.getRawValue());
                         this.refresh.next(true);
                         break;
 
                     case 'delete':
                        // this.deleteEvent(event);
 
-                        break;
                 }
         });
     }
@@ -175,6 +176,15 @@ export class EventsComponent implements OnInit, OnDestroy {
             panelClass: 'event-form-dialog',
             data: event.meta.event
         });
+
+        this.dialogRef.afterClosed()
+            .subscribe(response => {
+                if(!response) return;
+
+                if(response.action === 'edit') {
+                    this.editEvent('edit', response.id);
+                }
+            });
     }
 
     ngOnDestroy(): void {

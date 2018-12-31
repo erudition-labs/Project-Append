@@ -43,7 +43,7 @@ export class CalendarEventFormDialogComponent implements OnDestroy, OnInit
         private _tokenAuthService: TokenAuthService,
         private _store: Store
     ) {
-
+        console.log(this._data);
         this.event = _data.event;
         this.action = _data.action;
 
@@ -82,7 +82,11 @@ export class CalendarEventFormDialogComponent implements OnDestroy, OnInit
 
         
         if(this._data.event && this._data.event.additionalDetails) {
-            let details = JSON.parse(this._data.event.additionalDetails);
+            if (this._data.event.additionalDetails && typeof this._data.event.additionalDetails !== "object") {
+                this._data.event.additionalDetails = JSON.parse(this._data.event.additionalDetails);
+            }
+
+            let details = this._data.event.additionalDetails;
             details.forEach(function(obj) {  //populate formArray
                 const control = <FormArray> form.controls['additionalDetails'];
                 control.push(this.initDetailFieldWithData(obj.title, obj.details));

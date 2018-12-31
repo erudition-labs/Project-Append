@@ -96,6 +96,12 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
         }
     }
 
+    editEvent() : void {
+        console.log('edit some how');
+        //this._eventsComponent.editEvent('edit', this._data._id);
+        this.matDialogRef.close({ action: 'edit', id: this._data._id});
+    }
+
     ngOnDestroy() {
         this._permissionsService.removePermission('EDIT');
         this._permissionsService.removePermission('SIGNUP');

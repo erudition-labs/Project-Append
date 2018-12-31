@@ -3,16 +3,20 @@
             <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
                 <span class="title dialog-title">{{dialogTitle}}
                     <ng-template ngxPermissionsOnly="SIGNUP">
-                            <button mat-button (click)="eventRequestSignup()">Sign Up</button>
+                        <button mat-button (click)="eventRequestSignup()">Sign Up</button>
                     </ng-template>
                     
                     <ng-template ngxPermissionsOnly="PENDING">
-                            <button mat-button (click)="eventUnregister()">Pending</button>
+                        <button mat-button (click)="eventUnregister()">Pending</button>
                     </ng-template>
                     
                     <ng-template ngxPermissionsOnly="UNREGISTER">
-                            <button mat-button (click)="eventUnregister()">Unregister</button>
+                        <button mat-button (click)="eventUnregister()">Unregister</button>
                     </ng-template> 
+
+                    <ng-template ngxPermissionsOnly="EDIT">
+                        <button mat-button (click)="editEvent()">Edit</button>
+                    </ng-template>
                 </span>
                 <span class="title dialog-title">{{_data.signedUp.length}} / {{_data.spots}}</span>
                 <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
