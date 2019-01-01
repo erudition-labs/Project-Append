@@ -20,15 +20,6 @@ Run "npm install" to install packages. Need to do it in angular-src as well
 
 Reccomend getting nodemon to auto detect changes to server and auto-reload. run "sudo npm install -g nodemon"
 
-#ENDPOINTS so far
-
-POST api/users/register
-
-POST api/users/authenticate   // Gives back a token
-
-GET api/users/profile         // Needs json web token to authorize
-
-GET api/users/users //get a list of all users in database
 
 DELETE api/users/delete/{id} //deletes a user by id
 
@@ -38,3 +29,5 @@ https://github.com/sehrope/node-rand-token/issues/9
 https://github.com/whitef0x0/node-email-verification/issues/78
 
 Also possibly have to manually update nodemailer to latest version
+
+
