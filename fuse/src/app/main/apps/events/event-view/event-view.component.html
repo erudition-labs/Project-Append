@@ -1,7 +1,18 @@
 <div class="dialog-content-wrapper">
         <mat-toolbar class="mat-accent m-0">
             <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-                <span class="title dialog-title">{{dialogTitle}}
+                <span class="title dialog-title">
+                    
+                    <ng-template ngxPermissionsOnly="EDIT">
+                        <button 
+                            mat-icon-button
+                            (click)="matDialogRef.close(['delete', eventForm])"
+                            aria-label="Delete"
+                            matTooltip="Delete">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                </ng-template>
+                    {{dialogTitle}}
                     <ng-template ngxPermissionsOnly="SIGNUP">
                         <button mat-button (click)="eventRequestSignup()">Sign Up</button>
                     </ng-template>
@@ -22,6 +33,7 @@
                 <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
                     <mat-icon>close</mat-icon>
                 </button>
+                
             </mat-toolbar-row>
         </mat-toolbar>
     
@@ -151,4 +163,5 @@
                 </mat-accordion>
             </div>
         </ng-template>
+        
 </div>

@@ -184,13 +184,5 @@
                 aria-label="SAVE">
             SAVE
         </button>
-
-        <button *ngIf="action ==='edit'"
-                mat-icon-button
-                (click)="matDialogRef.close(['delete', eventForm])"
-                aria-label="Delete"
-                matTooltip="Delete">
-            <mat-icon>delete</mat-icon>
-        </button>
     </div>
 </div>
