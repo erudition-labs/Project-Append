@@ -95,6 +95,22 @@ export class LoadEventsSuccess {
     constructor(public readonly payload?: any) {}
   }
 
+  //Delete event
+  export class EventRemove {
+    static readonly type = '[Events] Event Remove';
+    constructor(public readonly payload: { eventId: string }) {}
+  }
+
+  export class EventRemoveSuccess {
+    static readonly type = '[Events] Event Remove Success';
+    constructor(public readonly payload: { eventId: string }) {}
+  }
+
+  export class EventRemoveFail {
+    static readonly type = '[Events] Event Remove Fail';
+    constructor(public readonly payload?: any) {} 
+  }
+
 
 
 
@@ -116,4 +132,7 @@ export type CalendarEventActions =
     | EventAcceptRegisterRequestFail
     | EventRemoveSignUpOrPending
     | EventRemoveSignUpOrPendingSuccess
-    | EventRemoveSignUpOrPendingFail;
+    | EventRemoveSignUpOrPendingFail
+    | EventRemove
+    | EventRemoveSuccess
+    | EventRemoveFail;

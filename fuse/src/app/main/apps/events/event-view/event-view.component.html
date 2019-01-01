@@ -6,12 +6,13 @@
                     <ng-template ngxPermissionsOnly="EDIT">
                         <button 
                             mat-icon-button
-                            (click)="matDialogRef.close(['delete', eventForm])"
+                            (click)="deleteEvent()"
                             aria-label="Delete"
                             matTooltip="Delete">
                             <mat-icon>delete</mat-icon>
                         </button>
-                </ng-template>
+                    </ng-template>
+
                     {{dialogTitle}}
                     <ng-template ngxPermissionsOnly="SIGNUP">
                         <button mat-button (click)="eventRequestSignup()">Sign Up</button>
