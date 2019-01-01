@@ -98,7 +98,7 @@ export class LoadEventsSuccess {
   //Delete event
   export class EventRemove {
     static readonly type = '[Events] Event Remove';
-    constructor(public readonly payload: { eventId: string }) {}
+    constructor(public readonly payload: { event: Event }) {}
   }
 
   export class EventRemoveSuccess {

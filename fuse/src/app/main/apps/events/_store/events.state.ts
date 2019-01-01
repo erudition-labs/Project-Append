@@ -446,4 +446,64 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
         patchState({ loaded: false, loading: false });
     }
 
+    @Action(eventActions.EventRemove)
+    eventRemove(
+        { patchState, dispatch }: StateContext<CalendarEventStateModel>,
+        { payload }: eventActions.EventRemove
+    ) {
+        if(!this._tokenService.isAuthenticated()) {
+            //must be logged in
+            asapScheduler.schedule(() =>
+            dispatch(new eventActions.EventRemoveFail("Must be Authenticated"))
+        )
+            return;
+        }
+
+        //must be an admin or assigned OIC to access this
+        if(!this._tokenService.isAdmin() || this._eventService.isOIC(payload.event)) {
+            asapScheduler.schedule(() =>
+            dispatch(new eventActions.EventRemoveFail("Must be Authorized"))
+        )
+            return;   
+        }
+
+        patchState({ loaded: false, loading: true });
+
+        //delete REST endpoint
+    }
+
+    @Action(eventActions.EventRemoveSuccess)
+    eventRemoveSuccess(
+        { patchState, getState, dispatch } : StateContext<CalendarEventStateModel>,
+        { payload }: eventActions.EventRemoveSuccess
+    ) {
+        const state = getState();        
+        let index = state.events.findIndex(x => x.meta.event._id === payload.eventId);
+
+        if(index > -1) {
+            patchState({
+                events: [...state.events.slice(0, index),  
+                        ...state.events.slice(index+1)],
+                loaded: true, 
+                loading: false
+            });
+
+       } else {
+            //dispatch fail
+            asapScheduler.schedule(() =>
+            dispatch(new eventActions.EventRemoveFail("Failed to delete"))
+        )
+            return;
+        }
+    }
+
+    @Action(eventActions.EventRemoveFail)
+    eventRemoveFail(
+        { patchState }: StateContext<CalendarEventStateModel>,
+        { payload }: eventActions.EventRemoveFail
+    ) {
+        console.log(payload);
+        patchState({ loaded: false, loading: false });
+    }
+
 }
