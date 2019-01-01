@@ -10,6 +10,6 @@ router.route('/:id').get(passport.authenticate('jwt', { session: false }), contr
 router.route('/').get(passport.authenticate('jwt', { session: false }), controller.getEvents);
 router.route('/').put(passport.authenticate('jwt', { session: false }), controller.putEvent);
 router.route('/:id').put(passport.authenticate('jwt', { session: false }), controller.putEvent);
-router.route('/:id').delete(passport.authenticate('jwt', { session: false }), requireAdmin, controller.deleteEvent);
+router.route('/:id').delete(passport.authenticate('jwt', { session: false }), controller.deleteEvent);
 
 module.exports = router;
