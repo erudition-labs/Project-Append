@@ -162,11 +162,12 @@ export class EventsComponent implements OnInit, OnDestroy {
                 const formData: FormGroup = response[1];
                 switch(actionType) {
                     case 'save':
-                        let event = new CalendarEvent(formData.getRawValue() as Event, {actions: this.actions});
-                        event.meta.event.additionalDetails = JSON.stringify(event.meta.event.additionalDetails);
+                        let event = formData.getRawValue() as Event;
+                        event._id = this.events[index].meta.event._id;
+                        event.additionalDetails = JSON.stringify(event.additionalDetails);
 
                         //dispatch update
-                        this._store.dispatch(new UpdateEvent({ event: formData.getRawValue() as Event }));
+                        this._store.dispatch(new UpdateEvent({ event: event }));
                         this._actions$.pipe(ofActionDispatched(UpdateEventSuccess))
                             .subscribe(() => { this.refresh.next(true);
                         });

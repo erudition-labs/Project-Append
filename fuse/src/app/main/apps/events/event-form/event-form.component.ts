@@ -43,7 +43,6 @@ export class CalendarEventFormDialogComponent implements OnDestroy, OnInit
         private _tokenAuthService: TokenAuthService,
         private _store: Store
     ) {
-        console.log(this._data);
         this.event = _data.event;
         this.action = _data.action;
 

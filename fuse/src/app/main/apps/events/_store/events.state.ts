@@ -399,7 +399,7 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
         let event = this._eventService.preProcessEvent(payload.event);
 
         return this._eventService.update(event, true)
-        .subscribe(data => {
+        .subscribe(data => { 
             asapScheduler.schedule(() =>
                 dispatch(new eventActions.UpdateEventSuccess(({event: data as Event})))
             )
@@ -419,7 +419,6 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
         const state = getState();        
         let index = state.events.findIndex(x => x.meta.event._id === payload.event._id);
 
-        console.log(payload);
         if(index > -1) {
             patchState({
                 events: [...state.events.slice(0, index), 

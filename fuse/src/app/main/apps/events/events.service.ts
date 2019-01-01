@@ -46,7 +46,6 @@ export class EventService {
 
 	public update(event: Event, preProcessed: boolean) : Observable<any> {
 		if(!preProcessed) event = this.preProcessEvent(event);
-
 		return this._http.put<any>(this.url + '/', { data: event, user: this._tokenAuthService.getCurrUserId() })
 		.pipe(retry(3), map((response) => {
 			if(response.success) {
