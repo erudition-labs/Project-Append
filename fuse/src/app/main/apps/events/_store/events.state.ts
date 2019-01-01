@@ -469,7 +469,17 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
 
         patchState({ loaded: false, loading: true });
 
-        //delete REST endpoint
+        return this._eventService.delete(payload.event._id)
+        .subscribe(data => { 
+            asapScheduler.schedule(() =>
+                dispatch(new eventActions.EventRemoveSuccess(({ eventId: payload.event._id })))
+            )
+        },
+        error => {
+            asapScheduler.schedule(() =>
+                dispatch(new eventActions.EventRemoveFail(error.message))
+            )    
+        });
     }
 
     @Action(eventActions.EventRemoveSuccess)
