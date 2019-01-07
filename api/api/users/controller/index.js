@@ -58,6 +58,8 @@ const postUser = async (request, response) => {
 	util.NEV.createTempUser(userData, function(error, existingPersistentUser, newTempUser) {
 		//some sort of error
 		if(error) {
+			console.log(error);
+
 			return response.status(500).json({ success: false, message:'Something went wrong'});
 		}
 

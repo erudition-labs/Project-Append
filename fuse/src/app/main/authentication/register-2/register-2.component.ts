@@ -221,6 +221,7 @@ export class Register2Component implements OnInit, OnDestroy {
                 events
             };
 
+            newUser.fullName = newUser.firstName + " " + newUser.lastName;
             this.authService.signup(newUser).subscribe(
                 result => {
                     if (result.success) {

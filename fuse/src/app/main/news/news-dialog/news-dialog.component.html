@@ -3,8 +3,8 @@
   <form [formGroup]="updateForm">
     <mat-form-field>
     <input matInput [formControl]="updateForm.get('title')" placeholder="Title of Post" style="width: 100%">
+    <!-- <quill-editor></quill-editor> -->
     </mat-form-field>
-    <tui-editor [options]="options" ></tui-editor>
     <mat-dialog-actions>
       <span style="float:right; margin-top: 10px">
           <button mat-raised-button color="primary" (click)="save()" [disabled]="updateForm.invalid">Post</button>

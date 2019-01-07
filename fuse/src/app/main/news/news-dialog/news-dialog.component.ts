@@ -8,9 +8,9 @@ import {
 } from '@angular/forms';
 import { UpdatesService } from '../../../../@core/updates/updates.service';
 import { Update } from '../../../../@core/updates/update.model';
-import { TuiService } from 'ngx-tui-editor';
 import { AuthService } from '@core/auth/auth.service';
 import { UserService } from '@core/user/user.service';
+
 
 @Component({
   selector: 'app-news-dialog',
@@ -22,7 +22,6 @@ export class NewsDialogComponent implements OnInit {
   constructor(public dialogRef : MatDialogRef<NewsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public formBuilder : FormBuilder,
-    private editorService: TuiService,
     private authService : AuthService,
     private userService : UserService,
     private updatesService : UpdatesService,
@@ -32,13 +31,6 @@ export class NewsDialogComponent implements OnInit {
     updateForm: FormGroup;
     update : Update;
     markdown : any = "";
-    options : any = {
-      initialValue: `# Edit Me!` ,
-      initialEditType: 'wysiwyg',
-      previewStyle: 'vertical',
-      height: 'auto',
-      minHeight: '500px' 
-    };
 
 
 
@@ -66,7 +58,7 @@ export class NewsDialogComponent implements OnInit {
       date
     };
 
-    update.content = this.editorService.getMarkdown();
+    //update.content = this.editorService.getMarkdown();
     update.date = new Date();
     update.author = this.authService.parseToken().sub;
 

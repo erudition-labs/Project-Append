@@ -5,7 +5,6 @@ import { UpdatesService } from '../../../@core/updates/updates.service';
 import { Update } from '../../../@core/updates/update.model';
 import { AuthService } from '../../../@core/auth/auth.service';
 import { UserService } from '../../../@core/user/user.service';
-import { TuiService } from 'ngx-tui-editor';
 import { ToastrService } from 'ngx-toastr';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { MatDialog } from '@angular/material';
@@ -35,7 +34,6 @@ export class NewsComponent implements OnInit {
         private toast : ToastrService, 
         private formBuilder : FormBuilder,
         private userService : UserService,
-        private editorService: TuiService,
         private dialog  : MatDialog
 
 

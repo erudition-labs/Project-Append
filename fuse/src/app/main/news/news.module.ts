@@ -7,10 +7,11 @@ import { NewsComponent } from './news.component';
 import { FuseSidebarModule } from '@fuse/components';
 
 import { MarkdownModule, MarkedOptions } from 'ngx-markdown';
-import { TuiModule } from 'ngx-tui-editor';
 import { NewsDialogComponent } from './news-dialog/news-dialog.component';
 import { MatDialogModule } from '@angular/material';
 import {MatStepperModule} from '@angular/material/stepper';
+import { QuillModule } from 'ngx-quill'
+
 
 const routes = [
     {
@@ -40,8 +41,8 @@ const routes = [
         MatInputModule,
         MatDialogModule,
         MatStepperModule,
-        TuiModule,
         MarkdownModule.forRoot(),
+        QuillModule,
     ],
     exports     : [
         NewsComponent,
