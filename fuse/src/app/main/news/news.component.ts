@@ -3,7 +3,7 @@ import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { UpdatesService } from '../../../@core/updates/updates.service';
 import { Update } from '../../../@core/updates/update.model';
-import { AuthService } from '../../../@core/auth/auth.service';
+import { TokenAuthService } from '@core/auth/tokenAuth.service';
 import { UserService } from '../../../@core/user/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
@@ -12,6 +12,9 @@ import { locale as english } from './i18n/en';
 import { locale as turkish } from './i18n/tr';
 import { NewsDialogComponent } from './news-dialog/news-dialog.component';
 import { fuseAnimations } from '@fuse/animations';
+
+import { Store } from '@ngxs/store';
+import { AuthState } from '@core/store/auth/auth.state';
 
 @Component({
     selector   : 'news',
@@ -30,11 +33,11 @@ export class NewsComponent implements OnInit {
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private _fuseSidebarService: FuseSidebarService,
         private updatesService : UpdatesService, 
-        public authService : AuthService, 
+        public _tokenAuthService : TokenAuthService, 
         private toast : ToastrService, 
         private formBuilder : FormBuilder,
         private userService : UserService,
-        private dialog  : MatDialog
+        private _store : Store
 
 
     ) {
@@ -82,6 +85,39 @@ export class NewsComponent implements OnInit {
           author    : new FormControl('', {}),
           date      : new FormControl('', {}),
             });
+      }
+      
+      public onClick() : void {
+    
+            this.updateForm.controls.title.markAsDirty();
+    
+            const { title, content, author, date } = this.updateForm.value;
+            const update : Update = {
+                title,
+          content,
+          author,
+          date
+        };
+    
+    
+        update.date = new Date();
+        this._tokenAuthService.getCurrUserId();
+
+        this.updatesService.createUpdate(update).subscribe((result) => {
+          this.userService.getUser(result.result.author).subscribe((user) => {
+            result.result.author = user;
+          });
+          result.result.date = new Date(result.result.date);
+    
+          this.updates.splice(0, 0, result.result);
+    
+          if(result.success) {
+            this.success('Posted!');
+          } else {
+            this.error('Something went wrong');
+          }
+          
+        });
       }
     
       public onClickEdit() : void {
@@ -133,22 +169,26 @@ export class NewsComponent implements OnInit {
         this.update = update;
         this.markdown = this.update.content;
       }
-
+    /*
       public createUpdate(): void {
         this.createForm();
-          if(this.authService.isAuthenticated() && this.authService.isAdmin()) {
-            this.updateFilled = false;
-          } else {
-            //tell them they no have access
-            this.error('You are not authorized');
-          }
-      }
+            if(this.authService.isAuthenticated() && this.authService.isAdmin()) {
+          this.addUpdateClicked = true;
+          this.updateFilled = false;
+          
+            } else {
+                //tell them they no have access
+          this.error('You are not authorized');
+          this.addUpdateClicked = false;
+            }
+      }*/
     
-      private edit() {
+    /*  private edit() {
+        this.editButtonClicked = true;
         if(this.authService.isAuthenticated() && this.authService.isAdmin()) {
           this.populateForm();
         }
-      }
+      }*/
     
       delete(update) : void {
         if (window.confirm('Are you sure you want to delete?')) {
@@ -171,22 +211,6 @@ export class NewsComponent implements OnInit {
         }
       }
       
-      private openDialog() : void {
-        let dialogRef = this.dialog.open(NewsDialogComponent, {
-
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-         if(result != null || result != undefined) {
-          this.updateFilled = false;
-          this.updates.splice(0, 0, result);
-          this.newestUpdate = this.updates[0];
-          this.markdown = this.newestUpdate.content;
-         } else {
-           //do nothing 
-         }
-        });
-      }
 
       private error(msg : string) : void {
             this.toast.error(msg, 'Error!', {

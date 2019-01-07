@@ -138,13 +138,14 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
             });
 
             //user info
+            /*
             if(this.authService.isAuthenticated()) {
                 let decodedToken = this.authService.getUserInfo();
                 this.userService.getUser(decodedToken.sub).subscribe(httpResult  => {
                 this.isAuthenticated = true;
                 this.userInfo = httpResult;
                 });
-            }
+            }*/
     }
 
     /**

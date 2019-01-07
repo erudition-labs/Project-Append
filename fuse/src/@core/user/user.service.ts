@@ -21,8 +21,8 @@ export class UserService {
 	private handleError: HandleError;
 	readonly url : string = environment.API_URL + "/api/v1/users"
 
-	constructor(private http		: HttpClient,
-				private utils		: UtilsService,
+	constructor(private _http		: HttpClient,
+				private _utils		: UtilsService,
 				private authService	: AuthService,
 				private httpErrorHandler	: HttpErrorHandler,
 				private toast				: ToastrService) 
@@ -36,16 +36,16 @@ export class UserService {
 				email
 			}
 		});
-		return this.http.get(this.url + `/check-email`, { params });
+		return this._http.get(this.url + `/check-email`, { params });
 	}
 
 	public getUsers() : Observable<User[]> {
-		return this.http.get<any>(this.url + '/users')
+		return this._http.get<any>(this.url + '/users')
 		.pipe(retry(3), map((response) => {
 			if(response.success) {
 				return Object.values(response.result) as User[];
 			} else {
-				this.error(response.message);
+				//this.error(response.message);
 				return null;
 			}
 		  }),
@@ -55,18 +55,35 @@ export class UserService {
 
 
 	public getUser(id : string) : Observable<User> {
-		return this.http.get<any>(this.url + '/' + id)
+		return this._http.get<any>(this.url + '/' + id)
 		.pipe(retry(3), map((response) => {
 			if(response.success) {
 				return response.result as User;
 			} else {
-				this.error(response.message);
+				//this.error(response.message);
 				return null;
 			}
 		  }),
 		catchError(this.handleError('getUser', null)));
 	}
 
+	public update(user: User, preProcessed: boolean) : Observable<any> {
+		if(!preProcessed) user = this.preProcessUser(user);
+		return this._http.put<any>(this.url + '/' + user._id, {userData: user})
+		.pipe(retry(3), map((response) => {
+			if(response.success) {
+				return response.result as User;
+			} else {
+				return Observable.throw(response.message.json());
+			}
+		}))
+	}
+
+	public preProcessUser(user: User) : User {
+		user.events = this._utils.getIds(user.events);
+		return user;
+	}
+/*
 	public updateUser(id : string, user: User) : Observable<User> {
 		//convert Users Objects back to user ids
 		let idSet = new Set(this.utils.getIds(user.events));
@@ -184,5 +201,5 @@ export class UserService {
 			progressAnimation: 'decreasing',
 			positionClass: 'toast-top-right',
 		  });
-	}
+	}*/
 }

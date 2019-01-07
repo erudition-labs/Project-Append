@@ -14,6 +14,7 @@ import {
     MatCardModule,
     MatExpansionModule,
     MatBadgeModule,
+    MatCheckboxModule,
 } from '@angular/material';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { CalendarModule as AngularCalendarModule } from 'angular-calendar';
@@ -63,6 +64,7 @@ const routes: Routes = [
         MatSlideToggleModule,
         MatToolbarModule,
         MatTooltipModule,
+        MatCheckboxModule,
         OwlDateTimeModule,
         OwlNativeDateTimeModule,
         NgSelectModule,

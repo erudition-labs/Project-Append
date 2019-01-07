@@ -3,15 +3,20 @@ import { FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { Subject, Observable } from 'rxjs';
 import { startOfDay, isSameDay, isSameMonth } from 'date-fns';
-import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarMonthViewDay } from 'angular-calendar';
+import { CalendarEventAction, CalendarEventTimesChangedEvent, CalendarMonthViewDay } from 'angular-calendar';
+import { CalendarEvent  as AngularCalendarEvent } from 'angular-calendar';
 
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { fuseAnimations } from '@fuse/animations';
 
-import { CalendarEventModel, Event } from 'app/main/apps/events/_store/events.state.model';
+import { CalendarEventModel, Event, CalendarEvent } from 'app/main/apps/events/_store/events.state.model';
 import { CalendarEventFormDialogComponent } from 'app/main/apps/events/event-form/event-form.component';
 import { CalendarEventViewDialogComponent } from 'app/main/apps/events/event-view/event-view.component';
-import { CalendarEventActions } from './_store/events.actions';
+import { CalendarEventActions, 
+        AddEvent, 
+        AddEventSuccess, 
+        UpdateEvent,
+        UpdateEventSuccess} from './_store/events.actions';
 import { CalendarEventState } from './_store/events.state';
 import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
 import { tap, takeUntil } from 'rxjs/operators';
@@ -24,7 +29,7 @@ import { tap, takeUntil } from 'rxjs/operators';
     animations   : fuseAnimations
 })
 export class EventsComponent implements OnInit, OnDestroy {
-    @Select(CalendarEventState.calendarEvents) $events : Observable<CalendarEventModel[]>
+    @Select(CalendarEventState.calendarEvents) events$ : Observable<CalendarEventModel[]>
 
     actions             : CalendarEventAction[];
     activeDayIsOpen     : boolean;
@@ -40,7 +45,7 @@ export class EventsComponent implements OnInit, OnDestroy {
     constructor(
         private _matDialog  : MatDialog,
         private _store      : Store,
-        private actions$    : Actions
+        private _actions$   : Actions,
        
     ) {
          // Set the defaults
@@ -67,7 +72,8 @@ export class EventsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.$events.pipe(takeUntil(this.ngUnsubscribe))
+        this._actions$.pipe(takeUntil(this.ngUnsubscribe));
+        this.events$.pipe(takeUntil(this.ngUnsubscribe))
             .subscribe(e => this.events = e);
         this.refresh.next();
     }
@@ -93,7 +99,7 @@ export class EventsComponent implements OnInit, OnDestroy {
 
     dayClicked(day: CalendarMonthViewDay): void {
         const date: Date = day.date;
-        const events: CalendarEvent[] = day.events;
+        const events: AngularCalendarEvent[] = day.events;
 
         if(isSameMonth(date, this.viewDate)){
             if((isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) || events.length === 0){
@@ -117,26 +123,36 @@ export class EventsComponent implements OnInit, OnDestroy {
         });
         this.dialogRef.afterClosed()
             .subscribe((response: FormGroup) => {
-                if (!response) return;
+                if(!response) return;
         
-                const newEvent = response.getRawValue();
-                newEvent.actions = this.actions;
-                //this.events.push(newEvent);
-                this.refresh.next(true);
+                const actionType: string = response[0];
+                const formData: FormGroup = response[1];
+
+                switch(actionType) {
+                    case 'new':
+                        let event = new CalendarEvent(formData.getRawValue() as Event, {actions: this.actions});
+                        event.meta.event.additionalDetails = JSON.stringify(event.meta.event.additionalDetails);
+                        this._store.dispatch(new AddEvent(event));
+                        this._actions$.pipe(ofActionDispatched(AddEventSuccess))
+                            .subscribe(() => { this.refresh.next(true);
+                        });
+                        break;
+                }
         });
     }
     
-    editEvent(action: string, event: CalendarEvent): void {
-        const eventIndex = this.events.indexOf(event);
-       // console.log(event.meta.event);
+    editEvent(action: string, eventId: string): void {
+       let index = this.events.findIndex(x => x.meta.event._id === eventId);
 
-        this.dialogRef = this._matDialog.open(CalendarEventFormDialogComponent, {
-            panelClass: 'event-form-dialog',
-            data      : {
-                event : event.meta.event,
-                action: action
-            }
-        });
+       if(index > -1) {
+            this.dialogRef = this._matDialog.open(CalendarEventFormDialogComponent, {
+                panelClass: 'event-form-dialog',
+                data      : {
+                    event : Object.assign({}, this.events[index].meta.event),
+                    action: 'edit'
+                }
+            });
+       }
 
         this.dialogRef.afterClosed()
             .subscribe(response => {
@@ -146,14 +162,20 @@ export class EventsComponent implements OnInit, OnDestroy {
                 const formData: FormGroup = response[1];
                 switch(actionType) {
                     case 'save':
-                        this.events[eventIndex] = Object.assign(this.events[eventIndex], formData.getRawValue());
-                        this.refresh.next(true);
+                        let event = formData.getRawValue() as Event;
+                        event._id = this.events[index].meta.event._id;
+                        event.additionalDetails = JSON.stringify(event.additionalDetails);
+
+                        //dispatch update
+                        this._store.dispatch(new UpdateEvent({ event: event }));
+                        this._actions$.pipe(ofActionDispatched(UpdateEventSuccess))
+                            .subscribe(() => { this.refresh.next(true);
+                        });
                         break;
 
                     case 'delete':
                        // this.deleteEvent(event);
 
-                        break;
                 }
         });
     }
@@ -163,6 +185,15 @@ export class EventsComponent implements OnInit, OnDestroy {
             panelClass: 'event-form-dialog',
             data: event.meta.event
         });
+
+        this.dialogRef.afterClosed()
+            .subscribe(response => {
+                if(!response) return;
+
+                if(response.action === 'edit') {
+                    this.editEvent('edit', response.id);
+                }
+            });
     }
 
     ngOnDestroy(): void {

@@ -1,11 +1,22 @@
-import { Component, Inject, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, ViewEncapsulation, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 //import { CalendarEvent } from 'angular-calendar';
 
 import { MatColors } from '@fuse/mat-colors';
+import { Store, Select } from '@ngxs/store';
+import { User } from '@core/user/user.model';
+
 
 import { CalendarEvent, Event } from 'app/main/apps/events/_store/events.state.model';
+import { TokenAuthService } from '@core/auth/tokenAuth.service';
+import { AuthState } from '@core/store/auth/auth.state';
+import { UsersState } from '@core/store/users/user.state';
+import { Subject, Observable } from 'rxjs';
+import { tap, takeUntil } from 'rxjs/operators';
+import { LoadUsers } from '@core/store/users/users.actions';
+
+
 
 @Component({
     selector     : 'calendar-event-form-dialog',
@@ -14,30 +25,31 @@ import { CalendarEvent, Event } from 'app/main/apps/events/_store/events.state.m
     encapsulation: ViewEncapsulation.None
 })
 
-export class CalendarEventFormDialogComponent
+export class CalendarEventFormDialogComponent implements OnDestroy, OnInit
 {
+    @Select(UsersState.allUsers) users$ : Observable<User[]>
     action: string;
     event: Event;
     eventForm: FormGroup;
     dialogTitle: string;
+    noShowOptions: boolean = true;
+    private ngUnsubscribe = new Subject();
 
-    /**
-     * Constructor
-     *
-     * @param {MatDialogRef<CalendarEventFormDialogComponent>} matDialogRef
-     * @param _data
-     * @param {FormBuilder} _formBuilder
-     */
+
     constructor(
         public matDialogRef: MatDialogRef<CalendarEventFormDialogComponent>,
         @Inject(MAT_DIALOG_DATA) private _data: any,
-        private _formBuilder: FormBuilder
+        private _formBuilder: FormBuilder,
+        private _tokenAuthService: TokenAuthService,
+        private _store: Store
     ) {
         this.event = _data.event;
         this.action = _data.action;
 
         if(this.action === 'edit') {
             this.dialogTitle = this.event.name;
+            this.noShowOptions = this.event.isClosed;
+
         } else {
             this.dialogTitle = 'New Event';
             this.event = {} as Event;
@@ -46,12 +58,10 @@ export class CalendarEventFormDialogComponent
         this.eventForm = this.createEventForm();
     }
 
+    ngOnInit() : void {
+        this.users$.pipe(takeUntil(this.ngUnsubscribe));
+    }
 
-    /**
-     * Create the event form
-     *
-     * @returns {FormGroup}
-     */
     createEventForm(): FormGroup {
 
        let form = this._formBuilder.group({
@@ -64,14 +74,18 @@ export class CalendarEventFormDialogComponent
 			OIC						: new FormControl(this.event.OIC                    || [],      { }),
 			signedUp				: new FormControl(this.event.signedUp               || [],      { }),
 			pending					: new FormControl(this.event.pending                || [],      { }),
-			author					: new FormControl(this.event.author                 || '',      { }),
-			spots					: new FormControl(this.event.spots                  || '',      { validators: [this.validateNumber.bind(this), Validators.required] }),
+			author					: new FormControl(this._tokenAuthService.getCurrUserId() || '',      { }),
+			spots					: new FormControl(this.event.spots                  || 0,      { validators: [this.validateNumber.bind(this), Validators.required] }),
 			additionalDetails		: this._formBuilder.array([ this.initDetailField() ])
         });
 
         
         if(this._data.event && this._data.event.additionalDetails) {
-            let details = JSON.parse(this._data.event.additionalDetails);
+            if (this._data.event.additionalDetails && typeof this._data.event.additionalDetails !== "object") {
+                this._data.event.additionalDetails = JSON.parse(this._data.event.additionalDetails);
+            }
+
+            let details = this._data.event.additionalDetails;
             details.forEach(function(obj) {  //populate formArray
                 const control = <FormArray> form.controls['additionalDetails'];
                 control.push(this.initDetailFieldWithData(obj.title, obj.details));
@@ -109,5 +123,35 @@ export class CalendarEventFormDialogComponent
 			title	: [_title],
 			details	: [_details]
 		});
-	}
+    }
+    
+    toggleOptions($event, opt) : void {
+        if(opt === 'signups') {
+            this.noShowOptions = $event.checked;
+        }
+        
+        if(opt === 'limit' && $event.checked) {
+            this.eventForm.get('spots').setValue(-1);
+            this.eventForm.get('spots').disable();
+        } else {
+            this.eventForm.get('spots').setValue(0);
+            this.eventForm.get('spots').enable();
+        }
+    }
+
+    checkDates() : void {
+        if(!this.eventForm.get('date').value[0]) this.eventForm.get('date').value[0] = this.eventForm.get('date').value[1];
+        if(!this.eventForm.get('date').value[1]) this.eventForm.get('date').value[1] = this.eventForm.get('date').value[0];
+        if(!this.eventForm.get('date').value[0] && !this.eventForm.get('date').value[1]){
+            this.eventForm.get('date').value[0] = new Date();
+            this.eventForm.get('date').value[0] = new Date();
+        }
+
+    }
+
+    ngOnDestroy(): void {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+    }
+
 }

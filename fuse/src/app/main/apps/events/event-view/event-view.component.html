@@ -1,23 +1,40 @@
 <div class="dialog-content-wrapper">
         <mat-toolbar class="mat-accent m-0">
             <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-                <span class="title dialog-title">{{dialogTitle}}
+                <span class="title dialog-title">
+                    
+                    <ng-template ngxPermissionsOnly="EDIT">
+                        <button 
+                            mat-icon-button
+                            (click)="deleteEvent()"
+                            aria-label="Delete"
+                            matTooltip="Delete">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </ng-template>
+
+                    {{dialogTitle}}
                     <ng-template ngxPermissionsOnly="SIGNUP">
-                            <button mat-button (click)="eventRequestSignup()">Sign Up</button>
+                        <button mat-button (click)="eventRequestSignup()">Sign Up</button>
                     </ng-template>
                     
                     <ng-template ngxPermissionsOnly="PENDING">
-                            <button mat-button (click)="eventUnregister()">Pending</button>
+                        <button mat-button (click)="eventUnregister()">Pending</button>
                     </ng-template>
                     
                     <ng-template ngxPermissionsOnly="UNREGISTER">
-                            <button mat-button (click)="eventUnregister()">Unregister</button>
+                        <button mat-button (click)="eventUnregister()">Unregister</button>
                     </ng-template> 
+
+                    <ng-template ngxPermissionsOnly="EDIT">
+                        <button mat-button (click)="editEvent()">Edit</button>
+                    </ng-template>
                 </span>
                 <span class="title dialog-title">{{_data.signedUp.length}} / {{_data.spots}}</span>
                 <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
                     <mat-icon>close</mat-icon>
                 </button>
+                
             </mat-toolbar-row>
         </mat-toolbar>
     
@@ -37,11 +54,11 @@
                     justify-content: space-between;">
                     <div class="h1 secondary-text">
                         <span class="ng-tns-c56-51">
-                            {{ utils.getMonthString(_data.date[0].getMonth()) }}
+                            {{ _utils.getMonthString(_data.date[0].getMonth()) }}
                         </span>
                     </div>
                     <div class="font-size-72 line-height-88 secondary-text font-weight-400">
-                       {{ _data.date[0].getDay() }}
+                       {{ _data.date[0].getDate() }}
                     </div>
                     <div class="h1 secondary-text">
                         <span class="ng-tns-c56-51">
@@ -65,11 +82,11 @@
                             justify-content: space-between;">
                         <div class="h1 secondary-text">
                             <span class="ng-tns-c56-51">
-                                    {{ utils.getMonthString(_data.date[1].getMonth()) }}
+                                    {{ _utils.getMonthString(_data.date[1].getMonth()) }}
                             </span>
                         </div>
                         <div class="font-size-72 line-height-88 secondary-text font-weight-400">
-                                {{ _data.date[1].getDay() }}
+                                {{ _data.date[1].getDate() }}
                         </div>
                         <div class="h1 secondary-text">
                             <span class="ng-tns-c56-51">
@@ -120,8 +137,9 @@
                         </mat-expansion-panel-header>
                             <mat-list>
                                 <mat-list-item *ngFor="let user of _data.pending">
-                                    <p>User Name</p>
-                                    <button mat-button>Click me</button>
+                                    <p>{{ user.fullName }}</p>
+                                    <button mat-button (click)="eventAcceptPending(user)">Accept</button>
+                                    <button mat-button (click)="remove(user._id)">Remove</button>
 
                                 </mat-list-item>
                             </mat-list>
@@ -139,11 +157,12 @@
                             <mat-list>
                                 <mat-list-item *ngFor="let user of _data.signedUp">
                                     <p>User Name</p>
-                                    <button mat-button>Click me</button>
+                                    <button mat-button (click)="remove(user._id)">Remove</button>
                                 </mat-list-item>
                             </mat-list>
                     </mat-expansion-panel>
                 </mat-accordion>
             </div>
         </ng-template>
+        
 </div>

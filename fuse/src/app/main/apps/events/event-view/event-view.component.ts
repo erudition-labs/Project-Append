@@ -3,8 +3,12 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { CalendarEvent, Event } from 'app/main/apps/events/_store/events.state.model';
 import { UtilsService } from '@core/utils/utils.service';
 import { NgxPermissionsService } from 'ngx-permissions';
-import { AuthService } from '@core/auth/auth.service';
+import { TokenAuthService } from '@core/auth/tokenAuth.service';
 import { EventService } from '../events.service';
+import { Store, Actions, ofActionDispatched } from '@ngxs/store';
+import { EventRequestRegister, EventRequestRegisterSuccess, EventAcceptRegisterRequest, EventAcceptRegisterRequestSuccess, EventRemoveSignUpOrPending, EventRemoveSignUpOrPendingSuccess } from '../_store/events.actions';
+import { CalendarEventState } from '../_store/events.state';
+import { User } from '@core/user/user.model';
 
 @Component({
     selector     : 'calendar-event-view-dialog',
@@ -18,56 +22,93 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
     ngOnInit() {}
     constructor(
         public matDialogRef: MatDialogRef<CalendarEventViewDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) private _data  : Event,
-        public utils                            : UtilsService,
-        private permissionsService              : NgxPermissionsService,
-        private authService                     : AuthService,
-        private eventService                    : EventService
+        @Inject(MAT_DIALOG_DATA) private _data: Event,
+        public  _utils: UtilsService,
+        private _permissionsService: NgxPermissionsService,
+        private _tokenAuthService: TokenAuthService,
+        private _eventService: EventService,
+        private _store: Store,
+        private _actions$: Actions
     ) {
+        
         _data.date[0] = new Date(_data.date[0]);
         _data.date[1] = new Date(_data.date[1]);
 
         if (_data.additionalDetails && typeof _data.additionalDetails !== "object") {
             _data.additionalDetails = JSON.parse(_data.additionalDetails);
         }
-        this.dialogTitle = _data.name;
+        this.dialogTitle = _data.name;  
+        this.loadPermissions();      
+    }
 
-        this.permissionsService.addPermission('EDIT', () => {
-            return ((this.authService.isAuthenticated() && this.authService.isAdmin()) ||
-                    (this.authService.isAuthenticated() && this.eventService.isOIC(_data)));
+    loadPermissions() : void {
+        this._permissionsService.flushPermissions();
+        this._permissionsService.addPermission('EDIT', () => {
+            return ((this._tokenAuthService.isAuthenticated() && this._tokenAuthService.isAdmin()) ||
+                    (this._tokenAuthService.isAuthenticated() && this._eventService.isOIC(this._data)));
         });
 
-        this.permissionsService.addPermission('SIGNUP', () => {
-            return (this.authService.isAuthenticated() && 
-                    !this.eventService.isSignedUp(_data) &&
-                    !this.eventService.isPending(_data));
+        this._permissionsService.addPermission('SIGNUP', () => {
+            return (this._tokenAuthService.isAuthenticated() && 
+                    !this._eventService.isSignedUp(this._data) &&
+                    !this._eventService.isPending(this._data));
         });
 
-        this.permissionsService.addPermission('UNREGISTER', () => {
-            return (this.authService.isAuthenticated() && 
-                    this.eventService.isSignedUp(_data));
+        this._permissionsService.addPermission('UNREGISTER', () => {
+            return (this._tokenAuthService.isAuthenticated() && 
+                    this._eventService.isSignedUp(this._data));
         });
 
-        this.permissionsService.addPermission('PENDING', () => {
-            return (this.authService.isAuthenticated() && 
-                    this.eventService.isPending(_data));
+        this._permissionsService.addPermission('PENDING', () => {
+            return (this._tokenAuthService.isAuthenticated() && 
+                    this._eventService.isPending(this._data));
         });
-
     }
 
     eventRequestSignup() : void {
-        console.log('signup');
+        this._store.dispatch(new EventRequestRegister(Object.assign({}, this._data)));
+        this._actions$.pipe(ofActionDispatched(EventRequestRegisterSuccess))
+            .subscribe(() => this.refresh());
     }
     eventUnregister() : void {
-        console.log('unregister');
-        
+        this.remove(this._tokenAuthService.getCurrUserId());
+    }
+
+    remove(id: string) : void {
+        this._store.dispatch(new EventRemoveSignUpOrPending({ event: Object.assign({}, this._data), userId: id }));
+        this._actions$.pipe(ofActionDispatched(EventRemoveSignUpOrPendingSuccess))
+            .subscribe(() => this.refresh());
+    }
+
+    eventAcceptPending(user: User) : void {
+        this._store.dispatch(new EventAcceptRegisterRequest({event: Object.assign({}, this._data), userId: user._id}));
+        this._actions$.pipe(ofActionDispatched(EventAcceptRegisterRequestSuccess))
+            .subscribe(() => this.refresh());
+    }
+
+    private refresh() : void {
+        //get snapshot, set data equal
+        let events = this._store.selectSnapshot(CalendarEventState.calendarEvents);
+        let index = events.findIndex(x => x.meta.event._id === this._data._id);
+        if(index > -1) {
+            this._data = events[index].meta.event;
+            this.loadPermissions();
+        }
+    }
+
+    editEvent() : void {
+        this.matDialogRef.close({ action: 'edit', id: this._data._id});
+    }
+
+    deleteEvent() : void {
+        this.matDialogRef.close({ action: 'delete', id: this._data._id});
     }
 
     ngOnDestroy() {
-        this.permissionsService.removePermission('EDIT');
-        this.permissionsService.removePermission('SIGNUP');
-        this.permissionsService.removePermission('UNREGISTER');
-        this.permissionsService.removePermission('PENDING');
+        this._permissionsService.removePermission('EDIT');
+        this._permissionsService.removePermission('SIGNUP');
+        this._permissionsService.removePermission('UNREGISTER');
+        this._permissionsService.removePermission('PENDING');
     }
 
 }

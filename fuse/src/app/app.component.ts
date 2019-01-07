@@ -4,6 +4,8 @@ import { Platform } from '@angular/cdk/platform';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Router } from '@angular/router';
+
 
 import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
@@ -14,6 +16,10 @@ import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.
 import { navigation } from 'app/navigation/navigation';
 import { locale as navigationEnglish } from 'app/navigation/i18n/en';
 import { locale as navigationTurkish } from 'app/navigation/i18n/tr';
+import { Actions, ofActionDispatched } from '@ngxs/store';
+import { Logout } from '@core/store/auth/auth.actions';
+
+
 
 @Component({
     selector   : 'app',
@@ -48,7 +54,9 @@ export class AppComponent implements OnInit, OnDestroy
         private _fuseSplashScreenService: FuseSplashScreenService,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private _translateService: TranslateService,
-        private _platform: Platform
+        private _platform: Platform,
+        private _actions$ : Actions,
+        private _router : Router
     )
     {
         // Get default navigation
@@ -121,6 +129,11 @@ export class AppComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
+        this._actions$.pipe(ofActionDispatched(Logout)).subscribe(() => {
+            setTimeout(() => {
+                this._router.navigate(['/login']);
+            });
+          })
         // Subscribe to config changes
         this._fuseConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))

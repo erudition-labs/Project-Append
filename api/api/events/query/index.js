@@ -50,6 +50,7 @@ const updateEvent = async (data) => {
 		.populate('signedUp', 	{ password: 0 })
 		.populate('pending', 	{ password: 0 })
 		.populate('author', 	{ password: 0 });
+		console.log(event);
 		return Util.unescapeEvent(event);
 	} catch(error) {
 		return error;
