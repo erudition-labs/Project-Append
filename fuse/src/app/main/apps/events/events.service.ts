@@ -134,7 +134,12 @@ export class EventService {
 
 		return totalSpots > signedUp;
 	}
-	
+
+	public isClosed(event: Event) : boolean {
+		let isSpotsLeft = this.isSpotsLeft(event);
+		return !(isSpotsLeft && !event.isClosed);
+	}
+ 	
 	public preProcessEvent(event: Event) : Event {
 		event.OIC = this._utilsService.getIds(event.OIC);
 		event.signedUp = this._utilsService.getIds(event.signedUp);
