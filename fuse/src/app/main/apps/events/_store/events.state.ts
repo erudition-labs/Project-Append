@@ -489,9 +489,11 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
 
         return this._eventService.delete(payload.event._id)
         .subscribe(data => { 
-            asapScheduler.schedule(() =>
-                dispatch(new eventActions.EventRemoveSuccess(({ eventId: payload.event._id })))
-            )
+            if(data) {
+                asapScheduler.schedule(() =>
+                    dispatch(new eventActions.EventRemoveSuccess(({ eventId: payload.event._id })))
+                )
+            }
         },
         error => {
             asapScheduler.schedule(() =>
