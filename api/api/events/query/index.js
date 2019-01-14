@@ -59,7 +59,7 @@ const updateEvent = async (data) => {
 
 const getEvents = async () => {
 	try {
-		let events = await Event.find().sort({ date: 'descending' }).limit(100)
+		let events = await Event.find({isDeleted: {$ne: true}}).sort({ date: 'descending' }).limit(100)
 		.populate('OIC', 		{ password: 0 })
 		.populate('signedUp', 	{ password: 0 })
 		.populate('pending', 	{ password: 0 })
