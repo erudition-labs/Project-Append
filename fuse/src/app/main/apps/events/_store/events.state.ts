@@ -135,6 +135,15 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
         patchState({ loaded: false, loading: true });
         let event = this._eventService.preProcessEvent(payload);
 
+        //first see if we should even allow signups
+        if(!this._eventService.isSpotsLeft(event) || event.isClosed) {
+            //dispatch fail, signups are full or disabled
+            asapScheduler.schedule(() =>
+                dispatch(new eventActions.EventRequestRegisterFail("Signups are full or disabled"))
+            )
+            return;
+        }
+
         //To ensure we aren't adding any duplicates
         if(event.pending.indexOf(this._tokenService.getCurrUserId()) > -1 ||
             event.signedUp.indexOf(this._tokenService.getCurrUserId()) > -1) {
@@ -144,7 +153,7 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
         )
             return;
         }
-        //otherwise add the event
+        //otherwise add the user
         event.pending.push(this._tokenService.getCurrUserId());
         return this._eventService.update(event, true)
             .subscribe(data => {
