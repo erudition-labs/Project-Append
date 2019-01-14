@@ -56,6 +56,7 @@ export class CalendarEventFormDialogComponent implements OnDestroy, OnInit
         }
 
         this.eventForm = this.createEventForm();
+        this.removeDetailField(0);
     }
 
     ngOnInit() : void {
