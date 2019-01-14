@@ -132,7 +132,7 @@ export class EventService {
 		if(totalSpots === -1) return true;
 		let signedUp = event.signedUp.length;
 
-		return totalSpots > signedUp;
+		return (totalSpots > signedUp);
 	}
 
 	public isClosed(event: Event) : boolean {
@@ -148,8 +148,8 @@ export class EventService {
 
 		if (event.additionalDetails && typeof event.additionalDetails === "object") {
             event.additionalDetails = JSON.stringify(event.additionalDetails);
-        }
-
+		}
+		
 		return event;
 	}
 
@@ -157,6 +157,11 @@ export class EventService {
 		if (event.additionalDetails && typeof event.additionalDetails !== "object") {
             event.additionalDetails = JSON.parse(event.additionalDetails);
 		}	
+		return event;
+	}
+
+	public updateEventClosure(event: Event) : Event {
+		event.isClosed = !this.isSpotsLeft(event);
 		return event;
 	}
 }
