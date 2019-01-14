@@ -478,7 +478,7 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
         }
 
         //must be an admin or assigned OIC to access this
-        if(!this._tokenService.isAdmin() || this._eventService.isOIC(payload.event)) {
+        if(!this._tokenService.isAdmin()) {
             asapScheduler.schedule(() =>
             dispatch(new eventActions.EventRemoveFail("Must be Authorized"))
         )
@@ -486,14 +486,13 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
         }
 
         patchState({ loaded: false, loading: true });
+        let event = this._eventService.preProcessEvent(payload.event);
 
-        return this._eventService.delete(payload.event._id)
+        return this._eventService.delete(event)
         .subscribe(data => { 
-            if(data) {
-                asapScheduler.schedule(() =>
-                    dispatch(new eventActions.EventRemoveSuccess(({ eventId: payload.event._id })))
-                )
-            }
+            asapScheduler.schedule(() =>
+                dispatch(new eventActions.EventRemoveSuccess(({event: data as Event})))
+            )
         },
         error => {
             asapScheduler.schedule(() =>
@@ -501,6 +500,7 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
             )    
         });
     }
+    
 
     @Action(eventActions.EventRemoveSuccess)
     eventRemoveSuccess(
@@ -508,7 +508,7 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
         { payload }: eventActions.EventRemoveSuccess
     ) {
         const state = getState();        
-        let index = state.events.findIndex(x => x.meta.event._id === payload.eventId);
+        let index = state.events.findIndex(x => x.meta.event._id === payload.event._id);
 
         if(index > -1) {
             patchState({
@@ -517,6 +517,12 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
                 loaded: true, 
                 loading: false
             });
+
+        //remove event from all users histories that signed up
+        let event = this._eventService.preProcessEvent(payload.event);
+        for(let id of event.signedUp) {
+            //dispatch all of the deletes
+        }            
 
        } else {
             //dispatch fail

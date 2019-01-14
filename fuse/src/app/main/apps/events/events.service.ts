@@ -58,15 +58,18 @@ export class EventService {
 		}))
 	}
 
-	public delete(eventId: string) : Observable<any> {
-		return this._http.delete<any>(this.url + '/' + eventId)
+	public delete(event: Event) : Observable<any> {
+		event.isDeleted = true;
+		return this.update(event, true);
+
+		/*return this._http.delete<any>(this.url + '/' + eventId)
 		.pipe(retry(3), map((response) => {
 			if(response.success) {
 				return true;
 			} else {
 				return Observable.throw(response.message.json());
 			}
-		}))
+		}))*/
 	}
 
 	public isOIC(event: Event, id?: string) : boolean {

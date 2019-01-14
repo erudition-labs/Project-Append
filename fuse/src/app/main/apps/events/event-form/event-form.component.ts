@@ -76,7 +76,8 @@ export class CalendarEventFormDialogComponent implements OnDestroy, OnInit
 			pending					: new FormControl(this.event.pending                || [],      { }),
 			author					: new FormControl(this._tokenAuthService.getCurrUserId() || '',      { }),
 			spots					: new FormControl(this.event.spots                  || 0,      { validators: [this.validateNumber.bind(this), Validators.required] }),
-			additionalDetails		: this._formBuilder.array([ this.initDetailField() ])
+            additionalDetails		: this._formBuilder.array([ this.initDetailField() ]),
+            isDeleted               : new FormControl(this.event.isDeleted              || false)
         });
 
         
