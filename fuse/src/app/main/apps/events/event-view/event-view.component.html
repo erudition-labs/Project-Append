@@ -30,7 +30,15 @@
                         <button mat-button (click)="editEvent()">Edit</button>
                     </ng-template>
                 </span>
-                <span class="title dialog-title">{{_data.signedUp.length}} / {{_data.spots}}</span>
+
+                <ng-container *ngIf="!_data.isClosed; else closed">
+                    <span class="title dialog-title">{{_data.signedUp.length}} / {{_data.spots}}</span>
+                </ng-container>
+
+                <ng-template #closed>
+                    <span class="title dialog-title">Signups Closed</span>
+                </ng-template>
+
                 <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
                     <mat-icon>close</mat-icon>
                 </button>
