@@ -224,6 +224,15 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
             return;   
         }
 
+        //first see if we should even allow signups
+        if(!this._eventService.isSpotsLeft(payload.event) || payload.event.isClosed) {
+            //dispatch fail, signups are full or disabled
+             asapScheduler.schedule(() =>
+                dispatch(new eventActions.EventRequestRegisterFail("Signups are full or disabled"))
+            )
+            return;
+        }
+
         //otherwise, we can do this
         patchState({ loaded: false, loading: true });
         let event = this._eventService.preProcessEvent(payload.event);
