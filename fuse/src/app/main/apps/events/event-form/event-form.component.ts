@@ -134,6 +134,7 @@ export class CalendarEventFormDialogComponent implements OnDestroy, OnInit
         if(opt === 'limit' && $event.checked) {
             this.eventForm.get('spots').setValue(-1);
             this.eventForm.get('spots').disable();
+            this.eventForm.get('isClosed').setValue(false);
         } else {
             this.eventForm.get('spots').setValue(0);
             this.eventForm.get('spots').enable();
