@@ -32,7 +32,13 @@
                 </span>
 
                 <ng-container *ngIf="!_data.isClosed; else closed">
-                    <span class="title dialog-title">{{_data.signedUp.length}} / {{_data.spots}}</span>
+                    <ng-container *ngIf="_data.spots != -1; else unlimited">
+                        <span class="title dialog-title">{{_data.signedUp.length}} / {{_data.spots}}</span>
+                    </ng-container>
+
+                    <ng-template #unlimited>
+                        <span class="title dialog-title">No Limit</span>
+                    </ng-template>
                 </ng-container>
 
                 <ng-template #closed>
