@@ -522,6 +522,9 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
         let event = this._eventService.preProcessEvent(payload.event);
         for(let id of event.signedUp) {
             //dispatch all of the deletes
+            asapScheduler.schedule(() =>
+                dispatch(new UserEventRemove({ eventId: payload.event._id, userId: id }))
+            )
         }            
 
        } else {
