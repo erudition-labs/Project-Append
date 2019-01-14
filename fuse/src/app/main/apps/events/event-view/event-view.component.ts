@@ -51,7 +51,8 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
         this._permissionsService.addPermission('SIGNUP', () => {
             return (this._tokenAuthService.isAuthenticated() && 
                     !this._eventService.isSignedUp(this._data) &&
-                    !this._eventService.isPending(this._data));
+                    !this._eventService.isPending(this._data)) &&
+                    !this._eventService.isClosed(this._data);
         });
 
         this._permissionsService.addPermission('UNREGISTER', () => {
@@ -63,7 +64,7 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
             return (this._tokenAuthService.isAuthenticated() && 
                     this._eventService.isPending(this._data));
         });
-    }
+   }
 
     eventRequestSignup() : void {
         this._store.dispatch(new EventRequestRegister(Object.assign({}, this._data)));

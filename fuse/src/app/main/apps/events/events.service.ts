@@ -46,6 +46,8 @@ export class EventService {
 
 	public update(event: Event, preProcessed: boolean) : Observable<any> {
 		if(!preProcessed) event = this.preProcessEvent(event);
+		event = this.updateEventClosure(event);
+		
 		return this._http.put<any>(this.url + '/', { data: event, user: this._tokenAuthService.getCurrUserId() })
 		.pipe(retry(3), map((response) => {
 			if(response.success) {
@@ -56,58 +58,19 @@ export class EventService {
 		}))
 	}
 
-	public delete(eventId: string) : Observable<any> {
-		return this._http.delete<any>(this.url + '/' + eventId)
+	public delete(event: Event) : Observable<any> {
+		event.isDeleted = true;
+		return this.update(event, true);
+
+		/*return this._http.delete<any>(this.url + '/' + eventId)
 		.pipe(retry(3), map((response) => {
 			if(response.success) {
 				return true;
 			} else {
 				return Observable.throw(response.message.json());
 			}
-		}))
+		}))*/
 	}
-/*
-	public updateEvent(event: Event) : Observable<Event> {
-		let OICids 		= this.utils.getIds(event.OIC);
-		let signedUpIds = this.utils.getIds(event.signedUp);
-
-		event.OIC = OICids;
-		event.pending = this.utils.getIds(event.pending);
-		let singupSet = new Set();
-
-		return this.getEvent(event._id).flatMap(result => {
-			if(result) {
-				let oldOICids = this.utils.getIds(result.OIC);
-
-				for(let id of oldOICids) {
-					let index = signedUpIds.indexOf(id);
-					if(index > -1) {
-						signedUpIds.splice(index, 1);
-					}
-				}
-			}
-			for(let id of OICids) {
-				singupSet.add(id);
-			}
-	
-			for(let id of signedUpIds) {
-				singupSet.add(id);
-			}
-	
-			event.signedUp = Array.from(singupSet);
-			return this.http.put<any>(this.url + '/', { data: event, user:  this.authService.parseToken().sub })
-			.pipe(retry(3), map((response) => {
-				if(response.success) {
-					this.success(response.message);
-					return response.result as Event;
-				} else {
-					this.error(response.message);
-					return null;
-				}
-			}),
-				catchError(this.handleError('UpdateEvent', null)));
-		});
-	}*/
 
 	public isOIC(event: Event, id?: string) : boolean {
 		let userId = this._tokenAuthService.getCurrUserId();
@@ -174,9 +137,14 @@ export class EventService {
 		if(totalSpots === -1) return true;
 		let signedUp = event.signedUp.length;
 
-		return totalSpots > signedUp;
+		return (totalSpots > signedUp);
 	}
-	
+
+	public isClosed(event: Event) : boolean {
+		let isSpotsLeft = this.isSpotsLeft(event);
+		return !(isSpotsLeft && !event.isClosed);
+	}
+ 	
 	public preProcessEvent(event: Event) : Event {
 		event.OIC = this._utilsService.getIds(event.OIC);
 		event.signedUp = this._utilsService.getIds(event.signedUp);
@@ -185,8 +153,8 @@ export class EventService {
 
 		if (event.additionalDetails && typeof event.additionalDetails === "object") {
             event.additionalDetails = JSON.stringify(event.additionalDetails);
-        }
-
+		}
+		
 		return event;
 	}
 
@@ -194,6 +162,11 @@ export class EventService {
 		if (event.additionalDetails && typeof event.additionalDetails !== "object") {
             event.additionalDetails = JSON.parse(event.additionalDetails);
 		}	
+		return event;
+	}
+
+	public updateEventClosure(event: Event) : Event {
+		event.isClosed = !this.isSpotsLeft(event);
 		return event;
 	}
 }

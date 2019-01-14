@@ -103,7 +103,7 @@ export class LoadEventsSuccess {
 
   export class EventRemoveSuccess {
     static readonly type = '[Events] Event Remove Success';
-    constructor(public readonly payload: { eventId: string }) {}
+    constructor(public readonly payload: { event: Event }) {}
   }
 
   export class EventRemoveFail {

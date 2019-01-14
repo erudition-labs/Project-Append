@@ -135,6 +135,15 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
         patchState({ loaded: false, loading: true });
         let event = this._eventService.preProcessEvent(payload);
 
+        //first see if we should even allow signups
+        if(!this._eventService.isSpotsLeft(event) || event.isClosed) {
+            //dispatch fail, signups are full or disabled
+            asapScheduler.schedule(() =>
+                dispatch(new eventActions.EventRequestRegisterFail("Signups are full or disabled"))
+            )
+            return;
+        }
+
         //To ensure we aren't adding any duplicates
         if(event.pending.indexOf(this._tokenService.getCurrUserId()) > -1 ||
             event.signedUp.indexOf(this._tokenService.getCurrUserId()) > -1) {
@@ -144,7 +153,7 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
         )
             return;
         }
-        //otherwise add the event
+        //otherwise add the user
         event.pending.push(this._tokenService.getCurrUserId());
         return this._eventService.update(event, true)
             .subscribe(data => {
@@ -213,6 +222,15 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
             dispatch(new eventActions.EventAcceptRegisterRequestFail("Must be Authorized"))
         )
             return;   
+        }
+
+        //first see if we should even allow signups
+        if(!this._eventService.isSpotsLeft(payload.event) || payload.event.isClosed) {
+            //dispatch fail, signups are full or disabled
+             asapScheduler.schedule(() =>
+                dispatch(new eventActions.EventRequestRegisterFail("Signups are full or disabled"))
+            )
+            return;
         }
 
         //otherwise, we can do this
@@ -460,7 +478,7 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
         }
 
         //must be an admin or assigned OIC to access this
-        if(!this._tokenService.isAdmin() || this._eventService.isOIC(payload.event)) {
+        if(!this._tokenService.isAdmin()) {
             asapScheduler.schedule(() =>
             dispatch(new eventActions.EventRemoveFail("Must be Authorized"))
         )
@@ -468,11 +486,12 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
         }
 
         patchState({ loaded: false, loading: true });
+        let event = this._eventService.preProcessEvent(payload.event);
 
-        return this._eventService.delete(payload.event._id)
+        return this._eventService.delete(event)
         .subscribe(data => { 
             asapScheduler.schedule(() =>
-                dispatch(new eventActions.EventRemoveSuccess(({ eventId: payload.event._id })))
+                dispatch(new eventActions.EventRemoveSuccess(({event: data as Event})))
             )
         },
         error => {
@@ -481,6 +500,7 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
             )    
         });
     }
+    
 
     @Action(eventActions.EventRemoveSuccess)
     eventRemoveSuccess(
@@ -488,7 +508,7 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
         { payload }: eventActions.EventRemoveSuccess
     ) {
         const state = getState();        
-        let index = state.events.findIndex(x => x.meta.event._id === payload.eventId);
+        let index = state.events.findIndex(x => x.meta.event._id === payload.event._id);
 
         if(index > -1) {
             patchState({
@@ -497,6 +517,15 @@ import { UserEventSignup, UserEventRemove } from '@core/store/users/users.action
                 loaded: true, 
                 loading: false
             });
+
+        //remove event from all users histories that signed up
+        let event = this._eventService.preProcessEvent(payload.event);
+        for(let id of event.signedUp) {
+            //dispatch all of the deletes
+            asapScheduler.schedule(() =>
+                dispatch(new UserEventRemove({ eventId: payload.event._id, userId: id }))
+            )
+        }            
 
        } else {
             //dispatch fail

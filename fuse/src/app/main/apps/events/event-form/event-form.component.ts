@@ -56,6 +56,7 @@ export class CalendarEventFormDialogComponent implements OnDestroy, OnInit
         }
 
         this.eventForm = this.createEventForm();
+        this.removeDetailField(0);
     }
 
     ngOnInit() : void {
@@ -76,7 +77,8 @@ export class CalendarEventFormDialogComponent implements OnDestroy, OnInit
 			pending					: new FormControl(this.event.pending                || [],      { }),
 			author					: new FormControl(this._tokenAuthService.getCurrUserId() || '',      { }),
 			spots					: new FormControl(this.event.spots                  || 0,      { validators: [this.validateNumber.bind(this), Validators.required] }),
-			additionalDetails		: this._formBuilder.array([ this.initDetailField() ])
+            additionalDetails		: this._formBuilder.array([ this.initDetailField() ]),
+            isDeleted               : new FormControl(this.event.isDeleted              || false)
         });
 
         
@@ -133,6 +135,7 @@ export class CalendarEventFormDialogComponent implements OnDestroy, OnInit
         if(opt === 'limit' && $event.checked) {
             this.eventForm.get('spots').setValue(-1);
             this.eventForm.get('spots').disable();
+            this.eventForm.get('isClosed').setValue(false);
         } else {
             this.eventForm.get('spots').setValue(0);
             this.eventForm.get('spots').enable();

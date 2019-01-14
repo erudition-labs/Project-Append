@@ -16,7 +16,9 @@ import { CalendarEventActions,
         AddEvent, 
         AddEventSuccess, 
         UpdateEvent,
-        UpdateEventSuccess} from './_store/events.actions';
+        UpdateEventSuccess,
+        EventRemove,
+        EventRemoveSuccess} from './_store/events.actions';
 import { CalendarEventState } from './_store/events.state';
 import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
 import { tap, takeUntil } from 'rxjs/operators';
@@ -160,6 +162,7 @@ export class EventsComponent implements OnInit, OnDestroy {
                 
                 const actionType: string = response[0];
                 const formData: FormGroup = response[1];
+                console.log(actionType);
                 switch(actionType) {
                     case 'save':
                         let event = formData.getRawValue() as Event;
@@ -169,13 +172,11 @@ export class EventsComponent implements OnInit, OnDestroy {
                         //dispatch update
                         this._store.dispatch(new UpdateEvent({ event: event }));
                         this._actions$.pipe(ofActionDispatched(UpdateEventSuccess))
-                            .subscribe(() => { this.refresh.next(true);
+                            .subscribe(() => { 
+                                this.refresh.next(true);
                         });
                         break;
-
-                    case 'delete':
-                       // this.deleteEvent(event);
-
+                    default: break;
                 }
         });
     }
@@ -192,6 +193,13 @@ export class EventsComponent implements OnInit, OnDestroy {
 
                 if(response.action === 'edit') {
                     this.editEvent('edit', response.id);
+                } else if(response.action === 'delete') {
+                    let index = this.events.findIndex(x => x.meta.event._id === response.id);
+                    this._store.dispatch(new EventRemove({ event: this.events[index].meta.event }));
+                    this._actions$.pipe(ofActionDispatched(EventRemoveSuccess))
+                        .subscribe(() => {
+                            this.refresh.next(true);
+                        });
                 }
             });
     }

@@ -13,7 +13,8 @@ export interface Event {
 	pending						: any[];
 	additionalDetails			: string;
 	spots						: number;
-	author						: any;
+    author						: any;
+    isDeleted                   : boolean;
 }
 
 export interface CalendarEventModel {
