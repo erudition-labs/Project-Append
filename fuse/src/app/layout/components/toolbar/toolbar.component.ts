@@ -7,6 +7,9 @@ import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { navigation } from 'app/navigation/navigation';
 import { TokenAuthService } from '@core/auth/tokenAuth.service';
+import { Store } from '@ngxs/store';
+import { Logout } from '@core/store/auth/auth.actions';
+
 
 
 @Component({
@@ -41,7 +44,8 @@ export class ToolbarComponent implements OnInit, OnDestroy
         private _fuseConfigService: FuseConfigService,
         private _fuseSidebarService: FuseSidebarService,
         private _translateService: TranslateService,
-        private _tokenService: TokenAuthService
+        private _tokenService: TokenAuthService,
+        private _store: Store
     )
     {
         // Set the defaults
@@ -112,7 +116,6 @@ export class ToolbarComponent implements OnInit, OnDestroy
 
         // Set the selected language from default languages
         this.selectedLanguage = _.find(this.languages, {'id': this._translateService.currentLang});
-        
     }
 
     /**
@@ -162,5 +165,9 @@ export class ToolbarComponent implements OnInit, OnDestroy
 
         // Use the selected language for translations
         this._translateService.use(lang.id);
+    }
+
+    logout() : void {
+        this._store.dispatch(new Logout());
     }
 }
