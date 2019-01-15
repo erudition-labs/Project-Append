@@ -2,13 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import { User } from '@core/user/user.model';
 import { UsersState } from '@core/store/users/user.state';
-import { UsersStateModel } from '@core/store/users/users.state.model';
 import { Subject, Observable, of } from 'rxjs';
-import { tap, takeUntil, filter } from 'rxjs/operators';
-import { AuthState } from '@core/store/auth/auth.state';
-import { AuthStateModel } from '@core/store/auth/auth.state.model';
+import { takeUntil } from 'rxjs/operators';
 import { TokenAuthService } from '@core/auth/tokenAuth.service';
 import { Event } from './../apps/events/_store/events.state.model';
+import { Router } from '@angular/router';
+
 
 
 @Component({
@@ -24,7 +23,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   pastEvents$: Observable<Event[]>;
 
   constructor(private _store: Store,
-              private _tokenService: TokenAuthService) { }
+              private _tokenService: TokenAuthService,
+              private _router: Router) { }
 
   ngOnInit() {
     this.users$.pipe(takeUntil(this.ngUnsubscribe));
