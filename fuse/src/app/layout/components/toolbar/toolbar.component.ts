@@ -6,9 +6,7 @@ import * as _ from 'lodash';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { navigation } from 'app/navigation/navigation';
-import { AuthService } from '../../../../@core/auth/auth.service';
-import { UserService } from '../../../../@core/user/user.service';
-import { User } from '../../../../@core/user/user.model';
+import { TokenAuthService } from '@core/auth/tokenAuth.service';
 
 
 @Component({
@@ -28,7 +26,6 @@ export class ToolbarComponent implements OnInit, OnDestroy
     selectedLanguage: any;
     userStatusOptions: any[];
 
-    userInfo : any;
     isAuthenticated : boolean = false;
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -44,8 +41,7 @@ export class ToolbarComponent implements OnInit, OnDestroy
         private _fuseConfigService: FuseConfigService,
         private _fuseSidebarService: FuseSidebarService,
         private _translateService: TranslateService,
-        private authService : AuthService,
-        private userService : UserService,
+        private _tokenService: TokenAuthService
     )
     {
         // Set the defaults
@@ -116,16 +112,6 @@ export class ToolbarComponent implements OnInit, OnDestroy
 
         // Set the selected language from default languages
         this.selectedLanguage = _.find(this.languages, {'id': this._translateService.currentLang});
-
-        //user info 
-        /*
-        if(this.authService.isAuthenticated()) {
-            let decodedToken = this.authService.getUserInfo();
-            this.userService.getUser(decodedToken.sub).subscribe(httpResult  => {
-            this.isAuthenticated = true;
-            this.userInfo = httpResult;
-            });
-        }*/
         
     }
 
