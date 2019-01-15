@@ -7,6 +7,10 @@ export const locale = {
                 'TITLE': 'Dashboard',
                 'BADGE': '99'
             },
+            'EVENTS'        : {
+                'TITLE': 'Events',
+                'BADGE': '99'
+            },
             'NEWS'        : {
                 'TITLE': 'News',
                 'BADGE': '25'

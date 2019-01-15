@@ -22,6 +22,20 @@ export const navigation: FuseNavigation[] = [
                 }
             },
             {
+                id       : 'events',
+                title    : 'Events',
+                translate: 'NAV.EVENTS.TITLE',
+                type     : 'item',
+                icon     : 'calendar_today',
+                url      : '/events',
+                badge    : {
+                    title    : '5',
+                    translate: 'NAV.EVENTS.BADGE',
+                    bg       : '#F44336',
+                    fg       : '#FFFFFF'
+                }
+            },
+            {
                 id       : 'news',
                 title    : 'News',
                 translate: 'NAV.NEWS.TITLE',
