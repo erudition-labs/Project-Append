@@ -4,6 +4,7 @@ import { AuthStateModel } from './auth.state.model';
 import * as actions  from './auth.actions';
 import { AuthService } from '@core/auth/auth.service';
 import { Credentials } from '@core/user/credentials.model';
+import { Store } from '@ngxs/store';
 
 
 @State<AuthStateModel>({
@@ -11,16 +12,16 @@ import { Credentials } from '@core/user/credentials.model';
     defaults : {
         loading : false,
         loaded: false,
-        token: null,
+        token: null
     }
   })
   export class AuthState {
-  
+    constructor(private _authService: AuthService,
+                private _store: Store) {}
+
     @Selector()
     static token(state: AuthStateModel) { return state.token; }
-  
-    constructor(private _authService: AuthService) {}
-  
+    
     @Action(actions.Login)
     login(
         { patchState, dispatch }: StateContext<AuthStateModel>, 
