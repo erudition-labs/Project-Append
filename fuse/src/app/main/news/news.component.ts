@@ -33,7 +33,7 @@ export class NewsComponent implements OnInit {
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private _fuseSidebarService: FuseSidebarService,
         private updatesService : UpdatesService, 
-        public _tokenAuthService : TokenAuthService, 
+        public _tokenService : TokenAuthService, 
         private toast : ToastrService, 
         private formBuilder : FormBuilder,
         private userService : UserService,
@@ -101,7 +101,7 @@ export class NewsComponent implements OnInit {
     
     
         update.date = new Date();
-        this._tokenAuthService.getCurrUserId();
+        this._tokenService.getCurrUserId();
 
         this.updatesService.createUpdate(update).subscribe((result) => {
           this.userService.getUser(result.result.author).subscribe((user) => {

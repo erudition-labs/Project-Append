@@ -8,8 +8,8 @@ import {
 } from '@angular/forms';
 import { UpdatesService } from '../../../../@core/updates/updates.service';
 import { Update } from '../../../../@core/updates/update.model';
-import { AuthService } from '@core/auth/auth.service';
 import { UserService } from '@core/user/user.service';
+import { TokenAuthService } from '@core/auth/tokenAuth.service';
 
 
 @Component({
@@ -22,9 +22,9 @@ export class NewsDialogComponent implements OnInit {
   constructor(public dialogRef : MatDialogRef<NewsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public formBuilder : FormBuilder,
-    private authService : AuthService,
     private userService : UserService,
     private updatesService : UpdatesService,
+    private _tokenService : TokenAuthService
     ) { }
 
 
@@ -60,7 +60,7 @@ export class NewsDialogComponent implements OnInit {
 
     //update.content = this.editorService.getMarkdown();
     update.date = new Date();
-    update.author = this.authService.parseToken().sub;
+    update.author = this._tokenService.parseToken().sub;
 
     this.updatesService.createUpdate(update).subscribe((result) => {
       this.userService.getUser(result.result.author).subscribe((user) => {

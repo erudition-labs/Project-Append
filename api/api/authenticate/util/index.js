@@ -9,6 +9,7 @@ const createToken = user => {
 		sub					: user._id,
 		email				: user.email,
 		role				: user.role,
+		name				: user.fullName,
 		iss			: 'api.euriditionlabs.com',
 		aud			: 'api.euriditionlabs.com'
 	},
