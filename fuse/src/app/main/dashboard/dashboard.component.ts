@@ -28,6 +28,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.users$.pipe(takeUntil(this.ngUnsubscribe));
+    this.upcomingEvents$.pipe(takeUntil(this.ngUnsubscribe));
+    this.pastEvents$.pipe(takeUntil(this.ngUnsubscribe));
 
     this.users$.subscribe((users) => {
       let id = this._tokenService.getCurrUserId();
@@ -48,7 +50,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.pastEvents$ = of(
           user.events.filter(e => new Date(e.date[1]).getTime() < new Date().getTime())
         );
-        //this.events$ = of(user.events);
       }
     });
   }
