@@ -28,7 +28,6 @@ const postAuthenticate = async (request, response) => {
 			user = util.unescapeUser(user);
 
 			const userInfo = {
-				name 		: fullName,
 				email		: user.email,
 				firstName	: user.firstName,
 				role		: user.role
