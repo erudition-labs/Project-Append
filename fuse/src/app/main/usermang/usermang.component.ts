@@ -11,8 +11,18 @@ class Person {
 class PersonValidatorService implements ValidatorService {
   getRowValidator(): FormGroup {
     return new FormGroup({
-      'name': new FormControl(null, Validators.required),
-      'age': new FormControl(),
+      '_id'       : new FormControl(null, Validators.required),
+      'email'     : new FormControl(Validators.required),
+      'fisrtName' : new FormControl(Validators.required),
+      'lastName'  : new FormControl(Validators.required),
+      'rank'      : new FormControl(),
+      'flight'    : new FormControl(),
+      'team'      : new FormControl(),
+      'phone'     : new FormControl(),
+      'role'      : new FormControl(Validators.required),
+      'events'    : new FormControl(Validators.required),
+      'fullName'  : new FormControl(Validators.required),
+      'isChangelogViewed' : new FormControl(Validators.required)
       });
   }
 }
@@ -28,7 +38,14 @@ export class UserMangComponent implements OnInit {
 
   constructor(private personValidator: ValidatorService) { }
 
-  displayedColumns = ['name', 'age', 'actionsColumn'];
+  displayedColumns = ['First Name', 
+                      'Last Name',
+                      'Rank', 
+                      'Flight',
+                      'Team',
+                      'Phone',
+                      'Email',
+                      'actionsColumn'];
 
   @Input() personList = [ 
     { name: 'Mark', age: 15 },
