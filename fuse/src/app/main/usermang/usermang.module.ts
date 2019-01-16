@@ -3,8 +3,16 @@ import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { FuseSharedModule } from '@fuse/shared.module';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserMangComponent } from './usermang.component';
+
+import {
+    MatIconModule,
+    MatButtonModule,
+    MatInputModule,
+    MatTableModule,
+    MatFormFieldModule
+  } from '@angular/material';
 
 const routes = [
   {
@@ -22,7 +30,12 @@ imports     : [
 
     TranslateModule,
 
-    FuseSharedModule
+    FuseSharedModule,
+    MatTableModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
 ],
 exports     : [
     UserMangComponent
