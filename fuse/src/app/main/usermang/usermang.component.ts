@@ -30,7 +30,10 @@ export class UserMangComponent implements OnInit {
 
   displayedColumns = ['name', 'age', 'actionsColumn'];
 
-  @Input() personList;
+  @Input() personList = [ 
+    { name: 'Mark', age: 15 },
+    { name: 'Brad', age: 50 },
+    ] ;
   @Output() personListChange = new EventEmitter<Person[]>();
 
   dataSource: TableDataSource<Person>;

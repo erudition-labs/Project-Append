@@ -19,17 +19,17 @@
     </ng-container>
     <ng-container matColumnDef="actionsColumn">
       <mat-header-cell *matHeaderCellDef>
-        <button mat-icon-button color="accent" (click)="dataSource.createNew()"><i class="fa fa-plus mat-icon"></i></button>
+        <button mat-icon-button color="accent" (click)="dataSource.createNew()"><i class="fa fa-plus mat-icon"></i> hello</button>
       </mat-header-cell>
       <mat-cell *matCellDef="let row">
         <button *ngIf="!row.editing" mat-icon-button color="primary" focusable="false" (click)="row.startEdit()">
-              <i class="fa fa-pencil mat-icon"></i>
+              <mat-icon>edit</mat-icon>
             </button>
         <button *ngIf="row.editing" mat-icon-button color="primary" focusable="false" (click)="row.confirmEditCreate()">
-              <i class="fa fa-check mat-icon"></i>
+              <mat-icon>check</mat-icon>
             </button>
         <button mat-icon-button color="primary" focusable="false" (click)="row.cancelOrDelete()">
-              <i class="fa fa-times mat-icon"></i>
+              <mat-icon>cancel</mat-icon>
             </button>
       </mat-cell>
     </ng-container>
