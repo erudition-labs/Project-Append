@@ -17,7 +17,6 @@ import {
     MatCheckboxModule,
 } from '@angular/material';
 import { ColorPickerModule } from 'ngx-color-picker';
-import { CalendarModule as AngularCalendarModule } from 'angular-calendar';
 
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
@@ -26,6 +25,8 @@ import { EventsComponent } from 'app/main/apps/events/events.component';
 import { EventService } from 'app/main/apps/events/events.service';
 import { CalendarEventFormDialogComponent } from 'app/main/apps/events/event-form/event-form.component';
 import { CalendarEventViewDialogComponent } from 'app/main/apps/events/event-view/event-view.component';
+import { CalendarModule as AngularCalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgxsModule } from '@ngxs/store';
 import { CalendarEventState } from './_store/events.state';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
@@ -71,7 +72,10 @@ const routes: Routes = [
         MatExpansionModule,
         MatBadgeModule,
 
-        AngularCalendarModule.forRoot(),
+        AngularCalendarModule.forRoot({
+            provide   : DateAdapter,
+            useFactory: adapterFactory
+        }),
         ColorPickerModule,
         NgxPermissionsModule.forChild({ permissionsIsolate: true }),
 

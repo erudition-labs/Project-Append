@@ -33,7 +33,7 @@ toolbar {
         min-width: 64px;
         height: 64px;
 
-        @include media-breakpoint-down('xs') {
+        @include media-breakpoint('xs') {
             height: 56px;
         }
     }
@@ -47,7 +47,7 @@ toolbar {
         height: 64px;
         width: 1px;
 
-        @include media-breakpoint-down('xs') {
+        @include media-breakpoint('xs') {
             height: 56px;
         }
     }

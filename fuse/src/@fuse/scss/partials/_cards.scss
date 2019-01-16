@@ -8,6 +8,7 @@
 
     .fuse-card {
         background: map-get($background, card);
+        border-color: map-get($foreground, divider);
 
         .card-divider {
             border-top: 1px solid map-get($foreground, divider);
@@ -21,8 +22,8 @@
 .fuse-card {
     max-width: 320px;
     min-width: 320px;
-    border-radius: 2px;
-    @include mat-elevation(2);
+    border-radius: 8px;
+    border: 1px solid;
 
     &.variable-width {
         min-width: 0;
