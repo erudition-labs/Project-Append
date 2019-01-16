@@ -78,6 +78,6 @@ export class UserMangComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-}
+  }
 }
 

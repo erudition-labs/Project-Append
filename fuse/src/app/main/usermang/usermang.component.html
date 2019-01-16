@@ -1,5 +1,11 @@
 <div class="page-layout blank p-24" fusePerfectScrollbar>
 
+<mat-card>
+    <mat-card-header>
+    <mat-card-title>User Directory</mat-card-title>
+    </mat-card-header>
+
+  <mat-card-content>
   <mat-table [dataSource]="dataSource">
     <ng-container matColumnDef="First Name">
       <mat-header-cell *matHeaderCellDef> First Name </mat-header-cell>
@@ -86,4 +92,6 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
+</mat-card-content>
+</mat-card>
 </div>

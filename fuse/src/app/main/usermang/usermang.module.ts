@@ -11,7 +11,8 @@ import {
     MatButtonModule,
     MatInputModule,
     MatTableModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatCardModule
   } from '@angular/material';
 
 const routes = [
@@ -36,6 +37,7 @@ imports     : [
     MatButtonModule,
     MatIconModule,
     MatFormFieldModule,
+    MatCardModule,
 ],
 exports     : [
     UserMangComponent
