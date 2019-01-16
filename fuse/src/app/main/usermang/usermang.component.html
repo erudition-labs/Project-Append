@@ -5,7 +5,7 @@
       <mat-header-cell *matHeaderCellDef> First Name </mat-header-cell>
       <mat-cell *matCellDef="let row">
         <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
-          <input [formControl]="row.validator.controls['firstName']" placeholder="firstName" matInput>
+          <input [formControl]="row.validator.controls['firstName']" placeholder="First Name" matInput>
         </mat-form-field>
       </mat-cell>
     </ng-container>
@@ -14,7 +14,7 @@
         <mat-header-cell *matHeaderCellDef> Last Name </mat-header-cell>
         <mat-cell *matCellDef="let row">
           <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
-            <input [formControl]="row.validator.controls['lastName']" placeholder="lastName" matInput>
+            <input [formControl]="row.validator.controls['lastName']" placeholder="Last Name" matInput>
           </mat-form-field>
         </mat-cell>
       </ng-container>

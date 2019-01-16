@@ -1,7 +1,15 @@
-import { Component, Input, Output, EventEmitter, OnInit, Injectable } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, Injectable, OnDestroy } from '@angular/core';
 import { TableDataSource, ValidatorService } from 'angular4-material-table';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { User } from './User';
+import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
+import { tap, takeUntil } from 'rxjs/operators';
+import { Subject, Observable } from 'rxjs';
+import { UsersState } from '@core/store/users/user.state';
+import { User as UserModel } from '@core/user/user.model';
+
+
+
 class Person {
   name: string;
   age: number;
@@ -12,16 +20,16 @@ class PersonValidatorService implements ValidatorService {
   getRowValidator(): FormGroup {
     return new FormGroup({
       '_id'       : new FormControl(null, Validators.required),
-      'email'     : new FormControl(Validators.required),
-      'fisrtName' : new FormControl(Validators.required),
-      'lastName'  : new FormControl(Validators.required),
+      'email'     : new FormControl(null, Validators.required),
+      'firstName' : new FormControl(null, Validators.required),
+      'lastName'  : new FormControl(null, Validators.required),
       'rank'      : new FormControl(),
       'flight'    : new FormControl(),
       'team'      : new FormControl(),
       'phone'     : new FormControl(),
-      'role'      : new FormControl(Validators.required),
-      'events'    : new FormControl(Validators.required),
-      'fullName'  : new FormControl(Validators.required),
+      'role'      : new FormControl(null, Validators.required),
+      'events'    : new FormControl(null, Validators.required),
+      'fullName'  : new FormControl(null, Validators.required),
       'isChangelogViewed' : new FormControl(Validators.required)
       });
   }
@@ -34,9 +42,9 @@ class PersonValidatorService implements ValidatorService {
   ],
   templateUrl: './usermang.component.html',
 })
-export class UserMangComponent implements OnInit {
-
-  constructor(private personValidator: ValidatorService) { }
+export class UserMangComponent implements OnInit, OnDestroy {
+  constructor(private personValidator: ValidatorService,
+              private _store: Store) { }
 
   displayedColumns = ['First Name', 
                       'Last Name',
@@ -47,19 +55,29 @@ export class UserMangComponent implements OnInit {
                       'Email',
                       'actionsColumn'];
 
-  @Input() personList = [ 
-    { name: 'Mark', age: 15 },
-    { name: 'Brad', age: 50 },
-    ] ;
-  @Output() personListChange = new EventEmitter<Person[]>();
+  @Input() userList = [];
+  @Output() userListChange = new EventEmitter<User[]>();
+  dataSource: TableDataSource<User>;
 
-  dataSource: TableDataSource<Person>;
+  @Select(UsersState.allUsers) users$ : Observable<User[]>
+  private ngUnsubscribe = new Subject();
 
 
   ngOnInit() {
-    this.dataSource = new TableDataSource<any>(this.personList, Person, this.personValidator);
+    this.users$.pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(u => {
+      this.userList = u;
+      this.dataSource = new TableDataSource<any>(this.userList, User, this.personValidator);
+      this.dataSource.datasourceSubject.subscribe(userList => this.userListChange.emit(userList));
+    });
 
-    this.dataSource.datasourceSubject.subscribe(personList => this.personListChange.emit(personList));
+
+
   }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+}
 }
 
