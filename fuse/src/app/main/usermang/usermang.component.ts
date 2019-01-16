@@ -44,7 +44,8 @@ class PersonValidatorService implements ValidatorService {
 })
 export class UserMangComponent implements OnInit, OnDestroy {
   constructor(private personValidator: ValidatorService,
-              private _store: Store) { }
+              private _store: Store) 
+  {   }
 
   displayedColumns = ['First Name', 
                       'Last Name',
@@ -55,13 +56,12 @@ export class UserMangComponent implements OnInit, OnDestroy {
                       'Email',
                       'actionsColumn'];
 
-  @Input() userList = [];
-  @Output() userListChange = new EventEmitter<User[]>();
+  @Input() userList: Array<User> = [];
+  @Output() userListChange: EventEmitter<User[]> = new EventEmitter<User[]>();
   dataSource: TableDataSource<User>;
 
   @Select(UsersState.allUsers) users$ : Observable<User[]>
   private ngUnsubscribe = new Subject();
-
 
   ngOnInit() {
     this.users$.pipe(takeUntil(this.ngUnsubscribe))
@@ -69,10 +69,12 @@ export class UserMangComponent implements OnInit, OnDestroy {
       this.userList = u;
       this.dataSource = new TableDataSource<any>(this.userList, User, this.personValidator);
       this.dataSource.datasourceSubject.subscribe(userList => this.userListChange.emit(userList));
+      
     });
+  }
 
-
-
+  updateUser(row:any) {
+    console.log(row.currentData);
   }
 
   ngOnDestroy(): void {

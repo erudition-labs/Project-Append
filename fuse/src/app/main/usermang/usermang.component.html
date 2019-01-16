@@ -80,7 +80,7 @@
         <button *ngIf="!row.editing" mat-icon-button color="primary" focusable="false" (click)="row.startEdit()">
               <mat-icon>edit</mat-icon>
             </button>
-        <button *ngIf="row.editing" mat-icon-button color="primary" focusable="false" (click)="row.confirmEditCreate()">
+        <button *ngIf="row.editing" mat-icon-button color="primary" focusable="false" (click)="row.confirmEditCreate(); row.editing=false; updateUser(row);">
               <mat-icon>check</mat-icon>
             </button>
         <button mat-icon-button color="primary" focusable="false" (click)="row.cancelOrDelete()">
