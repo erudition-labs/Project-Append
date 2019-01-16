@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, Injectable } from '@angular/core';
 import { TableDataSource, ValidatorService } from 'angular4-material-table';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
-
+import { User } from './User';
 class Person {
   name: string;
   age: number;
