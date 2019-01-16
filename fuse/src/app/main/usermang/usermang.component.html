@@ -1,22 +1,71 @@
 <div class="page-layout blank p-24" fusePerfectScrollbar>
 
   <mat-table [dataSource]="dataSource">
-    <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+    <ng-container matColumnDef="First Name">
+      <mat-header-cell *matHeaderCellDef> First Name </mat-header-cell>
       <mat-cell *matCellDef="let row">
         <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
-          <input [formControl]="row.validator.controls['name']" placeholder="Name" matInput>
+          <input [formControl]="row.validator.controls['firstName']" placeholder="firstName" matInput>
         </mat-form-field>
       </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="age">
-      <mat-header-cell *matHeaderCellDef> Age </mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
-          <input [formControl]="row.validator.controls['age']" type="number" placeholder="Age" matInput>
-        </mat-form-field>
-      </mat-cell>
-    </ng-container>
+
+      <ng-container matColumnDef="Last Name">
+        <mat-header-cell *matHeaderCellDef> Last Name </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+            <input [formControl]="row.validator.controls['lastName']" placeholder="lastName" matInput>
+          </mat-form-field>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Rank">
+        <mat-header-cell *matHeaderCellDef> Rank </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+            <input [formControl]="row.validator.controls['rank']" placeholder="rank" matInput>
+          </mat-form-field>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Flight">
+        <mat-header-cell *matHeaderCellDef> Flight </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+            <input [formControl]="row.validator.controls['flight']" placeholder="flight" matInput>
+          </mat-form-field>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Team">
+        <mat-header-cell *matHeaderCellDef> Team </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+            <input [formControl]="row.validator.controls['team']" placeholder="team" matInput>
+          </mat-form-field>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Phone">
+        <mat-header-cell *matHeaderCellDef> Phone </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+            <input [formControl]="row.validator.controls['phone']" placeholder="phone" matInput>
+          </mat-form-field>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Email">
+        <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+            <input [formControl]="row.validator.controls['email']" placeholder="email" matInput>
+          </mat-form-field>
+        </mat-cell>
+      </ng-container>
+
+
+
     <ng-container matColumnDef="actionsColumn">
       <mat-header-cell *matHeaderCellDef>
         <button mat-icon-button color="accent" (click)="dataSource.createNew()"><i class="fa fa-plus mat-icon"></i> hello</button>
