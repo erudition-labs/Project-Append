@@ -78,7 +78,9 @@ export class UserFormDialogComponent implements OnDestroy, OnInit
     }
 
     saveUser() : void {
-        this._store.dispatch(new UserUpdate({ user: this.userForm.getRawValue() as User }));
+        let newUser = this.userForm.getRawValue() as User
+        newUser.fullName = newUser.lastName + ", " + newUser.firstName;
+        this._store.dispatch(new UserUpdate({ user: newUser }));
     }
 
 }

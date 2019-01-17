@@ -54,7 +54,7 @@ export class UserUpdate {
 
 export class UserUpdateSuccess {
     static readonly type = '[Users] User Update Success';
-    constructor(public readonly payload: {user: User}) {}
+    constructor(public readonly payload: { user: User }) {}
 }
 
 export class UserUpdateFail {
