@@ -2,13 +2,12 @@
         <mat-toolbar class="mat-accent m-0">
             <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
                 <span class="title dialog-title">{{dialogTitle}}</span>
+                <ng-template ngxPermissionsOnly="ADMIN">
+                        <button mat-button (click)="editUser()">Edit</button>
+                </ng-template>
                 <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
                     <mat-icon>close</mat-icon>
                 </button>
-
-                <ng-template ngxPermissionsOnly="ADMIN">
-                    <button mat-button (click)="editEvent()">Edit</button>
-                </ng-template>
             </mat-toolbar-row>
         </mat-toolbar>
     
@@ -61,16 +60,18 @@
     
         <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
     
-        <ng-template ngxPermissionsOnly="ADMIN">
-            <button
+        <ng-container *ngIf="editing">
+            <ng-template ngxPermissionsOnly="ADMIN">
+                <button
                     mat-raised-button
                     (click)="matDialogRef.close(userForm)"
                     class="save-button mat-accent"
                     [disabled]="userForm.invalid"
                     aria-label="SAVE">
-                SAVE
-            </button>
-        </ng-template>
+                    SAVE
+                </button>
+            </ng-template>
+        </ng-container>
         </div>
     </div>
     

@@ -6,6 +6,8 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserMangComponent } from './usermang.component';
 import { UserFormDialogComponent } from './user-form/user-form.component';
+import { NgxPermissionsModule } from 'ngx-permissions';
+
 
 import {
     MatIconModule,
@@ -35,6 +37,7 @@ const routes = [
 ],
 imports     : [
     RouterModule.forChild(routes),
+    NgxPermissionsModule.forChild({ permissionsIsolate: true }),
 
     TranslateModule,
 
