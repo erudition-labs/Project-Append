@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { AuthState } from '../store/auth/auth.state';
+import { Logout } from '../store/auth/auth.actions';
 
 
 @Injectable({
@@ -20,7 +21,8 @@ export class TokenAuthService {
 		if(!helper.isTokenExpired(token)) {
 			return decodedToken;
 		} else {
-			return false;
+			this._store.dispatch(new Logout());
+			return null;
 		}
 	}
 
@@ -36,10 +38,13 @@ export class TokenAuthService {
 
 	public isAuthenticated() : boolean {
 		const token = this._store.selectSnapshot(AuthState.token);
-		if(!token) return false;
-
 		const helper = new JwtHelperService();
-		return !helper.isTokenExpired(token);
+
+		if(!token || helper.isTokenExpired(token)) {
+			this._store.dispatch(new Logout());
+			return false;
+		} 
+		return true;
 	}
 
 }
