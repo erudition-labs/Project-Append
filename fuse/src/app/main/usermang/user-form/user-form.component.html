@@ -5,26 +5,37 @@
                 <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
                     <mat-icon>close</mat-icon>
                 </button>
+
+                <ng-template ngxPermissionsOnly="ADMIN">
+                    <button mat-button (click)="editEvent()">Edit</button>
+                </ng-template>
             </mat-toolbar-row>
         </mat-toolbar>
     
         <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
-            <form name="userForm" [formGroup]="userForm" class="user-form w-100-p" fxLayout="column" fxFlex>
-    
+            <!--<form name="userForm" [formGroup]="userForm" class="user-form w-100-p" fxLayout="column" fxFlex>
+                    <mat-form-field floatPlaceholder="{{ row.editing ? 'float' : 'never'}}">
+                            <input [formControl]="row.validator.controls['age']" type="number" placeholder="Age" matInput>
+                    </mat-form-field>
 
-            </form>
+            </form> -->
+            <mat-form-field floatLabel="{{ editing ? 'float' : 'never'}}">
+                    <input [formControl]="userForm.controls['firstName']" type="text" placeholder="name" matInput>
+            </mat-form-field>
         </div>
     
         <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
     
+        <ng-template ngxPermissionsOnly="ADMIN">
             <button
                     mat-raised-button
-                    (click)="matDialogRef.close(['save', userForm])"
+                    (click)="matDialogRef.close(userForm)"
                     class="save-button mat-accent"
                     [disabled]="userForm.invalid"
                     aria-label="SAVE">
                 SAVE
             </button>
+        </ng-template>
         </div>
     </div>
     

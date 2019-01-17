@@ -26,6 +26,7 @@ export class UserFormDialogComponent implements OnDestroy, OnInit
     userForm: FormGroup;
     private ngUnsubscribe = new Subject();
     dialogTitle: string;
+    editing: boolean = false;
 
 
     constructor(
@@ -35,43 +36,44 @@ export class UserFormDialogComponent implements OnDestroy, OnInit
         private _tokenAuthService: TokenAuthService,
         private _store: Store,
         private _permissionsService: NgxPermissionsService
-    ) {
-        this.dialogTitle = _data.fullName;
-        this.userForm = this.createEventForm();
-    }
+    ) {}
 
     ngOnInit() : void {
         this._permissionsService.flushPermissions();
         this._permissionsService.addPermission('ADMIN', () => {
             return ((this._tokenAuthService.isAuthenticated() && this._tokenAuthService.isAdmin()));
         });
+        this.dialogTitle = this._data.fullName;
+        this.userForm = this.createEventForm();
+        this.userForm.disable();
     }
 
     createEventForm(): FormGroup {
-        let form = this._formBuilder.group({
-            _id         : new FormControl(this._data._id,{ validators: [Validators.required] }),
-            email       : new FormControl(this._data.email,{ validators: [Validators.required] }),
-            firstName   : new FormControl(this._data.firstName,{ validators: [Validators.required] }),
-            lastName    : new FormControl(this._data.lastName,{ validators: [Validators.required] }),
+        return new FormGroup({
+            _id         : new FormControl(this._data._id, Validators.required),
+            email       : new FormControl(this._data.email, Validators.required),
+            firstName   : new FormControl(this._data.firstName, Validators.required),
+            lastName    : new FormControl(this._data.lastName, Validators.required),
             rank        : new FormControl(this._data.rank),
             flight      : new FormControl(this._data.flight),
             team        : new FormControl(this._data.team),
-            role        : new FormControl(this._data.role,{ validators: [Validators.required] }),
+            role        : new FormControl(this._data.role, Validators.required),
             phone       : new FormControl(this._data.phone),
             events      : new FormControl(this._data.events),
-            fullName    : new FormControl(this._data.fullName,{ validators: [Validators.required] }),
-            isChangelogViewed: new FormControl(this._data.isChangelogViewed,{ validators: [Validators.required] }),
-        });
-
-        return form;
-        
+            fullName    : new FormControl(this._data.fullName, Validators.required),
+            isChangelogViewed: new FormControl(this._data.isChangelogViewed, Validators.required)
+        });        
     }
 
     ngOnDestroy(): void {
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
         this._permissionsService.removePermission('ADMIN');
+    }
 
+    editUser(): void {
+        this.editing = true;
+        this.userForm.enable();
     }
 
 }
