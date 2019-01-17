@@ -12,7 +12,8 @@ import {
     MatInputModule,
     MatTableModule,
     MatFormFieldModule,
-    MatCardModule
+    MatCardModule,
+    MatPaginatorModule
   } from '@angular/material';
 
 const routes = [
@@ -38,6 +39,7 @@ imports     : [
     MatIconModule,
     MatFormFieldModule,
     MatCardModule,
+    MatPaginatorModule,
 ],
 exports     : [
     UserMangComponent

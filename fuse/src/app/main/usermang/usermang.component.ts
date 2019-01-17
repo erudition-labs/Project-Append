@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, Injectable, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, Injectable, OnDestroy, ViewChild } from '@angular/core';
 import { TableDataSource, ValidatorService } from 'angular4-material-table';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { User } from './User';
@@ -6,14 +6,7 @@ import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
 import { tap, takeUntil } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import { UsersState } from '@core/store/users/user.state';
-import { User as UserModel } from '@core/user/user.model';
-
-
-
-class Person {
-  name: string;
-  age: number;
-}
+import { MatPaginator, MatTableDataSource } from '@angular/material';
 
 @Injectable()
 class PersonValidatorService implements ValidatorService {
@@ -52,12 +45,13 @@ export class UserMangComponent implements OnInit, OnDestroy {
                       'Rank', 
                       'Flight',
                       'Team',
-                      'Phone',
                       'Email',
+                      'Phone',
                       'actionsColumn'];
 
   @Input() userList: Array<User> = [];
   @Output() userListChange: EventEmitter<User[]> = new EventEmitter<User[]>();
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: TableDataSource<User>;
 
   @Select(UsersState.allUsers) users$ : Observable<User[]>
@@ -68,18 +62,24 @@ export class UserMangComponent implements OnInit, OnDestroy {
     .subscribe(u => {
       this.userList = u;
       this.dataSource = new TableDataSource<any>(this.userList, User, this.personValidator);
+      //this.dataSource = this.paginator;
       this.dataSource.datasourceSubject.subscribe(userList => this.userListChange.emit(userList));
       
     });
-  }
-
-  updateUser(row:any) {
-    console.log(row.currentData);
   }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
+
+  updateUser(row:any) {
+    console.log(row.currentData);
+  }
+
+  applyFilter(filterValue: string) {
+		//this.dataSource.filter = filterValue.trim().toLowerCase();
+	}
+
 }
 

@@ -52,6 +52,15 @@
         </mat-cell>
       </ng-container>
 
+      <ng-container matColumnDef="Email">
+          <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+              <input [formControl]="row.validator.controls['email']" placeholder="email" matInput>
+            </mat-form-field>
+          </mat-cell>
+        </ng-container>
+
       <ng-container matColumnDef="Phone">
         <mat-header-cell *matHeaderCellDef> Phone </mat-header-cell>
         <mat-cell *matCellDef="let row">
@@ -61,21 +70,13 @@
         </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="Email">
-        <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
-        <mat-cell *matCellDef="let row">
-          <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
-            <input [formControl]="row.validator.controls['email']" placeholder="email" matInput>
-          </mat-form-field>
-        </mat-cell>
-      </ng-container>
-
 
 
     <ng-container matColumnDef="actionsColumn">
       <mat-header-cell *matHeaderCellDef>
-        <button mat-icon-button color="accent" (click)="dataSource.createNew()"><i class="fa fa-plus mat-icon"></i> hello</button>
-      </mat-header-cell>
+        <!-- In Case we want to add users from here some day
+        <button mat-icon-button color="accent" (click)="dataSource.createNew()"><i class="fa fa-plus mat-icon"></i> hello</button> -->
+      </mat-header-cell> 
       <mat-cell *matCellDef="let row">
         <button *ngIf="!row.editing" mat-icon-button color="primary" focusable="false" (click)="row.startEdit()">
               <mat-icon>edit</mat-icon>
@@ -92,6 +93,12 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
+  <mat-paginator #paginator
+  [length]="count"
+  [pageIndex]="0"
+  [pageSize]="50"
+  [pageSizeOptions]="[10, 25, 50, 100]">
+</mat-paginator>
 </mat-card-content>
 </mat-card>
 </div>
