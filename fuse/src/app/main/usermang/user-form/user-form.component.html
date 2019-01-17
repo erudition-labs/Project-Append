@@ -19,8 +19,43 @@
                     </mat-form-field>
 
             </form> -->
+
+            <!-- Control the label float like this
+            
             <mat-form-field floatLabel="{{ editing ? 'float' : 'never'}}">
-                    <input [formControl]="userForm.controls['firstName']" type="text" placeholder="name" matInput>
+                <input [formControl]="userForm.controls['role']" type="text" placeholder="Permission Level" matInput>
+            </mat-form-field>
+            -->
+            <mat-form-field>
+                    <input [formControl]="userForm.controls['firstName']" type="text" placeholder="First Name" matInput>
+            </mat-form-field>
+
+            <mat-form-field>
+                    <input [formControl]="userForm.controls['lastName']" type="text" placeholder="Last Name" matInput>
+            </mat-form-field>
+
+            <mat-form-field>
+                    <input [formControl]="userForm.controls['email']" type="text" placeholder="Email" matInput>
+            </mat-form-field>
+
+            <mat-form-field>
+                    <input [formControl]="userForm.controls['phone']" type="text" placeholder="Phone" matInput>
+            </mat-form-field>
+
+            <mat-form-field>
+                    <input [formControl]="userForm.controls['rank']" type="text" placeholder="Rank" matInput>
+            </mat-form-field>
+
+            <mat-form-field>
+                    <input [formControl]="userForm.controls['flight']" type="text" placeholder="Flight" matInput>
+            </mat-form-field>
+
+            <mat-form-field>
+                    <input [formControl]="userForm.controls['team']" type="text" placeholder="Team" matInput>
+            </mat-form-field>
+
+            <mat-form-field>
+                    <input [formControl]="userForm.controls['role']" type="text" placeholder="Permission Level" matInput>
             </mat-form-field>
         </div>
     
