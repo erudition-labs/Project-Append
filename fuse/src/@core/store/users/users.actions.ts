@@ -46,6 +46,22 @@ export class UserEventRemoveFail {
     constructor(public readonly payload?: any) {}
 }
 
+//Update a User
+export class UserUpdate {
+    static readonly type = '[Users] User Update';
+    constructor(public readonly payload: { user: User }) {}
+}
+
+export class UserUpdateSuccess {
+    static readonly type = '[Users] User Update Success';
+    constructor(public readonly payload: {user: User}) {}
+}
+
+export class UserUpdateFail {
+    static readonly type = '[Users] User Update Fail';
+    constructor(public readonly payload?: any) {}
+}
+
 export type UsersActions = 
     | LoadUsers
     | LoadUsersSuccess
@@ -55,4 +71,7 @@ export type UsersActions =
     | UserEventSignupFail
     | UserEventRemove
     | UserEventRemoveSuccess
-    | UserEventRemoveFail;
+    | UserEventRemoveFail
+    | UserUpdate
+    | UserUpdateSuccess
+    | UserUpdateFail;
