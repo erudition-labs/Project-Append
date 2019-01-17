@@ -8,6 +8,7 @@
         > .fuse-widget-front,
         > .fuse-widget-back {
             background: map-get($background, card);
+            border-color: map-get($foreground, divider);
         }
     }
 }

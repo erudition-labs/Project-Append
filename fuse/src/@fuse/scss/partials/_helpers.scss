@@ -1,11 +1,11 @@
 // -----------------------------------------------------------------------------------------------------
 // @ Position helpers
 // -----------------------------------------------------------------------------------------------------
-@each $breakpoint in map-keys($grid-breakpoints) {
+@each $breakpoint, $materialBreakpoint in $helper-breakpoints {
 
-    @include media-breakpoint-up($breakpoint) {
+    @include media-breakpoint($materialBreakpoint) {
 
-        $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+        $infix: if($materialBreakpoint == null, "", "-#{$breakpoint}");
 
         .position#{$infix}-relative {
             position: relative;
@@ -24,11 +24,11 @@
 // -----------------------------------------------------------------------------------------------------
 // @ Absolute position alignment helpers
 // -----------------------------------------------------------------------------------------------------
-@each $breakpoint in map-keys($grid-breakpoints) {
+@each $breakpoint, $materialBreakpoint in $helper-breakpoints {
 
-    @include media-breakpoint-up($breakpoint) {
+    @include media-breakpoint($materialBreakpoint) {
 
-        $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+        $infix: if($materialBreakpoint == null, "", "-#{$breakpoint}");
 
         .align#{$infix}-top {
             top: 0;
@@ -78,11 +78,11 @@
 // -----------------------------------------------------------------------------------------------------
 // @ Spacing helpers
 // -----------------------------------------------------------------------------------------------------
-@each $breakpoint in map-keys($grid-breakpoints) {
+@each $breakpoint, $materialBreakpoint in $helper-breakpoints {
 
-    @include media-breakpoint-up($breakpoint) {
+    @include media-breakpoint($materialBreakpoint) {
 
-        $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+        $infix: if($materialBreakpoint == null, "", "-#{$breakpoint}");
 
         @each $prop, $abbrev in (margin: m, padding: p) {
 

@@ -9,7 +9,7 @@
         height: 64px;
         font-size: 13px;
 
-        @include media-breakpoint-down('xs') {
+        @include media-breakpoint('xs') {
             height: 56px;
         }
 
@@ -28,7 +28,7 @@
                 height: 64px !important;
                 line-height: 64px !important;
 
-                @include media-breakpoint-down('xs') {
+                @include media-breakpoint('xs') {
                     height: 56px !important;
                     line-height: 56px !important;
                 }
@@ -39,7 +39,7 @@
                 height: 64px !important;
                 line-height: 64px !important;
 
-                @include media-breakpoint-down('xs') {
+                @include media-breakpoint('xs') {
                     height: 56px !important;
                     line-height: 56px !important;
                 }

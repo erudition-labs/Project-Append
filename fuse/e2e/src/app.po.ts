@@ -1,11 +1,11 @@
 import { browser, by, element } from 'protractor';
 
-export class Fuse2Page {
+export class FusePage {
     navigateTo(): any {
         return browser.get('/');
     }
 
     getParagraphText(): any {
-        return element(by.css('app-root h1')).getText();
+        return element(by.css('app #main')).getText();
     }
 }

@@ -18,6 +18,7 @@
 
                     > .content-card {
                         background: map-get($background, card);
+                        border-radius: 8px 8px 0 0;
 
                         > .toolbar {
                             border-bottom-color: map-get($foreground, divider);
@@ -34,6 +35,7 @@
 
                     > .content-card {
                         background: map-get($background, card);
+                        border-radius: 8px 8px 0 0;
 
                         > .toolbar {
                             border-bottom-color: map-get($foreground, divider);
@@ -79,15 +81,11 @@
 // @ Page Layouts
 // -----------------------------------------------------------------------------------------------------
 $carded-header-height: 200px !default;
-$carded-header-height-sm: 160px !default;
 $carded-toolbar-height: 64px !default;
-
 $header-height: 120px !default;
-$header-height-sm: 100px !default;
 
-// Calculate toolbarless header height
+// Calculate toolbar-less carded header height
 $carded-header-height-without-toolbar: $carded-header-height - $carded-toolbar-height;
-$carded-header-height-without-toolbar-sm: $carded-header-height-sm - $carded-toolbar-height;
 
 .page-layout {
     position: relative;
@@ -109,10 +107,6 @@ $carded-header-height-without-toolbar-sm: $carded-header-height-sm - $carded-too
             right: 0;
             left: 0;
             height: $carded-header-height;
-
-            @include media-breakpoint-down('sm') {
-                height: $carded-header-height-sm;
-            }
         }
 
         // Fullwidth
@@ -136,12 +130,6 @@ $carded-header-height-without-toolbar-sm: $carded-header-height-sm - $carded-too
                     height: $carded-header-height-without-toolbar !important;
                     min-height: $carded-header-height-without-toolbar !important;
                     max-height: $carded-header-height-without-toolbar !important;
-
-                    @include media-breakpoint-down('sm') {
-                        height: $carded-header-height-without-toolbar-sm !important;
-                        min-height: $carded-header-height-without-toolbar-sm !important;
-                        max-height: $carded-header-height-without-toolbar-sm !important;
-                    }
                 }
 
                 > .content-card {
@@ -149,7 +137,7 @@ $carded-header-height-without-toolbar-sm: $carded-header-height-sm - $carded-too
                     flex-direction: column;
                     flex: 1 0 auto;
                     overflow: hidden;
-                    @include mat-elevation(7);
+                    @include mat-elevation(1);
 
                     > .toolbar {
                         display: flex;
@@ -303,12 +291,6 @@ $carded-header-height-without-toolbar-sm: $carded-header-height-sm - $carded-too
                     height: $carded-header-height;
                     min-height: $carded-header-height;
                     max-height: $carded-header-height;
-
-                    @include media-breakpoint-down('sm') {
-                        height: $carded-header-height-sm;
-                        min-height: $carded-header-height-sm;
-                        max-height: $carded-header-height-sm;
-                    }
                 }
 
                 .content {
@@ -334,12 +316,6 @@ $carded-header-height-without-toolbar-sm: $carded-header-height-sm - $carded-too
                     height: $carded-header-height-without-toolbar;
                     min-height: $carded-header-height-without-toolbar;
                     max-height: $carded-header-height-without-toolbar;
-
-                    @include media-breakpoint-down('sm') {
-                        height: $carded-header-height-without-toolbar-sm;
-                        min-height: $carded-header-height-without-toolbar-sm;
-                        max-height: $carded-header-height-without-toolbar-sm;
-                    }
                 }
 
                 > .content-card {
@@ -347,7 +323,7 @@ $carded-header-height-without-toolbar-sm: $carded-header-height-sm - $carded-too
                     flex-direction: column;
                     flex: 1 1 auto;
                     overflow: hidden;
-                    @include mat-elevation(7);
+                    @include mat-elevation(1);
 
                     > .toolbar {
                         display: flex;
@@ -379,7 +355,7 @@ $carded-header-height-without-toolbar-sm: $carded-header-height-sm - $carded-too
                     width: calc(100% - 32px);
                     min-width: 0;
 
-                    @include media-breakpoint-down('md') {
+                    @include media-breakpoint('lt-lg') {
                         width: calc(100% - 64px);
                     }
 
@@ -566,7 +542,7 @@ $carded-header-height-without-toolbar-sm: $carded-header-height-sm - $carded-too
                 z-index: 3;
                 min-width: 0;
                 width: 100%;
-                @include mat-elevation(7);
+                @include mat-elevation(1);
 
                 > .header {
                     height: $header-height;
@@ -625,6 +601,11 @@ $carded-header-height-without-toolbar-sm: $carded-header-height-sm - $carded-too
                         flex: 1 1 auto;
                         overflow: auto;
                         -webkit-overflow-scrolling: touch;
+
+                        > .content {
+                            border-radius: 8px;
+                            @include mat-elevation(1);
+                        }
                     }
                 }
             }
@@ -685,7 +666,7 @@ $carded-header-height-without-toolbar-sm: $carded-header-height-sm - $carded-too
         min-height: 100%;
     }
 
-    @include media-breakpoint-down('xs') {
+    @include media-breakpoint('xs') {
 
         // Smaller margins
         &.carded {

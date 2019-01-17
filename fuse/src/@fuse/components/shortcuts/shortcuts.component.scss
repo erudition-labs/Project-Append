@@ -2,7 +2,7 @@
 
 :host {
 
-    @include media-breakpoint-down('sm') {
+    @include media-breakpoint('lt-md') {
 
         #fuse-shortcuts {
 

@@ -6,7 +6,7 @@
         width: 100%;
     }
 
-    @include media-breakpoint-up('xs') {
+    @include media-breakpoint('gt-xs') {
         width: 480px;
     }
 

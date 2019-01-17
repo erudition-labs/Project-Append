@@ -4,6 +4,7 @@ import { User } from '@core/user/user.model';
 import { UsersStateModel } from './users.state.model';
 import * as usersActions from './users.actions';
 import { UserService } from '@core/user/user.service';
+import { TokenAuthService } from '@core/auth/tokenAuth.service';
 import { catchError } from 'rxjs/operators';
 import { dispatch } from 'rxjs/internal/observable/pairs';
 
@@ -17,7 +18,8 @@ import { dispatch } from 'rxjs/internal/observable/pairs';
   })
 
 export class UsersState implements NgxsOnInit {
-    constructor(private _userService: UserService) {}
+    constructor(private _userService: UserService,
+                private _tokenService: TokenAuthService) {}
     ngxsOnInit(ctx: StateContext<UsersStateModel>) {
         ctx.dispatch(new usersActions.LoadUsers());
     }
@@ -197,6 +199,65 @@ export class UsersState implements NgxsOnInit {
     userEventRemoveFail(
         { patchState } : StateContext<UsersStateModel>,
         { payload } : usersActions.UserEventRemoveFail
+    ) {
+        patchState({ loaded: false, loading: false });
+        console.log(payload);
+    }
+
+    @Action(usersActions.UserUpdate)
+    userUpdate(
+        { patchState, dispatch }: StateContext<UsersStateModel>,
+        { payload }: usersActions.UserUpdate
+    ) {
+        if(!this._tokenService.isAuthenticated()) {
+            //must be logged in
+            asapScheduler.schedule(() =>
+            dispatch(new usersActions.UserUpdateFail("Must be Authenticated"))
+        )
+            return;
+        }
+
+        patchState({ loaded: false, loading: true });
+        let user = this._userService.preProcessUser(payload.user);
+
+        return this._userService.update(user, true)
+        .subscribe(data => { 
+            asapScheduler.schedule(() =>
+                dispatch(new usersActions.UserUpdateSuccess(({user: data as User})))
+            )
+        },
+        error => {
+            asapScheduler.schedule(() =>
+                dispatch(new usersActions.UserUpdateFail(error.message))
+            )    
+        });
+    }
+
+
+    @Action(usersActions.UserUpdateSuccess)
+    userUpdateSuccess(
+        { patchState, getState }: StateContext<UsersStateModel>,
+        { payload }: usersActions.UserUpdateSuccess 
+    ) {
+
+        if(!payload || !payload.user) return;
+        const state = getState(); 
+        let index = state.users.findIndex(x => x._id === payload.user._id);
+
+        if(index > -1) {
+            patchState({ 
+                users: [...state.users.slice(0, index), 
+                        payload.user, 
+                        ...state.users.slice(index+1)],
+                loaded: true, 
+                loading: false });
+        }
+    }
+
+    @Action(usersActions.UserUpdateFail)
+    userUpdateFail(
+        { patchState } : StateContext<UsersStateModel>,
+        { payload } : usersActions.UserUpdateFail
     ) {
         patchState({ loaded: false, loading: false });
         console.log(payload);

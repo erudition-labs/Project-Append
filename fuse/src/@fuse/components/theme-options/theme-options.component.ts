@@ -118,7 +118,6 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy
                 // Reset the form values based on the
                 // selected layout style
                 this._resetFormValues(value);
-
             });
 
         // Subscribe to the form value changes
