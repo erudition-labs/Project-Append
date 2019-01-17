@@ -13,7 +13,8 @@ import {
     MatTableModule,
     MatFormFieldModule,
     MatCardModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatDividerModule
   } from '@angular/material';
 
 
@@ -42,6 +43,7 @@ imports     : [
     MatFormFieldModule,
     MatCardModule,
     MatPaginatorModule,
+    MatDividerModule,
 ],
 exports     : [
     UserMangComponent

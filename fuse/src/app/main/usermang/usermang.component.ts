@@ -19,7 +19,7 @@ export class UserMangComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<User>;
   private ngUnsubscribe = new Subject();
 
-  displayedColumns: string[] = ['Name'];
+  displayedColumns: string[] = ['Name', 'Email', 'Phone'];
 
   ngOnInit() {
     this.users$.pipe(takeUntil(this.ngUnsubscribe))
