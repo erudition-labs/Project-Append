@@ -11,6 +11,7 @@ import { User } from '@core/user/user.model';
 import { TokenAuthService } from '@core/auth/tokenAuth.service';
 import { Subject, Observable } from 'rxjs';
 import { tap, takeUntil } from 'rxjs/operators';
+import { UserUpdate } from '@core/store/users/users.actions';
 
 
 
@@ -74,6 +75,10 @@ export class UserFormDialogComponent implements OnDestroy, OnInit
     editUser(): void {
         this.editing = true;
         this.userForm.enable();
+    }
+
+    saveUser() : void {
+        this._store.dispatch(new UserUpdate({ user: this.userForm.getRawValue() as User }));
     }
 
 }

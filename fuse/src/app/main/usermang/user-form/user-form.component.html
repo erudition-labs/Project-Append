@@ -64,7 +64,7 @@
             <ng-template ngxPermissionsOnly="ADMIN">
                 <button
                     mat-raised-button
-                    (click)="matDialogRef.close(userForm)"
+                    (click)="saveUser(); matDialogRef.close()"
                     class="save-button mat-accent"
                     [disabled]="userForm.invalid"
                     aria-label="SAVE">
