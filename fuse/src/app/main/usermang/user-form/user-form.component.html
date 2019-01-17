@@ -9,8 +9,7 @@
         </mat-toolbar>
     
         <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
-    
-            <form name="eventForm" [formGroup]="userForm" class="user-form w-100-p" fxLayout="column" fxFlex>
+            <form name="userForm" [formGroup]="userForm" class="user-form w-100-p" fxLayout="column" fxFlex>
     
 
             </form>
@@ -18,20 +17,11 @@
     
         <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
     
-            <button *ngIf="action !=='edit'"
+            <button
                     mat-raised-button
-                    (click)="checkDates(); matDialogRef.close(['new', eventForm])"
+                    (click)="matDialogRef.close(['save', userForm])"
                     class="save-button mat-accent"
-                    aria-label="SAVE"
-                    [disabled]="eventForm.invalid">
-                Create
-            </button>
-    
-            <button *ngIf="action ==='edit'"
-                    mat-raised-button
-                    (click)="matDialogRef.close(['save', eventForm])"
-                    class="save-button mat-accent"
-                    [disabled]="eventForm.invalid"
+                    [disabled]="userForm.invalid"
                     aria-label="SAVE">
                 SAVE
             </button>

@@ -6,17 +6,24 @@ import { Subject, Observable } from 'rxjs';
 import { UsersState } from '@core/store/users/user.state';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { User } from '@core/user/user.model';
+import { UserFormDialogComponent } from './user-form/user-form.component';
+import { MatDialog, MatDialogRef } from '@angular/material';
+
+
 @Component({
   selector: 'usermang',
   templateUrl: './usermang.component.html',
 })
 export class UserMangComponent implements OnInit, OnDestroy {
-  constructor(private _store: Store) { }
+  constructor(private _store: Store,
+              private _matDialog  : MatDialog,
+    ) { }
 
   userList: Array<User> = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @Select(UsersState.allUsers) users$ : Observable<User[]>
   dataSource: MatTableDataSource<User>;
+  dialogRef : MatDialogRef<UserFormDialogComponent>
   private ngUnsubscribe = new Subject();
 
   displayedColumns: string[] = ['Name', 'Email', 'Phone'];
@@ -44,7 +51,10 @@ export class UserMangComponent implements OnInit, OnDestroy {
   }
   
   openProfile(user) {
-    console.log(user);
+    this.dialogRef = this._matDialog.open(UserFormDialogComponent, {
+      panelClass: 'user-form-dialog',
+      data : user as User 
+  });
   }
 
 }

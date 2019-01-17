@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserMangComponent } from './usermang.component';
+import { UserFormDialogComponent } from './user-form/user-form.component';
 
 import {
     MatIconModule,
@@ -14,7 +15,8 @@ import {
     MatFormFieldModule,
     MatCardModule,
     MatPaginatorModule,
-    MatDividerModule
+    MatDividerModule,
+    MatToolbarModule
   } from '@angular/material';
 
 
@@ -28,7 +30,8 @@ const routes = [
 
 @NgModule({
   declarations: [
-    UserMangComponent
+    UserMangComponent,
+    UserFormDialogComponent,
 ],
 imports     : [
     RouterModule.forChild(routes),
@@ -44,9 +47,11 @@ imports     : [
     MatCardModule,
     MatPaginatorModule,
     MatDividerModule,
+    MatToolbarModule,
 ],
 exports     : [
     UserMangComponent
-]
+], 
+entryComponents: [UserFormDialogComponent]
 })
 export class UserMangModule { }

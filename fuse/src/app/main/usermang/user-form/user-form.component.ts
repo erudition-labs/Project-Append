@@ -21,20 +21,22 @@ import { tap, takeUntil } from 'rxjs/operators';
     encapsulation: ViewEncapsulation.None
 })
 
-export class CalendarEventFormDialogComponent implements OnDestroy, OnInit
+export class UserFormDialogComponent implements OnDestroy, OnInit
 {
     userForm: FormGroup;
     private ngUnsubscribe = new Subject();
+    dialogTitle: string;
 
 
     constructor(
-        public matDialogRef: MatDialogRef<CalendarEventFormDialogComponent>,
+        public matDialogRef: MatDialogRef<UserFormDialogComponent>,
         @Inject(MAT_DIALOG_DATA) private _data: any,
         private _formBuilder: FormBuilder,
         private _tokenAuthService: TokenAuthService,
         private _store: Store,
         private _permissionsService: NgxPermissionsService
     ) {
+        this.dialogTitle = _data.fullName;
         this.userForm = this.createEventForm();
     }
 
