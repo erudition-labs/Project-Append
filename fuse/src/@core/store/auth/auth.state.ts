@@ -5,6 +5,7 @@ import * as actions  from './auth.actions';
 import { AuthService } from '@core/auth/auth.service';
 import { Credentials } from '@core/user/credentials.model';
 import { Store } from '@ngxs/store';
+import { LoadUsers } from '../users/users.actions';
 
 
 @State<AuthStateModel>({
@@ -42,7 +43,7 @@ import { Store } from '@ngxs/store';
 
     @Action(actions.LoginSuccess)
     loginSuccess(
-        { patchState }  : StateContext<AuthStateModel>,
+        { patchState, dispatch }  : StateContext<AuthStateModel>,
         { payload }     : actions.LoginSuccess
     ) { 
         patchState({
@@ -50,6 +51,8 @@ import { Store } from '@ngxs/store';
             loading: false,
             token: payload
         });
+
+        dispatch(new LoadUsers());
     }
 
     @Action(actions.LoginFail)
