@@ -13,20 +13,18 @@ const config		= require('./database/config');
 const User			= require('./api/users/model').user;
 //require('./database/passport')(passport);
 
-const app 	= express();
-const http 	= require('http').Server(app);
-const io 	= require('socket.io')(http);
-
-io.on('connection', function(socket) {
-	console.log('a user connected');
-	socket.on('disconnect', function() {
-	  console.log('user disconnected');
-	});
-  });
+const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors());
+
+const corsOptions = {
+    origin: 'http://localhost:4200',
+    credentials: true,
+
+}
+
+app.use(cors(corsOptions));
 
 
 /* Passport Config */
@@ -79,8 +77,18 @@ async function connect() {
 	} catch(error) {
 		console.log('Mongoose error', error);
 	}
+	//app.listen(3000);
+	const http 	= require('http').createServer(app);
+	const io 	= require('socket.io').listen(http);
 	app.listen(3000);
+	http.listen(3001);
 	console.log('API listening on port: 3000');
+	io.on('connection', function(socket) {
+		console.log('a user connected');
+		socket.on('disconnect', function() {
+		  console.log('user disconnected');
+		});
+	  });
 }
 
 connect();

@@ -46,7 +46,7 @@ const putEvent = async (request, response) => {
 			return response.json({ success: false, message:"User not Authorized" });
 		}*/
 		const updatedEvent = await queries.updateEvent(request.body.data);
-		io.emit('Event Update');
+		io.emit('Data Sync');
 		response.json({ success: true, result: updatedEvent, message: 'Update Successful' });	
 		//return response.json({ success: false, message:"User not Authorized" });
 
