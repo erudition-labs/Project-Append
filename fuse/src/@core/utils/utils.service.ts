@@ -40,7 +40,7 @@ export class UtilsService {
         return this.MONTHS[x];
     }
 
-    private error(msg : string) : void {
+    public error(msg : string) : void {
 		this.toast.error(msg, 'Error!', {
 			timeOut: 5000,
 			closeButton: true,
@@ -50,7 +50,7 @@ export class UtilsService {
 		  });
 	}
 
-	private success(msg: string) : void {
+	public success(msg: string) : void {
 		this.toast.success(msg, 'Success!', {
 			timeOut: 5000,
 			closeButton: true,

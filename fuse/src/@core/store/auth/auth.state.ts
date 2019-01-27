@@ -6,6 +6,8 @@ import { AuthService } from '@core/auth/auth.service';
 import { Credentials } from '@core/user/credentials.model';
 import { Store } from '@ngxs/store';
 import { LoadUsers } from '../users/users.actions';
+import { UtilsService } from '@core/utils/utils.service';
+import { TokenAuthService } from '../../auth/tokenAuth.service';
 
 
 @State<AuthStateModel>({
@@ -18,6 +20,7 @@ import { LoadUsers } from '../users/users.actions';
   })
   export class AuthState {
     constructor(private _authService: AuthService,
+                private _utils: UtilsService,
                 private _store: Store) {}
 
     @Selector()
@@ -44,14 +47,14 @@ import { LoadUsers } from '../users/users.actions';
     @Action(actions.LoginSuccess)
     loginSuccess(
         { patchState, dispatch }  : StateContext<AuthStateModel>,
-        { payload }     : actions.LoginSuccess
+        { payload } : actions.LoginSuccess
     ) { 
         patchState({
             loaded : true,
             loading: false,
             token: payload
         });
-
+        this._utils.success("Login Success, Welcome!");
         dispatch(new LoadUsers());
     }
 
@@ -61,6 +64,7 @@ import { LoadUsers } from '../users/users.actions';
         { payload }    : actions.LoginFail
     ) {
         patchState({ loaded: false, loading: false, token: null });
+        this._utils.error("Check Your Credentials");
     }
   
     @Action(actions.Logout)
