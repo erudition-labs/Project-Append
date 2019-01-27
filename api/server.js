@@ -13,7 +13,9 @@ const config		= require('./database/config');
 const User			= require('./api/users/model').user;
 //require('./database/passport')(passport);
 
-const app = express();
+const app 	= express();
+var http 	= require('http').Server(app);
+var io 		= require('socket.io')(http);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
