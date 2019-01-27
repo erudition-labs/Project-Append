@@ -75,11 +75,14 @@
             <!-- / HEADER BOTTOM -->
         </div>
 
+
         <!-- ADD EVENT BUTTON -->
-        <button mat-fab class="add-event-button mat-accent" (click)="addEvent()" aria-label="Add event"
+        <ng-template ngxPermissionsOnly="ADMIN">
+            <button mat-fab class="add-event-button mat-accent" (click)="addEvent()" aria-label="Add event"
                 [@animate]="{value:'*',params:{delay:'300ms',scale:'0.2'}}">
-            <mat-icon>add</mat-icon>
-        </button>
+                <mat-icon>add</mat-icon>
+            </button>
+        </ng-template>
         <!-- / ADD EVENT BUTTON -->
     </div>
     <!-- / HEADER -->
