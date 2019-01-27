@@ -90,7 +90,10 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
     eventRequestSignup() : void {
         this._store.dispatch(new EventRequestRegister(Object.assign({}, this._data)));
         this._actions$.pipe(ofActionDispatched(EventRequestRegisterSuccess))
-            .subscribe(() => this.refresh());
+            .subscribe(() => {
+                this.refresh();
+                this._utils.success("Request Pending");
+            });
     }
     eventUnregister() : void {
         this.remove(this._tokenAuthService.getCurrUserId());
@@ -99,7 +102,10 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
     remove(id: string) : void {
         this._store.dispatch(new EventRemoveSignUpOrPending({ event: Object.assign({}, this._data), userId: id }));
         this._actions$.pipe(ofActionDispatched(EventRemoveSignUpOrPendingSuccess))
-            .subscribe(() => this.refresh());
+            .subscribe(() => {
+            this.refresh();
+            this._utils.success("Unregistered");
+        });
     }
 
     eventAcceptPending(user: User) : void {
