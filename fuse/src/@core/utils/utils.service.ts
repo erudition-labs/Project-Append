@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -18,7 +20,7 @@ export class UtilsService {
         "November",
         "December"
     ];
-    constructor() {}
+    constructor(private toast: ToastrService) {}
 
     public getIds(data : any[]) : string[] {
         if(!data) return [];
@@ -37,4 +39,24 @@ export class UtilsService {
     public getMonthString(x: number) : string {
         return this.MONTHS[x];
     }
+
+    private error(msg : string) : void {
+		this.toast.error(msg, 'Error!', {
+			timeOut: 5000,
+			closeButton: true,
+			progressBar: true,
+			progressAnimation: 'decreasing',
+			positionClass: 'toast-top-right',
+		  });
+	}
+
+	private success(msg: string) : void {
+		this.toast.success(msg, 'Success!', {
+			timeOut: 5000,
+			closeButton: true,
+			progressBar: true,
+			progressAnimation: 'decreasing',
+			positionClass: 'toast-top-right',
+		  });
+	}
 }
