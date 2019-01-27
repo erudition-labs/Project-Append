@@ -6,7 +6,7 @@ import { NgxPermissionsService } from 'ngx-permissions';
 import { TokenAuthService } from '@core/auth/tokenAuth.service';
 import { EventService } from '../events.service';
 import { Store, Actions, ofActionDispatched } from '@ngxs/store';
-import { EventRequestRegister, EventRequestRegisterSuccess, EventAcceptRegisterRequest, EventAcceptRegisterRequestSuccess, EventRemoveSignUpOrPending, EventRemoveSignUpOrPendingSuccess } from '../_store/events.actions';
+import { EventRequestRegister, EventRequestRegisterSuccess, EventAcceptRegisterRequest, EventAcceptRegisterRequestSuccess, EventRemoveSignUpOrPending, EventRemoveSignUpOrPendingSuccess, LoadEventsSuccess } from '../_store/events.actions';
 import { CalendarEventState } from '../_store/events.state';
 import { User } from '@core/user/user.model';
 
@@ -18,8 +18,6 @@ import { User } from '@core/user/user.model';
 })
 export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
     dialogTitle: string;
-
-    ngOnInit() {}
     constructor(
         public matDialogRef: MatDialogRef<CalendarEventViewDialogComponent>,
         @Inject(MAT_DIALOG_DATA) private _data: Event,
@@ -29,17 +27,39 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
         private _eventService: EventService,
         private _store: Store,
         private _actions$: Actions
-    ) {
-        
-        _data.date[0] = new Date(_data.date[0]);
-        _data.date[1] = new Date(_data.date[1]);
+    ) {}
 
-        if (_data.additionalDetails && typeof _data.additionalDetails !== "object") {
-            _data.additionalDetails = JSON.parse(_data.additionalDetails);
-        }
-        this.dialogTitle = _data.name;  
-        this.loadPermissions();      
+    ngOnInit() {
+
+        this._data = this.prepEventForView(this._data);   
+        this._actions$.pipe(ofActionDispatched(LoadEventsSuccess)).subscribe(() => this.refreshData());
     }
+
+    private refreshData() : void {
+        this._store.select(CalendarEventState.calendarEvents).subscribe(e => {
+            let index = e.findIndex(x => x.meta.event._id === this._data._id);
+
+            if(index > -1) {
+                let event = e[index].meta.event;
+                this._data = this.prepEventForView(event);
+            }
+        });
+
+    }
+
+    private prepEventForView(event : Event) : Event {
+        event.date[0] = new Date(event.date[0]);
+        event.date[1] = new Date(event.date[1]);
+
+        if (event.additionalDetails && typeof event.additionalDetails !== "object") {
+            event.additionalDetails = JSON.parse(event.additionalDetails);
+        }
+        this.dialogTitle = event.name; 
+        this.loadPermissions();
+
+        return event;
+    }
+
 
     loadPermissions() : void {
         this._permissionsService.flushPermissions();
