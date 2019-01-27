@@ -7,6 +7,7 @@ import { UserService } from '@core/user/user.service';
 import { TokenAuthService } from '@core/auth/tokenAuth.service';
 import { catchError } from 'rxjs/operators';
 import { dispatch } from 'rxjs/internal/observable/pairs';
+import { UtilsService } from '../../utils/utils.service';
 
 @State<UsersStateModel>({
     name: 'users',
@@ -19,7 +20,8 @@ import { dispatch } from 'rxjs/internal/observable/pairs';
 
 export class UsersState implements NgxsOnInit {
     constructor(private _userService: UserService,
-                private _tokenService: TokenAuthService) {}
+                private _tokenService: TokenAuthService,
+                private _utils: UtilsService) {}
     ngxsOnInit(ctx: StateContext<UsersStateModel>) {
         ctx.dispatch(new usersActions.LoadUsers());
     }
@@ -126,7 +128,7 @@ export class UsersState implements NgxsOnInit {
         { payload } : usersActions.UserEventSignupFail
     ) {
         patchState({ loaded: false, loading: false });
-        console.log(payload);
+        this._utils.error(payload);
     }
 
 
@@ -201,7 +203,7 @@ export class UsersState implements NgxsOnInit {
         { payload } : usersActions.UserEventRemoveFail
     ) {
         patchState({ loaded: false, loading: false });
-        console.log(payload);
+        this._utils.error(payload);
     }
 
     @Action(usersActions.UserUpdate)
@@ -250,7 +252,7 @@ export class UsersState implements NgxsOnInit {
                         payload.user, 
                         ...state.users.slice(index+1)],
                 loaded: true, 
-                loading: false });
+                loading: false });            
         }
     }
 
@@ -260,6 +262,6 @@ export class UsersState implements NgxsOnInit {
         { payload } : usersActions.UserUpdateFail
     ) {
         patchState({ loaded: false, loading: false });
-        console.log(payload);
+        this._utils.error(payload);
     }
 }

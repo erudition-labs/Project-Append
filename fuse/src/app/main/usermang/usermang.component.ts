@@ -8,6 +8,8 @@ import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { User } from '@core/user/user.model';
 import { UserFormDialogComponent } from './user-form/user-form.component';
 import { MatDialog, MatDialogRef } from '@angular/material';
+import { UserUpdateSuccess } from '@core/store/users/users.actions';
+import { UtilsService } from '@core/utils/utils.service';
 
 
 @Component({
@@ -16,7 +18,9 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 })
 export class UserMangComponent implements OnInit, OnDestroy {
   constructor(private _store: Store,
-              private _matDialog  : MatDialog,
+              private _matDialog: MatDialog,
+              private _actions$: Actions,
+              private _utils: UtilsService
     ) { }
 
   userList: Array<User> = [];
@@ -35,6 +39,11 @@ export class UserMangComponent implements OnInit, OnDestroy {
       this.dataSource = new MatTableDataSource<User>(this.userList);
       this.dataSource.paginator = this.paginator;     
     });
+
+    this._actions$.pipe(ofActionDispatched(UserUpdateSuccess))
+    .subscribe(() => { 
+        this._utils.success("Updated");
+});
   }
 
   ngOnDestroy(): void {

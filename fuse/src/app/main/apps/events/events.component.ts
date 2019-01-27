@@ -24,6 +24,7 @@ import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
 import { tap, takeUntil } from 'rxjs/operators';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { TokenAuthService } from '@core/auth/tokenAuth.service';
+import { UtilsService } from '@core/utils/utils.service';
 
 
 
@@ -54,6 +55,7 @@ export class EventsComponent implements OnInit, OnDestroy {
         private _actions$   : Actions,
         private _permissionsService: NgxPermissionsService,
         private _tokenAuthService: TokenAuthService,
+        private _utils: UtilsService
        
     ) {
          // Set the defaults
@@ -147,7 +149,9 @@ export class EventsComponent implements OnInit, OnDestroy {
                         event.meta.event.additionalDetails = JSON.stringify(event.meta.event.additionalDetails);
                         this._store.dispatch(new AddEvent(event));
                         this._actions$.pipe(ofActionDispatched(AddEventSuccess))
-                            .subscribe(() => { this.refresh.next(true);
+                            .subscribe(() => { 
+                                this.refresh.next(true);
+                                this._utils.success("Created");
                         });
                         break;
                 }
@@ -185,6 +189,7 @@ export class EventsComponent implements OnInit, OnDestroy {
                         this._actions$.pipe(ofActionDispatched(UpdateEventSuccess))
                             .subscribe(() => { 
                                 this.refresh.next(true);
+                                this._utils.success("Updated");
                         });
                         break;
                     default: break;
@@ -210,6 +215,7 @@ export class EventsComponent implements OnInit, OnDestroy {
                     this._actions$.pipe(ofActionDispatched(EventRemoveSuccess))
                         .subscribe(() => {
                             this.refresh.next(true);
+                            this._utils.success("Deleted");
                         });
                 }
             });
