@@ -168,7 +168,7 @@ export class AppComponent implements OnInit, OnDestroy
             });
 
             if(this._socketService.connect()) {
-                // do stuff
+                this._socketService.listen();
             }
     }
 

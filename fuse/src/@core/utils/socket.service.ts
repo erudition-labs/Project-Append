@@ -17,7 +17,7 @@ export class SocketService {
     constructor(private _store: Store) {}
 
     connect() : boolean {
-        this.socket = io.connect(environment.API_URL);
+        this.socket = io.connect(environment.SOCKET_URL);
         console.log(this.socket.connected);
         return this.socket.connected;
     }
