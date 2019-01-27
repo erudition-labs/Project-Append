@@ -31,7 +31,8 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
 
-        this._data = this.prepEventForView(this._data);   
+        this._data = this.prepEventForView(this._data); 
+        this.loadPermissions();  
         this._actions$.pipe(ofActionDispatched(LoadEventsSuccess)).subscribe(() => this.refreshData());
     }
 
@@ -42,6 +43,7 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
             if(index > -1) {
                 let event = e[index].meta.event;
                 this._data = this.prepEventForView(event);
+                this.loadPermissions();
             }
         });
 
@@ -55,7 +57,6 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
             event.additionalDetails = JSON.parse(event.additionalDetails);
         }
         this.dialogTitle = event.name; 
-        this.loadPermissions();
 
         return event;
     }
