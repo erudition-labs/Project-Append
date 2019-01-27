@@ -89,10 +89,8 @@ async function connect() {
 	io.on('connection', function(socket) {
 		clients++;
 		app.set('clients', clients);
-		console.log('client ' + clients + ' connected');
 
 		socket.on('disconnect', function() {
-		  console.log('user disconnected');
 		  clients--;
 		  app.set('clients', clients);
 		});

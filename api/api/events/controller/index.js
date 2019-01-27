@@ -9,6 +9,8 @@ const postEvent = async (request, response) => {
 		const newEvent = await queries.createEvent(request.body.data);
 
 		if(newEvent.errors) throw new Error('newEvent.errors');
+		var socketio = request.app.get('socketio');
+		socketio.sockets.emit('Data Sync', 'Data Sync');
 		response.json({ success: true, message: 'Event Created', result: newEvent });
 	} catch(error) {
 		response.json({ success: false, message: 'Failed to Create Event' });
@@ -74,6 +76,8 @@ const getEvents = async (request, response) => {
 const deleteEvent = async (request, response) => {
 	try {
 		await queries.deleteEvent(request.params.id);
+		var socketio = request.app.get('socketio');
+		socketio.sockets.emit('Data Sync', 'Data Sync');
 		response.json({ success: true, message: "Event Deleted" });
 	} catch(error) {
 		return error;

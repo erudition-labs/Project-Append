@@ -171,6 +171,8 @@ const putUser = async (request, response) => {
 		const userData = request.body.userData;
 
 		const updatedUser = await queries.updateUser(userId, userData);
+		var socketio = request.app.get('socketio');
+		socketio.sockets.emit('Data Sync', 'Data Sync');
 		response.json({ success: true, result: updatedUser, message: "Successfully Updated User" });
 	} catch(error) {
 		response.json({ success: false, message: "Unsuccessfully Updated User" });
