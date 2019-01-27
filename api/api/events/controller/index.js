@@ -2,6 +2,8 @@ const queries 	= require('./../query');
 const User		= require('./../../users/query');
 const mongoose 	= require('mongoose');
 const util		= require('../util');
+const io 		= require('socket.io');
+
 
 
 const postEvent = async (request, response) => {
@@ -44,6 +46,7 @@ const putEvent = async (request, response) => {
 			return response.json({ success: false, message:"User not Authorized" });
 		}*/
 		const updatedEvent = await queries.updateEvent(request.body.data);
+		io.emit('Event Update');
 		response.json({ success: true, result: updatedEvent, message: 'Update Successful' });	
 		//return response.json({ success: false, message:"User not Authorized" });
 
