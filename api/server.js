@@ -17,7 +17,14 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors());
+
+const corsOptions = {
+    origin: 'http://localhost:4200',
+    credentials: true,
+
+}
+
+app.use(cors(corsOptions));
 
 
 /* Passport Config */
@@ -63,6 +70,8 @@ app.use('/api/v1/events', 			require('./api/events'));
 app.use('/api/v1/updates', 			require('./api/updates'));
 
 
+var clients = 0;
+
 async function connect() {
 	try {
 		mongoose.Promise = global.Promise;
@@ -71,7 +80,25 @@ async function connect() {
 		console.log('Mongoose error', error);
 	}
 	app.listen(3000);
+	const http 	= require('http').createServer(app);
+	const io 	= require('socket.io').listen(http);
+	//app.listen(3000);
+	http.listen(3001);
+	app.set('socketio', io);
 	console.log('API listening on port: 3000');
+	io.on('connection', function(socket) {
+		clients++;
+		app.set('clients', clients);
+
+		socket.on('disconnect', function() {
+		  clients--;
+		  app.set('clients', clients);
+		});
+	  });
 }
 
 connect();
+
+module.exports = {
+	clients, 
+};

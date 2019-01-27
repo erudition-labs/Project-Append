@@ -1,7 +1,7 @@
-const queries 							= require('./../query');
-const models								= require('./../model');
-const { createToken } 			= require('./../../authenticate/util');
-const jwtDecode 						= require('jwt-decode');
+const queries 				= require('./../query');
+const models				= require('./../model');
+const { createToken } 		= require('./../../authenticate/util');
+const jwtDecode 			= require('jwt-decode');
 const { validationResult }	= require('express-validator/check');
 const User					= models.user;
 const util 					= require('../util');
@@ -171,6 +171,8 @@ const putUser = async (request, response) => {
 		const userData = request.body.userData;
 
 		const updatedUser = await queries.updateUser(userId, userData);
+		var socketio = request.app.get('socketio');
+		socketio.sockets.emit('Data Sync', 'Data Sync');
 		response.json({ success: true, result: updatedUser, message: "Successfully Updated User" });
 	} catch(error) {
 		response.json({ success: false, message: "Unsuccessfully Updated User" });

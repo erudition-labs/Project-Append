@@ -53,7 +53,8 @@ export class EventService {
 			if(response.success) {
 				return response.result as Event;
 			} else {
-				return Observable.throw(response.message.json());
+				console.log(response);
+				return Observable.throw(response.message);
 			}
 		}))
 	}
