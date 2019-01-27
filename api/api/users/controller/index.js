@@ -1,7 +1,7 @@
-const queries 							= require('./../query');
-const models								= require('./../model');
-const { createToken } 			= require('./../../authenticate/util');
-const jwtDecode 						= require('jwt-decode');
+const queries 				= require('./../query');
+const models				= require('./../model');
+const { createToken } 		= require('./../../authenticate/util');
+const jwtDecode 			= require('jwt-decode');
 const { validationResult }	= require('express-validator/check');
 const User					= models.user;
 const util 					= require('../util');

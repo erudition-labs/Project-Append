@@ -2,9 +2,7 @@ const queries 	= require('./../query');
 const User		= require('./../../users/query');
 const mongoose 	= require('mongoose');
 const util		= require('../util');
-const io 		= require('socket.io');
-
-
+//const io 		= require('socket.io');
 
 const postEvent = async (request, response) => {
 	try {
@@ -46,13 +44,17 @@ const putEvent = async (request, response) => {
 			return response.json({ success: false, message:"User not Authorized" });
 		}*/
 		const updatedEvent = await queries.updateEvent(request.body.data);
-		io.emit('Data Sync');
+		var socketio = request.app.get('socketio');
+		socketio.sockets.emit('Data Sync', 'Data Sync');
+		//io.broadcast.emit('broadcast', clients);
+
 		response.json({ success: true, result: updatedEvent, message: 'Update Successful' });	
 		//return response.json({ success: false, message:"User not Authorized" });
 
 		//const updatedEvent = await queries.updateEvent(request.body.data);
 		//response.json({ success: true, result: updatedEvent });
 	} catch(error) {
+		console.log(error);
 		response.json({ success: false, message: 'Update Unsuccessful' });
 		//return error;
 	}
