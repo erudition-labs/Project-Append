@@ -4,6 +4,8 @@ import io from "socket.io-client";
 import { environment } from '../../environments/environment';
 import { LoadEvents } from 'app/main/apps/events/_store/events.actions';
 import { LoadUsers } from '../store/users/users.actions';
+import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
 
 
 
@@ -13,19 +15,26 @@ import { LoadUsers } from '../store/users/users.actions';
 
 export class SocketService {
 
-    private socket;
+    //private socket;
     constructor(private _store: Store) {}
 
-    connect() : boolean {
-        this.socket = io.connect(environment.SOCKET_URL);
-        console.log(this.socket.connected);
-        return this.socket.connected;
+    connect() : any {
+        let socket = io.connect(environment.SOCKET_URL);
+        return socket;
     }
 
-    listen() : void {
-        this.socket.on('Data Sync', function(msg) {
-            this._store.dispatch(new LoadEvents());
-            this._store.dispatch(new LoadUsers());
-        });
+    syncData() : void {
+        this._store.dispatch(new LoadEvents());
+        this._store.dispatch(new LoadUsers());
     }
+
+    getSocket() : any {
+        let observable = new Observable(observer => {
+            let socket = this.connect();
+            socket.on('Data Sync', (data) => {
+              observer.next(data);    
+            });
+          })     
+          return observable;
+        } 
 }

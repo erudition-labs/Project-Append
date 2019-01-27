@@ -17,8 +17,12 @@ import { navigation } from 'app/navigation/navigation';
 import { locale as navigationEnglish } from 'app/navigation/i18n/en';
 import { locale as navigationTurkish } from 'app/navigation/i18n/tr';
 import { Actions, ofActionDispatched } from '@ngxs/store';
-import { Logout } from '@core/store/auth/auth.actions';
+import { Logout, Login } from '@core/store/auth/auth.actions';
 import { SocketService } from '@core/utils/socket.service';
+import { LoadEvents } from './main/apps/events/_store/events.actions';
+import { LoadUsers } from '@core/store/users/users.actions';
+import { Store } from '@ngxs/store';
+
 
 
 
@@ -58,7 +62,8 @@ export class AppComponent implements OnInit, OnDestroy
         private _platform: Platform,
         private _actions$: Actions,
         private _router: Router,
-        private _socketService: SocketService
+        private _socketService: SocketService,
+        private _store: Store
     )
     {
         // Get default navigation
@@ -136,6 +141,13 @@ export class AppComponent implements OnInit, OnDestroy
                 this._router.navigate(['/login']);
             });
           })
+
+
+        let socket$ = this._socketService.getSocket();
+        socket$.subscribe( () => {
+            this._store.dispatch(new LoadEvents());
+            this._store.dispatch(new LoadUsers())
+        });
         // Subscribe to config changes
         this._fuseConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))
@@ -166,10 +178,6 @@ export class AppComponent implements OnInit, OnDestroy
 
                 this.document.body.classList.add(this.fuseConfig.colorTheme);
             });
-
-            if(this._socketService.connect()) {
-                this._socketService.listen();
-            }
     }
 
     /**
