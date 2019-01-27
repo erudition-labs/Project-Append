@@ -18,6 +18,7 @@ import { locale as navigationEnglish } from 'app/navigation/i18n/en';
 import { locale as navigationTurkish } from 'app/navigation/i18n/tr';
 import { Actions, ofActionDispatched } from '@ngxs/store';
 import { Logout } from '@core/store/auth/auth.actions';
+import { SocketService } from '@core/utils/socket.service';
 
 
 
@@ -55,8 +56,9 @@ export class AppComponent implements OnInit, OnDestroy
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private _translateService: TranslateService,
         private _platform: Platform,
-        private _actions$ : Actions,
-        private _router : Router
+        private _actions$: Actions,
+        private _router: Router,
+        private _socketService: SocketService
     )
     {
         // Get default navigation
@@ -164,6 +166,10 @@ export class AppComponent implements OnInit, OnDestroy
 
                 this.document.body.classList.add(this.fuseConfig.colorTheme);
             });
+
+            if(this._socketService.connect()) {
+                // do stuff
+            }
     }
 
     /**
