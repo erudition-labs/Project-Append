@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Post</h2>
+<mat-dialog-content>
+  <form [formGroup]="updateForm">
+    <mat-form-field>
+    <input matInput [formControl]="updateForm.get('title')" placeholder="Title of Post" style="width: 100%">
+    <!-- <quill-editor></quill-editor> -->
+    </mat-form-field>
+    <mat-dialog-actions>
+      <span style="float:right; margin-top: 10px">
+          <button mat-raised-button color="primary" (click)="save()" [disabled]="updateForm.invalid">Post</button>
+      </span>
+    </mat-dialog-actions>
+  </form>
+</mat-dialog-content>

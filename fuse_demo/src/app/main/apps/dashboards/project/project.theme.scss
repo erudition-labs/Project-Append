@@ -1,0 +1,34 @@
+@mixin dashboards-project-theme($theme) {
+
+    $background: map-get($theme, background);
+    $is-dark: map-get($theme, is-dark);
+
+    #dashboard-project {
+
+        > .sidebar {
+
+            fuse-widget {
+
+                > .fuse-widget-front,
+                > .fuse-widget-back {
+                    @if ($is-dark) {
+                        background: map-get($background, background);
+                    } @else {
+                        background: map-get($background, app-bar);
+                    }
+                }
+            }
+        }
+
+        > .center {
+
+            > .content {
+                @if ($is-dark) {
+                    background: map-get($background, background);
+                } @else {
+                    background: map-get($background, app-bar);
+                }
+            }
+        }
+    }
+}

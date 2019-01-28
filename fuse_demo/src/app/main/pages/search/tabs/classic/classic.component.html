@@ -1,0 +1,91 @@
+<div class="classic-tab p-24">
+
+    <div class="result-info" fxLayout="row" fxLayoutAlign="space-between center" fxLayout.xs="column"
+         fxLayoutAlign.xs="start start">
+
+        <span class="result-count h3 secondary-text">
+            <span>54</span>
+            <span class="ml-4">Results</span>
+        </span>
+
+        <div class="pager" fxLayout="row" fxLayoutAlign="start center">
+            <span class="mr-4 secondary-text">Results:</span>
+
+            <span class="page-info">
+                <span>1</span>
+                <span class="mx-4">-</span>
+                <span>10</span>
+                <span class="mx-4">of</span>
+                <span>54</span>
+            </span>
+
+            <button mat-icon-button aria-label="Previous page">
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+
+            <button mat-icon-button aria-label="Next page">
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <div class="results">
+        <div class="result-item" *ngFor="let item of classic">
+            <div class="title blue-fg">{{item.title}}</div>
+            <div class="url green-fg">{{item.url}}</div>
+            <div class="excerpt">{{item.excerpt}}</div>
+        </div>
+    </div>
+
+    <div class="simple-pagination">
+        <button mat-button class="pagination-item disabled" disabled="disabled"
+                aria-label="Go to previous page">
+            <mat-icon>chevron_left</mat-icon>
+        </button>
+
+        <button mat-button class="pagination-item active" [disableRipple]="true" aria-label="Go to page 1">
+            <span>1</span>
+        </button>
+
+        <button mat-button class="pagination-item" aria-label="Go to page 2">
+            <span>2</span>
+        </button>
+
+        <button mat-button class="pagination-item" aria-label="Go to page 3">
+            <span>3</span>
+        </button>
+
+        <button mat-button class="pagination-item" aria-label="Go to page 4">
+            <span>4</span>
+        </button>
+
+        <button mat-button class="pagination-item" aria-label="Go to page 5">
+            <span>5</span>
+        </button>
+
+        <button mat-button class="pagination-item" aria-label="Go to page 6">
+            <span>6</span>
+        </button>
+
+        <button mat-button class="pagination-item" aria-label="Go to page 7">
+            <span>7</span>
+        </button>
+
+        <button mat-button class="pagination-item" aria-label="Go to page 8">
+            <span>8</span>
+        </button>
+
+        <button mat-button class="pagination-item" aria-label="Go to page 9">
+            <span>9</span>
+        </button>
+
+        <button mat-button class="pagination-item" aria-label="Go to page 10">
+            <span>10</span>
+        </button>
+
+        <button mat-button class="pagination-item" aria-label="Go to next page">
+            <mat-icon>chevron_right</mat-icon>
+        </button>
+    </div>
+
+</div>

@@ -1,0 +1,39 @@
+<div class="page-layout carded full-width-1 p-24" fusePerfectScrollbar>
+  <div class="fuse-card">
+
+    <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center">
+        <div class="pr-16">
+            <div class="h1 font-weight-300">Events You Signed Up For</div>
+        </div>
+    </div>
+
+    <mat-tab-group>
+        <mat-tab label="Now and Upcoming">
+            <div class="p-16">
+              <mat-list>
+                <mat-list-item *ngFor="let event of upcomingEvents$ | async">
+                  <p>{{event.name}}</p>
+                </mat-list-item>
+              </mat-list>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="Past">
+            <div class="p-16">
+                <mat-list>
+                    <mat-list-item *ngFor="let event of pastEvents$ | async">
+                      <p>{{event.name}}</p>
+                    </mat-list-item>
+                  </mat-list>
+            </div>
+        </mat-tab>
+
+    </mat-tab-group>
+
+    <div class="p-8 pt-16" fxLayout="row" fxLayoutAlign="start center">
+        <button mat-button color="accent" (click)="_router.navigate(['/events'])">SEE COMPLETE SCHEDULE</button>
+    </div>
+
+</div>
+
+</div>

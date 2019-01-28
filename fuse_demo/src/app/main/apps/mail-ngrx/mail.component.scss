@@ -1,0 +1,79 @@
+@import "src/@fuse/scss/fuse";
+
+mail-ngrx {
+    width: 100%;
+
+    .center {
+
+        .header {
+
+            .search-wrapper {
+                @include mat-elevation(7);
+
+                .sidebar-toggle {
+                    margin: 0;
+                    width: 56px;
+                    height: 56px;
+                    border-radius: 0;
+                    border-right: 1px solid;
+                }
+
+                .search {
+                    width: 100%;
+                    height: 56px;
+                    line-height: 56px;
+                    padding: 18px;
+
+                    input {
+                        height: 56px;
+                        padding-left: 16px;
+                        border: none;
+                        outline: none;
+                    }
+                }
+            }
+        }
+
+        .content-card {
+
+            @include media-breakpoint(xs) {
+
+                mail-list {
+                    border-right: none;
+                }
+
+                mail-list,
+                mail-details {
+                    flex: 1 0 100%;
+                }
+
+                mail-details {
+                    display: none !important;
+                }
+
+                &.current-mail-selected {
+
+                    .toolbar {
+                        padding-left: 16px !important;
+
+                        .mail-selection {
+                            display: none !important;
+                        }
+                    }
+
+                    .content {
+
+                        mail-list {
+                            display: none !important;
+                        }
+
+                        mail-details {
+                            display: flex !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

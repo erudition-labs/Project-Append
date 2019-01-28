@@ -1,0 +1,53 @@
+@import "src/@fuse/scss/fuse";
+
+:host {
+
+    .classic-tab {
+
+        .result-info {
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+            .pager {
+
+                .page-info {
+                    font-weight: 500;
+                    margin: 0 8px 0 0;
+                }
+            }
+        }
+
+        .results {
+
+            .result-item {
+                margin-top: 32px;
+                max-width: 512px;
+
+                .title {
+                    font-size: 17px;
+                    font-weight: 500;
+                    cursor: pointer;
+                }
+
+                .url {
+                    margin-bottom: 4px;
+                }
+
+                .excerpt {
+                    display: block;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                &:last-child {
+                    padding-bottom: 32px;
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+                }
+            }
+        }
+
+        .simple-pagination {
+            margin: 32px 0;
+        }
+    }
+}

@@ -348,6 +348,9 @@ export class EventsComponent implements OnInit {
 				if(result.valid) {
 					let newEvent = this.dialogDataToEvent(result);
 					//be sure to attatch the id of the event since we are editing
+					let tmp = result.get('OIC').value;
+					newEvent.OIC = tmp;
+					console.log(tmp);
 					newEvent._id = this.modalData.event.meta._id; 
 
 				//validate dates
@@ -362,6 +365,7 @@ export class EventsComponent implements OnInit {
 				} else {
 					newEvent.isClosed = true;
 				}
+				console.log(newEvent);
 
 					this.eventsService.updateEvent(newEvent).subscribe(
 						result => {

@@ -1,0 +1,27 @@
+@mixin error-404-theme($theme) {
+
+    $background: map-get($theme, background);
+    $foreground: map-get($theme, foreground);
+
+    error-404 {
+
+        #error-404 {
+
+            .content {
+
+                .message {
+                    color: map-get($foreground, secondary-text);
+                }
+
+                .search {
+                    background: map-get($background, card);
+
+                    input {
+                        background: map-get($background, card);
+                        color: map-get($foreground, text);
+                    }
+                }
+            }
+        }
+    }
+}

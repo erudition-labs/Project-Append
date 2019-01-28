@@ -47,6 +47,7 @@ export class DialogOverviewEventComponent implements OnInit {
 
 	ngOnInit() {
 		this.users = this.userService.getUsers();
+		this.users.subscribe(user => console.log(user));
 		this.isAdmin = this.authService.isAdmin();
 		this.isClosed = this.data.get('isClosed').value;
 

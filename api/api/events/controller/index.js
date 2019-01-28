@@ -2,11 +2,15 @@ const queries 	= require('./../query');
 const User		= require('./../../users/query');
 const mongoose 	= require('mongoose');
 const util		= require('../util');
-
+//const io 		= require('socket.io');
 
 const postEvent = async (request, response) => {
 	try {
 		const newEvent = await queries.createEvent(request.body.data);
+
+		if(newEvent.errors) throw new Error('newEvent.errors');
+		var socketio = request.app.get('socketio');
+		socketio.sockets.emit('Data Sync', 'Data Sync');
 		response.json({ success: true, message: 'Event Created', result: newEvent });
 	} catch(error) {
 		response.json({ success: false, message: 'Failed to Create Event' });
@@ -42,12 +46,17 @@ const putEvent = async (request, response) => {
 			return response.json({ success: false, message:"User not Authorized" });
 		}*/
 		const updatedEvent = await queries.updateEvent(request.body.data);
+		var socketio = request.app.get('socketio');
+		socketio.sockets.emit('Data Sync', 'Data Sync');
+		//io.broadcast.emit('broadcast', clients);
+
 		response.json({ success: true, result: updatedEvent, message: 'Update Successful' });	
 		//return response.json({ success: false, message:"User not Authorized" });
 
 		//const updatedEvent = await queries.updateEvent(request.body.data);
 		//response.json({ success: true, result: updatedEvent });
 	} catch(error) {
+		console.log(error);
 		response.json({ success: false, message: 'Update Unsuccessful' });
 		//return error;
 	}
@@ -67,6 +76,8 @@ const getEvents = async (request, response) => {
 const deleteEvent = async (request, response) => {
 	try {
 		await queries.deleteEvent(request.params.id);
+		var socketio = request.app.get('socketio');
+		socketio.sockets.emit('Data Sync', 'Data Sync');
 		response.json({ success: true, message: "Event Deleted" });
 	} catch(error) {
 		return error;

@@ -1,0 +1,182 @@
+<div class="dialog-content-wrapper">
+        <mat-toolbar class="mat-accent m-0">
+            <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+                <span class="title dialog-title">
+                    
+                    <ng-template ngxPermissionsOnly="EDIT">
+                        <button 
+                            mat-icon-button
+                            (click)="deleteEvent()"
+                            aria-label="Delete"
+                            matTooltip="Delete">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </ng-template>
+
+                    {{dialogTitle}}
+                    <ng-template ngxPermissionsOnly="SIGNUP">
+                        <button mat-button (click)="eventRequestSignup()">Sign Up</button>
+                    </ng-template>
+                    
+                    <ng-template ngxPermissionsOnly="PENDING">
+                        <button mat-button (click)="eventUnregister()">Pending</button>
+                    </ng-template>
+                    
+                    <ng-template ngxPermissionsOnly="UNREGISTER">
+                        <button mat-button (click)="eventUnregister()">Unregister</button>
+                    </ng-template> 
+
+                    <ng-template ngxPermissionsOnly="EDIT">
+                        <button mat-button (click)="editEvent()">Edit</button>
+                    </ng-template>
+                </span>
+
+                <ng-container *ngIf="!_data.isClosed; else closed">
+                    <ng-container *ngIf="_data.spots != -1; else unlimited">
+                        <span class="title dialog-title">{{_data.signedUp.length}} / {{_data.spots}}</span>
+                    </ng-container>
+
+                    <ng-template #unlimited>
+                        <span class="title dialog-title">No Limit</span>
+                    </ng-template>
+                </ng-container>
+
+                <ng-template #closed>
+                    <span class="title dialog-title">Signups Closed</span>
+                </ng-template>
+
+                <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                    <mat-icon>close</mat-icon>
+                </button>
+                
+            </mat-toolbar-row>
+        </mat-toolbar>
+    
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <div class="fuse-card" class="p-24 m-0" style="flex-direction: row;display: flex;justify-content: space-between;">
+            <div class="fuse-card">
+            <div class="p-16">
+                <div class="h1">Start Date</div>
+            </div>
+                <div class="p-16 pb-24" fxlayout="row"
+                fxlayoutalign="center center"
+                style="flex-direction: column;
+                    box-sizing: border-box;
+                    display: flex; 
+                    max-width: 100%;
+                    align-items: center;
+                    justify-content: space-between;">
+                    <div class="h1 secondary-text">
+                        <span class="ng-tns-c56-51">
+                            {{ _utils.getMonthString(_data.date[0].getMonth()) }}
+                        </span>
+                    </div>
+                    <div class="font-size-72 line-height-88 secondary-text font-weight-400">
+                       {{ _data.date[0].getDate() }}
+                    </div>
+                    <div class="h1 secondary-text">
+                        <span class="ng-tns-c56-51">
+                                {{ _data.date[0].getFullYear() }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fuse-card">
+                    <div class="p-16">
+                        <div class="h1">End Date</div>
+                    </div>
+                    <div class="p-16 pb-24" fxlayout="row"
+                        fxlayoutalign="center center"
+                        style="flex-direction: column;
+                            box-sizing: border-box;
+                            display: flex; 
+                             max-width: 100%;
+                            align-items: center;
+                            justify-content: space-between;">
+                        <div class="h1 secondary-text">
+                            <span class="ng-tns-c56-51">
+                                    {{ _utils.getMonthString(_data.date[1].getMonth()) }}
+                            </span>
+                        </div>
+                        <div class="font-size-72 line-height-88 secondary-text font-weight-400">
+                                {{ _data.date[1].getDate() }}
+                        </div>
+                        <div class="h1 secondary-text">
+                            <span class="ng-tns-c56-51">
+                                    {{ _data.date[1].getFullYear() }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+
+        <div class="fuse-card" class="p-24 m-0"  
+            [ngClass]="{'flex-direction: row' : _data.additionalDetails.length <= 1}"
+            style=" display: flex;justify-content: space-between;">
+
+            <div class="fuse-card" style="flex-direction: column;">
+                <div class="p-16">
+                    <div class="h1">Summary</div>
+                </div>
+                <div class="p-16 pt-0 line-height-1.75">
+                    <p style="word-wrap: break-word">{{ _data.summary }}</p>
+                </div>
+            </div>
+
+            <div class="fuse-card"
+            style="flex-direction: column;">
+                    <div class="p-16">
+                        <div class="h1">Additional Details</div>
+                    </div>
+                    <div *ngFor="let detail of _data.additionalDetails">
+                        <div class="p-16 pt-0 line-height-1.75">
+                                <p style="word-wrap: break-word" *ngIf="detail?.title.trim() !== '' ">{{ detail?.title }}</p>
+                                <p style="word-wrap: break-word" *ngIf="detail?.details.trim() !== '' ">{{ detail?.details}}</p>
+                                <p *ngIf="_data.additionalDetails[0].title.trim() === '' 
+                                        && _data.additionalDetails[0].details.trim() === ''
+                                        && _data.additionalDetails.length <= 1"> No Additional Details</p>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+        <ng-template ngxPermissionsOnly="EDIT">
+            <div class="fuse-card" class="p-24 m-0" style="flex-direction: column; display: flex;justify-content: space-between;">
+                <mat-accordion>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <p matBadge={{_data.pending.length}} matBadgeOverlap="false">Pending Users</p>
+                        </mat-expansion-panel-header>
+                            <mat-list>
+                                <mat-list-item *ngFor="let user of _data.pending">
+                                    <p>{{ user.fullName }}</p>
+                                    <button mat-button (click)="eventAcceptPending(user)">Accept</button>
+                                    <button mat-button (click)="remove(user._id)">Remove</button>
+
+                                </mat-list-item>
+                            </mat-list>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+        
+
+            <div class="fuse-card" class="p-24 m-0" style="flex-direction: column; display: flex;justify-content: space-between;">
+                <mat-accordion>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <p matBadge={{_data.signedUp.length}} matBadgeOverlap="false">Signed Up Users</p>
+                        </mat-expansion-panel-header>
+                            <mat-list>
+                                <mat-list-item *ngFor="let user of _data.signedUp">
+                                    <p>{{ user.fullName }}</p>
+                                    <button mat-button (click)="remove(user._id)">Remove</button>
+                                </mat-list-item>
+                            </mat-list>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+        </ng-template>
+        
+</div>

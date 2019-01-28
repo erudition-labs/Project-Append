@@ -1,0 +1,37 @@
+<div id="mail-confirm" fxLayout="column">
+
+    <div id="mail-confirm-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
+
+        <div id="mail-confirm-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
+
+            <div class="logo">
+                <mat-icon class="mat-accent s-96">email</mat-icon>
+            </div>
+            <ng-container *ngIf="confirmed">
+                <div class="title">Email Successfully Confirmed!</div>
+
+                <div class="subtitle">
+                    <p>
+                        Your email has been successfully confirmed. <br> You will be automatically directed to login.
+                    </p>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="!confirmed">
+                    <div class="title">Email Was Not Confirmed!</div>
+    
+                    <div class="subtitle">
+                        <p>
+                            Your email has NOT been confirmed. <br> You will be automatically directed to login.
+                        </p>
+                        <div *ngFor="let error of errors">{{ error }}</div>
+                    </div>
+                </ng-container>
+            <div class="message">
+                <a class="link" [routerLink]="'../login'">Go back to login page</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
