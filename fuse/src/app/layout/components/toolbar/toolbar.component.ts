@@ -44,7 +44,7 @@ export class ToolbarComponent implements OnInit, OnDestroy
         private _fuseConfigService: FuseConfigService,
         private _fuseSidebarService: FuseSidebarService,
         private _translateService: TranslateService,
-        private _tokenService: TokenAuthService,
+        public _tokenService: TokenAuthService,
         private _store: Store
     )
     {

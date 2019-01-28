@@ -20,7 +20,7 @@ export class CalendarEventViewDialogComponent implements OnInit, OnDestroy {
     dialogTitle: string;
     constructor(
         public matDialogRef: MatDialogRef<CalendarEventViewDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) private _data: Event,
+        @Inject(MAT_DIALOG_DATA) public _data: Event,
         public  _utils: UtilsService,
         private _permissionsService: NgxPermissionsService,
         private _tokenAuthService: TokenAuthService,
