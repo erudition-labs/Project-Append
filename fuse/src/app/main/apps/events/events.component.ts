@@ -22,6 +22,11 @@ import { CalendarEventActions,
 import { CalendarEventState } from './_store/events.state';
 import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
 import { tap, takeUntil } from 'rxjs/operators';
+import { NgxPermissionsService } from 'ngx-permissions';
+import { TokenAuthService } from '@core/auth/tokenAuth.service';
+import { UtilsService } from '@core/utils/utils.service';
+
+
 
 @Component({
     selector     : 'events',
@@ -48,6 +53,9 @@ export class EventsComponent implements OnInit, OnDestroy {
         private _matDialog  : MatDialog,
         private _store      : Store,
         private _actions$   : Actions,
+        private _permissionsService: NgxPermissionsService,
+        private _tokenAuthService: TokenAuthService,
+        private _utils: UtilsService
        
     ) {
          // Set the defaults
@@ -78,6 +86,11 @@ export class EventsComponent implements OnInit, OnDestroy {
         this.events$.pipe(takeUntil(this.ngUnsubscribe))
             .subscribe(e => this.events = e);
         this.refresh.next();
+
+        this._permissionsService.flushPermissions();
+        this._permissionsService.addPermission('ADMIN', () => {
+            return ((this._tokenAuthService.isAuthenticated() && this._tokenAuthService.isAdmin()));
+        });
     }
 
     beforeMonthViewRender({header, body}): void {
@@ -136,7 +149,9 @@ export class EventsComponent implements OnInit, OnDestroy {
                         event.meta.event.additionalDetails = JSON.stringify(event.meta.event.additionalDetails);
                         this._store.dispatch(new AddEvent(event));
                         this._actions$.pipe(ofActionDispatched(AddEventSuccess))
-                            .subscribe(() => { this.refresh.next(true);
+                            .subscribe(() => { 
+                                this.refresh.next(true);
+                                this._utils.success("Created");
                         });
                         break;
                 }
@@ -174,6 +189,7 @@ export class EventsComponent implements OnInit, OnDestroy {
                         this._actions$.pipe(ofActionDispatched(UpdateEventSuccess))
                             .subscribe(() => { 
                                 this.refresh.next(true);
+                                this._utils.success("Updated");
                         });
                         break;
                     default: break;
@@ -199,6 +215,7 @@ export class EventsComponent implements OnInit, OnDestroy {
                     this._actions$.pipe(ofActionDispatched(EventRemoveSuccess))
                         .subscribe(() => {
                             this.refresh.next(true);
+                            this._utils.success("Deleted");
                         });
                 }
             });
@@ -207,5 +224,6 @@ export class EventsComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
+        this._permissionsService.removePermission('ADMIN');
     }
 }

@@ -14,6 +14,8 @@ const getUpdates = async(request, response) => {
 const createUpdate = async(request, response) => {
     try { 
         const newUpdate = await queries.createUpdate(request.body.data);
+        var socketio = request.app.get('socketio');
+		socketio.sockets.emit('Data Sync', 'Data Sync');
         response.json({ success: true, message: 'Update Created', result: newUpdate });
     } catch (error) {
         return error;
@@ -26,7 +28,9 @@ const editUpdate = async (request, response) => {
 		const updateId = request.body.data._id;
         const updateData = request.body.data;
 
-		const edittedUpdate = await queries.editUpdate(updateId, updateData);
+        const edittedUpdate = await queries.editUpdate(updateId, updateData);
+        var socketio = request.app.get('socketio');
+		socketio.sockets.emit('Data Sync', 'Data Sync');
 		response.json({ success: true, message: 'Successfully edited', result: edittedUpdate });
 	} catch(error) {
 		return error;
@@ -36,7 +40,9 @@ const editUpdate = async (request, response) => {
 const deleteUpdate = async (request, response) => {
 	try {
         const updateId = request.params.id;
-		const deletedUpdate = await queries.deleteUpdate(updateId);
+        const deletedUpdate = await queries.deleteUpdate(updateId);
+        var socketio = request.app.get('socketio');
+		socketio.sockets.emit('Data Sync', 'Data Sync');
 		response.json({success: true, message: 'Update deleted', result: deletedUpdate});
 	} catch(error) {
 		return error;

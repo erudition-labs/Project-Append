@@ -40,6 +40,7 @@ import { UsersState } from '@core/store/users/user.state';
 
 
 
+
 const appRoutes: Routes = [ //see auth midule below
     {
         path      : '**',
@@ -76,7 +77,12 @@ const appRoutes: Routes = [ //see auth midule below
         FuseThemeOptionsModule,
 
         //npm installs
-        ToastrModule.forRoot(),
+        ToastrModule.forRoot({
+            maxOpened:3,
+            newestOnTop: true,
+            autoDismiss: true,
+            preventDuplicates: true
+        }),
 
         // App modules
         LayoutModule,
