@@ -126,11 +126,11 @@
             <div formArrayName="additionalDetails">
                 
                     <div class="mt-4" *ngFor="let detail of
-                        eventForm.controls.additionalDetails.controls; let i=index">
+                        eventForm.controls.additionalDetails['controls']; let i=index">
                         <div>
                         <!---<span>Detail {{i + 1}}</span>-->
                             <span
-                                *ngIf="eventForm.controls.additionalDetails.controls.length> 1"
+                                *ngIf="eventForm.controls.additionalDetails['controls'].length> 1"
                                (click)="removeDetailField(i)">
                             </span>
                         </div>
