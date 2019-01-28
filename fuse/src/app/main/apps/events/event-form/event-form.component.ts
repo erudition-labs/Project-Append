@@ -38,7 +38,7 @@ export class CalendarEventFormDialogComponent implements OnDestroy, OnInit
 
     constructor(
         public matDialogRef: MatDialogRef<CalendarEventFormDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) private _data: any,
+        @Inject(MAT_DIALOG_DATA) public _data: any,
         private _formBuilder: FormBuilder,
         private _tokenAuthService: TokenAuthService,
         private _store: Store

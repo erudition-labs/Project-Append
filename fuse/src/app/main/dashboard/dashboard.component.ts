@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(private _store: Store,
               private _tokenService: TokenAuthService,
-              private _router: Router) { }
+              public _router: Router) { }
 
   ngOnInit() {
     this.users$.pipe(takeUntil(this.ngUnsubscribe));
