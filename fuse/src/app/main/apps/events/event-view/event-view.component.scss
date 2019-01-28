@@ -1,0 +1,7 @@
+.dialog-content-wrapper {
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    overflow: auto;
+}

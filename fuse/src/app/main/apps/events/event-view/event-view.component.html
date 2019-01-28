@@ -170,7 +170,7 @@
                         </mat-expansion-panel-header>
                             <mat-list>
                                 <mat-list-item *ngFor="let user of _data.signedUp">
-                                    <p>User Name</p>
+                                    <p>{{ user.fullName }}</p>
                                     <button mat-button (click)="remove(user._id)">Remove</button>
                                 </mat-list-item>
                             </mat-list>
