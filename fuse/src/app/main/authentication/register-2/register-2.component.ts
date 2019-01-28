@@ -38,7 +38,17 @@ export class Register2Component implements OnInit, OnDestroy {
     public ranks: Select[] = [
         { value: 'C/Ab', viewValue: 'Airman Basic' },
         { value: 'C/Amn', viewValue: 'Airman' },
-        { value: 'C/A1C', viewValue: 'Airman First Class' }
+        { value: 'C/A1C', viewValue: 'Airman First Class' },
+        { value: 'C/SrArm', viewValue: 'Senior Airman' },
+        { value: 'C/SSgt', viewValue: 'Staff Sergeant' },
+        { value: 'C/TSgt', viewValue: 'Technical Sergeant' },
+        { value: 'C/MSgt', viewValue: 'Master Sergeant' },
+        { value: 'C/SMSgt', viewValue: 'Senior Master Sergeant' },
+        { value: 'C/CMSgt', viewValue: 'Chief Master Sergeant' },
+        { value: 'C/2LT', viewValue: 'Second Lieutenant' },
+        { value: 'C/1LT', viewValue: 'First Lieutenant' },
+        { value: 'C/Capt', viewValue: 'Captain' },
+        { value: 'C/Maj', viewValue: 'Major' },
     ];
     public teams: Select[] = [
         { value: 'Rifle', viewValue: 'Rifle Team' },
