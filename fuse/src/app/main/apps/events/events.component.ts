@@ -86,12 +86,8 @@ export class EventsComponent implements OnInit, OnDestroy {
         this.events$.pipe(takeUntil(this.ngUnsubscribe))
             .subscribe(e => this.events = e);
         this.refresh.next();
-
-        this._permissionsService.flushPermissions();
-        this._permissionsService.addPermission('ADMIN', () => {
-            return ((this._tokenAuthService.isAuthenticated() && this._tokenAuthService.isAdmin()));
-        });
     }
+
 
     beforeMonthViewRender({header, body}): void {
         // console.info('beforeMonthViewRender');

@@ -77,12 +77,13 @@
 
 
         <!-- ADD EVENT BUTTON -->
-        <ng-template ngxPermissionsOnly="ADMIN">
-            <button mat-fab class="add-event-button mat-accent" (click)="addEvent()" aria-label="Add event"
+        
+            <button *ngIf="(_tokenAuthService.isAuthenticated() && _tokenAuthService.isAdmin())" 
+                mat-fab class="add-event-button mat-accent" (click)="addEvent()" aria-label="Add event"
                 [@animate]="{value:'*',params:{delay:'300ms',scale:'0.2'}}">
                 <mat-icon>add</mat-icon>
             </button>
-        </ng-template>
+        
         <!-- / ADD EVENT BUTTON -->
     </div>
     <!-- / HEADER -->
