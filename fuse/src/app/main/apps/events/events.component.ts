@@ -54,7 +54,7 @@ export class EventsComponent implements OnInit, OnDestroy {
         private _store      : Store,
         private _actions$   : Actions,
         private _permissionsService: NgxPermissionsService,
-        private _tokenAuthService: TokenAuthService,
+        public _tokenAuthService: TokenAuthService,
         private _utils: UtilsService
        
     ) {
