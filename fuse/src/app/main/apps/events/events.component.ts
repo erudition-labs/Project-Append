@@ -196,7 +196,9 @@ export class EventsComponent implements OnInit, OnDestroy {
     viewEvent(event: CalendarEvent) {
         this.dialogRef = this._matDialog.open(CalendarEventViewDialogComponent, {
             panelClass: 'event-form-dialog',
-            data: event.meta.event
+            data: event.meta.event,
+            height: '780px',
+            width: '800px',
         });
 
         this.dialogRef.afterClosed()
