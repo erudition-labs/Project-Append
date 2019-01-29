@@ -86,12 +86,8 @@ export class EventsComponent implements OnInit, OnDestroy {
         this.events$.pipe(takeUntil(this.ngUnsubscribe))
             .subscribe(e => this.events = e);
         this.refresh.next();
-
-        this._permissionsService.flushPermissions();
-        this._permissionsService.addPermission('ADMIN', () => {
-            return ((this._tokenAuthService.isAuthenticated() && this._tokenAuthService.isAdmin()));
-        });
     }
+
 
     beforeMonthViewRender({header, body}): void {
         // console.info('beforeMonthViewRender');
@@ -133,7 +129,9 @@ export class EventsComponent implements OnInit, OnDestroy {
             panelClass: 'event-form-dialog',
             data      : {
                 action: 'new',
-                date  : this.selectedDay.date
+                date  : this.selectedDay.date,
+                height: '800px',
+                width: '700px',
             }
         });
         this.dialogRef.afterClosed()
@@ -167,7 +165,9 @@ export class EventsComponent implements OnInit, OnDestroy {
                 data      : {
                     event : Object.assign({}, this.events[index].meta.event),
                     action: 'edit'
-                }
+                },
+                height: '700px',
+                width: '800px',
             });
        }
 
@@ -200,7 +200,9 @@ export class EventsComponent implements OnInit, OnDestroy {
     viewEvent(event: CalendarEvent) {
         this.dialogRef = this._matDialog.open(CalendarEventViewDialogComponent, {
             panelClass: 'event-form-dialog',
-            data: event.meta.event
+            data: event.meta.event,
+            height: '780px',
+            width: '800px',
         });
 
         this.dialogRef.afterClosed()
