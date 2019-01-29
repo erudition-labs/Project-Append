@@ -129,7 +129,9 @@ export class EventsComponent implements OnInit, OnDestroy {
             panelClass: 'event-form-dialog',
             data      : {
                 action: 'new',
-                date  : this.selectedDay.date
+                date  : this.selectedDay.date,
+                height: '800px',
+                width: '700px',
             }
         });
         this.dialogRef.afterClosed()
@@ -163,7 +165,9 @@ export class EventsComponent implements OnInit, OnDestroy {
                 data      : {
                     event : Object.assign({}, this.events[index].meta.event),
                     action: 'edit'
-                }
+                },
+                height: '700px',
+                width: '800px',
             });
        }
 
