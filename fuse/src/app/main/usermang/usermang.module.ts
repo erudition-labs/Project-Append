@@ -19,7 +19,6 @@ import {
     MatPaginatorModule,
     MatDividerModule,
     MatToolbarModule,
-    MatSlideToggleModule
   } from '@angular/material';
 
 
@@ -52,7 +51,6 @@ imports     : [
     MatPaginatorModule,
     MatDividerModule,
     MatToolbarModule,
-    MatSlideToggleModule,
 ],
 exports     : [
     UserMangComponent

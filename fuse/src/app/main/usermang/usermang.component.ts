@@ -56,7 +56,10 @@ export class UserMangComponent implements OnInit, OnDestroy {
   }
 
   applyFilter(filterValue: string) {
-		this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
   
   openProfile(user) {
