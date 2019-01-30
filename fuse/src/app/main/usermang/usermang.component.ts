@@ -30,7 +30,7 @@ export class UserMangComponent implements OnInit, OnDestroy {
   dialogRef : MatDialogRef<UserFormDialogComponent>
   private ngUnsubscribe = new Subject();
 
-  displayedColumns: string[] = ['Name', 'Rank', 'Email', 'Phone'];
+  displayedColumns: string[] = ['Name', 'Rank', 'Flight', 'Team', 'Email', 'Phone'];
 
   ngOnInit() {
     this.users$.pipe(takeUntil(this.ngUnsubscribe))
