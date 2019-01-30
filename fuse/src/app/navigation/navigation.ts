@@ -63,7 +63,6 @@ export const navigation: FuseNavigation[] = [
                     fg       : '#FFFFFF'
                 }
             },
-            
 
         ]
     }
