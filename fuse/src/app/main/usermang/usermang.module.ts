@@ -18,7 +18,7 @@ import {
     MatCardModule,
     MatPaginatorModule,
     MatDividerModule,
-    MatToolbarModule
+    MatToolbarModule,
   } from '@angular/material';
 
 

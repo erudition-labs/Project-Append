@@ -30,7 +30,7 @@ export class UserMangComponent implements OnInit, OnDestroy {
   dialogRef : MatDialogRef<UserFormDialogComponent>
   private ngUnsubscribe = new Subject();
 
-  displayedColumns: string[] = ['Name', 'Email', 'Phone'];
+  displayedColumns: string[] = ['Name', 'Rank', 'Flight', 'Team', 'Email', 'Phone'];
 
   ngOnInit() {
     this.users$.pipe(takeUntil(this.ngUnsubscribe))
@@ -56,7 +56,10 @@ export class UserMangComponent implements OnInit, OnDestroy {
   }
 
   applyFilter(filterValue: string) {
-		this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
   
   openProfile(user) {

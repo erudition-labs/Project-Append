@@ -1,6 +1,6 @@
 <div class="page-layout carded full-width-1 p-24" fusePerfectScrollbar>
     <mat-form-field>
-        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter by any field">
       </mat-form-field>
       
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -8,6 +8,21 @@
         <ng-container matColumnDef="Name">
           <th mat-header-cell *matHeaderCellDef> Name </th>
           <td mat-cell *matCellDef="let element"> <button mat-button (click)="openProfile(element)"> {{ element.fullName }} </button> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Rank">
+          <th mat-header-cell *matHeaderCellDef> Rank </th>
+          <td mat-cell *matCellDef="let element"> {{ element.rank }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Flight">
+          <th mat-header-cell *matHeaderCellDef> Flight </th>
+          <td mat-cell *matCellDef="let element"> {{ element.flight }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Team">
+          <th mat-header-cell *matHeaderCellDef> Team </th>
+          <td mat-cell *matCellDef="let element"> {{ element.team }} </td>
         </ng-container>
       
         <ng-container matColumnDef="Email">
@@ -23,4 +38,8 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
+      <mat-paginator [length]="100"
+              [pageSize]="25"
+              [pageSizeOptions]="[10, 25, 100]">
+      </mat-paginator>
 </div>
