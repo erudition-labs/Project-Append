@@ -222,7 +222,7 @@ const passwordResetRequest = async (request, response, next) => {
         template: 'forgot-password-email',
         subject: 'Password help has arrived!',
         context: {
-          url: 'http://cadet.ca782.org/#/auth/reset-password/' + token,
+          url: 'http://cadet.ca782.org/reset-password/' + token,
           name: user.firstName
         }
       };
