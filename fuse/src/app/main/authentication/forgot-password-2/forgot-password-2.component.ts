@@ -18,6 +18,7 @@ import { UtilsService } from '@core/utils/utils.service';
 export class ForgotPassword2Component implements OnInit
 {
     forgotPasswordForm: FormGroup;
+    canSubmit: boolean = true;
 
     /**
      * Constructor
@@ -67,16 +68,16 @@ export class ForgotPassword2Component implements OnInit
     }
 
     onSubmit() : void {
+        this.canSubmit = false;
 		if(this.forgotPasswordForm.valid) {
 			this._authService.requestNewPassword(this.forgotPasswordForm.get('email').value).subscribe( result => {
-				setTimeout(() => {
-                    if(result) {
-                        this._utils.success("Password reset successful");
-                    } else {
-                        this._utils.error("Password reset failed");
-                    }
-					return this._router.navigateByUrl("auth");
-				  }, 3000);
+                if(result) {
+                    this._utils.success("Password reset successful");
+                } else {
+                    this._utils.error("Password reset failed");
+                }
+				return this._router.navigateByUrl("login");
+				  
 			});
 		}
 	}
