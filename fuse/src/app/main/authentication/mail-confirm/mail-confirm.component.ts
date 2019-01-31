@@ -3,7 +3,8 @@ import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AuthService } from '../../../../@core/auth/auth.service';
+import { AuthService } from '@core/auth/auth.service';
+import { UtilsService } from '@core/utils/utils.service';
 
 @Component({
     selector     : 'mail-confirm',
@@ -26,7 +27,8 @@ export class MailConfirmComponent implements OnInit{
         private _fuseConfigService: FuseConfigService,
         private router				: Router,
 		private route 				: ActivatedRoute,
-		private authService 		: AuthService
+        private authService 		: AuthService,
+        private _utils              : UtilsService
     )
     {
         // Configure the layout
@@ -52,17 +54,19 @@ export class MailConfirmComponent implements OnInit{
 		this.route.params.subscribe((params) => {
 			this.authService.verify(params.code).subscribe((result) => {
 				if(result !== undefined && result.success) {
-                    this.messages.push(result.msg);
-                    console.log(result.msg);
+                    //this.messages.push(result.msg);
+                    //console.log(result.msg);
                     
                     this.messages.push("You will be automatically redirected");
+                    this._utils.success("Confirmation Success");
                     this.confirmed = true;
 					setTimeout(() => {
 						return this.router.navigateByUrl("login");
 					}, 4000);
 				} else {
-              this.errors.push("Confirmation Failed");
-              this.confirmed = false;
+                    this._utils.error("Confirmation Failed");
+                    this.errors.push("Confirmation Failed");
+                    this.confirmed = false;
           setTimeout(() => {
             return this.router.navigateByUrl("login");
           }, 4000);
