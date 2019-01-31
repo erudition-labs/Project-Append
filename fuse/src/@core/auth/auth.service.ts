@@ -56,7 +56,7 @@ export class AuthService {
 
 	public resetPassword(pass: string, token?: string) : Observable<boolean> {
 		
-			return this.http.post<any>(this.url + '/reset-password/' + token, {password :pass})
+			return this.http.post<any>(this.url + 'users/reset-password/' + token, {password :pass})
 			.pipe(retry(3), map((response) => {
 				if(response.success) {
 					return response.success as boolean

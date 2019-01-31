@@ -66,10 +66,11 @@ export class ResetPassword2Component implements OnInit, OnDestroy
     ngOnInit(): void
     {
         this._route.params.subscribe((params) => {
-            if(!params) {
+            if(!params.token) {
                 return this._router.navigateByUrl("login");
             } else {
                 this._token = params.token;
+                console.log(this._token);
                 this.resetPasswordForm = this._formBuilder.group({
                     name           : ['', Validators.required],
                     email          : ['', [Validators.required, Validators.email]],
@@ -86,6 +87,7 @@ export class ResetPassword2Component implements OnInit, OnDestroy
                     });
             }
         });
+
     }
 
     /**
