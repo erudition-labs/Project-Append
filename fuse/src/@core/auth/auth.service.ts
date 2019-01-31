@@ -49,33 +49,20 @@ export class AuthService {
 			if(response.success) {
 				return response.success as boolean;
 			} else {
-				throw new Error(response.message)
+				throw new Error(response.message);
 			}
 		}))
 	}
-/*
-	public resetPassword(pass: string, token?: string) : Observable<any> {
-		if(!this.authService.isAuthenticated()) {
+
+	public resetPassword(pass: string, token?: string) : Observable<boolean> {
+		
 			return this.http.post<any>(this.url + '/reset-password/' + token, {password :pass})
 			.pipe(retry(3), map((response) => {
 				if(response.success) {
-					this.success(response.message);
+					return response.success as boolean
 				} else {
-					this.error(response.message);
+					throw new Error(response.message);
 				}
-			}), 
-			catchError(this.handleError('resetPassword', null)));
-		} else {
-			return this.http.post<any>(this.url + '/reset-password', {password :pass})
-			.pipe(retry(3), map((response) => {
-				if(response.success) {
-					this.success(response.message);
-				} else {
-					this.error(response.message);
-				}
-			}), 
-			catchError(this.handleError('resetPassword', null)));
-		}
-	}*/
-
+			}));
+		} 
 }
