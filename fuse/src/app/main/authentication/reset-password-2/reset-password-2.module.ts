@@ -1,15 +1,27 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 
 import { FuseSharedModule } from '@fuse/shared.module';
 
 import { ResetPassword2Component } from './reset-password-2.component';
 
-const routes = [
+
+
+
+const routes: Routes = [
     {
         path     : 'reset-password/:token',
-        component: ResetPassword2Component
+        component: ResetPassword2Component,
+        children : [],
+        resolve  : {
+           // chat: CalendarService
+        }
+    }, 
+    {
+        path: '**',
+        component: ResetPassword2Component,
+        children: []
     }
 ];
 

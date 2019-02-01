@@ -67,7 +67,7 @@ export class ResetPassword2Component implements OnInit, OnDestroy
     {
         this._route.params.subscribe((params) => {
             if(!params.token) {
-                return this._router.navigateByUrl("login");
+                return this._router.navigate["login"];
             } else {
                 this._token = params.token;
                 console.log(this._token);
@@ -100,7 +100,7 @@ export class ResetPassword2Component implements OnInit, OnDestroy
         this._unsubscribeAll.complete();
     }
 
-    submit() : void {
+    onSubmit() : void {
        if(this.resetPasswordForm.valid) {
             this._authService.resetPassword(this.resetPasswordForm.get('password').value, this._token).subscribe( result => {
                 if(result) {
@@ -108,7 +108,7 @@ export class ResetPassword2Component implements OnInit, OnDestroy
                 } else {
                     this._utils.error("Password reset failed");
                 }
-				return this._router.navigateByUrl("login");
+				return this._router.navigate["login"];;
 			});
        } 
     }
