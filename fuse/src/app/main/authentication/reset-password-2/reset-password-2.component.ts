@@ -65,6 +65,7 @@ export class ResetPassword2Component implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
+        
         this._route.params.subscribe((params) => {
             if(!params.token) {
                 return this._router.navigate["login"];
