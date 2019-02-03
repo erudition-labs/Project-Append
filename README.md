@@ -21,6 +21,8 @@ Run "npm install" to install packages. Need to do it in angular-src as well
 Reccomend getting nodemon to auto detect changes to server and auto-reload. run "sudo npm install -g nodemon"
 
 
+
+
 DELETE api/users/delete/{id} //deletes a user by id
 
 #must edit email-verification module dependency
