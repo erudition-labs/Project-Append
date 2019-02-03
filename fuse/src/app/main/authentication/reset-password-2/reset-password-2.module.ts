@@ -19,7 +19,7 @@ const routes: Routes = [
         }
     }, 
     {
-        path: '**',
+        path: 'reset-password',
         component: ResetPassword2Component,
         children: []
     }
