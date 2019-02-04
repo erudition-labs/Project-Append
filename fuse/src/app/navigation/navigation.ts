@@ -64,15 +64,6 @@ export const navigation: FuseNavigation[] = [
                 }
             },
 
-            {
-                id       : 'reset-password',
-                title    : 'Reset Password',
-                translate: '',
-                type     : 'item',
-                //icon     : 'person',
-                url      : '/reset-password/:token',
-            },
-
         ]
     }
 ];
