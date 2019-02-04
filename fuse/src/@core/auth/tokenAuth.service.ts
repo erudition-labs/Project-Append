@@ -21,7 +21,7 @@ export class TokenAuthService {
 		if(!helper.isTokenExpired(token)) {
 			return decodedToken;
 		} else {
-			this._store.dispatch(new Logout());
+			//this._store.dispatch(new Logout());
 			return null;
 		}
 	}
@@ -41,7 +41,7 @@ export class TokenAuthService {
 		const helper = new JwtHelperService();
 
 		if(!token || helper.isTokenExpired(token)) {
-			this._store.dispatch(new Logout());
+			//this._store.dispatch(new Logout());
 			return false;
 		} 
 		return true;

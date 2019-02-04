@@ -9,6 +9,8 @@ import { navigation } from 'app/navigation/navigation';
 import { TokenAuthService } from '@core/auth/tokenAuth.service';
 import { Store } from '@ngxs/store';
 import { Logout } from '@core/store/auth/auth.actions';
+import { AuthState } from '@core/store/auth/auth.state';
+
 
 
 
@@ -168,6 +170,9 @@ export class ToolbarComponent implements OnInit, OnDestroy
     }
 
     logout() : void {
-        this._store.dispatch(new Logout());
+        const token = this._store.selectSnapshot(AuthState);
+        if(token) {
+            this._store.dispatch(new Logout());
+        }
     }
 }
