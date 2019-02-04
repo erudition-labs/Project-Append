@@ -11,12 +11,15 @@ import { NewsDialogComponent } from './news-dialog/news-dialog.component';
 import { MatDialogModule } from '@angular/material';
 import {MatStepperModule} from '@angular/material/stepper';
 import { QuillModule } from 'ngx-quill'
+import { AuthGuardService as AuthGuard } from '@core/auth/auth-guard.service';
+
 
 
 const routes = [
     {
         path     : 'news',
-        component: NewsComponent
+        component: NewsComponent,
+        canActivate: [AuthGuard]
     }
 ];
 

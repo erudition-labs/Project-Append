@@ -7,7 +7,6 @@ const routes = [
     {
         path        : 'events',
         loadChildren: './events/events.module#EventsModule',
-        canActivate: [AuthGuard]
     }
 ];
 

@@ -7,6 +7,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserMangComponent } from './usermang.component';
 import { UserFormDialogComponent } from './user-form/user-form.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { AuthGuardService as AuthGuard } from '@core/auth/auth-guard.service';
+
 
 
 import {
@@ -26,7 +28,8 @@ import {
 const routes = [
   {
       path     : 'usermang',
-      component: UserMangComponent
+      component: UserMangComponent,
+      canActivate: [AuthGuard]
   }
 ];
 
