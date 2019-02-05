@@ -42,9 +42,6 @@ export class UserMangComponent implements OnInit, OnDestroy {
       this.dataSource = new MatTableDataSource<User>(this.userList);
       this.dataSource.paginator = this.paginator; 
       this.dataSource.sort = this.sort;
-
-      //this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
     });
 
     this._actions$.pipe(ofActionDispatched(UserUpdateSuccess))
