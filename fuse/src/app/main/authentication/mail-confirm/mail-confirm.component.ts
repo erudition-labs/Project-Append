@@ -51,7 +51,9 @@ export class MailConfirmComponent implements OnInit{
     }
 
     ngOnInit() {
+        console.log('i loaded bitch');
 		this.route.params.subscribe((params) => {
+            console.log(params.code);
 			this.authService.verify(params.code).subscribe((result) => {
 				if(result !== undefined && result.success) {
                     //this.messages.push(result.msg);
@@ -61,14 +63,14 @@ export class MailConfirmComponent implements OnInit{
                     this._utils.success("Confirmation Success");
                     this.confirmed = true;
 					setTimeout(() => {
-						return this.router.navigateByUrl("login");
+						return this.router.navigate['login'];
 					}, 4000);
 				} else {
                     this._utils.error("Confirmation Failed");
                     this.errors.push("Confirmation Failed");
                     this.confirmed = false;
           setTimeout(() => {
-            return this.router.navigateByUrl("login");
+            return this.router.navigate['login'];
           }, 4000);
 				}
 			});

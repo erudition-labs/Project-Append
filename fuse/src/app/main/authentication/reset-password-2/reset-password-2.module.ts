@@ -17,10 +17,6 @@ const routes: Routes = [
         resolve  : {
            // chat: CalendarService
         }
-    }, 
-    {
-        path: '**',
-        redirectTo: '/login'
     }
 ];
 
