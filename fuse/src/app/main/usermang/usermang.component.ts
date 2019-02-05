@@ -1,10 +1,9 @@
-import { Component, Input, Output, EventEmitter, OnInit, Injectable, OnDestroy, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
-import { tap, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import { UsersState } from '@core/store/users/user.state';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
 import { User } from '@core/user/user.model';
 import { UserFormDialogComponent } from './user-form/user-form.component';
 import { MatDialog, MatDialogRef } from '@angular/material';
@@ -25,7 +24,9 @@ export class UserMangComponent implements OnInit, OnDestroy {
 
   userList: Array<User> = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
   @Select(UsersState.allUsers) users$ : Observable<User[]>
+
   dataSource: MatTableDataSource<User>;
   dialogRef : MatDialogRef<UserFormDialogComponent>
   private ngUnsubscribe = new Subject();
@@ -37,7 +38,8 @@ export class UserMangComponent implements OnInit, OnDestroy {
     .subscribe(u => {
       this.userList = u; 
       this.dataSource = new MatTableDataSource<User>(this.userList);
-      this.dataSource.paginator = this.paginator;     
+      this.dataSource.paginator = this.paginator; 
+      this.dataSource.sort = this.sort;    
     });
 
     this._actions$.pipe(ofActionDispatched(UserUpdateSuccess))
