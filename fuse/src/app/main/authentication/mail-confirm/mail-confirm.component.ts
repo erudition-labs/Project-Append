@@ -58,7 +58,7 @@ export class MailConfirmComponent implements OnInit{
                     //this.messages.push(result.msg);
                     //console.log(result.msg);
                     
-                    this.messages.push("You will be automatically redirected");
+                    this.messages.push("Your Email has been confirmed!");
                     this._utils.success("Confirmation Success");
                     this.confirmed = true;
 					setTimeout(() => {
