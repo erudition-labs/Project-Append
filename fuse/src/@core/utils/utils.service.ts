@@ -58,5 +58,9 @@ export class UtilsService {
 			progressAnimation: 'decreasing',
 			positionClass: 'toast-top-right',
 		  });
-	}
+    }
+    
+    public compare(a: number | string, b: number | string, isAsc: boolean) {
+        return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+    }
 }
