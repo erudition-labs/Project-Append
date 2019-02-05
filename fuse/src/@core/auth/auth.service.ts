@@ -42,4 +42,27 @@ export class AuthService {
 		return this.http.post(this.url + '/users/email-verification/' + token, { params });
 	}
 
+
+	public requestNewPassword(submittedEmail: string) : Observable<boolean> {
+		return this.http.post<any>(this.url + '/users/forgot-password', {email: submittedEmail })
+		.pipe(retry(3), map((response) => {
+			if(response.success) {
+				return response.success as boolean;
+			} else {
+				throw new Error(response.message);
+			}
+		}))
+	}
+
+	public resetPassword(pass: string, token?: string) : Observable<boolean> {
+		
+			return this.http.post<any>(this.url + '/users/reset-password/' + token, {password :pass})
+			.pipe(retry(3), map((response) => {
+				if(response.success) {
+					return response.success as boolean
+				} else {
+					throw new Error(response.message);
+				}
+			}));
+		} 
 }

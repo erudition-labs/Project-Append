@@ -19,6 +19,7 @@ export const locale = {
                 'TITLE': 'User Management',
                 'BADGE': '100'
             },
+            
 
         }
     }

@@ -1,15 +1,19 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { MatIconModule } from '@angular/material';
 
 import { FuseSharedModule } from '@fuse/shared.module';
 
 import { MailConfirmComponent } from './mail-confirm.component';
 
-const routes = [
+const routes: Routes = [
     {
         path     : 'mail-confirm/:code',
         component: MailConfirmComponent
+    },
+    {
+        path: 'mail-confirm',
+        redirectTo: '/login'
     }
 ];
 
@@ -19,9 +23,7 @@ const routes = [
     ],
     imports     : [
         RouterModule.forChild(routes),
-
         MatIconModule,
-
         FuseSharedModule
     ]
 })

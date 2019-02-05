@@ -3,6 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
+import { Router } from '@angular/router';
+import { AuthService } from '@core/auth/auth.service';
+import { UtilsService } from '@core/utils/utils.service';
+
 
 @Component({
     selector     : 'forgot-password-2',
@@ -14,6 +18,7 @@ import { fuseAnimations } from '@fuse/animations';
 export class ForgotPassword2Component implements OnInit
 {
     forgotPasswordForm: FormGroup;
+    canSubmit: boolean = true;
 
     /**
      * Constructor
@@ -23,7 +28,10 @@ export class ForgotPassword2Component implements OnInit
      */
     constructor(
         private _fuseConfigService: FuseConfigService,
-        private _formBuilder: FormBuilder
+        private _formBuilder: FormBuilder,
+        private _router: Router,
+        private _authService: AuthService,
+        private _utils: UtilsService
     )
     {
         // Configure the layout
@@ -58,4 +66,18 @@ export class ForgotPassword2Component implements OnInit
             email: ['', [Validators.required, Validators.email]]
         });
     }
+
+    onSubmit() : void {
+        this.canSubmit = false;
+		if(this.forgotPasswordForm.valid) {
+			this._authService.requestNewPassword(this.forgotPasswordForm.get('email').value).subscribe( result => {
+                if(result) {
+                    this._utils.success("Password reset request successful");
+                } else {
+                    this._utils.error("Password reset request failed");
+                }
+				return this._router.navigateByUrl("login");
+			});
+		}
+	}
 }

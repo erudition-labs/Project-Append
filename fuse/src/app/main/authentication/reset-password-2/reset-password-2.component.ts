@@ -5,6 +5,11 @@ import { takeUntil } from 'rxjs/internal/operators';
 
 import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
+import { AuthService } from '@core/auth/auth.service';
+import { TokenAuthService } from '@core/auth/tokenAuth.service';
+import { UtilsService } from '@core/utils/utils.service';
+import { Router, ActivatedRoute } from '@angular/router';
+
 
 @Component({
     selector     : 'reset-password-2',
@@ -19,10 +24,16 @@ export class ResetPassword2Component implements OnInit, OnDestroy
 
     // Private
     private _unsubscribeAll: Subject<any>;
+    private _token: string;
 
     constructor(
         private _fuseConfigService: FuseConfigService,
-        private _formBuilder: FormBuilder
+        private _formBuilder: FormBuilder,
+        private _authService: AuthService,
+        private _router: Router,
+        private _utils: UtilsService,
+        private _route: ActivatedRoute,
+        private _tokenAuthService: TokenAuthService
     )
     {
         // Configure the layout
@@ -56,20 +67,26 @@ export class ResetPassword2Component implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
-        this.resetPasswordForm = this._formBuilder.group({
-            name           : ['', Validators.required],
-            email          : ['', [Validators.required, Validators.email]],
-            password       : ['', Validators.required],
-            passwordConfirm: ['', [Validators.required, confirmPasswordValidator]]
+        this._route.params.subscribe((params) => {
+            if(!params.token) {
+                return this._router.navigateByUrl("login");;
+            } else {
+                this._token = params.token;
+                this.resetPasswordForm = this._formBuilder.group({
+                    password       : ['', Validators.required],
+                    passwordConfirm: ['', [Validators.required, confirmPasswordValidator]]
+                });
+        
+                // Update the validity of the 'passwordConfirm' field
+                // when the 'password' field changes
+                this.resetPasswordForm.get('password').valueChanges
+                    .pipe(takeUntil(this._unsubscribeAll))
+                    .subscribe(() => {
+                        this.resetPasswordForm.get('passwordConfirm').updateValueAndValidity();
+                    });
+            }
         });
 
-        // Update the validity of the 'passwordConfirm' field
-        // when the 'password' field changes
-        this.resetPasswordForm.get('password').valueChanges
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(() => {
-                this.resetPasswordForm.get('passwordConfirm').updateValueAndValidity();
-            });
     }
 
     /**
@@ -80,6 +97,19 @@ export class ResetPassword2Component implements OnInit, OnDestroy
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
+    }
+
+    onSubmit() : void {
+       if(this.resetPasswordForm.valid) {
+            this._authService.resetPassword(this.resetPasswordForm.get('password').value, this._token).subscribe( result => {
+                if(result) {
+                    this._utils.success("Password reset successful");
+                } else {
+                    this._utils.error("Password reset failed");
+                }
+				return this._router.navigateByUrl("login");
+			});
+       } 
     }
 }
 
@@ -116,3 +146,5 @@ export const confirmPasswordValidator: ValidatorFn = (control: AbstractControl):
 
     return {'passwordsNotMatching': true};
 };
+
+

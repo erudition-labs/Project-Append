@@ -40,7 +40,7 @@ export class TokenInterceptorService implements HttpInterceptor {
             if (err.status === 401) {
               // if the request is unauthorized,
               // make the user log in again
-              this._store.dispatch(new Logout); //should get caught in main app component and redirected 
+             // this._store.dispatch(new Logout); //should get caught in main app component and redirected 
             }
           }
         }

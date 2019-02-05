@@ -32,16 +32,14 @@ import { CalendarEventState } from './_store/events.state';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { AuthGuardService as AuthGuard } from '@core/auth/auth-guard.service';
 
 
 const routes: Routes = [
     {
         path     : '**',
         component: EventsComponent,
-        children : [],
-        resolve  : {
-           // chat: CalendarService
-        }
+        canActivate: [AuthGuard]
     }
 ];
 
