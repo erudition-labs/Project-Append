@@ -21,6 +21,7 @@ import {
     MatPaginatorModule,
     MatDividerModule,
     MatToolbarModule,
+    MatSortModule,
   } from '@angular/material';
 
 
@@ -54,6 +55,7 @@ imports     : [
     MatPaginatorModule,
     MatDividerModule,
     MatToolbarModule,
+    MatSortModule,
 ],
 exports     : [
     UserMangComponent
