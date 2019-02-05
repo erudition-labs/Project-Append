@@ -10,6 +10,10 @@ const routes: Routes = [
     {
         path     : 'mail-confirm/:code',
         component: MailConfirmComponent
+    },
+    {
+        path: 'mail-confirm',
+        redirectTo: '/login'
     }
 ];
 

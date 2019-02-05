@@ -17,6 +17,10 @@ const routes: Routes = [
         resolve  : {
            // chat: CalendarService
         }
+    },
+    {
+        path: 'reset-password',
+        redirectTo: '/login'
     }
 ];
 

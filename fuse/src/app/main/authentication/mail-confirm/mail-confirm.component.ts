@@ -51,7 +51,6 @@ export class MailConfirmComponent implements OnInit{
     }
 
     ngOnInit() {
-        console.log('i loaded bitch');
 		this.route.params.subscribe((params) => {
             console.log(params.code);
 			this.authService.verify(params.code).subscribe((result) => {
