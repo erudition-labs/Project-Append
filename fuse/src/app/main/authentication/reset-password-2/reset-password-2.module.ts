@@ -19,9 +19,8 @@ const routes: Routes = [
         }
     }, 
     {
-        path: 'reset-password',
-        component: ResetPassword2Component,
-        children: []
+        path: '**',
+        redirectTo: '/login'
     }
 ];
 

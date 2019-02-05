@@ -47,4 +47,13 @@ export class TokenAuthService {
 		return true;
 	}
 
+	public isValidToken(token: string) {
+		const helper = new JwtHelperService();
+		if(token) {
+			return !helper.isTokenExpired(token) 
+		}
+
+		return false;
+	}
+
 }

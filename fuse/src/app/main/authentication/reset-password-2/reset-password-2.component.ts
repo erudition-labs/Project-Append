@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs/internal/operators';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthService } from '@core/auth/auth.service';
+import { TokenAuthService } from '@core/auth/tokenAuth.service';
 import { UtilsService } from '@core/utils/utils.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -31,7 +32,8 @@ export class ResetPassword2Component implements OnInit, OnDestroy
         private _authService: AuthService,
         private _router: Router,
         private _utils: UtilsService,
-        private _route: ActivatedRoute
+        private _route: ActivatedRoute,
+        private _tokenAuthService: TokenAuthService
     )
     {
         // Configure the layout
@@ -65,8 +67,8 @@ export class ResetPassword2Component implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
-        
         this._route.params.subscribe((params) => {
+            //console.log(this._tokenAuthService.isValidToken(params.token));
             if(!params.token) {
                 return this._router.navigate["login"];
             } else {
