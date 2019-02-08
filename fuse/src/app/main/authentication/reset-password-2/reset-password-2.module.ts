@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { MatButtonModule, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule } from '@angular/material';
 
 import { FuseSharedModule } from '@fuse/shared.module';
 
@@ -34,6 +34,7 @@ const routes: Routes = [
         MatButtonModule,
         MatFormFieldModule,
         MatInputModule,
+        MatProgressSpinnerModule,
 
         FuseSharedModule
     ]

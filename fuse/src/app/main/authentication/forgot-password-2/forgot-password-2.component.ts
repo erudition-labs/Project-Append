@@ -72,10 +72,11 @@ export class ForgotPassword2Component implements OnInit
 			this._authService.requestNewPassword(this.forgotPasswordForm.get('email').value).subscribe( result => {
                 if(result) {
                     this._utils.success("Password reset request successful");
+                    this._router.navigateByUrl("login");
                 } else {
                     this._utils.error("Password reset request failed");
+                    this.submitted = !this.submitted;
                 }
-				return this._router.navigateByUrl("login");
 			});
 		}
 	}
