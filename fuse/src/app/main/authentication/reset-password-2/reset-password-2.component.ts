@@ -110,7 +110,11 @@ export class ResetPassword2Component implements OnInit, OnDestroy
                     this._utils.error("Password reset failed");
                     this.submitted = !this.submitted;
                 }
-			});
+			}, err => {
+                this._utils.error("Password Reset Request Failed");
+                this.submitted = !this.submitted;
+                //console.log()
+            });
        } 
     }
 }
