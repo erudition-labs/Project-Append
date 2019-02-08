@@ -107,7 +107,7 @@ export class ResetPassword2Component implements OnInit, OnDestroy
                 } else {
                     this._utils.error("Password reset failed");
                 }
-				return this._router.navigateByUrl("login");
+				this._router.navigateByUrl("login");
 			});
        } 
     }
