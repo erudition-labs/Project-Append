@@ -6,6 +6,7 @@ import { NewUser } from '../user/user.model';
 import { Credentials } from '../user/credentials.model';
 import { environment } from '../../environments/environment';
 import { retry, map, catchError } from 'rxjs/operators';
+import { UtilsService } from '../utils/utils.service';
 
 
 @Injectable({
@@ -14,7 +15,7 @@ import { retry, map, catchError } from 'rxjs/operators';
 
 export class AuthService {
 	constructor(private http 	: HttpClient,
-				private router	: Router) {}
+				private _utils	: UtilsService) {}
 
 	readonly url : string = environment.API_URL + "/api/v1";
 
@@ -26,6 +27,7 @@ export class AuthService {
 				if(response.success) {
 					return response.token as string;
 				} else {
+					this._utils.error('Wrong login or password');
 					throw new Error(response.message)
 				}
 			}))
