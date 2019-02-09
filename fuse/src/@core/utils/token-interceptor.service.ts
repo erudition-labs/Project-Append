@@ -6,11 +6,14 @@ import {
   HttpInterceptor,
   HttpErrorResponse
 } from '@angular/common/http';
-import { Observable } from 'rxjs/internal/Observable';
 import { tap } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { AuthState } from '../store/auth/auth.state';
 import { UtilsService } from './utils.service';
+import { retry, catchError } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +36,21 @@ export class TokenInterceptorService implements HttpInterceptor {
     // We use pipe and tap in RxJS 6, but this
     // would have been the `do` operator previously
     return next.handle(request).pipe(
-      tap(
+      retry(1),
+      catchError((error: HttpErrorResponse) => {
+        let errorMessage = '';
+        if (error.error instanceof ErrorEvent) {
+          //client side error
+          errorMessage = `Error: ${error.error.message}`;
+        } else {
+          //server side error
+          errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+        }
+        this._utils.error(error && error.error ? error.error : '');
+        return throwError(errorMessage);
+      })
+    )
+    /*  tap(
         (response: HttpEvent<any>) => {},
         (err: any) => {
           if (err instanceof HttpErrorResponse) {
@@ -47,7 +64,7 @@ export class TokenInterceptorService implements HttpInterceptor {
 
           }
         }
-      )
-    );
+      )*/
+  
   }
 }
