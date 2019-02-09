@@ -10,14 +10,14 @@ import { Observable } from 'rxjs/internal/Observable';
 import { tap } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { AuthState } from '../store/auth/auth.state';
-import { Logout } from '../store/auth/auth.actions';
-
+import { UtilsService } from './utils.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenInterceptorService implements HttpInterceptor {
-  constructor(private _store: Store) {}
+  constructor(private _store: Store,
+              private _utils: UtilsService) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -37,11 +37,14 @@ export class TokenInterceptorService implements HttpInterceptor {
         (response: HttpEvent<any>) => {},
         (err: any) => {
           if (err instanceof HttpErrorResponse) {
-            if (err.status === 401) {
+            //if (err.status === 401) {
               // if the request is unauthorized,
               // make the user log in again
              // this._store.dispatch(new Logout); //should get caught in main app component and redirected 
-            }
+           // }
+
+           this._utils.error(err && err.error.reason ? err.error.reason : '');
+
           }
         }
       )
