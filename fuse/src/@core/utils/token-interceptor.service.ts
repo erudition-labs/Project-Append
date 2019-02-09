@@ -43,7 +43,7 @@ export class TokenInterceptorService implements HttpInterceptor {
              // this._store.dispatch(new Logout); //should get caught in main app component and redirected 
            // }
 
-           this._utils.error(err && err.error.reason ? err.error.reason : '');
+           this._utils.error(err && err.error ? err.error : '');
 
           }
         }
