@@ -25,6 +25,7 @@ export class ResetPassword2Component implements OnInit, OnDestroy
     // Private
     private _unsubscribeAll: Subject<any>;
     private _token: string;
+    submitted: boolean = false;
 
     constructor(
         private _fuseConfigService: FuseConfigService,
@@ -104,11 +105,16 @@ export class ResetPassword2Component implements OnInit, OnDestroy
             this._authService.resetPassword(this.resetPasswordForm.get('password').value, this._token).subscribe( result => {
                 if(result) {
                     this._utils.success("Password reset successful");
+                    this._router.navigateByUrl("login");
                 } else {
                     this._utils.error("Password reset failed");
+                    this.submitted = !this.submitted;
                 }
-				return this._router.navigateByUrl("login");
-			});
+			}, err => {
+                this._utils.error("Password Reset Request Failed");
+                this.submitted = !this.submitted;
+                //console.log()
+            });
        } 
     }
 }

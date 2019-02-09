@@ -71,7 +71,7 @@ export class Register2Component implements OnInit, OnDestroy {
 
     public errors: string[] = [];
     public messages: string[] = [];
-    public submitted = false;
+    public submitted: boolean = false;
 
     constructor(
         private _fuseConfigService: FuseConfigService,

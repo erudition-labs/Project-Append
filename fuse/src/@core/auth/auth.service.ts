@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { NewUser } from '../user/user.model';
 import { Credentials } from '../user/credentials.model';
 import { environment } from '../../environments/environment';
-import { retry, map } from 'rxjs/operators';
+import { retry, map, catchError } from 'rxjs/operators';
 
 
 @Injectable({
@@ -50,8 +50,11 @@ export class AuthService {
 				return response.success as boolean;
 			} else {
 				throw new Error(response.message);
+				//return false;
 			}
-		}))
+		}, catchError((err: any) => {
+			throw err;
+		})));
 	}
 
 	public resetPassword(pass: string, token?: string) : Observable<boolean> {
@@ -62,7 +65,14 @@ export class AuthService {
 					return response.success as boolean
 				} else {
 					throw new Error(response.message);
+					//return false;
 				}
-			}));
+			}, catchError((err) => {
+				throw err;
+			})));
 		} 
+
+		errorHandler(error: any): void {
+			console.log(error)
+		}
 }

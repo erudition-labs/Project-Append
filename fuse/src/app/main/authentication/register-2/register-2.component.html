@@ -132,10 +132,15 @@
                         <!-- <a href="#">terms and conditions</a> -->
                     </div>
 
-                    <button mat-raised-button color="accent" class="submit-button" aria-label="CREATE AN ACCOUNT"
-                        [disabled]="registerForm.invalid" (click)="onSubmit()">
+                    <button *ngIf="!submitted; else progress" mat-raised-button color="accent" class="submit-button" aria-label="CREATE AN ACCOUNT"
+                        [disabled]="registerForm.invalid" (click)="submitted=!submitted; onSubmit()">
                         CREATE AN ACCOUNT
                     </button>
+
+                    <ng-template #progress>Please Wait...<mat-spinner 
+                        [color]="warn"
+                        [diameter]="20"></mat-spinner>
+                    </ng-template>
 
                 </form>
 
