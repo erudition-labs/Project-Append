@@ -34,6 +34,13 @@ export class UsersState implements NgxsOnInit {
     @Action(usersActions.LoadUsers)
     loadUsers({ patchState, dispatch }: StateContext<UsersStateModel>) {
         patchState({ loading: true });
+
+        if(!this._tokenService.isAuthenticated()) {
+            asapScheduler.schedule(() =>
+                dispatch(new usersActions.LoadUsersFail("Unauthorized"))
+            )
+            return;
+        }
         
         return this._userService.getUsers()
             .map((users: User[]) => {
