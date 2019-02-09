@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { NewUser } from '../user/user.model';
 import { Credentials } from '../user/credentials.model';
 import { environment } from '../../environments/environment';
-import { retry, map, catchError } from 'rxjs/operators';
+import { retry, map } from 'rxjs/operators';
+import { UtilsService } from '../utils/utils.service';
 
 
 @Injectable({
@@ -14,7 +14,7 @@ import { retry, map, catchError } from 'rxjs/operators';
 
 export class AuthService {
 	constructor(private http 	: HttpClient,
-				private router	: Router) {}
+				private _utils	: UtilsService) {}
 
 	readonly url : string = environment.API_URL + "/api/v1";
 
@@ -26,7 +26,8 @@ export class AuthService {
 				if(response.success) {
 					return response.token as string;
 				} else {
-					throw new Error(response.message)
+					this._utils.error('Wrong login or password');
+					throw new Error(response.message);
 				}
 			}))
 	}
@@ -50,11 +51,8 @@ export class AuthService {
 				return response.success as boolean;
 			} else {
 				throw new Error(response.message);
-				//return false;
 			}
-		}, catchError((err: any) => {
-			throw err;
-		})));
+		}));
 	}
 
 	public resetPassword(pass: string, token?: string) : Observable<boolean> {
@@ -65,14 +63,7 @@ export class AuthService {
 					return response.success as boolean
 				} else {
 					throw new Error(response.message);
-					//return false;
 				}
-			}, catchError((err) => {
-				throw err;
-			})));
+			}));
 		} 
-
-		errorHandler(error: any): void {
-			console.log(error)
-		}
 }
