@@ -3,14 +3,9 @@ import 'rxjs/add/operator/map';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { User } from './user.model';
-import { Event } from './../events/event.model';
 import { environment } from '../../environments/environment';
 import { UtilsService } from '../utils/utils.service';
-import { AuthService } from '../auth/auth.service';
-import { catchError, retry, map } from 'rxjs/operators';
-import { HttpErrorHandler, HandleError } from './../utils/http-error-handler.service';
-import 'rxjs/add/operator/mergeMap';
-import { ToastrService } from 'ngx-toastr';
+import { map } from 'rxjs/operators';
 
 
 @Injectable({
@@ -18,17 +13,10 @@ import { ToastrService } from 'ngx-toastr';
 })
 
 export class UserService {
-	private handleError: HandleError;
 	readonly url : string = environment.API_URL + "/api/v1/users"
 
 	constructor(private _http		: HttpClient,
-				private _utils		: UtilsService)
-				//private authService	: AuthService,
-				//private httpErrorHandler	: HttpErrorHandler,
-				//private toast				: ToastrService) 
-	{
-		//this.handleError = httpErrorHandler.createHandleError('UserService');
-	}
+				private _utils		: UtilsService) {}
 
 	public checkEmail(email: string) : Observable<any> {
 		const params = new HttpParams({
@@ -45,11 +33,9 @@ export class UserService {
 			if(response.success) {
 				return Object.values(response.result) as User[];
 			} else {
-				//this.error(response.message);
 				return [];
 			}
-		  })//,
-		/*catchError(this.handleError('getUsers', []))*/);
+		  }));
 	}
 
 
@@ -60,11 +46,9 @@ export class UserService {
 			if(response.success) {
 				return response.result as User;
 			} else {
-				//this.error(response.message);
 				return null;
 			}
-		  }),
-		/*catchError(this.handleError('getUser', null))*/);
+		  }));
 	}
 
 	public update(user: User, preProcessed: boolean) : Observable<any> {
@@ -74,7 +58,7 @@ export class UserService {
 			if(response.success) {
 				return response.result as User;
 			} else {
-				return null;//Observable.throw(response.message.json());
+				return null;
 			}
 		}))
 	}
