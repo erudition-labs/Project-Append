@@ -22,12 +22,12 @@ export class UserService {
 	readonly url : string = environment.API_URL + "/api/v1/users"
 
 	constructor(private _http		: HttpClient,
-				private _utils		: UtilsService,
-				private authService	: AuthService,
-				private httpErrorHandler	: HttpErrorHandler,
-				private toast				: ToastrService) 
+				private _utils		: UtilsService)
+				//private authService	: AuthService,
+				//private httpErrorHandler	: HttpErrorHandler,
+				//private toast				: ToastrService) 
 	{
-		this.handleError = httpErrorHandler.createHandleError('UserService');
+		//this.handleError = httpErrorHandler.createHandleError('UserService');
 	}
 
 	public checkEmail(email: string) : Observable<any> {
@@ -41,22 +41,22 @@ export class UserService {
 
 	public getUsers() : Observable<User[]> {
 		return this._http.get<any>(this.url + '/users')
-		.pipe(retry(3), map((response) => {
+		.pipe(map((response) => {
 			if(response.success) {
 				return Object.values(response.result) as User[];
 			} else {
 				//this.error(response.message);
-				return null;
+				return [];
 			}
-		  }),
-		catchError(this.handleError('getUsers', [])));
+		  })//,
+		/*catchError(this.handleError('getUsers', []))*/);
 	}
 
 
 
 	public getUser(id : string) : Observable<User> {
 		return this._http.get<any>(this.url + '/' + id)
-		.pipe(retry(3), map((response) => {
+		.pipe(map((response) => {
 			if(response.success) {
 				return response.result as User;
 			} else {
@@ -64,17 +64,17 @@ export class UserService {
 				return null;
 			}
 		  }),
-		catchError(this.handleError('getUser', null)));
+		/*catchError(this.handleError('getUser', null))*/);
 	}
 
 	public update(user: User, preProcessed: boolean) : Observable<any> {
 		if(!preProcessed) user = this.preProcessUser(user);
 		return this._http.put<any>(this.url + '/' + user._id, {userData: user})
-		.pipe(retry(3), map((response) => {
+		.pipe(map((response) => {
 			if(response.success) {
 				return response.result as User;
 			} else {
-				return Observable.throw(response.message.json());
+				return null;//Observable.throw(response.message.json());
 			}
 		}))
 	}
