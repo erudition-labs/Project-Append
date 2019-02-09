@@ -25,12 +25,9 @@ export class EventService {
 			if(response.success) {
 				return Object.values(response.result) as Event[];
 			} else {
-				return Observable.throw(response.message.json());
-				//this.error(response.message);
-				//return null;
+				throw new Error(response.message);
 			}
-		  }),
-		catchError((error: any) => {return Observable.throw(error.json())}));	
+		}));	
 	}
 
 	public create(event: Event) : Observable<any> {
@@ -53,8 +50,7 @@ export class EventService {
 			if(response.success) {
 				return response.result as Event;
 			} else {
-				console.log(response);
-				return Observable.throw(response.message);
+				throw new Error(response.message);
 			}
 		}))
 	}
@@ -62,15 +58,6 @@ export class EventService {
 	public delete(event: Event) : Observable<any> {
 		event.isDeleted = true;
 		return this.update(event, true);
-
-		/*return this._http.delete<any>(this.url + '/' + eventId)
-		.pipe(retry(3), map((response) => {
-			if(response.success) {
-				return true;
-			} else {
-				return Observable.throw(response.message.json());
-			}
-		}))*/
 	}
 
 	public isOIC(event: Event, id?: string) : boolean {
