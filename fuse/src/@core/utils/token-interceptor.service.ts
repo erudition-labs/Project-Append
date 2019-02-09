@@ -46,7 +46,12 @@ export class TokenInterceptorService implements HttpInterceptor {
           //server side error
           errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
         }
-        this._utils.error(error && error.error ? error.error : '');
+        //console.log(error)
+        if(error.status == 0) {
+          this._utils.error('Internal Server Error');
+        } else {
+          this._utils.error(error && error.error ? error.error : '');
+        }
         return throwError(errorMessage);
       })
     )

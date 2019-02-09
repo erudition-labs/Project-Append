@@ -29,7 +29,6 @@ export class Login2Component implements OnInit, OnDestroy
         private _fuseConfigService: FuseConfigService,
         private _formBuilder: FormBuilder,
         private _router: Router,
-        private toast: ToastrService, 
         private _store: Store,
         private _actions$: Actions
 
