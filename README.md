@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+##[2.0.0] - 2019-02-02
+### Added
+- State Management using NGXS
+- Data Synchronization with WebScockets
+- Event Delete
+- Dashboard Info about upcoming/past Events
+
+### Changes
+- Migrated to Angular 7
+- Migrated to FUSE theme (http://angular-material.fusetheme.com/)
+- Rebuilt User Management
+- Rebuilt Events
+- News under construction
+
 ## [1.2.2] -  2018-10-02
 ### Added
 - Markdown abilities to post news
