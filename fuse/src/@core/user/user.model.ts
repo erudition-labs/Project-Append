@@ -25,5 +25,6 @@ export interface User {
 	role				: string;
 	events				: any[];
 	fullName			: string;
+	isDeleted			: boolean;
 	isChangelogViewed	: boolean;
 }

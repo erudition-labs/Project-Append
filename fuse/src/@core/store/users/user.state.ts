@@ -274,5 +274,69 @@ export class UsersState implements NgxsOnInit {
 
 
 
-    
+    @Action(usersActions.UserDelete)
+    userDelete(
+        { patchState, dispatch }: StateContext<UsersStateModel>,
+        { payload }: usersActions.UserDelete
+    ) {
+        if(!this._tokenService.isAuthenticated()) {
+            //must be logged in
+            asapScheduler.schedule(() =>
+            dispatch(new usersActions.UserUpdateFail("Must be Authenticated"))
+        )
+            return;
+        }
+
+        if(!this._tokenService.isAdmin()) {
+            //must be logged in
+            asapScheduler.schedule(() =>
+            dispatch(new usersActions.UserUpdateFail("Must be an Admin"))
+        )
+            return;
+        }
+
+        patchState({ loaded: false, loading: true });
+        let user = this._userService.preProcessUser(payload.user);
+
+        return this._userService.update(user, true)
+        .subscribe(data => { 
+            asapScheduler.schedule(() =>
+                dispatch(new usersActions.UserDeleteSuccess(({user: data as User})))
+            )
+        },
+        error => {
+            asapScheduler.schedule(() =>
+                dispatch(new usersActions.UserDeleteFail(error.message))
+            )    
+        });
+    }
+
+    @Action(usersActions.UserDeleteSuccess)
+    userDeleteSuccess(
+        { patchState, getState }: StateContext<UsersStateModel>,
+        { payload }: usersActions.UserDeleteSuccess 
+    ) {
+
+        if(!payload || !payload.user) return;
+        const state = getState(); 
+        let index = state.users.findIndex(x => x._id === payload.user._id);
+
+        if(index > -1) {
+            patchState({ 
+                users: [...state.users.slice(0, index), 
+                        payload.user, 
+                        ...state.users.slice(index+1)],
+                loaded: true, 
+                loading: false });            
+        }
+    }
+
+    @Action(usersActions.UserDeleteFail)
+    userDeleteFail(
+        { patchState } : StateContext<UsersStateModel>,
+        { payload } : usersActions.UserDeleteFail
+    ) {
+        patchState({ loaded: false, loading: false });
+        this._utils.error(payload);
+    }
 }
