@@ -4,6 +4,7 @@
                 <span class="title dialog-title">{{dialogTitle}}</span>
                 <ng-template ngxPermissionsOnly="ADMIN">
                         <button mat-button (click)="editUser()">Edit</button>
+                        <button mat-button (click)="deleteUser()">Delete</button>
                 </ng-template>
                 <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
                     <mat-icon>close</mat-icon>

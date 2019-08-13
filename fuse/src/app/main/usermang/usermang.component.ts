@@ -11,7 +11,6 @@ import { UserUpdateSuccess } from '@core/store/users/users.actions';
 import { UtilsService } from '@core/utils/utils.service';
 
 
-
 @Component({
   selector: 'usermang',
   templateUrl: './usermang.component.html',
@@ -20,7 +19,7 @@ export class UserMangComponent implements OnInit, OnDestroy {
   constructor(private _store: Store,
               private _matDialog: MatDialog,
               private _actions$: Actions,
-              private _utils: UtilsService
+              private _utils: UtilsService,
     ) { }
 
   userList: Array<User> = [];

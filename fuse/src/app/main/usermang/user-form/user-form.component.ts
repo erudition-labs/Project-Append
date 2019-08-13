@@ -83,4 +83,9 @@ export class UserFormDialogComponent implements OnDestroy, OnInit
         this._store.dispatch(new UserUpdate({ user: newUser }));
     }
 
+    deleteUser() : void {
+        console.log("Deleted!");
+        this.matDialogRef.close();
+    }
+
 }
