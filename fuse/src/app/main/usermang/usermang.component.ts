@@ -35,6 +35,7 @@ export class UserMangComponent implements OnInit, OnDestroy {
   dialogRef : MatDialogRef<UserFormDialogComponent>
   private ngUnsubscribe = new Subject();
   public isDeleting: boolean = false;
+  public usersToMassDelete : any = [];
 
   displayedColumns: string[] = ['checkbox', 'fullName', 'rank', 'flight', 'team', 'email', 'phone'];
 
@@ -85,6 +86,20 @@ export class UserMangComponent implements OnInit, OnDestroy {
   toggleDelete(): void {
     this.isDeleting = !this.isDeleting;
   }
+
+  deleteThem() : void {
+    console.log(this.usersToMassDelete);
+  }
+
+  toggleUser(element) : void {
+    let index = this.usersToMassDelete.indexOf(element._id);
+    if(index > -1) {
+      this.usersToMassDelete.splice(index, 1);
+    } else {
+      this.usersToMassDelete.push(element._id);
+    }
+  }
+
 /*
   sortData(sort: Sort) {
     const data = this.userList.slice();
