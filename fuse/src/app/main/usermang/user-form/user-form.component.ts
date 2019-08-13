@@ -85,9 +85,12 @@ export class UserFormDialogComponent implements OnDestroy, OnInit
     }
 
     deleteUser() : void {
-        let newUser = this.userForm.getRawValue() as User;
-        newUser.isDeleted = true;
-        this._store.dispatch(new UserDelete({ user: newUser }));
+        let confirmation = confirm("Are you sure?");
+        if(confirmation) {
+            let newUser = this.userForm.getRawValue() as User;
+            newUser.isDeleted = true;
+            this._store.dispatch(new UserDelete({ user: newUser }));
+        }
         this.matDialogRef.close();  
     }
 

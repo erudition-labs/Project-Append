@@ -93,12 +93,15 @@ export class UserMangComponent implements OnInit, OnDestroy {
   }
 
   deleteThem() : void {
-    //remove duplicates
-    let set = new Set(this.usersToMassDelete);
-    let massUsers = Array.from(set);
+    let confirmation = confirm("Are you sure?");
+    if(confirmation) {
+      //remove duplicates
+      let set = new Set(this.usersToMassDelete);
+      let massUsers = Array.from(set);
 
-    //dispatch
-    this._store.dispatch(new UserMassDelete({ users: massUsers }));
+      //dispatch
+      this._store.dispatch(new UserMassDelete({ users: massUsers }));
+    }
   }
 
   toggleUser(element) : void {
