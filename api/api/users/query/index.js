@@ -35,7 +35,7 @@ const getUserById = async (id) => {
 
 const getUsers = async () => {
 	try {
-		let users = await User.find({}, { 'password' : 0 })
+		let users = await User.find({isDeleted: {$ne: true}}, { 'password' : 0 })
 		.populate('events');
 
 		users = util.unescapeUserArray(users);
