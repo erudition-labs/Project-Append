@@ -7,7 +7,7 @@ import { MatPaginator, MatTableDataSource, MatSort, Sort } from '@angular/materi
 import { User } from '@core/user/user.model';
 import { UserFormDialogComponent } from './user-form/user-form.component';
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { UserUpdateSuccess, UserDeleteSuccess } from '@core/store/users/users.actions';
+import { UserUpdateSuccess, UserDeleteSuccess, UserMassDelete } from '@core/store/users/users.actions';
 import { UtilsService } from '@core/utils/utils.service';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { TokenAuthService } from '@core/auth/tokenAuth.service';
@@ -93,7 +93,7 @@ export class UserMangComponent implements OnInit, OnDestroy {
     let massUsers = Array.from(set);
 
     //dispatch
-
+    this._store.dispatch(new UserMassDelete({ users: massUsers }));
   }
 
   toggleUser(element) : void {

@@ -79,7 +79,7 @@ export class UserDeleteFail {
 
 export class UserMassDelete {
     static readonly type = '[Users] User Mass  Delete';
-    constructor(public readonly payload: { users: string[] }) {}
+    constructor(public readonly payload: { users: any }) {}
 }
 
 export class UserMassDeleteSuccess {

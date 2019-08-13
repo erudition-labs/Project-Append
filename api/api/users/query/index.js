@@ -1,5 +1,6 @@
 const User = require('./../model').user;
 const util = require('./../util');
+const mongoose = require('mongoose');
 
 const createUser = async (userData) => {
 	try {
@@ -47,7 +48,8 @@ const getUsers = async () => {
 
 const updateDelete = async (id) => {
 	try {
-		let user = User.update({_id  : ObjectId(id)}, {$set: {"isDeleted": "true"}});
+		let user = User.update({_id  : mongoose.Types.ObjectId(id)}, {$set: {"isDeleted": "true"}});
+		return user;
 	} catch(error) {
 		return error;
 	}
