@@ -45,6 +45,14 @@ const getUsers = async () => {
 	}
 };
 
+const updateDelete = async (id) => {
+	try {
+		let user = User.update({_id  : ObjectId(id)}, {$set: {"isDeleted": "true"}});
+	} catch(error) {
+		return error;
+	}
+};
+
 const updateUser = async (id, userData) => {
 	try {
 		let user = await User.findByIdAndUpdate(id, userData, { new: true })
@@ -71,4 +79,5 @@ module.exports = {
 	getUsers,
 	updateUser,
 	deleteUser,
+	updateDelete,
 };
