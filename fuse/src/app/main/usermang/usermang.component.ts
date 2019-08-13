@@ -9,6 +9,8 @@ import { UserFormDialogComponent } from './user-form/user-form.component';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { UserUpdateSuccess, UserDeleteSuccess } from '@core/store/users/users.actions';
 import { UtilsService } from '@core/utils/utils.service';
+import { NgxPermissionsService } from 'ngx-permissions';
+import { TokenAuthService } from '@core/auth/tokenAuth.service';
 
 
 @Component({
@@ -20,6 +22,8 @@ export class UserMangComponent implements OnInit, OnDestroy {
               private _matDialog: MatDialog,
               private _actions$: Actions,
               private _utils: UtilsService,
+              private _permissionsService: NgxPermissionsService,
+              private _tokenAuthService: TokenAuthService
     ) { }
 
   userList: Array<User> = [];
@@ -35,6 +39,10 @@ export class UserMangComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['checkbox', 'fullName', 'rank', 'flight', 'team', 'email', 'phone'];
 
   ngOnInit() {
+    this._permissionsService.flushPermissions();
+    this._permissionsService.addPermission('ADMIN', () => {
+        return ((this._tokenAuthService.isAuthenticated() && this._tokenAuthService.isAdmin()));
+    });
    
     this.users$.pipe(takeUntil(this.ngUnsubscribe))
     .subscribe(u => {
@@ -72,6 +80,10 @@ export class UserMangComponent implements OnInit, OnDestroy {
       panelClass: 'user-form-dialog',
       data : user as User 
     });
+  }
+
+  toggleDelete(): void {
+    this.isDeleting = !this.isDeleting;
   }
 /*
   sortData(sort: Sort) {
