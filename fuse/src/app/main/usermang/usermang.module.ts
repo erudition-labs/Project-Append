@@ -11,6 +11,7 @@ import { AuthGuardService as AuthGuard } from '@core/auth/auth-guard.service';
 
 
 
+
 import {
     MatIconModule,
     MatButtonModule,
@@ -22,6 +23,7 @@ import {
     MatDividerModule,
     MatToolbarModule,
     MatSortModule,
+    MatCheckboxModule,
   } from '@angular/material';
 
 
@@ -56,6 +58,7 @@ imports     : [
     MatDividerModule,
     MatToolbarModule,
     MatSortModule,
+    MatCheckboxModule,
 ],
 exports     : [
     UserMangComponent

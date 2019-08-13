@@ -30,8 +30,9 @@ export class UserMangComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<User>;
   dialogRef : MatDialogRef<UserFormDialogComponent>
   private ngUnsubscribe = new Subject();
+  public isDeleting: boolean = false;
 
-  displayedColumns: string[] = ['fullName', 'rank', 'flight', 'team', 'email', 'phone'];
+  displayedColumns: string[] = ['checkbox', 'fullName', 'rank', 'flight', 'team', 'email', 'phone'];
 
   ngOnInit() {
    
