@@ -10,7 +10,7 @@ export interface NewUser {
 	phone				: string;
 	events				: any[];
 	fullName			: string;
-	isChangelogViewed	: boolean
+	isChangelogViewed	: boolean;
 }
 
 export interface User {

@@ -37,6 +37,7 @@ export class UserFormDialogComponent implements OnDestroy, OnInit
         private _tokenAuthService: TokenAuthService,
         private _store: Store,
         private _permissionsService: NgxPermissionsService
+        
     ) {}
 
     ngOnInit() : void {
