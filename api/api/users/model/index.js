@@ -14,6 +14,7 @@ const userModel = new Schema({
 	phone				: { type: String, required: true},
 	role				: { type: String, required: true },
 	isChangelogViewed	: { type: Boolean, default: false },
+	isDeleted			: { type: Boolean, default: false },
 	resetPasswordToken		: String,
 	resetPasswordExpires	: Date,
 	events		: [{
@@ -37,6 +38,7 @@ const tempUserModel = new Schema({
 	phone				: { type: String, required: true },
 	role				: { type: String, required: true },
 	isChangelogViewed	: { type: Boolean, default: false },
+	isDeleted			: { type: Boolean, default: false },
 	resetPasswordToken: String,
 	resetPasswordExpires: Date,
 	events		: [{
