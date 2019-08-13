@@ -7,7 +7,7 @@ import { MatPaginator, MatTableDataSource, MatSort, Sort } from '@angular/materi
 import { User } from '@core/user/user.model';
 import { UserFormDialogComponent } from './user-form/user-form.component';
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { UserUpdateSuccess, UserDeleteSuccess, UserMassDelete } from '@core/store/users/users.actions';
+import { UserUpdateSuccess, UserDeleteSuccess, UserMassDelete, UserMassDeleteSuccess } from '@core/store/users/users.actions';
 import { UtilsService } from '@core/utils/utils.service';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { TokenAuthService } from '@core/auth/tokenAuth.service';
@@ -56,12 +56,17 @@ export class UserMangComponent implements OnInit, OnDestroy {
     this._actions$.pipe(ofActionDispatched(UserUpdateSuccess))
     .subscribe(() => { 
         this._utils.success("Updated");
-});
+    });
 
-  this._actions$.pipe(ofActionDispatched(UserDeleteSuccess))
-  .subscribe(() => { 
-    this._utils.success("Deleted");
-});
+    this._actions$.pipe(ofActionDispatched(UserDeleteSuccess))
+    .subscribe(() => { 
+     this._utils.success("Deleted");
+    });
+
+    this._actions$.pipe(ofActionDispatched(UserMassDeleteSuccess))
+    .subscribe(() => { 
+      this._utils.success("Deleted");
+    });
   }
 
   ngOnDestroy(): void {

@@ -187,8 +187,11 @@ const deleteMassUsers = async (request, response) => {
 		for(let id of ids) {
 			result =  await queries.updateDelete(id);
 		}
-		if(result != null)
+		if(result != null) {
 			response.json({ success: true, message: "Successfully Updated User" });
+			var socketio = request.app.get('socketio');
+			socketio.sockets.emit('Data Sync', 'Data Sync');
+		}
 		
 	} catch(error) {
 		response.json({ success: false, message: "Unsuccessfully Deleted Users" });
