@@ -11,7 +11,7 @@ import { User } from '@core/user/user.model';
 import { TokenAuthService } from '@core/auth/tokenAuth.service';
 import { Subject, Observable } from 'rxjs';
 import { tap, takeUntil } from 'rxjs/operators';
-import { UserUpdate } from '@core/store/users/users.actions';
+import { UserUpdate, UserDelete } from '@core/store/users/users.actions';
 
 
 
@@ -78,13 +78,16 @@ export class UserFormDialogComponent implements OnDestroy, OnInit
     }
 
     saveUser() : void {
-        let newUser = this.userForm.getRawValue() as User
+        let newUser = this.userForm.getRawValue() as User;
         newUser.fullName = newUser.lastName + ", " + newUser.firstName;
+        newUser.isDeleted = false;
         this._store.dispatch(new UserUpdate({ user: newUser }));
     }
 
     deleteUser() : void {
-        console.log("Deleted!");
+        let newUser = this.userForm.getRawValue() as User;
+        newUser.isDeleted = true;
+        this._store.dispatch(new UserDelete({ user: newUser }));
         this.matDialogRef.close();  
     }
 

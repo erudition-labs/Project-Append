@@ -282,7 +282,7 @@ export class UsersState implements NgxsOnInit {
         if(!this._tokenService.isAuthenticated()) {
             //must be logged in
             asapScheduler.schedule(() =>
-            dispatch(new usersActions.UserUpdateFail("Must be Authenticated"))
+            dispatch(new usersActions.UserDeleteFail("Must be Authenticated"))
         )
             return;
         }
@@ -290,7 +290,7 @@ export class UsersState implements NgxsOnInit {
         if(!this._tokenService.isAdmin()) {
             //must be logged in
             asapScheduler.schedule(() =>
-            dispatch(new usersActions.UserUpdateFail("Must be an Admin"))
+            dispatch(new usersActions.UserDeleteFail("Must be an Admin"))
         )
             return;
         }

@@ -7,7 +7,7 @@ import { MatPaginator, MatTableDataSource, MatSort, Sort } from '@angular/materi
 import { User } from '@core/user/user.model';
 import { UserFormDialogComponent } from './user-form/user-form.component';
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { UserUpdateSuccess } from '@core/store/users/users.actions';
+import { UserUpdateSuccess, UserDeleteSuccess } from '@core/store/users/users.actions';
 import { UtilsService } from '@core/utils/utils.service';
 
 
@@ -46,6 +46,11 @@ export class UserMangComponent implements OnInit, OnDestroy {
     this._actions$.pipe(ofActionDispatched(UserUpdateSuccess))
     .subscribe(() => { 
         this._utils.success("Updated");
+});
+
+  this._actions$.pipe(ofActionDispatched(UserDeleteSuccess))
+  .subscribe(() => { 
+    this._utils.success("Deleted");
 });
   }
 
