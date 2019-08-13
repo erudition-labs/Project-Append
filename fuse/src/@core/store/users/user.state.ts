@@ -339,4 +339,64 @@ export class UsersState implements NgxsOnInit {
         patchState({ loaded: false, loading: false });
         this._utils.error(payload);
     }
+
+
+    @Action(usersActions.UserMassDelete)
+    userMassDelete(
+        { patchState, dispatch }: StateContext<UsersStateModel>,
+        { payload }: usersActions.UserMassDelete
+    ) {
+        if(!this._tokenService.isAuthenticated()) {
+            //must be logged in
+            asapScheduler.schedule(() =>
+            dispatch(new usersActions.UserMassDeleteFail("Must be Authenticated"))
+        )
+            return;
+        }
+
+        if(!this._tokenService.isAdmin()) {
+            //must be logged in
+            asapScheduler.schedule(() =>
+            dispatch(new usersActions.UserMassDeleteFail("Must be an Admin"))
+        )
+            return;
+        }
+        
+        patchState({ loaded: false, loading: true });
+        //let user = this._userService.preProcessUser(payload.user);
+        let ids = payload.users;
+
+        return this._userService.massDelete(ids)
+        .subscribe(data => { 
+            asapScheduler.schedule(() =>
+                dispatch(new usersActions.UserMassDeleteSuccess(({response: ids})))
+            )
+        },
+        error => {
+            asapScheduler.schedule(() =>
+                dispatch(new usersActions.UserMassDeleteFail(error.message))
+            )    
+        });
+    }
+
+    @Action(usersActions.UserMassDeleteSuccess)
+    userMassDeleteSuccess(
+        { patchState }: StateContext<UsersStateModel>,
+        { payload }: usersActions.UserMassDeleteSuccess 
+    ) {
+
+        if(!payload) return;
+            patchState({ 
+                loaded: true, 
+                loading: false });            
+    }
+
+    @Action(usersActions.UserMassDeleteFail)
+    userMassDeleteFail(
+        { patchState } : StateContext<UsersStateModel>,
+        { payload } : usersActions.UserMassDeleteFail
+    ) {
+        patchState({ loaded: false, loading: false });
+        this._utils.error(payload);
+    }
 }
