@@ -7,8 +7,10 @@ import { MatPaginator, MatTableDataSource, MatSort, Sort } from '@angular/materi
 import { User } from '@core/user/user.model';
 import { UserFormDialogComponent } from './user-form/user-form.component';
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { UserUpdateSuccess } from '@core/store/users/users.actions';
+import { UserUpdateSuccess, UserDeleteSuccess, UserMassDelete, UserMassDeleteSuccess } from '@core/store/users/users.actions';
 import { UtilsService } from '@core/utils/utils.service';
+import { NgxPermissionsService } from 'ngx-permissions';
+import { TokenAuthService } from '@core/auth/tokenAuth.service';
 
 
 @Component({
@@ -20,6 +22,8 @@ export class UserMangComponent implements OnInit, OnDestroy {
               private _matDialog: MatDialog,
               private _actions$: Actions,
               private _utils: UtilsService,
+              private _permissionsService: NgxPermissionsService,
+              private _tokenAuthService: TokenAuthService
     ) { }
 
   userList: Array<User> = [];
@@ -30,10 +34,16 @@ export class UserMangComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<User>;
   dialogRef : MatDialogRef<UserFormDialogComponent>
   private ngUnsubscribe = new Subject();
+  public isDeleting: boolean = false;
+  public usersToMassDelete : any = [];
 
-  displayedColumns: string[] = ['fullName', 'rank', 'flight', 'team', 'email', 'phone'];
+  displayedColumns: string[] = ['checkbox', 'fullName', 'rank', 'flight', 'team', 'email', 'phone'];
 
   ngOnInit() {
+    this._permissionsService.flushPermissions();
+    this._permissionsService.addPermission('ADMIN', () => {
+        return ((this._tokenAuthService.isAuthenticated() && this._tokenAuthService.isAdmin()));
+    });
    
     this.users$.pipe(takeUntil(this.ngUnsubscribe))
     .subscribe(u => {
@@ -46,7 +56,17 @@ export class UserMangComponent implements OnInit, OnDestroy {
     this._actions$.pipe(ofActionDispatched(UserUpdateSuccess))
     .subscribe(() => { 
         this._utils.success("Updated");
-});
+    });
+
+    this._actions$.pipe(ofActionDispatched(UserDeleteSuccess))
+    .subscribe(() => { 
+     this._utils.success("Deleted");
+    });
+
+    this._actions$.pipe(ofActionDispatched(UserMassDeleteSuccess))
+    .subscribe(() => { 
+      this._utils.success("Deleted");
+    });
   }
 
   ngOnDestroy(): void {
@@ -67,6 +87,32 @@ export class UserMangComponent implements OnInit, OnDestroy {
       data : user as User 
     });
   }
+
+  toggleDelete(): void {
+    this.isDeleting = !this.isDeleting;
+  }
+
+  deleteThem() : void {
+    let confirmation = confirm("Are you sure?");
+    if(confirmation) {
+      //remove duplicates
+      let set = new Set(this.usersToMassDelete);
+      let massUsers = Array.from(set);
+
+      //dispatch
+      this._store.dispatch(new UserMassDelete({ users: massUsers }));
+    }
+  }
+
+  toggleUser(element) : void {
+    let index = this.usersToMassDelete.indexOf(element._id);
+    if(index > -1) {
+      this.usersToMassDelete.splice(index, 1);
+    } else {
+      this.usersToMassDelete.push(element._id);
+    }
+  }
+
 /*
   sortData(sort: Sort) {
     const data = this.userList.slice();

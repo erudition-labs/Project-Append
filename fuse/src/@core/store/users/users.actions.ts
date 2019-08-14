@@ -62,6 +62,36 @@ export class UserUpdateFail {
     constructor(public readonly payload?: any) {}
 }
 
+export class UserDelete {
+    static readonly type = '[Users] User Delete';
+    constructor(public readonly payload: { user: User }) {}
+}
+
+export class UserDeleteSuccess {
+    static readonly type = '[Users] User Delete Success';
+    constructor(public readonly payload: { user: User }) {}
+}
+
+export class UserDeleteFail {
+    static readonly type = '[Users] User Delete Fail';
+    constructor(public readonly payload?: any) {}
+}
+
+export class UserMassDelete {
+    static readonly type = '[Users] User Mass  Delete';
+    constructor(public readonly payload: { users: any }) {}
+}
+
+export class UserMassDeleteSuccess {
+    static readonly type = '[Users] User Mass Delete Success';
+    constructor(public readonly payload: { response?: any }) {}
+}
+
+export class UserMassDeleteFail {
+    static readonly type = '[Users] User Mass Delete Fail';
+    constructor(public readonly payload?: any) {}
+}
+
 export type UsersActions = 
     | LoadUsers
     | LoadUsersSuccess
@@ -74,4 +104,10 @@ export type UsersActions =
     | UserEventRemoveFail
     | UserUpdate
     | UserUpdateSuccess
-    | UserUpdateFail;
+    | UserUpdateFail
+    | UserDelete
+    | UserDeleteSuccess
+    | UserDeleteFail
+    | UserMassDelete
+    | UserMassDeleteSuccess
+    | UserMassDeleteFail;

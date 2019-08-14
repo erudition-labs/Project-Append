@@ -2,9 +2,20 @@
     <mat-form-field>
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter by any field">
       </mat-form-field>
+
+      <div>
+        <ng-template *ngIf="!isDeleting" ngxPermissionsOnly="ADMIN" ><button mat-stroked-button color="warn" (click)="toggleDelete()"> Delete Many </button> </ng-template>
+        <ng-template *ngIf="isDeleting" ngxPermissionsOnly="ADMIN" ><button mat-raised-button color="warn" (click)="deleteThem()"> Delete Them! </button> </ng-template>
+      </div>
       
       <table mat-table [dataSource]="dataSource"  matSort class="mat-elevation-z8">
       
+          <ng-container matColumnDef="checkbox" >
+            <th mat-header-cell *matHeaderCellDef mat-sort-header > </th>
+            <td mat-cell *matCellDef="let element"> <mat-checkbox *ngIf="isDeleting" (click)="toggleUser(element)"></mat-checkbox> </td>
+          </ng-container>
+        
+
         <ng-container matColumnDef="fullName">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
           <td mat-cell *matCellDef="let element"> <button mat-button (click)="openProfile(element)"> {{ element.fullName }} </button> </td>

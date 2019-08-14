@@ -67,4 +67,15 @@ export class UserService {
 		user.events = this._utils.getIds(user.events);
 		return user;
 	}
+
+	public massDelete(ids: Array<string>) : Observable<any> {
+		return this._http.post<any>(this.url + '/massDelete', {data: ids})
+		.pipe(map((response) => {
+			if(response.success) {
+				return true;
+			} else {
+				return null;
+			}
+		}))
+	}
 }

@@ -180,6 +180,24 @@ const putUser = async (request, response) => {
 	}
 };
 
+const deleteMassUsers = async (request, response) => {
+	try {
+		const ids = request.body.data;
+		let result = null;
+		for(let id of ids) {
+			result =  await queries.updateDelete(id);
+		}
+		if(result != null) {
+			response.json({ success: true, message: "Successfully Updated User" });
+			var socketio = request.app.get('socketio');
+			socketio.sockets.emit('Data Sync', 'Data Sync');
+		}
+		
+	} catch(error) {
+		response.json({ success: false, message: "Unsuccessfully Deleted Users" });
+	}
+}
+
 const deleteUser = async (request, response) => {
 	try {
 		const userId = request.params.id;
@@ -294,5 +312,6 @@ module.exports = {
 	putUser,
 	deleteUser,
 	passwordResetRequest,
-	passwordReset
+	passwordReset,
+	deleteMassUsers
 };

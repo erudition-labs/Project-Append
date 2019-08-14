@@ -1,5 +1,6 @@
 const User = require('./../model').user;
 const util = require('./../util');
+const mongoose = require('mongoose');
 
 const createUser = async (userData) => {
 	try {
@@ -35,11 +36,20 @@ const getUserById = async (id) => {
 
 const getUsers = async () => {
 	try {
-		let users = await User.find({}, { 'password' : 0 })
+		let users = await User.find({isDeleted: {$ne: true}}, { 'password' : 0 })
 		.populate('events');
 
 		users = util.unescapeUserArray(users);
 		return users;
+	} catch(error) {
+		return error;
+	}
+};
+
+const updateDelete = async (id) => {
+	try {
+		let user = User.update({_id  : mongoose.Types.ObjectId(id)}, {$set: {"isDeleted": "true"}});
+		return user;
 	} catch(error) {
 		return error;
 	}
@@ -71,4 +81,5 @@ module.exports = {
 	getUsers,
 	updateUser,
 	deleteUser,
+	updateDelete,
 };
