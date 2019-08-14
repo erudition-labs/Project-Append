@@ -17,6 +17,7 @@ const postAuthenticate = async (request, response) => {
 		
 		var user 				= await getUserByEmail(email);
 		if(!user) return response.json({ success: false, message: 'Wrong email or password' });
+		if(user.isDeleted) return response.json({ success: false, message: 'Wrong email or password' });
 		const isValidPassword 	= await verifyPassword(password, user.password);
 
 		
