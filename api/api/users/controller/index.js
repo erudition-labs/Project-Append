@@ -214,6 +214,7 @@ const passwordResetRequest = async (request, response, next) => {
 	async.waterfall([
 		function(done) {
 		  crypto.randomBytes(20, function(err, buf) {
+			  if(err) throw err;
 			var token = buf.toString('hex');
 			done(err, token);
 		  });
