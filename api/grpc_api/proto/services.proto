@@ -1,0 +1,36 @@
+syntax = "proto3";
+package accounts;
+
+service Authenticator {
+	rpc Authenticate (AuthRequest) returns (AuthResponse);
+	rpc ResetPassword (ResetPasswordRequest) returns (ResetPasswordResponse);
+	rpc ConfirmPasswordReset (ConfirmPasswordResetRequest) returns (ConfirmPasswordResetResponse);
+}
+
+message AuthRequest {}
+message AuthResponse {}
+message ResetPasswordRequest {}
+message ResetPasswordResponse {}
+message ConfirmPasswordResetRequest {}
+message ConfirmPasswordResetResponse {}
+
+service Registration {
+	rpc Register (RegisterRequest) returns (RegisterResponse);
+	rpc ConfirmEmail (ConfirmEmailRequest) returns (ConfirmEmailResponse);
+}
+
+message RegisterRequest {}
+message RegisterResponse {}
+message ConfirmEmailRequest {}
+message ConfirmEmailResponse {}
+
+
+service AccountManager {
+	rpc Read (RegisterRequest) returns (ReadResponse);
+	rpc Put (PutRequest) returns (PutResponse);
+}
+
+message ReadRequest {}
+message ReadResponse {}
+message PutRequest {}
+message PutResponse {}
