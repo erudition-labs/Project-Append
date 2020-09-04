@@ -72,7 +72,7 @@
     "ngx-toastr": "9.1.1",
     "ngx-tui-editor": "0.3.0",
     "node-gyp": "3.8.0",
-    "node-sass": "4.11.0",
+    "node-sass": "4.13.1",
     "perfect-scrollbar": "1.4.0",
     "prismjs": "1.15.0",
     "quill": "1.3.6",
