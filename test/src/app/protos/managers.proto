@@ -1,0 +1,44 @@
+syntax = "proto3";
+package managers;
+
+service UserManager {
+    rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);
+	rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse);
+    rpc ReadUsers (ReadUsersRequest) returns (ReadUsersResponse);
+}
+	message CreateUserRequest {
+		string username = 1;
+		string password = 2;
+	}
+
+	message CreateUserResponse {
+		string oid = 1;
+	}
+
+	message UpdateUserRequest {
+        string oid = 1;
+		string username = 2;
+		string password = 3;
+	}
+
+	message UpdateUserResponse {
+		string oid = 1;
+	}
+
+    message ReadUsersRequest {
+        string read_by = 1;
+        repeated string ids = 2;
+        uint32 offset = 3;
+        uint32 next = 4;
+        bool sort = 5;
+    }
+
+    message ReadUsersResponse {
+       repeated User users = 1; 
+    }
+
+    message User {
+        string oid = 1;
+        string username = 2;
+        string password = 3;
+    }
